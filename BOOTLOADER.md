@@ -103,5 +103,25 @@ arch/arm/dts/
 ```
 
 각 플랫폼에서 사용되는 DTS파일은 defconfig의 *CONFIG_DEFAULT_DEVICE_TREE*에 의해 정의됩니다.
+
+## Relocation
+부트 단계에서 U-Boot는 이전단계의 부트로더에 의해 DRAM의 low address에 로드됩니다. 
+U-Boot는 board_f.c의 프로세스를 완료한 후, 메모리 끝의 예약된 주소로 redirect(relocation, 이 주소는 U-Boot 메모리 레이아웃에 따라 결정됨)하고 relocation 완료 후, board_r.c 프로세스를 완료합니다. 
+부팅 정보로 확인할 수 있습니다.
+```bash
+AK7755 : Master
+TCC : SlaveU-Boot 2017.09 #lchy0113 (Apr 13 2022 - 08:23:57 +0900)
+
+Model: Rockchip RK3568 Evaluation Board
+PreSerial: 2, raw, 0xfe660000
+DRAM:  2 GiB
+Sysmem: init
+Relocation Offset: 7d352000
+Relocation fdt: 7b9f8530 - 7b9fecd8
+CR: M/C/I
+Using default environment
+...
+```
+
 <hr/>
 
