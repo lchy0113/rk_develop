@@ -38,7 +38,7 @@ front-level loader code의 open source여부에 따라서 RK platform 은 2가�
 > TPL은 ddr bin과 동일하고, SPL은 Miniloader 와 동일한 기능을 제공합니다. 
 > 즉 TPL+SPL 의 조합은 rk 코드  ddr.bin=miniloader와 동일한 기능을 제공하며 서로 교체되어 사용할 수 있습니다.
 
-## TLS/SPL/U-Boot-proper
+## TPL/SPL/U-Boot-proper
 U-Boot는 하나의 코드에서 TPL/SPL/U-Boot-proper이라는 컴파일 조건을 사용하여 각각 다른 기능을 가진 로더를 얻을 수 있습니다. 
 TPL(Tiny Program Loader) 과 SPL(Secondary Program Loader)는 U-Boot 이전의 로더 입니다. 
 - TPL : SRAM에서 실행되며 DDR(DRAM)초기화를 담당합니다.
