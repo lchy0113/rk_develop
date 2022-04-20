@@ -30,9 +30,9 @@ v2017 버전은 DM framework을 따라 module을 개발합니다.
 
 ## Boot-order
 front-level loader code의 open source여부에 따라서 RK platform 은 2가지 startup methods 를 제공합니다. 
-- pre-loader closed source
+- pre-loader closed source <br/>
 	BOOTROM ▶️ ddr bin ▶️ Miniloader ▶️ TRUST ▶️ U-boot ▶️ KERNEL
-- open source pre-loader
+- open source pre-loader <br/>
 	BOOTROM ▶️ TPL ▶️ SPL ▶️ TRUST ▶️ U-BOOT ▶️ KERNEL
 
 <hr/>
