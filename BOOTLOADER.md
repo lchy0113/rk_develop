@@ -46,5 +46,9 @@ TPL(Tiny Program Loader) 과 SPL(Secondary Program Loader)는 U-Boot 이전의 �
 - U-Boot-proper : DDR에서 실행되며, kernel의 booting을 담당합니다. 
 > Note : U-Boot-proper 용어는 SPL과 구별하기 위한 것입니다. 일반적으로 U-Boot는 U-Boot-proper을 의미 합니다. 
 
+부팅 절차 :
+BOOTROM ▶️ TPL(ddr bin) ▶️ SPL(miniloader) ▶️ TRUST ▶️ U-BOOT ▶️ KERNEL
+> Note : More references : doc/README.TPL and doc/README.SPL
+
 <hr/>
 
