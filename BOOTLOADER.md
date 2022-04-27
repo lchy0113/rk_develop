@@ -168,4 +168,33 @@ RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-
 
 ## make.sh 스크립트 파일
 make.sh는 컴파일 스크립트일 뿐만 아니라 패키징 및 디버깅 도구이기도 합니다. 펌웨어를 분해하고 패키징하는 데 사용할 수 있습니다.
+```
+Example:
 
+1. Build:
+        ./make.sh evb-rk3399               --- build for evb-rk3399_defconfig
+		        ./make.sh firefly-rk3288           --- build for firefly-rk3288_defconfig
+				        ./make.sh EXT_DTB=rk-kernel.dtb    --- build with exist .config and external dtb
+						        ./make.sh                          --- build with exist .config
+								        ./make.sh env                      --- build envtools
+
+										2. Pack:
+										        ./make.sh uboot                    --- pack uboot.img
+												        ./make.sh trust                    --- pack trust.img
+														        ./make.sh trust <ini>              --- pack trust img with assigned ini file
+																        ./make.sh loader                   --- pack loader bin
+																		        ./make.sh loader <ini>             --- pack loader img with assigned ini file
+																				        ./make.sh --spl                    --- pack loader with u-boot-spl.bin
+																						        ./make.sh --tpl                    --- pack loader with u-boot-tpl.bin
+																								        ./make.sh --tpl --spl              --- pack loader with u-boot-tpl.bin and u-boot-spl.bin
+
+																										3. Debug:
+																										        ./make.sh elf                      --- dump elf file with -D(default)
+																												        ./make.sh elf-S                    --- dump elf file with -S
+																														        ./make.sh elf-d                    --- dump elf file with -d
+																																        ./make.sh elf-*                    --- dump elf file with -*
+																																		        ./make.sh <no reloc_addr>          --- unwind address(no relocated)
+																																				        ./make.sh <reloc_addr-reloc_off>   --- unwind address(relocated)
+																																						        ./make.sh map                      --- cat u-boot.map
+																																								        ./make.sh sym                      --- cat u-boot.sym
+```
