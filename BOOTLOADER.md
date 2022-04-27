@@ -173,28 +173,28 @@ Example:
 
 1. Build:
         ./make.sh evb-rk3399               --- build for evb-rk3399_defconfig
-		        ./make.sh firefly-rk3288           --- build for firefly-rk3288_defconfig
-				        ./make.sh EXT_DTB=rk-kernel.dtb    --- build with exist .config and external dtb
-						        ./make.sh                          --- build with exist .config
-								        ./make.sh env                      --- build envtools
+        ./make.sh firefly-rk3288           --- build for firefly-rk3288_defconfig
+        ./make.sh EXT_DTB=rk-kernel.dtb    --- build with exist .config and external dtb
+        ./make.sh                          --- build with exist .config
+        ./make.sh env                      --- build envtools
 
-										2. Pack:
-										        ./make.sh uboot                    --- pack uboot.img
-												        ./make.sh trust                    --- pack trust.img
-														        ./make.sh trust <ini>              --- pack trust img with assigned ini file
-																        ./make.sh loader                   --- pack loader bin
-																		        ./make.sh loader <ini>             --- pack loader img with assigned ini file
-																				        ./make.sh --spl                    --- pack loader with u-boot-spl.bin
-																						        ./make.sh --tpl                    --- pack loader with u-boot-tpl.bin
-																								        ./make.sh --tpl --spl              --- pack loader with u-boot-tpl.bin and u-boot-spl.bin
+2. Pack:
+        ./make.sh uboot                    --- pack uboot.img
+        ./make.sh trust                    --- pack trust.img
+        ./make.sh trust <ini>              --- pack trust img with assigned ini file
+        ./make.sh loader                   --- pack loader bin
+        ./make.sh loader <ini>             --- pack loader img with assigned ini file
+        ./make.sh --spl                    --- pack loader with u-boot-spl.bin
+        ./make.sh --tpl                    --- pack loader with u-boot-tpl.bin
+        ./make.sh --tpl --spl              --- pack loader with u-boot-tpl.bin and u-boot-spl.bin
 
-																										3. Debug:
-																										        ./make.sh elf                      --- dump elf file with -D(default)
-																												        ./make.sh elf-S                    --- dump elf file with -S
-																														        ./make.sh elf-d                    --- dump elf file with -d
-																																        ./make.sh elf-*                    --- dump elf file with -*
-																																		        ./make.sh <no reloc_addr>          --- unwind address(no relocated)
-																																				        ./make.sh <reloc_addr-reloc_off>   --- unwind address(relocated)
-																																						        ./make.sh map                      --- cat u-boot.map
-																																								        ./make.sh sym                      --- cat u-boot.sym
+3. Debug:
+        ./make.sh elf                      --- dump elf file with -D(default)
+        ./make.sh elf-S                    --- dump elf file with -S
+        ./make.sh elf-d                    --- dump elf file with -d
+        ./make.sh elf-*                    --- dump elf file with -*
+        ./make.sh <no reloc_addr>          --- unwind address(no relocated)
+        ./make.sh <reloc_addr-reloc_off>   --- unwind address(relocated)
+        ./make.sh map                      --- cat u-boot.map
+        ./make.sh sym                      --- cat u-boot.sym
 ```
