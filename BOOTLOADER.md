@@ -245,3 +245,44 @@ Example:
 ./make.sh --tpl --spl // ddr 및 miniloader를 spl 및 tpl로 교체하고 loader에 packages
 ./make.sh --spl-new // ./make.sh --spl 명령어는 packages만 진행합니다. -new 옵션이 추가되면 recompile을 한 후, packages합니다. 
 ```
+
+<hr/>
+
+# Write GPT partition
+ ## Write GPT partition table through rkdeveloptool
+ [rkdeveloptool|https://github.com/rockchip-linux/rkdeveloptool.git] 은 Rockusb 장치와 통신하기 위한 Rockchip의 tool입니다. 
+
+```bash
+// boot device maskrom mode
+
+$ ./rkdeveloptool --help // 
+
+---------------------Tool Usage ---------------------
+Help:                   -h or --help
+Version:                -v or --version
+ListDevice:             ld
+DownloadBoot:           db <Loader>
+UpgradeLoader:          ul <Loader>
+ReadLBA:                rl  <BeginSec> <SectorLen> <File>
+WriteLBA:               wl  <BeginSec> <File>
+WriteLBA:               wlx  <PartitionName> <File>
+WriteGPT:               gpt <gpt partition table>
+WriteParameter:         prm <parameter>
+PrintPartition:         ppt
+EraseFlash:             ef
+TestDevice:             td
+ResetDevice:            rd [subcode]
+ReadFlashID:            rid
+ReadFlashInfo:          rfi
+ReadChipInfo:           rci
+ReadCapability:         rcb
+PackBootLoader:         pack
+UnpackBootLoader:       unpack <boot loader>
+TagSPL:                 tagspl <tag> <U-Boot SPL>
+-------------------------------------------------------
+
+rkdeveloptoolrkxx_loader_vx.xx.bin
+rkdeveloptool gpt parameter_gpt.txt
+```
+ ## Write GPT partition table through U-boot
+ ## Write GPT partition table through U-boot's fastboot
