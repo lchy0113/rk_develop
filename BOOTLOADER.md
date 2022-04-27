@@ -253,9 +253,14 @@ Example:
  [rkdeveloptool|https://github.com/rockchip-linux/rkdeveloptool.git] 은 Rockusb 장치와 통신하기 위한 Rockchip의 tool입니다. 
 
 ```bash
-// boot device maskrom mode
+// 1. boot device rockusb mode(maskrom mode)
+// 2. connect target to host pc via usb interface.
+$ ./rkdeveloptool ld
+DevNo=1 Vid=0x2207,Pid=0x350a,LocationID=105    Maskrom
 
-$ ./rkdeveloptool --help // 
+// 3. write the image to the eMMC with tool command.
+
+$ ./rkdeveloptool --help 
 
 ---------------------Tool Usage ---------------------
 Help:                   -h or --help
@@ -281,8 +286,44 @@ UnpackBootLoader:       unpack <boot loader>
 TagSPL:                 tagspl <tag> <U-Boot SPL>
 -------------------------------------------------------
 
-rkdeveloptoolrkxx_loader_vx.xx.bin
-rkdeveloptool gpt parameter_gpt.txt
+// downloadboot 명령을 사용하여 타겟의 dram을 초기화 하고, usbplug을 실행합니다. 
+$ ./rkdeveloptool db ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+Downloading bootloader succeeded.
+
+// upgradeloader 명령을 사용하여 rockchip loader 에서 idbLoader를 idb에 write합니다.
+$ ./rkdeveloptool ul ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+Upgrading loader succeeded.
+
+// Note : upgradeloader 명령어는 rockchip miniloader를 사용하는 아래 명령어와 동일한 동작을 취합니다.
+$ ./rkdeveloptool wl 0x40 idbLoader.img
+
+// gpt 명령을 사용하여 gpt table을 write 합니다.
+$ ./rkdeveloptool gpt ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+Writing gpt succeeded.
+
+// ppt 명령을 사용하여 gpt table 을 확인한다.
+$ ./rkdeveloptool ppt
+**********Partition Info(GPT)**********
+NO  LBA       Name
+00  00002000  security
+01  00004000  uboot
+02  00006000  trust
+03  00008000  misc
+04  0000A000  dtbo
+05  0000C000  vbmeta
+06  0000C800  boot
+07  00020800  recovery
+08  00050800  backup
+09  00110800  cache
+10  001D0800  metadata
+11  001D8800  baseparameter
+12  001D9000  super
+13  007ED000  userdata
+
+// uboot partition영역에 uboot.img 을 flash한다.
+$ ./rkdeveloptool wlx uboot ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
+Write LBA from file (100%)
+
 ```
  ## Write GPT partition table through U-boot
  ## Write GPT partition table through U-boot's fastboot
