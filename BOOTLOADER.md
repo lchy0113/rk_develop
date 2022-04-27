@@ -157,14 +157,14 @@ BOOTROM ➡️ ddr-bin ➡️ Miniloader ➡️ TRUST ➡️ U-BOOT ➡️ KERNE
 
 ## 단축키
 RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-BOOT에서 지원합니다. 
- - ctrl+c: Enter U-Boot command line mode;
- - ctrl+d: enter loader programming mode;
- - ctrl+b: enter maskrom programming mode;
- - ctrl+f: enter fastboot mode;
- - ctrl+m: print bidram/system information;
- - ctrl+i: enable kernel initcall_debug;
- - ctrl+p: print cmdline information;
- - ctrl+s: Enter U-Boot command line after "Starting kernel...";
+ * ctrl+c: Enter U-Boot command line mode;
+ * ctrl+d: enter loader programming mode;
+ * ctrl+b: enter maskrom programming mode;
+ * ctrl+f: enter fastboot mode;
+ * ctrl+m: print bidram/system information;
+ * ctrl+i: enable kernel initcall_debug;
+ * ctrl+p: print cmdline information;
+ * ctrl+s: Enter U-Boot command line after "Starting kernel...";
 
 ## make.sh 스크립트 파일
 make.sh는 컴파일 스크립트일 뿐만 아니라 패키징 및 디버깅 도구이기도 합니다. 펌웨어를 분해하고 패키징하는 데 사용할 수 있습니다.
@@ -197,4 +197,51 @@ Example:
         ./make.sh <reloc_addr-reloc_off>   --- unwind address(relocated)
         ./make.sh map                      --- cat u-boot.map
         ./make.sh sym                      --- cat u-boot.sym
+```
+
+
+<hr/>
+
+# Compilation and programming
+## 준비 : rkbin, GCC
+ * rkbin
+    - https://github.com/rockchip-linux/rkbin
+ * GCC
+    - 32bit : prebuilts/gcc/linux-x86/arm/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/
+	- 64bit : prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/ 
+
+## 프로그래밍 
+ * programming mode : RK platform은 2가지 programming mode(loader mode, maskrom mode)가 있습니다. 
+   - loader mode(u-boot)
+	 + Loader programming mode 진입방법
+	   = 전원 인가 시, volume + 버튼을 누른다. 
+	   = 부팅 시, ctrl+d 단축어를 입력한다.
+	   = console에서 "download" 또는 "$ rockusb 0 $devtype $devnum" 입력한다.
+   - maskrom mode
+     + 부팅 시, ctrl+b 단축어를 입력한다.
+	 + console에서 "rbrom"을 입력한다. 
+
+
+## 빌드 명령어
+./make.sh 컴파일 코드 외에 펌웨어 패키징도 지원합니다. 개발자가 사용할 수 있는 몇 가지 패키징 명령이 제공됩니다.
+- Non-FIT format:
+```bash
+./make.sh trust 		// trust image package
+./make.sh loader		// loader image package
+./make.sh trust <ini-file> // trust image package시, ini파일을 지정한다.  지정하지 않은 경우 default ini 파일이 사용됨.
+./make.sh loader <ini-file> // loader image package시, ini파일을 지정한다. 지정하지 않은 경우 default ini 파일이 사용됨.
+```
+
+- FIT format:
+```bash
+// old script :
+./make.sh spl  // ddr 및 miniloader를 tpl+spl로 교체하고, packages 
+./make.sh spl -s // ddr 및 miniloader를 tpl=spl로 교체하고, packages
+
+
+// new script :
+./make.sh --spl // miniloader를 spl로 교체하고 loader에 packages
+./make.sh --tpl // ddr 을 tpl로 교체하고 loader에 packages
+./make.sh --tpl --spl // ddr 및 miniloader를 spl 및 tpl로 교체하고 loader에 packages
+./make.sh --spl-new // ./make.sh --spl 명령어는 packages만 진행합니다. -new 옵션이 추가되면 recompile을 한 후, packages합니다. 
 ```
