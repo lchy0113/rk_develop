@@ -7,6 +7,34 @@ linux os 를 부팅할 때 많은 부팅 단계가 있습니다. 그런 다음 �
 Rockschip사에서 released된 binaries 이 rkbin(https://github.com/rockchip-linux/rkbin) 을 통하여 배포됩니다. (GPT Partition 정보가 포함되어 있습니다.)  
 
 ## 1.1 boot flow
+Rockchip 플랫폼에서 사용되는 boot flow에 대해 설명합니다.  2종류의 boot path가 있습니다. 
+- upstream 또는 Rockchip u-boot 의 tls/spl 을 사용. (소스코드 제공)
+- Rockchip사 rkbin 프로젝트를 통해 배포되는 Rockchip ddr init bin 과 miniloader bin이 포함된 idbLoader를 사용합니다.  
+
+```bash
++--------+----------------+----------+-------------+---------+
+| Boot   | Terminology #1 | Actual   | Rockchip    | Image   |
+| stage  |                | program  |  Image      | Location|
+| number |                | name     |   Name      | (sector)|
++--------+----------------+----------+-------------+---------+
+| 1      |  Primary       | ROM code | BootRom     |         |
+|        |  Program       |          |             |         |
+|        |  Loader        |          |             |         |
+|        |                |          |             |         |
+| 2      |  Secondary     | U-Boot   |idbloader.img| 0x40    | pre-loader
+|        |  Program       | TPL/SPL  |             |         |
+|        |  Loader (SPL)  |          |             |         |
+|        |                |          |             |         |
+| 3      |  -             | U-Boot   | u-boot.itb  | 0x4000  | including u-boot and atf
+|        |                |          | uboot.img   |         | only used with miniloader
+|        |                |          |             |         |
+|        |                | ATF/TEE  | trust.img   | 0x6000  | only used with miniloader
+|        |                |          |             |         |
+| 4      |  -             | kernel   | boot.img    | 0x8000  |
+|        |                |          |             |         |
+| 5      |  -             | rootfs   | rootfs.img  | 0x40000 |
++--------+----------------+----------+-------------+---------+
+```
 
 ## 1.2 packages option
 ### 1.2.1 The Pre-bootloader(IDBLoader)
