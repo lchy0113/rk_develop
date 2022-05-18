@@ -168,7 +168,20 @@ RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-
 
 ## make.sh 스크립트 파일
 make.sh는 컴파일 스크립트일 뿐만 아니라 패키징 및 디버깅 도구이기도 합니다. 펌웨어를 분해하고 패키징하는 데 사용할 수 있습니다.
-```
+```bash
+
+lchy0113@df9836d77478:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/u-boot$ ./make.sh help
+
+Usage:
+        ./make.sh [board|sub-command]
+
+         - board:        board name of defconfig
+         - sub-command:  elf*|loader|trust|uboot|--spl|--tpl|itb|map|sym|<addr>
+         - ini:          ini file to pack trust/loader
+
+Output:
+         When board built okay, there are uboot/trust/loader images in current directory
+
 Example:
 
 1. Build:
@@ -197,6 +210,7 @@ Example:
         ./make.sh <reloc_addr-reloc_off>   --- unwind address(relocated)
         ./make.sh map                      --- cat u-boot.map
         ./make.sh sym                      --- cat u-boot.sym
+
 ```
 
 
