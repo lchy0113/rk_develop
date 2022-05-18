@@ -220,6 +220,7 @@ Example:
 ## 준비 : rkbin, GCC
  * rkbin
     - https://github.com/rockchip-linux/rkbin
+	> (rk3568_android11)/rkbin 경로에 존재
  * GCC
     - 32bit : prebuilts/gcc/linux-x86/arm/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/
 	- 64bit : prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/ 
