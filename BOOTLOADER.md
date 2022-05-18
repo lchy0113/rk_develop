@@ -166,7 +166,7 @@ RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-
  * ctrl+p: print cmdline information;
  * ctrl+s: Enter U-Boot command line after "Starting kernel...";
 
-## make.sh 스크립트 파일
+## make.sh 스크립트 파일 (u-boot)
 make.sh는 컴파일 스크립트일 뿐만 아니라 패키징 및 디버깅 도구이기도 합니다. 펌웨어를 분해하고 패키징하는 데 사용할 수 있습니다.
 ```bash
 
