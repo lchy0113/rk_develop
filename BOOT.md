@@ -6,9 +6,9 @@
 <hr/>
 
 # 1. Boot introduce
- linux os 를 부팅할 때 많은 부팅 단계가 있습니다. 그런 다음 이미지가 어디에 packaging되어야 하는지 알아야 합니다. 
- 마지막으로 storage에 flash 후, storage에서 부팅하는 방법을 설명합니다. 
- Rockschip사에서 released된 binaries 이 rkbin([rkbin]|(https://github.com/rockchip-linux/rkbin)]을 통하여 배포됩니다. (GPT Partition 정보가 포함되어 있습니다.)
+linux os 를 부팅할 때 많은 부팅 단계가 있습니다. 그런 다음 이미지가 어디에 packaging되어야 하는지 알아야 합니다. 
+마지막으로 storage에 flash 후, storage에서 부팅하는 방법을 설명합니다. 
+Rockschip사에서 released된 binaries 이 rkbin([rkbin]|(https://github.com/rockchip-linux/rkbin)]을 통하여 배포됩니다. (GPT Partition 정보가 포함되어 있습니다.)
 
 ## 1.1 boot flow
 
