@@ -10,7 +10,7 @@ Rockschip사에서 released된 binaries 이 rkbin(https://github.com/rockchip-li
 Rockchip 플랫폼에서 사용되는 boot flow에 대해 설명합니다.  2종류의 boot path가 있습니다. 
 - upstream 또는 Rockchip u-boot 의 tls/spl 을 사용. (소스코드 제공)
 - Rockchip사 rkbin 프로젝트를 통해 배포되는 Rockchip ddr init bin 과 miniloader bin이 포함된 idbLoader를 사용합니다.  
-
+  
 +--------+----------------+----------+-------------+---------+
 | Boot   | Terminology #1 | Actual   | Rockchip    | Image   |
 | stage  |                | program  |  Image      | Location|
@@ -33,7 +33,7 @@ Rockchip 플랫폼에서 사용되는 boot flow에 대해 설명합니다.  2종
 |        |                |          |             |         |
 | 5      |  -             | rootfs   | rootfs.img  | 0x40000 |
 +--------+----------------+----------+-------------+---------+
-
+  
 ## 1.2 packages option
 ### 1.2.1 The Pre-bootloader(IDBLoader)
 #### 1.2.1.1 IDBLoader 란 
