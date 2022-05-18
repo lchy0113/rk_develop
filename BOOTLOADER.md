@@ -126,7 +126,7 @@ Using default environment
 <hr/>
 
 <br/>
-
+<br/>
 
 # RK architecture
 
