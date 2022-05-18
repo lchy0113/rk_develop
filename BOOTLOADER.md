@@ -218,6 +218,9 @@ Example:
 
 
 <hr/>
+<br/>
+<br/>
+<br/>
 
 # Compilation and programming
 ## 준비 : rkbin, GCC
@@ -265,6 +268,9 @@ Example:
 ```
 
 <hr/>
+<br/>
+<br/>
+<br/>
 
 # Write GPT partition
  ## Write GPT partition table through rkdeveloptool
@@ -348,6 +354,9 @@ Write LBA from file (100%)
 
 
 <hr/>
+<br/>
+<br/>
+<br/>
 
 # packages 
 ## The Pre-bootloader(IDBLoader)
