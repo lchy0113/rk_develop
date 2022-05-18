@@ -123,6 +123,7 @@ Using default environment
 ...
 ```
 
+<hr/>
 <br/>
 <br/>
 <br/>
@@ -216,6 +217,7 @@ Example:
 
 ```
 
+<hr/>
 <br/>
 <br/>
 <br/>
@@ -266,6 +268,7 @@ Example:
 ./make.sh --spl-new // ./make.sh --spl 명령어는 packages만 진행합니다. -new 옵션이 추가되면 recompile을 한 후, packages합니다. 
 ```
 
+<hr/>
 <br/>
 <br/>
 <br/>
@@ -351,6 +354,7 @@ Write LBA from file (100%)
  ## Write GPT partition table through U-boot
  ## Write GPT partition table through U-boot's fastboot
 
+<hr/>
 <br/>
 <br/>
 <br/>
