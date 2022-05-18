@@ -245,7 +245,8 @@ Example:
 
 
 ## 빌드 명령어
-./make.sh 컴파일 코드 외에 펌웨어 패키징도 지원합니다. 개발자가 사용할 수 있는 몇 가지 패키징 명령이 제공됩니다.
+make.sh 는 compile script 이며, 외에 firmware packaging 및 디버깅 툴 입니다.   
+package firmware를 분해(disassemble) 및 패키징하는데 사용할 수 있습니다.
 - Non-FIT format:
 ```bash
 ./make.sh trust 		// trust image package
