@@ -264,7 +264,7 @@ Example:
 
 # Write GPT partition
  ## Write GPT partition table through rkdeveloptool
- [rkdeveloptool|https://github.com/rockchip-linux/rkdeveloptool.git] 은 Rockusb 장치와 통신하기 위한 Rockchip의 tool입니다. 
+ [rkdeveloptool][https://github.com/rockchip-linux/rkdeveloptool.git] 은 Rockusb 장치와 통신하기 위한 Rockchip의 tool입니다. 
 
 ```bash
 // 1. boot device rockusb mode(maskrom mode)
