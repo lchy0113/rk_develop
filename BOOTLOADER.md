@@ -123,10 +123,10 @@ Using default environment
 ...
 ```
 
+<br/>
+<br/>
+<br/>
 <hr/>
-<br/>
-<br/>
-<br/>
 
 # RK architecture
 
@@ -216,11 +216,10 @@ Example:
 
 ```
 
-
+<br/>
+<br/>
+<br/>
 <hr/>
-<br/>
-<br/>
-<br/>
 
 # Compilation and programming
 ## 준비 : rkbin, GCC
@@ -267,10 +266,10 @@ Example:
 ./make.sh --spl-new // ./make.sh --spl 명령어는 packages만 진행합니다. -new 옵션이 추가되면 recompile을 한 후, packages합니다. 
 ```
 
+<br/>
+<br/>
+<br/>
 <hr/>
-<br/>
-<br/>
-<br/>
 
 # Write GPT partition
  ## Write GPT partition table through rkdeveloptool
@@ -352,11 +351,10 @@ Write LBA from file (100%)
  ## Write GPT partition table through U-boot
  ## Write GPT partition table through U-boot's fastboot
 
-
+<br/>
+<br/>
+<br/>
 <hr/>
-<br/>
-<br/>
-<br/>
 
 # packages 
 ## The Pre-bootloader(IDBLoader)
