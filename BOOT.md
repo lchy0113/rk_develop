@@ -44,7 +44,7 @@ BootRom에 Rom code(idbLoader)를 write하여 ddr init 및 초기 AP initialize�
 
 Rockchip AP의 Boot Flow는 아래의 그림과 같다.
 
-![Rockchip bootflow](images/BOOT_01.jpg)
+![Rockchip bootflow](images/BOOT_01.jpg)<img width="715" height="800"></img>
 ## 1.2 packages option
 ### 1.2.1 The Pre-bootloader(IDBLoader)
 #### 1.2.1.1 IDBLoader 란 
