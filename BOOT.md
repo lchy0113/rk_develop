@@ -21,7 +21,7 @@ Rockchip 플랫폼에서 사용되는 boot flow에 대해 설명합니다.  2종
 |        |  Program       |          |             |         |
 |        |  Loader        |          |             |         |
 |        |                |          |             |         |
-| 2      |  Secondary     | U-Boot   |idbloader.img| 0x40    | pre-loader
+| 2      |  Secondary     | U-Boot   |idbLoader.img| 0x40    | pre-loader
 |        |  Program       | TPL/SPL  |             |         |
 |        |  Loader (SPL)  |          |             |         |
 |        |                |          |             |         |
@@ -59,37 +59,73 @@ Rockchip AP의 Boot Flow는 아래의 그림과 같다.
    * from ATF ; bl31.elf.
  - from rockchip binary:
    * ddr, usbplug, miniloader , bl31/op-tee, ( 파일명은  'rkxx_' 로 시작 하며, '_x.xx.bin' 으로 끝맺임 합니다. )
-### 1.2.1 The Pre-bootloader(IDBLoader)
-#### 1.2.1.1 IDBLoader 란 
-IDBLoader.img는 SoC start up시 동작하며, 아래 기능을 포함하는 Rockchip 형식의 pre-loader 입니다.
- - Rockchip BootRom에 의해 알려진 IDBlock header.
+
+### 1.2.1 The Pre-bootloader(idbLoader)
+#### 1.2.1.1 idbLoader 란 
+idbLoader.img는 SoC start up시 동작하며, 아래 기능을 포함하는 Rockchip 형식의 pre-loader 입니다.
+ - Rockchip BootRom 으로 알려진 IDBlock header 
  - MaskRom에 의해 load되고, 내부 SRAM에서 실행되는 DRAM 초기화 프로그램.
  - MaskRom에 의해 load되고, DRAM에서 다음 loader를 실행시킵니다.
 
-#### 1.2.1.2 아래 방법으로 IDBLoader를 얻을 수 있습니다. 
+#### 아래 방법으로 idbLoader를 얻을 수 있습니다. 
 
-#### Rockchip release loader에서 eMMC용 IDBLoader 패키징.
-Rockchip release loader를 사용하는 경우, eMMC IDBLoader.img를 패키징할 필요가 없습니다. 아래 명령어를 사용하여 eMMC IDBLoader를 얻을 수 있습니다.
+#### 1.2.1.2 Rockchip release loader에서 eMMC용 idbLoader 패키징.
+Rockchip release loader를 사용하는 경우, eMMC idbLoader.img를 패키징할 필요가 없습니다. 
+아래 명령어를 사용하여 eMMC idbLoader를 얻을 수 있습니다.
 ```bash
-rkdeveloptool db rkxx_loader_vx.xx.bin
-rkdeveloptool ul rkxx_loader_vx.xx.bin
+rkdeveloptool db rkxx_loader_vx.xx.bin	// rkxx_loader_vx.xx.bin 을 download.
+rkdeveloptool ul rkxx_loader_vx.xx.bin	// rkxx_loader_vx.xx.bin 을 upgrade.	
 ```
 
-#### 1.2.1.3 Rockchip binary 에서 IDBLoader.img를 패키징 합니다.
-SD boot 또는 eMMC의 경우, IDBLoader가 필요 합니다. 
+#### 1.2.1.3 Rockchip binary 에서 idbLoader.img를 패키징 합니다.
+SD boot 또는 eMMC의 경우, idbLoader가 필요 합니다. 
 ```bash
-tools/mkimage -n rkxxxx -T rksd -d rkxx_ddr_vx.xx.bin idbloader.img
+tools/mkimage -n rkxxxx -T rksd -d rkxx_ddr_vx.xx.bin idbLoader.img
 cat rkxx_miniloader_vx.xx.bin >> idbloader.img
 ```
 
 
-#### 1.2.1.4 U-boot TPL/SPL(which is fully open source) 에서 IDBLoader.img를 패키징 합니다.
+#### 1.2.1.4 U-boot TPL/SPL(fully open source) 에서 idbLoader.img를 패키징 합니다.
 ```bash
 tools/mkimage -n rkxxxx -T rksd -d tpl/u-boot-tpl.bin idbloader.img
 cat spl/u-boot-spl.bin >> idbloader.img
 ```
-stage 2를 포함하여 offset 0x40으로 IDBLoader.img를 writing하면 u-boot.img 가 로드 됩니다.(stage 3)
+statge 2에서 idbloader.img 를 offset 0x40 위치에 flash 합니다. 
+이후 stage 3 진행을 위해 uboot.img 가 필요로 합니다.
  
+### 1.2.2 u-boot
+
+#### 1.2.2.1 uboot.img
+Rockchip miniloader 의 idbLoader 를 사용하는 경우, miniloader 에 로드될 형식의 u-boot.bin 이 필요합니다. 
+```bash
+tools/loaderimage --pack --uboot u-boot.bin uboot.img $SYS_TEXT_BASE
+```
+> Note: $SYS_TEXT_BASE 값은 각 SoC에 따라 따릅니다.
+
+#### 1.2.2.1 u-boot.itb
+When using SPL to load the ATF/OP-TEE, package the bl31.bin, u-boot-nodtb.bin and uboot.dtb into one FIT image. 
+You can skip the step to package the Trust image and flash that image in the next section.
+```bash
+make u-boot.itb
+```
+> Note: please copy the trust binary() to u-boot root directory and rename it to tee.bin(armv7) or bl31.elf(armv8).
+
+### 1.2.3 trust
+#### 1.2.3.1 trust.img
+
+### 1.2.4 boot.img
+This image is package the kernel Image and dtb file into a know filesystem(FAT or EXT2) image for distro boot.
+See Install kernel for detail about generate boot.img from kernel zImage/Image, dtb.
+Flash the boot.img to offset 0x8000 which is stage 4.
+
+### 1.2.5 rootfs.img
+Flash the rootfs.img to offset 0x40000 which is stage 5. As long as the kernel you chosen can support that filesystem, there is not limit in the format of the image.
+
+### 1.2.6 rkxx_loader_vx.xx.xxx.bin
+rkdeveloptool을 사용하여 eMMC에 펌웨어를 upgrade하는데 사용되는 바이너리로, Rockchip사에서 제공합니다.
+ddr.bin, usbplug.bin, miniloader.bin 의 package 입니다. Rockchip tool db 명령어로 usbplug.bin 을 만들어 target에서 실행시킵니다.
+Rockchip사에서는 대부분의 장치의 이 이미지를 제공합니다.
+
 <hr/>
 <br/>
 <br/>
@@ -97,6 +133,34 @@ stage 2를 포함하여 offset 0x40으로 IDBLoader.img를 writing하면 u-boot.
 <hr/>
 
 ## 2 flash and boot from Media device
+아래 과정을 통해 eMMC에 flash합니다.
+ - maskrom mode 진입합니다.
+ - usb cable을 통해 target과 host pc 연결합니다.
+ - rkdeveloptool을 사용하여 이미지를 eMMC에 flash합니다.
+
+target 장치의 eMMC에 flash하는 예제 입니다.
+
+target 장치에 GPT partition을 flash 합니다.
+```bash
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/u-boot$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool db rk356x_spl_loader_v1.10.111.bin 
+Downloading bootloader succeeded.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+Writing gpt succeeded.
+```
+
+- For with SPL ;
+```bash
+```
+
+- for with miniloader
+```bash
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool db ../../u-boot/rk356x_spl_loader_v1.10.111.bin 
+Downloading bootloader succeeded.
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool ul ../../u-boot/rk356x_spl_loader_v1.10.111.bin 
+Upgrading loader succeeded.
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool wl 0x40 ../../u-boot/uboot.im
+```
 ### 2.1 Boot from eMMC
 
 
