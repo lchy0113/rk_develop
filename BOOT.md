@@ -46,6 +46,11 @@ Rockchip AP의 Boot Flow는 아래의 그림과 같다.
 
 ![Rockchip bootflow](./images/BOOT_01.png)
 
+- bootflow-1 : 일반적인 Rockchip Boot Flow로 Rockchip miniloader 바이너리를 사용.
+- bootflow-2 : 일반적인 대부분의 AP부팅 Sequence로 u-boot TPL/SPL에서 DDR init을 진행하고 다음 스테이지 진행.
+
+보통의 경우 위의 두 가지 중 bootflow-1을 주로 쓰며, 바이너리 형태로 배포되는 miniloader를 rkbin github에서 받아 Android Tool을 이용하여 프로그램을 flash 한다.
+
 ## 1.2 packages option
 ### 1.2.1 The Pre-bootloader(IDBLoader)
 #### 1.2.1.1 IDBLoader 란 
