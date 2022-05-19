@@ -52,6 +52,13 @@ Rockchip AP의 Boot Flow는 아래의 그림과 같다.
 보통의 경우 위의 두 가지 중 bootflow-1을 주로 쓰며, 바이너리 형태로 배포되는 miniloader를 rkbin github에서 받아 Android Tool을 이용하여 프로그램을 flash 한다.
 
 ## 1.2 packages option
+ stage 2~4 단계의 package 에 사용되는 파일 목록은 다음과 같습니다.
+ - from source code:
+   * from u-boot : u-boot-spn.bin, u-boot.bin(u-boot-nodtb.bin 및 u-boot.dtb를 대신 사용할 수 있음).
+   * from kernel : kernel Image/zImage file, kernel dtb.
+   * from ATF ; bl31.elf.
+ - from rockchip binary:
+   * ddr, usbplug, miniloader , bl31/op-tee, ( 파일명은  'rkxx_' 로 시작 하며, '_x.xx.bin' 으로 끝맺임 합니다. )
 ### 1.2.1 The Pre-bootloader(IDBLoader)
 #### 1.2.1.1 IDBLoader 란 
 IDBLoader.img는 SoC start up시 동작하며, 아래 기능을 포함하는 Rockchip 형식의 pre-loader 입니다.
