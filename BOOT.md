@@ -2,6 +2,7 @@
 <hr/>
 
 # 1. Boot introduce
+
 linux os 를 부팅할 때 많은 부팅 단계가 있습니다. 
 이미지가 어느 위치에 flashing되는지 설명하며, 
 storage에 flash 후, storage에서 부팅하는 방법을 설명합니다.  
