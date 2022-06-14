@@ -3,7 +3,7 @@
 
 # 1. Boot introduce
 linux os 를 부팅할 때 많은 부팅 단계가 있습니다. 
-chapter에서는 이미지가 어느 위치에 flashing되는지 설명하며, 
+이미지가 어느 위치에 flashing되는지 설명하며, 
 storage에 flash 후, storage에서 부팅하는 방법을 설명합니다.  
 Rockschip사에서 released된 binarie는 rkbin(https://github.com/rockchip-linux/rkbin) 을 통하여 배포됩니다.
 
