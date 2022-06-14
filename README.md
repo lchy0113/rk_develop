@@ -203,7 +203,7 @@ make
    * RGA related issues analyzing
 	RKDocs\common\display\Rockchip_RGA_FAQ.pdf
    * Graphic display framework common issue analysis
-	include frameworks、GPU.Gralloc、GUI、HWComposer、HWUI、RGA
-	RKDocs\common\display\Rockchip_Trouble_Shooting_Graphics
+    include frameworks、GPU.Gralloc、GUI、HWComposer、HWUI、RGA
+    RKDocs\common\display\Rockchip_Trouble_Shooting_Graphics
 
 
