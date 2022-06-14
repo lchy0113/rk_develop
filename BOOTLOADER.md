@@ -235,13 +235,13 @@ Example:
 ## 프로그래밍 
  * programming mode : RK platform은 2가지 programming mode(loader mode, maskrom mode)가 있습니다. 
    - loader mode(u-boot)
-	 + Loader programming mode 진입방법
-	   = 전원 인가 시, volume + 버튼을 누른다. 
-	   = 부팅 시, ctrl+d 단축어를 입력한다.
-	   = console에서 "download" 또는 "$ rockusb 0 $devtype $devnum" 입력한다.
-   - maskrom mode
-     + 부팅 시, ctrl+b 단축어를 입력한다.
-	 + console에서 "rbrom"을 입력한다. 
+	 + Loader programming mode 진입방법  
+	   = 전원 인가 시, volume + 버튼을 누른다.   
+	   = 부팅 시, ctrl+d 단축어를 입력한다.  
+	   = console에서 "download" 또는 "$ rockusb 0 $devtype $devnum" 입력한다.  
+   - maskrom mode  
+     + 부팅 시, ctrl+b 단축어를 입력한다.  
+	 + console에서 "rbrom"을 입력한다.   
 
 
 ## 빌드 명령어
