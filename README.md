@@ -207,3 +207,58 @@ make
     RKDocs\common\display\Rockchip_Trouble_Shooting_Graphics  
 
 
+<hr />
+
+## Tool
+ - StressTest
+ - Module Related
+ - Non module related
+ - PCBA test tool
+ - DeviceTest
+ - Development flashing tool
+   * Linux version
+```bash
+$ sudo ./upgrade_tool -h
+Program Data in /home/lchy0113/Develop/Rockchip/rk3568b2/Android11/ROCKCHIP_ANDROID11.0_SDK_RELEASE_rkr10/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
+
+---------------------Tool Usage ---------------------
+Help:             H
+Quit:             Q
+Version:          V
+Clear Screen:     CS
+------------------Upgrade Command ------------------
+ChooseDevice:           CD
+ListDevice:                 LD
+SwitchDevice:           SD
+UpgradeFirmware:        UF <Firmware> [-noreset]
+UpgradeLoader:          UL <Loader> [-noreset]
+DownloadImage:          DI <-p|-b|-k|-s|-r|-m|-u|-t|-re image>
+DownloadBoot:           DB <Loader>
+EraseFlash:             EF <Loader|firmware> [DirectLBA]
+PartitionList:          PL
+WriteSN:                SN <serial number>
+ReadSN:             RSN
+ReadComLog:             RCL <File>
+CreateGPT:              GPT <Input Parameter> <Output Gpt>
+----------------Professional Command -----------------
+TestDevice:             TD
+ResetDevice:            RD [subcode]
+ResetPipe:              RP [pipe]
+ReadCapability:         RCB
+ReadFlashID:            RID
+ReadFlashInfo:          RFI
+ReadChipInfo:           RCI
+ReadSecureMode:         RSM
+ReadSector:             RS  <BeginSec> <SectorLen> [-decode] [File]
+WriteSector:            WS  <BeginSec> <File>
+ReadLBA:                RL  <BeginSec> <SectorLen> [File]
+WriteLBA:               WL  <BeginSec> <File>
+EraseLBA:               EL  <BeginSec> <EraseCount>
+EraseBlock:             EB <CS> <BeginBlock> <BlokcLen> [--Force]
+RunSystem:              RUN <uboot_addr> <trust_addr> <boot_addr> <uboot> <trust> <boot>
+-------------------------------------------------------
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$
+
+
+```
