@@ -30,3 +30,16 @@ make ARCH=arm64 rk3568-evb7-ddr4-v10.img -j32
 
 
 <hr />
+
+## Document
+ Develop/Rockchip/Develop_data/
+	: Rockchip_Developer_Guide_Android11_SDK_V1.1.4_EN.pdf
+	-> Android11 가이드 문서 (전체적인 내용 boot~android)
+	: Rockchip RK3568B2 Datasheet V1.0-20210701.pdf
+ 	-> RK3568B2 datasheet 
+
+ Develop/Rockchip/Develop_data/RK3568_DDR4_EVB/DOC/
+	: Rockchip_RK3568_EVB1_User_Guide_V1.0_CN.pdf 
+	-> RK3568 evboard user guide
+
+
