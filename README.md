@@ -32,6 +32,7 @@ make ARCH=arm64 rk3568-evb7-ddr4-v10.img -j32
 <hr />
 
 ## Document
+
  Develop/Rockchip/Develop_data/
 	: Rockchip_Developer_Guide_Android11_SDK_V1.1.4_EN.pdf
 	-> Android11 가이드 문서 (전체적인 내용 boot~android)
