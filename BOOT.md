@@ -36,21 +36,21 @@ Rockchip 플랫폼에서 사용되는 boot flow에 대해 설명합니다.  2종
 | 5      |  -             | rootfs   | rootfs.img  | 0x40000 |
 +--------+----------------+----------+-------------+---------+
 ```
-BootRom에 Rom code(idbLoader)를 write하여 ddr init 및 초기 AP initialize가 필요한 부분을 수행하고 u-boot 코드로 점프하게 된다.
+BootRom에 Rom code(idbLoader)를 write하여 ddr init 및 초기 AP initialize가 필요한 부분을 수행하고 u-boot 코드로 점프하게 됩니다.
 
 일반적인 이미지 업데이트 모드는 u-boot에서 GPIO Pin 형태로 Boot-pin 또는 switch 인식하여 전환하게 되는데, 
-만약 BootRom 내에 이미 Code가 Write 되어 Rom 내역을 수행하고 u-boot로 jump하는 흐름에서 문제 발생되었을 때는 정상적으로 부팅을 하지 못하게 된다.
+만약 BootRom 내에 이미 Code가 Write 되어 Rom 내역을 수행하고 u-boot로 jump하는 흐름에서 문제 발생되었을 때는 정상적으로 부팅을 하지 못하게 됩니다.
 
-이 상황에서 Mask Rom 모드로 진입이 가능하도록 eMMC 또는 부팅 매체로 jump되지 못하도록 설정하여 Rom 이미지를 다시 Write 또는 설정한다.
+이 상황에서 Mask Rom 모드로 진입이 가능하도록 eMMC 또는 부팅 매체로 jump되지 못하도록 설정하여 Rom 이미지를 다시 Write 또는 설정합니다.
 
-Rockchip AP의 Boot Flow는 아래의 그림과 같다.
+Rockchip AP의 Boot Flow는 아래의 그림과 같습니다.
 
 ![Rockchip bootflow](./images/BOOT_01.png)
 
 - bootflow-1 : 일반적인 Rockchip Boot Flow로 Rockchip miniloader 바이너리를 사용.
 - bootflow-2 : 일반적인 대부분의 AP부팅 Sequence로 u-boot TPL/SPL에서 DDR init을 진행하고 다음 스테이지 진행.
 
-보통의 경우 위의 두 가지 중 bootflow-1을 주로 쓰며, 바이너리 형태로 배포되는 miniloader를 rkbin github에서 받아 Android Tool을 이용하여 프로그램을 flash 한다.
+보통의 경우 위의 두 가지 중 bootflow-1을 주로 쓰며, 바이너리 형태로 배포되는 miniloader를 rkbin github에서 받아 Android Tool을 이용하여 프로그램을 flash 합니다.
 
 ## 1.2 packages option
  stage 2~4 단계의 package 에 사용되는 파일 목록은 다음과 같습니다.
