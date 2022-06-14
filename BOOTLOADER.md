@@ -26,7 +26,7 @@ next-dev는 아래 기능을 지원합니다.
 DM(Driver Model)은 커널의 Device-driver와 유사한 u-boot의 standard device-driver 개발 모델 입니다. 
 v2017 버전은 DM framework을 따라 module을 개발합니다. 
 
-[driver_model_in_u-boot][https://www.linux4sam.org/bin/view/Linux4SAM/DriverModelInUBoot]
+[driver_model_in_u-boot] [https://www.linux4sam.org/bin/view/Linux4SAM/DriverModelInUBoot]
 
 ## Boot-order
 front-level loader code의 open source여부에 따라서 RK platform 은 2가지 startup methods 를 제공합니다. 
