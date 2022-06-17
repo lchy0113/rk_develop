@@ -489,27 +489,28 @@ make install
 1. target는 rockusb mode로 진입합니다.
 2. host pc와 usb interface 연결합니다.
 3. emmc에 tool command를 사용하여 write 합니다.
-```
-rkeveloptool db 
 ```bash
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+
 Downloading bootloader succeeded.
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ef
 Erasing flash complete.
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ld
 DevNo=1 Vid=0x2207,Pid=0x350a,LocationID=103    Maskrom
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
 Downloading bootloader succeeded.
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ul /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
 Upgrading loader succeeded.
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
 Writing gpt succeeded.
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ppt
 **********Partition Info(GPT)**********
 NO  LBA       Name
@@ -529,11 +530,10 @@ NO  LBA       Name
 13  007ED000  userdata
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$
 
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool wl 0x4000 /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
 Write LBA from file (100%)
+
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$
 ```
