@@ -352,8 +352,8 @@ $ ./rkdeveloptool wlx uboot ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboo
 Write LBA from file (100%)
 
 ```
- ## Write GPT partition table through U-boot
- ## Write GPT partition table through U-boot's fastboot
+## Write GPT partition table through U-boot
+## Write GPT partition table through U-boot's fastboot
 
 <hr/>
 <br/>
@@ -361,4 +361,51 @@ Write LBA from file (100%)
 <br/>
 <hr/>
 
+# build u-boot
+
+## coufigure u-boot 
+configure :
+```bash
+make CROSS_COMPILE=arm-linux-android- rk3568_defconfig
+```
+
+menuconfig  :
+```bash
+make CROSS_COMPILE=arm-linux-gnueabi- menuconfig
+```
+
+## build rockchip u-boot
+rockchip은 make.sh 스크립트를 제공합니다.  make.sh스크립트는 toolchain과 rkbin이 요구됩니다.
+```bash
+//u-boot/make.sh
+13 ########################################### User can modify #############################################
+14 RKBIN_TOOLS=../rkbin/tools
+15 CROSS_COMPILE_ARM32=../prebuilts/gcc/linux-x86/arm/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
+16 CROSS_COMPILE_ARM64=../prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+```
+
+```bash
+├── prebuilts
+│   └── gcc
+│       └── linux-x86 
+│           ├── aarch64
+│           └── arm
+├── rkbin
+├── u-boot
+```
+
+build image 
+```bash
+./make.sh rk3568
+```
+
+
+output : pre-loader, trust, u-boot image 가 생성되며 해당 파일은 rockchip upgrade tool을 통해 사용합니다.
+```bash
+u-boot/
+├── rk356x_spl_loader_v1.10.111.bin
+└── uboot.img
+
+
+```
 
