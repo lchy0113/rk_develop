@@ -374,7 +374,7 @@ rockusb 는 Rockchip에서 공급하는 Rockchip SoCs firmware download vendor s
  (4) uboot rockusb mode  
  
 #### (1) maskrom mode
-bootable firmware를 보드에 없는 경우, SoC는 *rockusb* driver를 자동으로 실행합니다. 이것을 Bootrom 또는 Maskrom mode라고 부릅니다. 
+bootable firmware가 보드에 없는 경우, SoC는 **rockusb** driver를 자동으로 실행합니다. 이것을 Bootrom 또는 Maskrom mode라고 부릅니다. 
 > "reboot bootrom" command를 u-boot 나 kernel에서 입력해서 진입가능합니다. 
 
 maskrom mode 에서는 DRAM은 이용가능 할 수 없습니다. 그래서 download size는 내부 memory size만큼 제한이 있습니다. 
