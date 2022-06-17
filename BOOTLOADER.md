@@ -367,11 +367,11 @@ Write LBA from file (100%)
 rockusb 는 Rockchip에서 공급하는 Rockchip SoCs firmware download vendor specific USB class입니다. 
 
 ### rockusb 진입
- rockusb 진입하는 방법.
- (1) maskrom mode, chip에 firmware가 없는 경우 maskrom rockusb driver를 실행합니다. 
- (2) usbplug mode.
- (3) miniLoader rockusb mode, miniloader rockusb driver를 실행합니다.
- (4) uboot rockusb mode
+ rockusb 진입하는 방법.  
+ (1) maskrom mode, chip에 firmware가 없는 경우 maskrom rockusb driver를 실행합니다.   
+ (2) usbplug mode.  
+ (3) miniLoader rockusb mode, miniloader rockusb driver를 실행합니다.  
+ (4) uboot rockusb mode  
  
 #### (1) maskrom mode
 bootable firmware를 보드에 없는 경우, SoC는 *rockusb* driver를 자동으로 실행합니다. 이것을 Bootrom 또는 Maskrom mode라고 부릅니다. 
