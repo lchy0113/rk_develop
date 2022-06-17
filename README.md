@@ -52,6 +52,20 @@ make
 
 ```
 
+- out image
+> one key compiling 시 아래 파일만 사용된다
+```bash
+rockdev/Image-rk3568_r/
+├── boot.img
+├── dtbo.img
+├── MiniLoaderAll.bin
+├── misc.img
+├── parameter.txt
+├── recovery.img
+├── super.img
+├── uboot.img
+└── vbmeta.img
+```
 
 
 <hr />
