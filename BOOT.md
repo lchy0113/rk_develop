@@ -166,5 +166,182 @@ lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/
 
 
 
+-----
 
+## rockusb
+
+### 소개
+rockusb 는 Rockchip에서 공급하는 Rockchip SoCs firmware download vendor specific USB class입니다. 
+
+### rockusb 진입
+ rockusb 진입하는 방법.  
+ (1) maskrom mode, chip에 firmware가 없는 경우 maskrom rockusb driver를 실행합니다.   
+ (2) usbplug mode.  
+ (3) miniLoader rockusb mode, miniloader rockusb driver를 실행합니다.  
+ (4) uboot rockusb mode  
+ 
+#### (1) maskrom mode
+bootable firmware가 보드에 없는 경우, SoC는 **rockusb** driver를 자동으로 실행합니다. 이것을 Bootrom 또는 Maskrom mode라고 부릅니다. 
+> "reboot bootrom" command를 u-boot 나 kernel에서 입력해서 진입가능합니다. 
+
+maskrom mode 에서는 DRAM은 이용가능 할 수 없습니다. 그래서 download size는 내부 memory size만큼 제한이 있습니다.   
+maskrom mode에서 가능한 명령어
+ - 'db' command : 시스템은 DRAM 초기화, download size에 제한이 없는 usbplug(rockusb driver에 포함된) mode로 실행합니다.
+ - 'ul' command : 'db' command를 수행하고, idbloader 를 emmc의 0x40 위치에 다운로드 합니다.
+ - 'uf' command : 'db' command를 수행하고, update.img 를 emmc에 다운로드 합니다. 
+> dram에 액세스하는데 필요한 모든 명령은 'db" command 를 수행한 후 진행할 있습니다.
+
+#### (2) usbplug mode
+usbplug 는 rkdeveloptool의 db command를 통하여 USB 다운로드 가능한 펌웨어로, 내부에 rockusb 드라이버가 존재하고있고, dram이 초기화된 이후에 사용가능합니다.
+
+
+#### (3) miniloader rockusb mode
+rockchip legacy image(with u-boot 2014.10)은 miniloader를 default USB firmware upgrade path로 사용합니다.  
+miniloader rockusb mode에 진입하기
+ - 'recovery' 또는 'volumn +' 키를 부팅 시 누릅니다. 
+ - 다음 부팅 단계의 이미지를 찾을 수 없는 경우, 진입합니다.
+	 ```
+	 mmc erase 0x4000 0x2000
+	 ```
+ - 커널에서 "reboot loader" command 입력
+
+> miniloader rockusb에서 rkdeveloptool의 offset 은 physical address가 아닙니다. physical address 0x0 ~ 0x2000 은 wl 명령어로 액세스 할수 없습니다. wl command에서 언급된  0x2000 은 physical address 에 0x2000을 더한 것 입니다. 
+> ex. rkdeveloptool wl 0x2000 uboot.img 는 uboot.img 를 emmc 0x4000 위치에 writing 합니다.
+
+#### (4) uboot rockusb mode
+ - 'recovery' 또는 'volumn +' 키를 부팅 시 누릅니다. 
+ - 커널에서 "reboot loader" command 입력
+ - uboot 쉘에서 아래 명령어를 입력합니다.
+ ```
+ rockusb 0 mmc 0
+ ```
+
+### rockusb 의 usb vid/pid
+rockchip vendor id : 0x2207
+rk3568 product id : 0x350a
+
+
+### firmware 다운로드
+*rkdeveloptool*, *upgrade_tool*은 usb 인터페이스를 통해 rockusb protocol을 사용하여 firmware upgrade를 할수 있습니다. 
+
+#### upgradetool
+upgrade_tool은 linux 환경에서 firmware upgrade 툴 입니다. 
+(ANDROID_ROOT)/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65/upgrade_tool 경로에 위치합니다.
+
+upgradetool은 maskrom rockusb mode에서 아래 경로 이미지를 flash 합니다. 
+(ANDROID_ROOT)/rockdev/Image-rk3568_r/
+
+```bash
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool ul
+Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
+Loading loader...
+Support Type:RK3568     Loader ver:1.01 Loader Time:2022-06-16 15:56:49
+Upgrade loader ok.
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -p /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
+directlba=1,first4access=1,gpt=1
+Write gpt...
+Write gpt ok.
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -p /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt^C
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool pl
+Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
+Partition Info(gpt):
+NO  LBA        Size       Name
+01  0x00002000 0x00002000 security
+02  0x00004000 0x00002000 uboot
+03  0x00006000 0x00002000 trust
+04  0x00008000 0x00002000 misc
+05  0x0000a000 0x00002000 dtbo
+06  0x0000c000 0x00000800 vbmeta
+07  0x0000c800 0x00014000 boot
+08  0x00020800 0x00030000 recovery
+09  0x00050800 0x000c0000 backup
+10  0x00110800 0x000c0000 cache
+11  0x001d0800 0x00008000 metadata
+12  0x001d8800 0x00000800 baseparameter
+13  0x001d9000 0x00614000 super
+14  0x007ed000 0x0325cfc0 userdata
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -u /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
+Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
+directlba=1,first4access=1,gpt=1
+Download uboot start...(0x00004000)
+Download image ok.
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool rd
+Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
+Reset Device OK.
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$
+```
+
+#### rkdeveloptool
+rkdeveloptool은 Rockusb device와 통신하기 위한 Rockchip사의 tool로, upgrade_tool의 오픈 소스 버전 입니다.(upgrade_tool과 차이가 없습니다.)
+
+- downlaod rkdeveloptool
+```bash
+git clone https://github.com/rockchip-linux/rkdeveloptool.git
+```
+
+- build rkdeveloptool
+```
+sudo apt-get install libudev-dev libusb-1.0-0-dev dh-autoreconf
+```
+then
+```
+autoreconf -i
+./configure
+make
+make install
+```
+
+- flash image to target emmc
+1. target는 rockusb mode로 진입합니다.
+2. host pc와 usb interface 연결합니다.
+3. emmc에 tool command를 사용하여 write 합니다.
+```bash
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+
+Downloading bootloader succeeded.
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ef
+Erasing flash complete.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
+Reset Device OK.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ld
+DevNo=1 Vid=0x2207,Pid=0x350a,LocationID=103    Maskrom
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+Downloading bootloader succeeded.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ul /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+Upgrading loader succeeded.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+Writing gpt succeeded.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ppt
+**********Partition Info(GPT)**********
+NO  LBA       Name
+00  00002000  security
+01  00004000  uboot
+02  00006000  trust
+03  00008000  misc
+04  0000A000  dtbo
+05  0000C000  vbmeta
+06  0000C800  boot
+07  00020800  recovery
+08  00050800  backup
+09  00110800  cache
+10  001D0800  metadata
+11  001D8800  baseparameter
+12  001D9000  super
+13  007ED000  userdata
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
+Reset Device OK.
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool wl 0x4000 /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
+Write LBA from file (100%)
+
+lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
+Reset Device OK.
+```
 - references : http://opensource.rock-chips.com/wiki_Boot_option
