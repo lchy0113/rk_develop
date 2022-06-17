@@ -377,7 +377,7 @@ rockusb 는 Rockchip에서 공급하는 Rockchip SoCs firmware download vendor s
 bootable firmware가 보드에 없는 경우, SoC는 **rockusb** driver를 자동으로 실행합니다. 이것을 Bootrom 또는 Maskrom mode라고 부릅니다. 
 > "reboot bootrom" command를 u-boot 나 kernel에서 입력해서 진입가능합니다. 
 
-maskrom mode 에서는 DRAM은 이용가능 할 수 없습니다. 그래서 download size는 내부 memory size만큼 제한이 있습니다. 
+maskrom mode 에서는 DRAM은 이용가능 할 수 없습니다. 그래서 download size는 내부 memory size만큼 제한이 있습니다.   
 maskrom mode에서 가능한 명령어
  - 'db' command : 시스템은 DRAM 초기화, download size에 제한이 없는 usbplug(rockusb driver에 포함된) mode로 실행합니다.
  - 'ul' command : 'db' command를 수행하고, idbloader 를 emmc의 0x40 위치에 다운로드 합니다.
@@ -389,7 +389,7 @@ usbplug 는 rkdeveloptool의 db command를 통하여 USB 다운로드 가능한 
 
 
 #### (3) miniloader rockusb mode
-rockchip legacy image(with u-boot 2014.10)은 miniloader를 default USB firmware upgrade path로 사용합니다. 
+rockchip legacy image(with u-boot 2014.10)은 miniloader를 default USB firmware upgrade path로 사용합니다.  
 miniloader rockusb mode에 진입하기
  - 'recovery' 또는 'volumn +' 키를 부팅 시 누릅니다. 
  - 다음 부팅 단계의 이미지를 찾을 수 없는 경우, 진입합니다.
