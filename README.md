@@ -34,11 +34,25 @@ lunch rk3566_rgo-userdebug
 
 ```
 - kernel compiling
+  * Android11
 ```bash
 make ARCH=arm64 rockchip_defconfig rk356x_evb.config android-11.config
 make ARCH=arm64 rk3568-evb7-ddr4-v10.img -j32
 
 ls kernel/boot.img
+```
+  * Android12
+```bash
+make	\ 
+		CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 	\
+		ARCH=arm64				\
+		rockchip_defconfig
+
+make	\ 
+		CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 	\
+		ARCH=arm64				\
+		rk3568-evb1-ddr4-v10.img 
+
 ```
 
 - uboot compoling
