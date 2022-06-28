@@ -273,7 +273,6 @@ BOOTROM ➡️ ddr-bin ➡️ Miniloader ➡️ TRUST ➡️ U-BOOT ➡️ KERNE
 ## U-Boot 부트 펌웨어
  u-boot 와 RK platform의 trust는 2가지 firmware format이 있습니다. 
  RK 및 FIT format은 Miniloader 및 SPL에 의해 guide 됩니다. 
- 현재 Rockchip에서 release되는 SDK는 RV1126을 구분점으로 하고 있습니다.
 
  - RK foramt
 	 : Rockchip 의 custom firmware format 입니다. u-boot와 trust는 각각 uboot.img 및  trust.img로 패키징 됩니다. uboot.img 및 trust.img 이미지 파일의 magic 값은 "LOADER" 입니다.
@@ -350,11 +349,26 @@ Example:
 # Compilation and programming
 ## 준비 : rkbin, GCC
  * rkbin
+    - RK에서 제공하는 bin, scripts, packaging tool 저장소 입니다. (open source X) u-boot 컴파일 시, warehouse에서 관련 파일을 index하고, loader, trust, uboot firmware를 패키징 및 생성합니다.
     - https://github.com/rockchip-linux/rkbin
 	> (rk3568_android11)/rkbin 경로에 존재
  * GCC
     - 32bit : prebuilts/gcc/linux-x86/arm/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/
 	- 64bit : prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/ 
+ * defconfig 
+   | chip   	| defconfig                     	| support kernel dtb 	| comment                      	|
+   |--------	|-------------------------------	|--------------------	|------------------------------	|
+   | rk3568 	| rk3568_defconfig              	| y                  	| generic version              	|
+   |        	| rk3568-spl-spi-nand-defconfig 	| y                  	| eMMC, SPI-nand dedicated SPL 	|
+
+   - config fragment 소개
+      제품의 다양화 및 차별화된 요구사항으로 인해 defconfig로 충족할 수 없습니다. config gragment, 즉 defconfig를 overlay 하는 것을 지원합니다. 
+	  예를 들어, CONFIG_BASE_DEFCONFIG="rk3568_defconfig"는 configs/rk3568-spi-nand.config, configs/rk3566.config에 선언되어 있습니다. . 
+	   단일 플랫폼에서 제품의 차별화된 요구 사항으로 인해 defconfig는 더 이상 충족할 수 없습니다. 그래서 RV1126부터는 config fragment, 즉 defconfig를 오버레이하는 것을 지원합니다.
+
+	   예를 들면: CONFIG_BASE_DEFCONFIG="rv1126_defconfig"는 rv1126-emmc-tb.config에 지정되어 있습니다. .config가 사용됩니다. .config 오버레이의 구성입니다.
+
+	   이 명령은 다음과 같을 수 있습니다.
 
 ## 프로그래밍 
  * programming mode : RK platform은 2가지 programming mode(loader mode, maskrom mode)가 있습니다. 
@@ -478,6 +492,332 @@ Write LBA from file (100%)
 ```
 ## Write GPT partition table through U-boot
 ## Write GPT partition table through U-boot's fastboot
+
+# FIT 
+FIT format 과 FIT format 기반의 security / non security 부팅 scheme 에 대해 설명합니다.
+
+
+FIT(Flattened Image Tree)는 U-boot에서 지원하는 새로운 firmware type의 부팅 방식으로, 여러 이미지 패키징을 지원합니다.
+FIT은 its(image source file)파일을 사용하여 image 정보를 기술하고, itb(flattened image tree blob)이미지를 mkimage tool을 통해 생성합니다.  
+its파일은 DTS 문법을 따릅니다.
+
+자세한 내용은 다음을 참조하십시오. (/doc/uImage.FIT/)
+
+RK 플랫폼은 U-boot와 함께 컴파일된 mkimage tool을 사용해야합니다.(RK사에서 최적화함)
+
+## sample
+u-boot.its, u-boot.itb를 설명합니다.
+```dts
+/dts-v1/;
+
+/ {
+	description = "FIT Image with ATF/OP-TEE/U-Boot/MCU";
+	#address-cells = <1>;
+
+	images {
+
+		uboot {
+			description = "U-Boot";
+			data = /incbin/("u-boot-nodtb.bin");
+			type = "standalone";
+			arch = "arm64";
+			os = "U-Boot";
+			compression = "none";
+			load = <0x00a00000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		atf-1 {
+			description = "ARM Trusted Firmware";
+			data = /incbin/("./bl31_0x00040000.bin");
+			type = "firmware";
+			arch = "arm64";
+			os = "arm-trusted-firmware";
+			compression = "none";
+			load = <0x00040000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		atf-2 {
+			description = "ARM Trusted Firmware";
+			data = /incbin/("./bl31_0x00068000.bin");
+			type = "firmware";
+			arch = "arm64";
+			os = "arm-trusted-firmware";
+			compression = "none";
+			load = <0x00068000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		atf-3 {
+			description = "ARM Trusted Firmware";
+			data = /incbin/("./bl31_0xfdcd0000.bin");
+			type = "firmware";
+			arch = "arm64";
+			os = "arm-trusted-firmware";
+			compression = "none";
+			load = <0xfdcd0000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		atf-4 {
+			description = "ARM Trusted Firmware";
+			data = /incbin/("./bl31_0xfdcc9000.bin");
+			type = "firmware";
+			arch = "arm64";
+			os = "arm-trusted-firmware";
+			compression = "none";
+			load = <0xfdcc9000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		atf-5 {
+			description = "ARM Trusted Firmware";
+			data = /incbin/("./bl31_0x00066000.bin");
+			type = "firmware";
+			arch = "arm64";
+			os = "arm-trusted-firmware";
+			compression = "none";
+			load = <0x00066000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		optee {
+			description = "OP-TEE";
+			data = /incbin/("tee.bin");
+			type = "firmware";
+			arch = "arm64";
+			os = "op-tee";
+			compression = "none";
+			
+			load = <0x8400000>;
+			hash {
+				algo = "sha256";
+			};
+		};
+		fdt {
+			description = "U-Boot dtb";
+			data = /incbin/("./u-boot.dtb");
+			type = "flat_dt";
+			arch = "arm64";
+			compression = "none";
+			hash {
+				algo = "sha256";
+			};
+		};
+	};
+//	configuration node는 여러개 정의가능하지만 타겟 제품의 configurations만 정의합니다.
+	configurations {
+		default = "conf";
+		conf {
+			description = "rk3568-evb";
+			rollback-index = <0x0>;
+			firmware = "atf-1";
+			loadables = "uboot", "atf-2", "atf-3", "atf-4", "atf-5", "optee";
+			
+			fdt = "fdt";
+			signature {
+				algo = "sha256,rsa2048";
+				
+				key-name-hint = "dev";
+				sign-images = "fdt", "firmware", "loadables";
+			};
+		};
+	};
+};
+```
+itb 파일은 mkimages tools과 its파일을 사용하여 생성할 수 있습니다.
+
+```bash
+                          mkimage + dtc
+[u-boot.its] + [images] =================> [u-boot.itb]
+```
+
+fdtdump 명령은  itb 파일의 내용을 dump 할 수 있습니다.
+```bash
+/dts-v1/;
+// magic:		0xd00dfeed
+// totalsize:		0xc00 (3072)
+// off_dt_struct:	0x48
+// off_dt_strings:	0xa30
+// off_mem_rsvmap:	0x28
+// version:		17
+// last_comp_version:	16
+// boot_cpuid_phys:	0x0
+// size_dt_strings:	0xc5
+// size_dt_struct:	0x9e8
+
+/memreserve/ 0x7f64f54bd000 0xc00;
+/ {
+    version = <0x00000000>;						// firmware version 
+    totalsize = <0x001d6600>;					// total itb size 
+    timestamp = <0x62babb79>;					// firmware 생성 time stamp
+    description = "FIT Image with ATF/OP-TEE/U-Boot/MCU";
+    #address-cells = <0x00000001>;
+    images {
+        uboot {
+            data-size = <0x00131378>;			// firmware size 
+            data-position = <0x00001000>;		// firmware offset
+            description = "U-Boot";
+            type = "standalone";
+            arch = "arm64";
+            os = "U-Boot";
+            compression = "none";
+            load = <0x00a00000>;
+            hash {							// firmware checksum value
+                value = <0xb754a07c 0x3ce1c0a4 0xfc00e114 0x8f17e58b 0xd8ed74d0 0x6f415de4 0xb5f09b95 0x814165f7>;
+                algo = "sha256";
+            };
+        };
+        atf-1 {
+            data-size = <0x00026000>;
+            data-position = <0x00132400>;
+            description = "ARM Trusted Firmware";
+            type = "firmware";
+            arch = "arm64";
+            os = "arm-trusted-firmware";
+            compression = "none";
+            load = <0x00040000>;
+            hash {
+                value = <0xfe4f274c 0x0624c2d7 0xe7b9aa0d 0x5b40a333 0x1801664b 0xf6253677 0x02d2116d 0xbe452466>;
+                algo = "sha256";
+            };
+        };
+        atf-2 {
+            data-size = <0x00004c4b>;
+            data-position = <0x00158400>;
+            description = "ARM Trusted Firmware";
+            type = "firmware";
+            arch = "arm64";
+            os = "arm-trusted-firmware";
+            compression = "none";
+            load = <0x00068000>;
+            hash {
+                value = <0x8d440360 0x954c39a1 0xd9a1eb60 0x4c0642e7 0x201f4a47 0x679272a9 0x885cfd46 0x205aa418>;
+                algo = "sha256";
+            };
+        };
+        atf-3 {
+            data-size = <0x00002000>;
+            data-position = <0x0015d200>;
+            description = "ARM Trusted Firmware";
+            type = "firmware";
+            arch = "arm64";
+            os = "arm-trusted-firmware";
+            compression = "none";
+            load = <0xfdcd0000>;
+            hash {
+                value = <0xe410275b 0x51692587 0xb5d09c79 0x4ae13f2d 0xcd4d187b 0xd6ab1eb2 0x998bf18d 0x44750876>;
+                algo = "sha256";
+            };
+        };
+        atf-4 {
+            data-size = <0x00002000>;
+            data-position = <0x0015f200>;
+            description = "ARM Trusted Firmware";
+            type = "firmware";
+            arch = "arm64";
+            os = "arm-trusted-firmware";
+            compression = "none";
+            load = <0xfdcc9000>;
+            hash {
+                value = <0x990c53fc 0x0167a7bc 0xd877235f 0x09a3ac69 0x11841c97 0x8a4e270d 0x89f6259e 0xc1d36144>;
+                algo = "sha256";
+            };
+        };
+        atf-5 {
+            data-size = <0x00001df4>;
+            data-position = <0x00161200>;
+            description = "ARM Trusted Firmware";
+            type = "firmware";
+            arch = "arm64";
+            os = "arm-trusted-firmware";
+            compression = "none";
+            load = <0x00066000>;
+            hash {
+                value = <0x315a4195 0xa9f6536f 0x971c695a 0x79fcab48 0x70363fc7 0xfc97f355 0xbd091d8d 0x7092261a>;
+                algo = "sha256";
+            };
+        };
+        optee {
+            data-size = <0x0006f998>;
+            data-position = <0x00163000>;
+            description = "OP-TEE";
+            type = "firmware";
+            arch = "arm64";
+            os = "op-tee";
+            compression = "none";
+            load = <0x08400000>;
+            hash {
+                value = <0x66bbd173 0x528d12e9 0x739c3369 0x26e33ee1 0xac1f4c70 0x78fcac57 0x12eeb874 0x7d02163e>;
+                algo = "sha256";
+            };
+        };
+        fdt {
+            data-size = <0x000037d1>;
+            data-position = <0x001d2a00>;
+            description = "U-Boot dtb";
+            type = "flat_dt";
+            arch = "arm64";
+            compression = "none";
+            hash {
+                value = <0xcdc53337 0x74568a0f 0x6036d65f 0x954be664 0xaa59bdb8 0x9ec52694 0xda58cf54 0x85483213>;
+                algo = "sha256";
+            };
+        };
+    };
+    configurations {
+        default = "conf";
+        conf {
+            description = "rk3568-evb";
+            rollback-index = <0x00000000>;			// firmware anti-rollback version number, default is 0.
+            firmware = "atf-1";
+            loadables = "uboot", "atf-2", "atf-3", "atf-4", "atf-5", "optee";
+            fdt = "fdt";
+            signature {
+                algo = "sha256,rsa2048";
+                key-name-hint = "dev";
+                sign-images = "fdt", "firmware", "loadables";
+            };
+        };
+    };
+}
+```
+
+itb structure
+
+itb는 fdt_blob + image 파일 로 구성되어 잇습니다. 다음과 같은 패키징 방법이 있습니다.
+RK 플랫폼은 structure 2방법을 채택합니다.
+
+```bash
+             fdt blob
++----------------------------------------+
+|    +------+    +------+    +------+    |
+|    | img0 |    | img1 |    | img2 |    |
+|    +------+    +------+    +------+    |
++----------------------------------------+
+
+struct 1 : image is in fdt_blob, 
+ie : itb = fdt_blob (including img)
+
+```
+
+```bash
++-------------+--------+--------+--------+
+|             |        |        |        |
+|  fdt blob   |  img0  |  img1  |  img2  |
+|             |        |        |        |
++-------------+--------+--------+--------+
+
+struct 2 : image is outside fdt_blob,
+ie : itb = fdt_blob + img
+```
 
 <hr/>
 <br/>
