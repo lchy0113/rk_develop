@@ -216,10 +216,6 @@ recovery
 		+->	rk_board_late_init		// __weak, implemented by each specific platform
 	run_main_loop		// 【Enter the command line mode, or execute the startup command 】
 			
-
-
-		
-
 ```
 
 ## storage layout
@@ -243,6 +239,30 @@ Default storage map
 > Note 1: If preloader is miniloader, loader2 partition available for uboot.img and trust partition available for trust.img; if preloader is SPL without trust support, loader2 partition is available for u-boot.bin and trust partition not available; If preloader is SPL with trust support(ATF or OPTEE), loader2 is available for u-boot.itb(including u-boot.bin and trust binary) and trust partition not available.
 >
 >
+
+## Kernel-DTB
+ RK 플랫폼은 kernel dtb mechanism을 지원합니다. 커널 dtb를 사용하여 주변 장치를 초기화 합니다. 
+ power, clock, display, 등과 같은 정보를 호환합니다.
+ - u-boot dtb : storage, serial port 및 다른 장치를 초기화 합니다. 
+ - kernel dtb : storage, printing devices 외 serial port를 초기화 합니다.
+
+ U-Boot가 초기화되면 먼저 U-Boot DTB를 사용하여 storage 초기화를 완료하고 serial port를 출혁한 다음 storage에서 Kernel DTB를 로드하고 이 DTB를 사용하여 다른 주변 장치를 계속 초기화합니다. 
+ Kernel DTB의 코드는 init_kernel_dtb() 함수에서 구현됩니다.
+
+ 일반적으로 개발자는 U-Boot DTB를 수정할 필요가 없습니다.(print serial port가 변경되지 않는 한) 각 플랫폼에서 릴리스된 SDK에서 사용되는 defconfig는 kernel DTB 메커니즘을 활성화합니다.
+
+
+ u-boot dtb 정보:
+ dts :
+```bash
+./arch/arm/dts/
+```
+ kernel dtb mechanism 이 활성화 된 후, compile 단계에서 u-boot dts의 u-boot, dm-pre-reloc 및 u-boot, dm-spl properties이 있는 노드가 필터링 되고, 이를 기반으로 defconfig에서 CONFIG_OF_SPL_REMOVE_PROPS에 의해 지정된 property 이 제거되고 마지막으로 u-boot.dtb파일을 생성하여 U-boot.bin 이미지의 끝에 추가합니다.
+
+ u-boot를 컴파일 한 후, 사용자는 fdtdump 명령을 통해 dtb내용을 확인 할 수 있습니다.
+```bash
+fdtdump ./u-boot.dtb | less
+```
 
 ## ATAGS parameters
 RK platform의 부팅 프로세스 :  
