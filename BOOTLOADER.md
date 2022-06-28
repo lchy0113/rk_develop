@@ -270,6 +270,19 @@ RK platform의 부팅 프로세스 :
 BOOTROM ➡️ ddr-bin ➡️ Miniloader ➡️ TRUST ➡️ U-BOOT ➡️ KERNEL
 ```
 
+## U-Boot 부트 펌웨어
+ u-boot 와 RK platform의 trust는 2가지 firmware format이 있습니다. 
+ RK 및 FIT format은 Miniloader 및 SPL에 의해 guide 됩니다. 
+ 현재 Rockchip에서 release되는 SDK는 RV1126을 구분점으로 하고 있습니다.
+
+ - RK foramt
+	 : Rockchip 의 custom firmware format 입니다. u-boot와 trust는 각각 uboot.img 및  trust.img로 패키징 됩니다. uboot.img 및 trust.img 이미지 파일의 magic 값은 "LOADER" 입니다.
+
+ - FIT format
+	 : u-boot mainline에서 지원하는 very flexible firmware format입니다. u-boot, trust, mcu와 같은 펌웨어는 uboot.img로 패키징 됩니다. 
+	 uboot.img 이미지의 magic값은 "d0 0d fe ed"이며, fdtdump uboot.img 명령을 사용하여 펍웨어 헤더를 확인합니다.
+
+
 ## 단축키
 RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-BOOT에서 지원합니다. 
  * ctrl+c: Enter U-Boot command line mode;
