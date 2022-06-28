@@ -344,4 +344,94 @@ Write LBA from file (100%)
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
 ```
+4. flash image to each partition
+```bash
+
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash misc misc.img
+Sending 'misc_a' (48 KB)                           OKAY [  0.006s]
+Writing 'misc_a'                                   OKAY [  0.026s]
+Finished. Total time: 0.056s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash dtbo dtbo.img
+Sending 'dtbo_a' (0 KB)                            OKAY [  0.001s]
+Writing 'dtbo_a'                                   OKAY [  0.006s]
+Finished. Total time: 0.026s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash boot boot.img
+Sending 'boot_a' (30136 KB)                        OKAY [  1.260s]
+Writing 'boot_a'                                   OKAY [  0.228s]
+Finished. Total time: 4.167s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash recovery recovery.img
+Invalid sparse file format at header magic
+Sending sparse 'recovery_a' 1/2 (65532 KB)         OKAY [  2.902s]
+Writing 'recovery_a'                               OKAY [  0.511s]
+Sending sparse 'recovery_a' 2/2 (31632 KB)         OKAY [  1.388s]
+Writing 'recovery_a'                               OKAY [  0.237s]
+Finished. Total time: 13.646s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash baseparameter baseparameter.img
+Sending 'baseparameter_a' (1024 KB)                OKAY [  0.093s]
+Writing 'baseparameter_a'                          OKAY [  0.017s]
+Finished. Total time: 0.128s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash super super.img
+Sending sparse 'super_a' 1/27 (65532 KB)           OKAY [  5.882s]
+Writing 'super_a'                                  OKAY [  0.486s]
+Sending sparse 'super_a' 2/27 (63536 KB)           OKAY [  5.681s]
+Writing 'super_a'                                  OKAY [  0.479s]
+Sending sparse 'super_a' 3/27 (61604 KB)           OKAY [  5.477s]
+Writing 'super_a'                                  OKAY [  0.450s]
+Sending sparse 'super_a' 4/27 (58132 KB)           OKAY [  5.221s]
+Writing 'super_a'                                  OKAY [  0.442s]
+Sending sparse 'super_a' 5/27 (65532 KB)           OKAY [  5.807s]
+Writing 'super_a'                                  OKAY [  0.472s]
+Sending sparse 'super_a' 6/27 (65532 KB)           OKAY [  5.869s]
+Writing 'super_a'                                  OKAY [  0.477s]
+Sending sparse 'super_a' 7/27 (65532 KB)           OKAY [  5.736s]
+Writing 'super_a'                                  OKAY [  2.264s]
+Sending sparse 'super_a' 8/27 (65534 KB)           OKAY [  5.701s]
+Writing 'super_a'                                  OKAY [  2.935s]
+Sending sparse 'super_a' 9/27 (64524 KB)           OKAY [  5.763s]
+Writing 'super_a'                                  OKAY [  0.466s]
+Sending sparse 'super_a' 10/27 (59524 KB)          OKAY [  5.380s]
+Writing 'super_a'                                  OKAY [  0.460s]
+Sending sparse 'super_a' 11/27 (65532 KB)          OKAY [  5.865s]
+Writing 'super_a'                                  OKAY [  0.472s]
+Sending sparse 'super_a' 12/27 (65532 KB)          OKAY [  5.863s]
+Writing 'super_a'                                  OKAY [  0.473s]
+Sending sparse 'super_a' 13/27 (65532 KB)          OKAY [  5.839s]
+Writing 'super_a'                                  OKAY [  0.497s]
+Sending sparse 'super_a' 14/27 (65532 KB)          OKAY [  5.875s]
+Writing 'super_a'                                  OKAY [  0.472s]
+Sending sparse 'super_a' 15/27 (58232 KB)          OKAY [  5.191s]
+Writing 'super_a'                                  OKAY [  0.464s]
+Sending sparse 'super_a' 16/27 (65532 KB)          OKAY [  5.884s]
+Writing 'super_a'                                  OKAY [  1.368s]
+Sending sparse 'super_a' 17/27 (65535 KB)          OKAY [  5.861s]
+Writing 'super_a'                                  OKAY [  0.834s]
+Sending sparse 'super_a' 18/27 (65532 KB)          OKAY [  5.794s]
+Writing 'super_a'                                  OKAY [  0.477s]
+Sending sparse 'super_a' 19/27 (65532 KB)          OKAY [  5.897s]
+Writing 'super_a'                                  OKAY [  0.470s]
+Sending sparse 'super_a' 20/27 (58492 KB)          OKAY [  5.192s]
+Writing 'super_a'                                  OKAY [  0.445s]
+Sending sparse 'super_a' 21/27 (58180 KB)          OKAY [  5.256s]
+Writing 'super_a'                                  OKAY [  0.420s]
+Sending sparse 'super_a' 22/27 (59048 KB)          OKAY [  5.430s]
+Writing 'super_a'                                  OKAY [  0.448s]
+Sending sparse 'super_a' 23/27 (64092 KB)          OKAY [  5.716s]
+Writing 'super_a'                                  OKAY [  0.500s]
+Sending sparse 'super_a' 24/27 (65532 KB)          OKAY [  5.821s]
+Writing 'super_a'                                  OKAY [  0.473s]
+Sending sparse 'super_a' 25/27 (65532 KB)          OKAY [  5.842s]
+Writing 'super_a'                                  OKAY [  0.471s]
+Sending sparse 'super_a' 26/27 (65532 KB)          OKAY [  5.845s]
+Writing 'super_a'                                  OKAY [  0.484s]
+Sending sparse 'super_a' 27/27 (1148 KB)           OKAY [  0.100s]
+Writing 'super_a'                                  OKAY [  0.024s]
+Finished. Total time: 167.641s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash vbmeta vbmeta.img
+Sending 'vbmeta_a' (4 KB)                          OKAY [  0.001s]
+Writing 'vbmeta_a'                                 OKAY [  0.005s]
+Finished. Total time: 0.024s
+lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot reboot
+Rebooting                                          OKAY [  0.001s]
+Finished. Total time: 0.051s
+```
 - references : http://opensource.rock-chips.com/wiki_Boot_option
