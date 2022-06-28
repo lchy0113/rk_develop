@@ -131,6 +131,97 @@ Using default environment
 
 # RK architecture
 
+```bash
+(uboot)/arch/arm/include/asm/arch-rockchip/
+(uboot)/arch/arm/mach-rockchip/
+(uboot)/board/rockchip/
+(uboot)/include/configs/
+
+(uboot)/configs/
+
+(uboot)/arch/arm/mach-rockchip/board.c
+```
+
+## 플랫폼 구성
+- configure file : 플랫폼의 configuration  option 및 parameter는 일반적으로 다음 위치에 있습니다.
+```bash
+//Public files of each platform (developers usually do not need to modify)
+(uboot)/arch/arm/mach-rockchip/Kconfig
+(uboot)/include/configs/rockchip-common.h
+
+//Unique to each platform, take rk3568 as an example
+(uboot)/include/configs/rk3568_common.h
+(uboot)/include/configs/evb_rk3568.h
+(uboot)/configs/rk3568_defconfig
+```
+
+## start process
+RK platform의 u-boot startup process는 아래와 같습니다. 
+
+```bash
+arch/arm/cpu/armv8/start.S
+// Assembly environment
+// ARM architecture related lowlevel initialization
+	|
+	+-> _main
+		|
+		+-> stack	// Prepare the stack required by the C environment
+		|	// [Phase 1] Initialize the C environment and initiate a series of function calls
+		+-> board_init_f() // common/board_f.c
+		|	|
+		|	+-> initf_malloc
+		|		arch_cpu_init		// 【SoC lowlevel initialization】
+		|		serial_init 		// serial port initialization
+		|		dram_init 		    // 【get ddr capacity information】
+		|	 	reserve_mmu		    // reserve memory from the end of ddr to lower addresses
+		|		reserve_video
+		|		reserve_uboot
+		|		reserve_malloc
+		|		reserve_global_data
+		|		reserve_fdt
+		|		reserve_stacks
+		|		dram_init_banksize
+		|		sysmem_init
+		|		setup_reloc			// Determine the address to be relocated by U-Boot itself
+		|		// assembly environment
+		|-> relocate_code			// Assemble the relocation of U-Boot code
+		|	// [Phase 2] Initialize the C environment and initiate a series of function calls
+		|-> board_init_r // common/board_r.c
+		|	|
+		|	+-> initr_caches		// Enable MMU and I/D cache
+		|	|	initr_malloc
+		|	|	bidram_initr
+		|	|	sysmem_initr
+		|	|	initr_of_live		// Initialize of_line
+		|	|	initr_dm			// Initialize the dm frame
+		|	|	board_init		    // 【platform initialization, the most core part】
+		|	|	board_debug_uart_init		// Serial port iomux, clk configuration
+		|	|	init_kernel_dtb				// 【cut to kernel dtb】!
+		|	|	clks_probe					// Initialize system frequency
+		|	|	regulators_enable_boot_on	// Initialize system power
+		|	|	io_domain_init				// io-domain initialization
+		|	|	set_armclk_rate				// __weak, ARM frequency increase (the platform needs to be implemented)
+		|	|	dvfs_init					// Frequency modulation and voltage regulation of wide temperature chips
+		|	|	rk_board_init				// __weak, implemented by each specific platform
+		|	console_init_r
+		|	board_late_init					// 【Platform late initialization 】
+		|	+->	rockchip_set_ethaddr		// Set mac address
+		|	+->	rockchip_set_serialno		// set serialno
+		|	+->	setup_boot_mode				// Parse the "reboot xxx" command,
+											// Identify buttons and loader programming mode,
+recovery	
+		+->	charge_display			// U-boot charging	
+		+->	rockchip_show_logo		// Show the boot logo 
+		+->	soc_clk_dump			// Print clk tree
+		+->	rk_board_late_init		// __weak, implemented by each specific platform
+	run_main_loop		// 【Enter the command line mode, or execute the startup command 】
+			
+
+
+		
+
+```
+
 ## storage layout
 Default storage map
 
