@@ -819,6 +819,79 @@ struct 2 : image is outside fdt_blob,
 ie : itb = fdt_blob + img
 ```
 
+## platform configuraiton
+code configuration
+code : 
+```bash
+// frame code
+./common/image.c
+./common/image-fit.c
+./common/spl/spl_fit.c
+
+// platform code
+./arch/arm/mack-rockchip/fit.c
+./cmd/bootfit.c
+
+// tool code
+./tools/mkimage.c
+./tools/fit_image.c
+```
+
+configuration:
+```bash
+// u-boot stage supports FIT
+CONFIG_ROCKCHIP_FIT_IMAGE=y
+
+// u-boot stage : secure boot, anti-rollback, hardware crypto
+# CONFIG_FIT_SIGNATURE is not set
+CONFIG_FIT_HW_CRYPTO=y
+
+// uboot.img image contains several copies of uboot.lib, how big is a single copy of uboot.itb
+CONFIG_SPL_FIT_IMAGE_KB=2048
+CONFIG_SPL_FIT_IMAGE_MULTIPLE=2
+
+// After the uboot project is compiled, it will output uboot.img in fit format by default; otherwise, it will be uboot.img and trust.img in traditional RK format.
+CONFIG_ROCKCHIP_FIT_IMAGE_PACK=y
+```
+
+
+## image file
+ - uboot.img document
+ 	uboot.itb = trust + u-boot.bin + mcu.bin(option)
+	uboot.img = uboot.itb * N copies (N is generally 2)
+	> trust와 mcu files은 rkbin project로 부터 제공 받습니다. 
+
+ - boot.img document
+    boot.itb = kernel + fdt + resource + ramdisk(optional)
+	boot.img = boot.itb * M copies ( M is generall 1)
+
+ - SPL document
+ 	SPL 파일은 spl/u-boot-spl.bin 경로에 컴파일 후 생성됩니다. 
+	uboot.img 를 FIT format 으로 부팅하는 역할을 합니다.
+
+## tools
+```bash
+./tools/mkimage		// the core packaging tool
+./make.sh			// firmware packaging script
+./scripts/fit-resign.sh	// firmware resginature script
+./scripts/fit-unpack.sh	// firmware unpacking script
+./scripts/fit-repack.sh	// firmware replacement script 
+```
+ tools 사용 방법에 대해 설명합니다.
+ - --spl-new : --spl-new 를 옵션으로 사용하면 현재 컴파일된 spl 파일이 loader를 패키징하는데 사용됩니다. (그렇지 않으면 rkbin 의 spl 파일이 사용됩니다.)
+ - --version-uboot [n] : uboot.img 의 firmware 버전 번호를 지정합니다.  n은 양수
+ - --version-boot [n] : boot.img 의 firmware 버전 번호를 지정합니다. n은 양수 
+ - --version-recovery [n] : recovery.img 의 firmware 버전 번호를 지정합니다. n은 양수
+
+ security booting이 활성화 된 경우,
+ - --rollback-index-uboot [n] : 
+ - --rollback-index-boot [n] : 
+ - --rollback-index-recovery [n] : 
+ - --no-check : 
+
+
+
+
 <hr/>
 <br/>
 <br/>
