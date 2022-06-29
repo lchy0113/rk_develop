@@ -493,6 +493,28 @@ Write LBA from file (100%)
 ## Write GPT partition table through U-boot
 ## Write GPT partition table through U-boot's fastboot
 
+# SPL
+ SPL은 miniloader를 replace gkdu, trust.img 및 uboot.img의 loading 과 booting을 완료하는 것 입니다.
+ SPL은 현재 두 가지 type의 firmware booting을 지원합니다.
+ 	-  FIT firmware : 기본적으로 활성화되어 있습니다.
+	-  RKFW firmware : 기본적으로 비활성화되어 있으며 사용자가 구성하고 활성화해야 합니다.
+
+### FIT firmware
+ FIT(flattended image tree) format은 SPL에서 지원하는 firmware format으로 multiple image packaging 및 검증을 지원합니다.
+ FIT은 DTS syntax를 사용하여 packaged image를 기술하며, 기술 파일은 u-boot.its이며 이를 통해 생성된 FIT firmware 는 u-boot.itb 입니다.
+
+ FIT의 장점 : dts의 syntax 및 compile rule이 재사용되요 유연하고 firmware 구문 분석에서 Libfdt library를 직접 사용할 수 있습니다.
+
+
+ - u-boot.its file
+	 * /images : dtsi의 rule과 유사하며, 사용 가능한 모든 resource configurations(last available, optional)을 정적으로 정의합니다.
+	 * /configurations : 각 config node는 board-level 의 Dts 와 유사한 booting 가능한 configurations 을 기술합니다.
+	 * use default = 현재 선택된 default configuration을 지정합니다.
+
+ - u-boot.itb 
+-----
+
+
 # FIT 
 FIT format 과 FIT format 기반의 security / non security 부팅 scheme 에 대해 설명합니다.
 
