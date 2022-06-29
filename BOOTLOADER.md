@@ -816,7 +816,7 @@ fdtdump 명령은  itb 파일의 내용을 dump 할 수 있습니다.
 
 itb structure
 
-itb는 fdt_blob + image 파일 로 구성되어 잇습니다. 다음과 같은 패키징 방법이 있습니다.
+itb는 fdt_blob + image 파일 로 구성되어 잇습니다. 다음과 같은 패키징 방법이 있습니다.  
 RK 플랫폼은 structure 2방법을 채택합니다.
 
 ```bash
