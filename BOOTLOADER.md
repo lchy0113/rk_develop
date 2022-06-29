@@ -495,7 +495,7 @@ Write LBA from file (100%)
 
 # SPL
 
- SPL은 miniloader를 replace gkdu, trust.img 및 uboot.img의 loading 과 booting을 완료하는 것 입니다.  
+ SPL은 miniloader를 replace하여, trust.img 및 uboot.img의 loading 과 booting을 완료하는 것 입니다.  
  SPL은 현재 두 가지 type의 firmware booting을 지원합니다.  
  	-  FIT firmware : 기본적으로 활성화되어 있습니다.  
 	-  RKFW firmware : 기본적으로 비활성화되어 있으며 사용자가 구성하고 활성화해야 합니다.  
