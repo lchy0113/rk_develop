@@ -25,8 +25,61 @@ Rockchip rk3567의 build.sh에 의해 생성된 파일은 아래와 같습니다
 // dtbo image
 BOARD_DTBO_IMG=$OUT/rebuild-dtbo.img
 cp -a $BOARD_DTBO_IMG $IMAGE_PATH/dtbo.img
-
 ```
+
+	* dtbo.img 생성 과정. 
+```bash
+ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (device/rockchip/common/build/rockchip/RebuildDtboImg.mk)
+|
++->	PRODUCT_DTBO_TEMPLATE := $(LOCAL_PATH)/dt-overlay.in // (device/rockchip/rk356x/rk3568_s/rk3568_s.mk)
+|											|
+|											+-> device/rockchip/rk356x/rk3568_s/dt-overlay.in
+|												/dts-v1/;
+|												/plugin/;
+|
+|												&chosen {
+|													bootargs_ext = "androidboot.boot_devices=${_boot_device}";
+|												};
+|												
+|												&reboot_mode {
+|													mode-bootloader = <0x5242C309>;
+|													mode-charge = <0x5242C30B>;
+|													mode-fastboot = <0x5242C303>;
+|													mode-loader = <0x5242C301>;
+|													mode-normal = <0x5242C300>;
+|													mode-recovery = <0x5242C303>;
+|												};
+|
++-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts
+|	|
+|	+->	
+|
++-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/rebuild-dtbo.img
+	|
+	| recipe : rebuild_dts AOSP_DTC_TOOL AOSP_MKDTIMG_TOOL
+	+-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts
+	|	| recipe : ROCKCHIP_FSTAB_TOOLS PRODUCT_DTBO_TEMPLATE
+	|	+-> out/soong/host/linux-x86/bin/fstab_tools -I dts -i device/rockchip/rk356x/rk3568_s/dt-overlay.in \
+	|		-p fe310000.sdhci,fe330000.nandc -f wait -o rockdev/richgold/device-tree-overlay.dts
+	|
+	+-> $ out/soong/host/linux-x86/bin/dtc -O dtb \
+	|	-o out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-dtbo.dtb \
+	|	out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts 
+	|
+	+-> $ out/soong/host/linux-x86/bin/mkdtimg	\
+		create out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/rebuild-dtbo.img \
+		out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-dtbo.dtb
+```
+	* fstab_tools
+		: fstab generator script
+		```bash
+		$ fstab_tools -h
+		fstab_generator.py -I <type: fstab/dts> -i <fstab_template> -p <block_prefix> -d <dynamic_part_list> -f <flags> -c <chained_flags> -s <sdmmc_device> -o <output_file>
+		```
+	* dtc 
+		: devicetree compiler 
+	* mkdtimg
+		: https://source.android.com/devices/architecture/dto/partitions?hl=ko#mkdtimg 
 
 - 기타 이미지
 ```bash
