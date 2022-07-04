@@ -86,15 +86,15 @@ make
 > one key compiling 시 아래 파일만 사용된다
 ```bash
 rockdev/Image-rk3568_r/
-├── boot.img 
-├── dtbo.img
-├── MiniLoaderAll.bin
-├── misc.img
-├── parameter.txt
-├── recovery.img
-├── super.img
-├── uboot.img
-└── vbmeta.img
+├── boot.img 			//	including ramdisk, kernel, dtb
+├── dtbo.img			//	Device Tree Overlays 
+├── MiniLoaderAll.bin	//	including first level loader
+├── misc.img			//	including recovery-wipe boot symbol information, after flashing it will enter recovery
+├── parameter.txt		//	including partition information
+├── recovery.img		//	including recovery-ramdisk, kernel, dtb
+├── super.img			//	including the contents of odm, vendor, system partitions
+├── uboot.img			//	including uboot image
+└── vbmeta.img			//	including avb veriification information, used for AVB verication
 ```
 
 
