@@ -81,6 +81,25 @@ ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (devi
 	* mkdtimg
 		: https://source.android.com/devices/architecture/dto/partitions?hl=ko#mkdtimg 
 
+
+- parameter.txt
+ README(device/rockchip/common/scripts/parameter_tools/README)에 의하면 parameter_tools에 의해 생성됩니다.
+ device/rockchip/common/build/rockchip/REbuildParameter.mk 에 Makefile 정의 되어 있습니다.
+```bash
+$(rebuild_parameter) : $(PRODUCT_PARAMETER_TEMPLATE) $(ROCKCHIP_PARAMETER_TOOLS)
+	@echo "Building parameter.txt $@."
+	$(ROCKCHIP_PARAMETER_TOOLS) --input $(PRODUCT_PARAMETER_TEMPLATE) \
+	--start-offset 8192 \
+	--firmware-version $(BOARD_PLATFORM_VERSION) \
+	--machine-model $(PRODUCT_MODEL) \
+	--manufacturer $(PRODUCT_MANUFACTURER) \
+	--machine $(PRODUCT_DEVICE) \
+	--partition-list $(partition_list) \
+	--output $(rebuild_parameter)
+```
+ 
+
+
 - 기타 이미지
 ```bash
 // resource image
