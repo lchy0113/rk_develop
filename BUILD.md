@@ -84,7 +84,7 @@ ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (devi
 
 - parameter.txt
  README(device/rockchip/common/scripts/parameter_tools/README)에 의하면 parameter_tools에 의해 생성됩니다.
- device/rockchip/common/build/rockchip/REbuildParameter.mk 에 Makefile 정의 되어 있습니다.
+ device/rockchip/common/build/rockchip/RebuildParameter.mk 에 Makefile 정의 되어 있습니다.
 ```bash
 $(rebuild_parameter) : $(PRODUCT_PARAMETER_TEMPLATE) $(ROCKCHIP_PARAMETER_TOOLS)
 	@echo "Building parameter.txt $@."
@@ -96,6 +96,18 @@ $(rebuild_parameter) : $(PRODUCT_PARAMETER_TEMPLATE) $(ROCKCHIP_PARAMETER_TOOLS)
 	--machine $(PRODUCT_DEVICE) \
 	--partition-list $(partition_list) \
 	--output $(rebuild_parameter)
+
+
+/*
+sample
+parameter_tools --input device/rockchip/common/scripts/parameter_tools/parameter.in \
+	--firmware-version 12.0 \
+	--machine-model rk3568_s \
+	--manufacturer rockchip \
+	--machine rk3568_s \
+	--partition-list security:4M,uboot:4M,trust:4M,misc:4M,dtbo:8M,vbmeta:1M,boot:20M,recovery:64M,backup:384M,cache:384M,metadata:16M,super:3112M \
+	--output out/target/product/rk3568_s/obj/FAKE/rockchip_parameter_intermediates/parameter.txt
+*/
 ```
  
 
