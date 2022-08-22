@@ -1,47 +1,35 @@
 #!/bin/bash
 
-if [ -z "${ANDROID_BUILD_PATHS}" ]
-then
-	echo "Check environment variables..."
-	exit 1
-#else
-#	KD_DEVICE=`sed -e 's/full_//g' <<< ${TARGET_PRODUCT}`
-#	figlet -ct "${KD_DEVICE}: Build kernel."
+export PATH=$ANDROID_BUILD_TOP/prebuilts/clang/host/linux-x86/clang-r416183b/bin:$PATH
+
+
+TOOLCHAIN="../prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin"
+ADDON_ARGS="CROSS_COMPILE=${TOOLCHAIN}/aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
+KERNEL_ARCH="arm64"
+KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config"
+KERNEL_DTS="rk3568-evb1-ddr4-v10"
+
+echo "Start build kernel"
+make clean ; 
+make $ADDON_ARGS ARCH=$KERNEL_ARCH $KERNEL_DEFCONFIG
+make $ADDON_ARGS ARCH=$KERNEL_ARCH $KERNEL_DTS.img -j32 
+if [ $? -eq 0 ]; then
+    echo "Build kernel ok!"
+else
+    echo "Build kernel failed!"
+    exit 1
 fi
 
-real_core=`cat /proc/cpuinfo | grep cores | wc -l`
-let best_num=$real_core+$(printf %.0f `echo "$real_core*0.2"|bc`)
-
-BUILD_PATH=${OUT}/obj/KERNEL_OBJ
-DEFCONFIG="rockchip_defconfig rk356x_evb.config android-11.config"
+KERNEL_DEBUG=arch/arm64/boot/Image
+cp arch/arm64/boot/Image ../out/target/product/rk3568_s/kernel
 
 
-if [ "$1" = "clean" ]; then
-	echo "-------------"
-	echo "|clean code |"
-	echo "-------------"
-	#make O=${BUILD_PATH} distclean
-	make distclean
-	if [ -f .config ]; then
-		rm .config
-	fi
-
-fi
-
-if [ ! -f .config ]; then
-	#make arm=ARM O=${BUILD_PATH} ${DEFCONFIG} -j${best_num}
-	make ARCH=arm64 ${DEFCONFIG} -j${best_num}
-fi
-
-if [ "$1" = menuconfig ]; then
-	make ARCH=arm64 $1
-	exit
-fi
-
-if [ "$1" = "dtb" ]; then
-	make   dtbs -j${best_num} 
-fi
+echo "package resource.img with character images"
+cd ../u-boot && ./scripts/pack_resource.sh ../kernel-4.19/resource.img && cp resource.img ../kernel-4.19/resource.img && cd -
 
 
-
-make ARCH=arm64 rk3568-evb7-ddr4-v10.img -j${best_num} $1
+# repack v2 boot
+BOOT_CMDLINE="console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.console=ttyFIQ0 androidboot.wificountrycode=KR androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug"
+SECURITY_LEVEL="2022-03-05"
+mkbootfs -d ../out/target/product/rk3568_s/system ../out/target/product/rk3568_s/ramdisk | minigzip > ../out/target/product/rk3568_s/ramdisk.img 
+mkbootimg --kernel ../out/target/product/rk3568_s/kernel --ramdisk ../out/target/product/rk3568_s/ramdisk.img --dtb ../out/target/product/rk3568_s/dtb.img --cmdline "$BOOT_CMDLINE" --os_version 12 --os_patch_level $SECURITY_LEVEL --second ./resource.img --header_version 2 --output ../out/target/product/rk3568_s/boot.img
