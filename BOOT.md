@@ -348,10 +348,12 @@ Reset Device OK.
 ```bash
 
 lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash misc misc.img
+// fastboot flash misc  ../../../../rkst/Image/misc.img
 Sending 'misc_a' (48 KB)                           OKAY [  0.006s]
 Writing 'misc_a'                                   OKAY [  0.026s]
 Finished. Total time: 0.056s
 lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash dtbo dtbo.img
+// fastboot flash dtbo dtb.img
 Sending 'dtbo_a' (0 KB)                            OKAY [  0.001s]
 Writing 'dtbo_a'                                   OKAY [  0.006s]
 Finished. Total time: 0.026s
@@ -367,6 +369,7 @@ Sending sparse 'recovery_a' 2/2 (31632 KB)         OKAY [  1.388s]
 Writing 'recovery_a'                               OKAY [  0.237s]
 Finished. Total time: 13.646s
 lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash baseparameter baseparameter.img
+// fastboot flash baseparameter ../../../../device/rockchip/common/baseparameter/v2.0/baseparameter.img 
 Sending 'baseparameter_a' (1024 KB)                OKAY [  0.093s]
 Writing 'baseparameter_a'                          OKAY [  0.017s]
 Finished. Total time: 0.128s
@@ -427,6 +430,7 @@ Sending sparse 'super_a' 27/27 (1148 KB)           OKAY [  0.100s]
 Writing 'super_a'                                  OKAY [  0.024s]
 Finished. Total time: 167.641s
 lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash vbmeta vbmeta.img
+// fastboot flash vbmeta ../../../../device/rockchip/common/vbmeta.img
 Sending 'vbmeta_a' (4 KB)                          OKAY [  0.001s]
 Writing 'vbmeta_a'                                 OKAY [  0.005s]
 Finished. Total time: 0.024s
