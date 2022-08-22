@@ -2,9 +2,7 @@
 
 export PATH=$ANDROID_BUILD_TOP/prebuilts/clang/host/linux-x86/clang-r416183b/bin:$PATH
 
-
-TOOLCHAIN="../prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin"
-ADDON_ARGS="CROSS_COMPILE=${TOOLCHAIN}/aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
+ADDON_ARGS="CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
 KERNEL_ARCH="arm64"
 KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config"
 KERNEL_DTS="rk3568-evb1-ddr4-v10"
