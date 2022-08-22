@@ -30,6 +30,14 @@ GPIO0_C0 의 경우 아래와 같습니다.
   * pin = bank * 32 + number = 0 * 32 + 16 = 16
 
 
+GPIO0_D0 의 경우 아래와 같습니다.
+- bank		=	0	//	GPIO0_D0 -> 0, bank ∈ [0,4] 
+- group		= 	3	// 	GPIO0_D0 -> 3, group ∈ {(A=0), (B=1), (C=2), (D=3)}
+- X			= 	0	// 	GPIO0_D0 -> 0, X ∈ [0,7] 
+
+  * number = group * 8 + X = 3 * 8 + 0 = 24
+  * pin = bank * 32 + number = 0 * 32 + 24 = 24
+
 GPIO0_C0 의 dts property는 아래와 같이 정의 되어 있습니다. 
 > arch/arm64/boot/dts/rockchip/rk3568-evb.dtsi
 
