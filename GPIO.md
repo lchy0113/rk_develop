@@ -11,9 +11,9 @@ GPIO group number calculation formula : number = group * 8 + X
 ```
 
 예) GPIO4_D5 의 경우 아래와 같습니다.
-bank = 4; 	// 	GPIO4_D5 => 4,bank ∈ [0,4]
-group = 3;	//	GPIO4_D5 => 3,group ∈ {(A=0), (B=1), (C=2), (D=3)}
-X = 5;		//  GPIO4_D5 => 5,X ∈ [0,7]
+- bank		=	4;	//	GPIO4_D5 => 4,bank ∈ [0,4]
+- group		=	3;	//	GPIO4_D5 => 3,group ∈ {(A=0), (B=1), (C=2), (D=3)}
+- X			=	5;	//  GPIO4_D5 => 5,X ∈ [0,7]
 
 * number = group * 8 + X = 3 * 8 + 5 = 29
 * pin = bank * 32 + number = 4 * 32 + number = 4 * 32 + 29 = 157;
@@ -22,9 +22,9 @@ X = 5;		//  GPIO4_D5 => 5,X ∈ [0,7]
 
 
 GPIO0_C0 의 경우 아래와 같습니다.
-bank	=	0	//	GPIO0_C0 -> 0, bank ∈ [0,4]  
-group	=	2	//	GPIO0_C0 -> 2, group ∈ {(A=0), (B=1), (C=2), (D=3)}  
-X 		=	0	//	GPIO0_C0 -> 0, X ∈ [0,7]  
+- bank		=	0	//	GPIO0_C0 -> 0, bank ∈ [0,4]  
+- group		=	2	//	GPIO0_C0 -> 2, group ∈ {(A=0), (B=1), (C=2), (D=3)}  
+- X 		=	0	//	GPIO0_C0 -> 0, X ∈ [0,7]  
 
 * number = group * 8 + X = 2 * 8 + 0 = 16
 * pin = bank * 32 + number = 0 * 32 + 16 = 16
