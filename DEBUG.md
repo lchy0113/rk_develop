@@ -82,8 +82,9 @@ open /dev/mem: No such file or directory
 ```
 커널에서 아래 옵션을 활성화 해야 합니다.
 
+```
 CONFIG_DEVMEM=y
 CONFIG_DEVKMEM=y
+```
 
-
-————————————————
+---
