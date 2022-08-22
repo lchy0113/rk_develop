@@ -2,7 +2,7 @@
 
 ## GPIO Pin to calculate
 
-RK3568 은 5 개의 GPIO bank 를 가지고 있습니다. GPIO0~GPIO5. 
+RK3568 은 5 개의 GPIO bank 를 가지고 있습니다. (GPIO0~GPIO5)  
 각각의 그룹은 A0~A7, B0~B7, C0~C7, D0~D7 으로 넘버링 되며, 아래 공식은 GPIO pin number 를 계산하는데 사용됩니다. 
 
 ```bash
