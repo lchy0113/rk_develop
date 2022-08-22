@@ -38,7 +38,7 @@ lunch rk3566_rgo-userdebug
 ```bash
 #!/bin/bash
 
-
+export PATH=$ANDROID_BUILD_TOP/prebuilts/clang/host/linux-x86/clang-r416183b/bin:$PATH
 
 ADDON_ARGS="CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
 KERNEL_ARCH="arm64"
