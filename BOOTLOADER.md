@@ -96,7 +96,7 @@ u-boot$ ls -alh tpl/u-boot*
 ```
 
 ## U-Boot DTS
-U-Boot에는 자체 DTS 파일이 있어 컴파일 시, 해당 DTB 파일을 자동으로 생성하며 u-boot.bin 끝에 추가됩니다.
+U-Boot에는 자체 DTS 파일이 있어 컴파일 시, 해당 DTB 파일을 자동으로 생성하며 u-boot.bin 끝에 추가됩니다.  
 File directory :
 ```
 arch/arm/dts/
