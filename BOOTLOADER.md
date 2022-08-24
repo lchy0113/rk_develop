@@ -972,3 +972,14 @@ u-boot/
 
 ```
 
+<hr/>
+<br/>
+<br/>
+<br/>
+<hr/>
+
+
+
+# 👨‍💻 develop bootloader
+> bootloader 개발 이력을 정리합니다. 
+
