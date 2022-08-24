@@ -1,6 +1,8 @@
-# rk_bootloader interoduce
+# BOOTLOADER
 
-## version
+## rk_bootloader interoduce
+
+### version
 RK3568 SDK에 사용되는 부트로더(next-dev)는 RK사에서 v2017.09(official version) 기반에서 개발한 버전이며 RK3568 AP를 공식적으로 지원합니다.
 
 > RK의 U-Boot에는 이전 버전 v2014 및 새 버전 v2017의 두 가지 버전이 있으며 내부 이름은 각각 rkdevelop 및 next-dev입니다.
@@ -22,13 +24,13 @@ next-dev는 아래 기능을 지원합니다.
 - Support Mass storage, ethernet, HID and other USB devices;
 - Support dynamic selection of kernel DTB by hardware state;
 
-## DM
+### DM
 DM(Driver Model)은 커널의 Device-driver와 유사한 u-boot의 standard device-driver 개발 모델 입니다. 
 v2017 버전은 DM framework을 따라 module을 개발합니다. 
   
 https://www.linux4sam.org/bin/view/Linux4SAM/DriverModelInUBoot
   
-## Boot-order
+### Boot-order
 front-level loader code의 open source여부에 따라서 RK platform 은 2가지 startup methods 를 제공합니다. 
 - pre-loader closed source <br/>
 	BOOTROM ▶️ ddr bin ▶️ Miniloader ▶️ TRUST ▶️ U-boot ▶️ KERNEL
@@ -38,7 +40,7 @@ front-level loader code의 open source여부에 따라서 RK platform 은 2가�
 > TPL은 ddr bin과 동일하고, SPL은 Miniloader 와 동일한 기능을 제공합니다. 
 > 즉 TPL+SPL 의 조합은 rk 코드  ddr.bin=miniloader와 동일한 기능을 제공하며 서로 교체되어 사용할 수 있습니다.
 
-## TPL/SPL/U-Boot-proper
+### TPL/SPL/U-Boot-proper
 U-Boot는 하나의 코드에서 TPL/SPL/U-Boot-proper이라는 컴파일 조건을 사용하여 각각 다른 기능을 가진 로더를 얻을 수 있습니다. 
 TPL(Tiny Program Loader) 과 SPL(Secondary Program Loader)는 U-Boot 이전의 로더 입니다. 
 - TPL : SRAM에서 실행되며 DDR(DRAM)초기화를 담당합니다.
@@ -95,7 +97,7 @@ u-boot$ ls -alh tpl/u-boot*
 -rw-r--r-- 1 lchy0113 lchy0113 5.1K  4월 13 08:23 tpl/u-boot-tpl.sym		// SYMBOL table file
 ```
 
-## U-Boot DTS
+### U-Boot DTS
 U-Boot에는 자체 DTS 파일이 있어 컴파일 시, 해당 DTB 파일을 자동으로 생성하며 u-boot.bin 끝에 추가됩니다.  
 File directory :
 ```
@@ -129,7 +131,7 @@ Using default environment
 <br/>
 <hr/>
 
-# RK architecture
+## RK source code architecture
 
 ```bash
 (uboot)/arch/arm/include/asm/arch-rockchip/
@@ -142,7 +144,7 @@ Using default environment
 (uboot)/arch/arm/mach-rockchip/board.c
 ```
 
-## 플랫폼 구성
+### 플랫폼 구성
 - configure file : 플랫폼의 configuration  option 및 parameter는 일반적으로 다음 위치에 있습니다.
 ```bash
 //Public files of each platform (developers usually do not need to modify)
@@ -155,7 +157,7 @@ Using default environment
 (uboot)/configs/rk3568_defconfig
 ```
 
-## start process
+### start process
 RK platform의 u-boot startup process는 아래와 같습니다. 
 
 ```bash
@@ -218,7 +220,7 @@ recovery
 			
 ```
 
-## storage layout
+### storage layout
 Default storage map
 
 |           Partition          	| Start Sector 	|          	| Number of Sectors 	|          	| Partition Size 	|        	| PartNum in GPT 	|             Requirements             	|
@@ -240,7 +242,7 @@ Default storage map
 >
 >
 
-## Kernel-DTB
+### Kernel-DTB
  RK 플랫폼은 kernel dtb mechanism을 지원합니다. 커널 dtb를 사용하여 주변 장치를 초기화 합니다. 
  power, clock, display, 등과 같은 정보를 호환합니다.
  - u-boot dtb : storage, serial port 및 다른 장치를 초기화 합니다. 
