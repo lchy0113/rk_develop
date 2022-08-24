@@ -983,3 +983,7 @@ u-boot/
 # 👨‍💻 develop bootloader
 > bootloader 개발 이력을 정리합니다. 
 
+## config
+- rk3568_nova_defconfig
+
+
