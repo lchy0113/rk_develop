@@ -984,6 +984,6 @@ u-boot/
 > bootloader 개발 이력을 정리합니다. 
 
 ## config
-- rk3568_nova_defconfig
+- rk3568_poc_defconfig
 
 
