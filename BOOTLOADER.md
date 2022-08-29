@@ -987,3 +987,38 @@ u-boot/
 - rk3568_poc_defconfig
 
 
+## platform architecture file 
+1. Platform Directory :
+```bash
+./arch/arm/include/asm/arch-rockchip/
+./arch/arm/mach-rockchip/
+./board/rockchip/
+```
+2. Platform header files:
+```bash
+./arch/arm/include/asm/arch-rockchip/sdram_rk3568.h
+./arch/arm/include/asm/arch-rockchip/grf_rk3568.h
+./arch/arm/include/asm/arch-rockchip/cru_rk3568.h
+```
+```bash
+./include/configs/poc_rk3568.h
+./include/configs/rk3568_common.h
+./include/configs/evb_rk3568.h
+```
+3. Platform driver file:
+```bash
+./arch/arm/mach-rockchip/rk3568/rk3568.c
+./board/rockchip/poc_rk3568/poc_rk3568.c
+```
+4. Common board files (core!):
+```bash
+./arch/arm/mach-rockchip/board.c
+```
+5. README : 
+```bash
+./board/rockchip/sheep_rk3368/README
+```
+6. defconfig : 
+```bash
+./configs/rk3568_poc_defconfig
+```
