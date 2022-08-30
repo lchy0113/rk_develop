@@ -14,11 +14,11 @@
 
 ## config
 
-kernel-4.19/arch/arm64/configs/rockchip_defconfig 
-mkcombinedroot/configs/android-11.config
-kernel/configs/android-4.19/non_debuggable.config
-mkcombinedroot/configs/disable_incfs.config
-device/kdiwin/nova/rk3568/kconfig.config 
+kernel-4.19/arch/arm64/configs/rockchip_defconfig   
+mkcombinedroot/configs/android-11.config  
+kernel/configs/android-4.19/non_debuggable.config  
+mkcombinedroot/configs/disable_incfs.config  
+device/kdiwin/nova/rk3568/kconfig.config   
 
 
 ## dts
