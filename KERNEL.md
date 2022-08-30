@@ -39,7 +39,7 @@ rockchip/rk3568-poc-v00.dts
 	|	|		/* config dram init */
 	|	|	
 	|	+-> rockchip/rk3568-poc.dtsi
-	|		/* set peripheral device (adc_keys, audiopwmout_diff, backlight, led, sound ,dsi, i2c,,)
+	|		/* set peripheral device (adc_keys, audiopwmout_diff, backlight, led, sound ,dsi, i2c,,) */
 	|
 	+-> rockchip/rk3568-android.dtsi
 		/* set bootargs, debug interface, reserved_memory for dma pool and ramoops, vop */
