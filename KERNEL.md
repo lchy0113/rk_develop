@@ -34,6 +34,9 @@ rockchip/rk3568-poc-v00.dts
 	|	|
 	|	+-> rockchip/rk3568.dtsi
 	|	|	|	/* define peripheral device address */
+	|	|	|	|
+	|	|	|	+-> rockchip/rk3568-pinctrl.dtsi
+	|	|	|		/* pin grf */ 
 	|	|	|
 	|	|	+-> rockchip/rk3568-dram-default-timing.dtsi
 	|	|		/* config dram init */
