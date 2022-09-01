@@ -328,3 +328,17 @@ lchy0113@kdiwin-nb:~/Develop/Rockchip/RKTools/linux/Linux_Upgrade_Tool/Linux_Upg
 
 
 ```
+<hr/>
+<br/>
+<br/>
+<br/>
+<hr/>
+
+
+
+# 👨‍💻 private/develop
+
+private/develop 
+	device/kdiwin/test/rk3568_poc
+	kernel-4.19
+	u-boot
