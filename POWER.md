@@ -57,9 +57,6 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 
 ![](./images/POWER_02.png)
 
-Find from the above picture that vccio_acodec is powered by LDO4 of RK809.
-Find the configuration information of LDO_REG4 (LDO4) from the dts of the software, as follows:
-
 위의 그림에서 vccio_acodec이 RK809의 LDO4에 의해 power를 받는 다는 것을 확인 할 수 있습니다.
 다음과 같이 software의 dts에서 LDO_REG4(LDO4)의 구성 정보를 찾습니다.
 
