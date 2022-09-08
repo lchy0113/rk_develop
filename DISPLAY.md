@@ -98,4 +98,71 @@
 # 👨<200d>💻 develop
 
 rgb node : rockchip,rk3568-rgb
-rockchip_rgb.c
+```dtb
+// rockchip/rk3568.dtsi
+	grf: syscon@fdc60000 {
+		compatible = "rockchip,rk3568-grf", "syscon", "simple-mfd";
+		reg = <0x0 0xfdc60000 0x0 0x10000>;
+...
+
+		rgb: rgb {
+			compatible = "rockchip,rk3568-rgb";
+			pinctrl-names = "default";
+			pinctrl-0 = <&lcdc_ctl>;
+			status = "disabled";
+
+			ports {
+				#address-cells = <1>;
+				#size-cells = <0>;
+
+				port@0 {
+					reg = <0>;
+					#address-cells = <1>;
+					#size-cells = <0>;
+
+					rgb_in_vp2: endpoint@2 {
+						reg = <2>;
+						remote-endpoint = <&vp2_out_rgb>;
+						status = "disabled";
+					};
+				};
+			};
+		};
+
+	}
+```
+
+driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
+
+---
+
+```
+// rockchip/rk3568.dtsi
+vop : compatible = "rockchip,rk3568-vop"
+vop_out
+	|
+	+-> vp0
+	|	|
+	|	+-> dsi0	// mipi-dsi
+	|	+->	dsi1	// mipi-dsi
+	|	+-> edp		// edp
+	|	+-> hdmi	// hdmi
+	|
+	+-> vp1
+	|	|
+	|	+->	dsi0	// mipi-dsi
+	|	+->	dsi1	// mipi-dsi
+	|	+-> edp		// edp
+	|	+-> hdmi	// hdmi
+	|	+-> lvds	// lvds
+	|
+	+-> vp2
+		|
+		+->	vp2_out_lvds	// lvds
+		+->	vp2_out_rgb: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&rgb_in_vp2>;
+			};
+
+```
+
