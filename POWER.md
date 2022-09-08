@@ -11,7 +11,6 @@
  - PMUIO2, VCCIO1, VCCIO[3:7] 은  power domains은 hardware supply voltage 와 맞는 software 구성이 필요합니다. 
 	 1) hardware IO level이 1.8V인 경우, software voltage 세팅은 1.8V와 일치해야 합니다.
 	 2) hardware IO level이 3.3V인 경우, software voltage 세팅은 3.3V와 일치해야 합니다.
- - FLASH_VOL_SET의 상태와 같아야 합니다.
  - VCCIO2 power domain 에 대한 software는 구성할 필요가 없지만 hardware power  supply device voltage은 FLASH_VOL_SEL 상태와 일치해야 합니다.
 	 1) VCCIO2의 power supply이 1.8V일 때 FLASH_VOL_SEL 핀은 HIGH값을 유지되어야 합니다.
 	 2) VCCIO2의 power supply이 3.3V일 때 FLASH_VOL_SEL 핀은 LOW값을 유지되어야 합니다.
