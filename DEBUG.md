@@ -80,6 +80,8 @@ Therefore, it can be determined that the GPIO is multiplexed as i2c4sensor_sda.
 ```
 
 
+### GRF Address Mapping Table
+![](./images/DEBUG_01.png)
 
 ---
 
