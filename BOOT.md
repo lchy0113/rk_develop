@@ -316,6 +316,7 @@ lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdevelopt
 Upgrading loader succeeded.
 
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+// rkdeveloptool gpt out/target/product/rk3568_poc/parameter.txt
 Writing gpt succeeded.
 
 lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ppt
