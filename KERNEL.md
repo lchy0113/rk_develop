@@ -47,3 +47,8 @@ rockchip/rk3568-poc-v00.dts
 	+-> rockchip/rk3568-android.dtsi
 		/* set bootargs, debug interface, reserved_memory for dma pool and ramoops, vop */
 ```
+
+
+## Note
+
+- DDR frequency scaling in the kernel : Rockchip-Developer-Guide-DDR-EN.pdf   5page 
