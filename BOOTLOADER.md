@@ -1022,3 +1022,16 @@ u-boot/
 ```bash
 ./configs/rk3568_poc_defconfig
 ```
+
+
+<hr/>
+<br/>
+<br/>
+<br/>
+<hr/>
+
+## ddrbin_tool 사용 가이드
+
+```
+./ddrbin_tool ddrbin_param.txt ../../u-boot/rk356x_spl_loader_v1.13.112.bin
+```
