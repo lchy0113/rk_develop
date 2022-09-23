@@ -37,10 +37,11 @@
 &rgb {
 	status = "okay";
 
-	ports	{
-		port@1	{
+	ports {
+		port@1 {
 			reg = <1>;
-			rgb_out_panel: endpoint	{
+
+			rgb_out_panel: endpoint {
 				remote-endpoint = <&panel_in_rgb>;
 			};
 		};
@@ -57,40 +58,72 @@
 
 
 ### Panel
+```dtb
+	panel {
+		compatible = "simple-panel";
+		bus-format = <MEDIA_BUS_FMT_RGB666_1X24_CPADHI>;
+		backlight = <&backlight>;
+		enable-gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_LOW>;
+		enable-delay-ms = <20>;
+		reset-gpios = <&gpio0 RK_PB7 GPIO_ACTIVE_LOW>;
+		reset-delay-ms = <10>;
+		prepare-delay-ms = <20>;
+		unprepare-delay-ms = <20>;
+		disable-delay-ms = <20>;
+		status = "okay";
+		width-mm = <1024>;
+		height-mm = <600>;
+		bpc = <8>;
 
+		display-timings {
+			native-mode = <&timing0>;
 
+			timing0: timing0 {
+				clock-frequency = <51200000>;
+				hactive = <1024>;
+				vactive = <600>;
+				hback-porch = <140>;
+				hfront-porch = <160>;
+				vback-porch = <20>;
+				vfront-porch = <12>;
+				hsync-len = <100>;
+				vsync-len = <10>;
+				hsync-active = <1>;
+				vsync-active = <1>;
+				de-active = <0>;
+				pixelclk-active = <1>;
+			};
+		};
 
-# MIPI-DSI
-- rk3568 : (1~8lanes, 1.2Gbps per lane)
-	
-## Documentation and source code
-- Kernel (develop-4.19)
-	drivers/gpu/drm/rockchip/dw-mipi-dsi.c
-	drivers/phy/rockchip/phy-rockchip-inno-video-combo-phy.c
-	drivers/phy/rockchip/phy-rockchip-inno-mipi-dphy.c
-	Documentation/devicetree/bindings/display/rockchip/dw_mipi_dsi_rockchip.txt
-	Documentation/devicetree/bindings/phy/phy-rockchip-inno-video-combo-phy.txt
-	Documentation/devicetree/bindings/phy/phy-rockchip-inno-mipi-dphy.txt
+		ports {
+			panel_in_rgb: endpoint {
+				remote-endpoint = <&rgb_out_panel>;
+			};
+		};
+	};
+```
 
-- uboot (next-dev)
-	drivers/video/drm/dw_mipi_dsi.c
-	drivers/video/drm/inno_video_combo_phy.c
-	drivers/video/drm/inno_mipi_phy.c
+# HDMI
 
 ## DT Bindings
 ### Host
-
-1) single-channel
-```bash
-[ VOP ] -> [ MIPI-DSI ] -> [ Panel ]
-```
-
 ```dtb
-&dsi0 {
+&hdmi {
+	status = "okay";
+	rockchip,phy-table =
+		<92812500  0x8009 0x0000 0x0270>,
+		<165000000 0x800b 0x0000 0x026d>,
+		<185625000 0x800b 0x0000 0x01ed>,
+		<297000000 0x800b 0x0000 0x01ad>,
+		<594000000 0x8029 0x0000 0x0088>,
+		<000000000 0x0000 0x0000 0x0000>;
+};
 
-}
+&hdmi_in_vp0 {
+	status = "okay";
+};
+
 ```
-
 
 ---
 # baseparameter images 
@@ -98,7 +131,7 @@
 
 ---
 
-# 👨<200d>💻 develop
+# 👨<200d>💻  업무
 
 rgb node : rockchip,rk3568-rgb
 ```dtb
