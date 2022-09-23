@@ -12,7 +12,7 @@
 2) Rockchip 플랫폼의 칩은 HDMI/MIPI-DSI/RGB/LVDS/eDP/DP등을 포함하고 있습니다.
 
 
-# Panel
+# Panel 장치
 ## Documentation and source code
 - kernel
 	drivers/gpu/drm/panel/panel-simple.c
@@ -24,7 +24,7 @@
 1) simple-panel(lvds/rgb/edp)
 2) simple-panel-dsi(mipi-dsi)
 
-# RGB
+# RGB 인터페이스
 ## Documentation and source code
 - uboot (next-dev)
 	drivers/video/drm/rockchip_rgb.c
@@ -103,7 +103,7 @@
 	};
 ```
 
-# HDMI
+# HDMI 인터페이스
 
 ## DT Bindings
 ### Host
@@ -131,7 +131,7 @@
 
 ---
 
-# 👨<200d>💻  업무
+# 💻  개발 업무
 
 rgb node : rockchip,rk3568-rgb
 ```dtb
@@ -172,33 +172,19 @@ driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
 
 ---
 
+# 📌 정리
+
+rk3568 poc 의 디스플레이는 아래와 같이 구성되어져 있습니다. 
+
 ```
-// rockchip/rk3568.dtsi
-vop : compatible = "rockchip,rk3568-vop"
 vop_out
 	|
 	+-> vp0
 	|	|
-	|	+-> dsi0	// mipi-dsi
-	|	+->	dsi1	// mipi-dsi
-	|	+-> edp		// edp
-	|	+-> hdmi	// hdmi
-	|
-	+-> vp1
-	|	|
-	|	+->	dsi0	// mipi-dsi
-	|	+->	dsi1	// mipi-dsi
-	|	+-> edp		// edp
-	|	+-> hdmi	// hdmi
-	|	+-> lvds	// lvds
+	|	+-> hdmi interface
 	|
 	+-> vp2
 		|
-		+->	vp2_out_lvds	// lvds
-		+->	vp2_out_rgb: endpoint@1 {
-				reg = <1>;
-				remote-endpoint = <&rgb_in_vp2>;
-			};
-
+		+-> rgb interface
 ```
 
