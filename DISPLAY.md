@@ -174,17 +174,20 @@ driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
 
 # 📌 정리
 
-rk3568 poc 의 디스플레이는 아래와 같이 구성되어져 있습니다. 
+rk3568 poc 의 디스플레이는 아래와 같이 구성되어 동작되고 있습니다. 
 
 ```
 vop_out
 	|
-	+-> vp0
+	+-> vp0 (0xfe040c00)
 	|	|
 	|	+-> hdmi interface
 	|
-	+-> vp2
+	+-> vp2 (0xfe040e00)
 		|
 		+-> rgb interface
 ```
 
+- hdmi to cvbs converter 
+ hdmi to cvbs converter 를 통해 cvbs 출력을 내보내는 기능을 사용하기 위해서는 GPIO4_D2 핀을 high 로 세팅하면 동작
+ 
