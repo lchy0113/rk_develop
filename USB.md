@@ -18,8 +18,8 @@ USB 인터페이스 이름과 인터페이스 유형 간의 해당 관계는 다
 -----
 🚩 note 
 
-✔ usb interface 
-(OTG0_HS/FS/LS)
+✔ usb interface   
+*(OTG0_HS/FS/LS)*
   * USB3_OTG0_DP
   * USB3_OTG0_DM
 
