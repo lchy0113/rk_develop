@@ -171,24 +171,24 @@ USB2.0 인터페이스로 구성된 RK3568 OTG의 DTS configuration 은 아래�
 ### 3.2.1. USB3.0 으로 구성된 RK3568 HOST1 HOST3.0 으로 사용되는 RK3568 HOST1의 DTS configuration 은 아래와 같습니다.
 
 ```dtb
-&combphy1_usq {
+&combphy1_usq {				// usb 3.0 phy node
 	status = "okay";
 };
 
-&u2phy0_host {
+&u2phy0_host {				// usb 2.0 phy child node
 	phy-supply = <&vcc5v0_host>;
 	status = "okay";
 };
 
-&usb2phy0 {
+&usb2phy0 {					// usb2.0 phy parent node
 	status = "okay";
 };
 
-&usbhost_dwc3 {
+&usbhost_dwc3 {				// usb controller child node
 	status = "okay";
 };
 
-&usbhost30 {
+&usbhost30 {				// usb controller parent node
 	status = "okay";
 };
 ```
