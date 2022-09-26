@@ -149,6 +149,77 @@ USB2.0 인터페이스로 구성된 RK3568 OTG의 DTS configuration 은 아래�
 };
 ```
 
+- combphy0_us 노드는 OTG USB3.0 PHY와 SATA0에 의해 다중화 되기 때문에, OTG USB3.0 PHY가 combphy0_us 를 사용하지 않고 SATA0 에서 combphy0_us을 사용하는 경우, DTS의 OTG3.0 PHY 의 구성에 따라 combphy0_us을 구성해야 합니다. 
+  SATA0 에서 combphy0_us을 사용하지 않는 경우, combphy0_us의 하드웨어 회로에 전원이 공급되지 않으므로 DTS에서 combphy0_us 의 configuration 을 꺼야 합니다. 
+- u2phy0_otg의 vbus-supply는 OTG 포트의 VBUS 전원 configuration입니다. 
+
+
+## 3.2. RK3568 HOST1 configuration
+ RK3568 HOST1의 DTS 노드이름은 아래와 같이 정의 됩니다.
+
+| **usbhost30**              	| **usbhost_dwc3**          	| **usb2phy0**                                  	| **u2phy0_host**        	| **combphy1_usq** 	|
+|----------------------------	|---------------------------	|-----------------------------------------------	|------------------------	|------------------	|
+| usb controller parent node 	| usb controller child node 	| usb2.0 PHY parent node (shared with OTG port) 	| usb 2.0 PHY child node 	| usb 3.0 PHY node 	|
+
+### 3.2.1. USB3.0 으로 구성된 RK3568 HOST1 HOST3.0 으로 사용되는 RK3568 HOST1의 DTS configuration 은 아래와 같습니다.
+
+```dtb
+&combphy1_usq {
+	status = "okay";
+};
+
+&u2phy0_host {
+	phy-supply = <&vcc5v0_host>;
+	status = "okay";
+};
+
+&usb2phy0 {
+	status = "okay";
+};
+
+&usbhost_dwc3 {
+	status = "okay";
+};
+
+&usbhost30 {
+	status = "okay";
+};
+```
+
+- u2phy0_host 의 phy-supply는 Host1 포트의 VBUS 전원과  구성합니다.
+
+### 3.2.2. RK3568 HOST1 이 USB2.0 으로만 사용되는 경우.
+ RK3568 의 HOST1 인터페이스가 USB2.0으로만 사용되는 경우, DTS configuration 입니다.
+
+```dtb
+&combphy1_usq {				// usb 3.0 phy node
+	rockchip,dis-u3otg1-port;
+	/* HOST1, SATA1, QSGMII는 combphy1_usq를 사용하며, 사용하지 않은 경우, disabled */
+	status = "okay";
+};
+
+&u2phy0_host {
+	phy-supply = <&vcc5v0_host>;
+	status = "okay";
+};
+
+&usb2phy0 {
+	status = "okay";
+};
+
+&usbhost_dwc3 {
+	phys = <&u2phy0_host>;
+	phy-names = "usb2-phy";
+	maximum-speed = "high-speed";
+	status = "okay";
+};
+
+&usbhost30 {
+	status = "okay";
+};
+
+```
+
 -----
 🚩 note 
 
