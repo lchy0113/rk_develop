@@ -281,6 +281,82 @@ Rk3568 HOST3 dts configuration
 };
 ```
 
+- HOST3이 하드웨어에서 사용되지 않는 경우 configuration을 제거 하십시오. usb2phy1 노드는 HOST2와 공유되며 HOST2 및 HOST3 이 모두 사용되지 않는 경우에만 닫습니다.
+
+
+## USB VBUS configuration
+ Rockchip 플랫폼의 USB VBUS 제어 회로에는 일반적으로 GPIO control power supply voltage regulator chip output, Rockchip PMIC output, hardware direct outpu(software로 제어되지 않음.)과 같은 여러 방식이 포함됩니다.
+
+
+### 3.5.1. GPIO control power supply voltage retgulator chip output VBUS
+ 이 솔루션을 통하여 일반적으로 충전 솔루션이 없는 USB Host 포트 및 OTG 포트에 적용가능하며, DTS configuration을 다음과 같습니다.
+
+```dtb
+vcc5v0_otg: vcc5v0-otg-regulator {
+	compatible = "regulator-fixed";
+	enable-active-high;
+	gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&vcc5v0_otg_en>;
+	regulator-name = "vcc5v0_otg";
+};
+
+
+&pinctrl {
+	...
+	usb {
+	vcc5v0_otg_en: vcc5v0-otg-en {
+		rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+	};
+};
+...
+```
+
+### 3.5.2. Rockchip의 PMIC VBUS output
+ 이 솔루션은 일반적으로 충전 솔루션이 있는 OTG 포트에 적용되며 DTS configuration 은 아래와 같습니다.
+
+```dtb
+rk817: pmic@20 {
+	...
+	regulators {
+		otg_switch: OTG_SWITCH {
+			regulator-name = "otg_switch";
+			regulator-state-mem {
+				regulator-off-in-suspend;
+			};
+		};
+	};
+	...
+};
+```
+
+- Rk817에서 configuation되었습니다.
+
+
+-----
+
+# 4. RK3568 USB OTG mode switch command
+ RK3568 SDK는 USB 2.0/3.0 OTG의 forced setting을 지원하며, USB 하드웨어 회로 또는 Type-C 인터페이스의 OTG ID 레벨에 영향을 받지 않고, 소프트웨어 방식을 통해 Host / Peripheral mode 로 전환합니다.
+
+ RK3568 Linux-4.19 kernel 에서 Peripher mode 또는 Host mode 스위칭 USB 컨트롤러 방법.
+
+```bash
+#1.Force host mode
+echo host > /sys/devices/platform/fe8a0000.usb2-phy/otg_mode
+
+#2.Force peripheral mode
+echo peripheral > /sys/devices/platform/fe8a0000.usb2-phy/otg_mode
+
+#3.Force otg mode
+echo otg > /sys/devices/platform/fe8a0000.usb2-phy/otg_mode
+
+```
+
+
+🚩 note  : 일부 응용프로그램에서 기본적으로  OTG 포트가 HOST 모드로 작동하게 하려면, DTS의 dr_mode를 기본적으로 "otg"로 구성한 다음, **Force host mode** 명령을 사용하는 것이 좋습니다.
+(as init.rc)
+
+
 -----
 🚩 note 
 
