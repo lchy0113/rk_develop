@@ -71,7 +71,8 @@ USB 인터페이스 이름과 인터페이스 유형 간의 해당 관계는 다
 ✔ 커넥터
 - USB 3.0 커넥터
 
-![](./images/USB_01.png)
+  ![](./images/USB_01.png)
 
 - USB 2.0 커넥터
-![](./images/USB_02.png)
+
+  ![](./images/USB_02.png)
