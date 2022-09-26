@@ -198,26 +198,87 @@ USB2.0 인터페이스로 구성된 RK3568 OTG의 DTS configuration 은 아래�
 	status = "okay";
 };
 
-&u2phy0_host {
+&u2phy0_host {				// usb 2.0 phy child node
 	phy-supply = <&vcc5v0_host>;
 	status = "okay";
 };
 
-&usb2phy0 {
+&usb2phy0 {					// usb 2.0 phy parent node
 	status = "okay";
 };
 
-&usbhost_dwc3 {
+&usbhost_dwc3 {				// usb controller child node
 	phys = <&u2phy0_host>;
 	phy-names = "usb2-phy";
 	maximum-speed = "high-speed";
 	status = "okay";
 };
 
-&usbhost30 {
+&usbhost30 {				// usb controller parent node
 	status = "okay";
 };
 
+```
+
+- combphy1_usq node는 HOST1의 USB3.0 PHY와 SATA1/QSGMII에 의해 다중화합니다.  HOST1 및 SATA1/QSGMII의 USB3.0 PHY가 combphy1_usq를 사용하지 않는 경우, 비활성화 해야합니다.
+- HOST1을 사용하지 않는 경우, 제거하면 됩니다. 하지만, usb2phy0 노드는  OTG 와 공유가 되며, 기본적으로  OTG포트를 사용하므로 함께 확인이 필요합니다.
+
+
+## 3.3. RK3568 HOST2 configuration
+
+| **usb_host0_ehci**     	| **usb_host0_ochi**        	| **usb2phy1**                           	| **u2phy1_otg**  	|
+|------------------------	|---------------------------	|----------------------------------------	|-----------------	|
+| sub HS controller node 	| usb FS/LS controller node 	| usb phy parent node(shared with host3) 	| usb phy subnode 	|
+
+Rk3568 HOST2 dts configuration
+
+```dtb
+&u2phy1_otg {
+	phy-supply = <&vcc5v0_host>;
+	status = "okay";
+};
+
+&usb2phy1 {
+	status = "okay";
+};
+
+&usb_host0_ehci {
+	status = "okay";
+};
+
+&usb_host0_ohci {
+	status = "okay";
+};
+```
+
+- u2phy1_otg의 phy-supply는 HOST2 포트의 VBUS 전원 구성입니다. 
+- HOST2가 하드웨어 사용되지 않는 경우, 위의 구성을 제거하면 닫힙니다. 하지만  usb2phy1 노드는 HOST3 과 공유되며 즉, HOST2, HOST3이 모두 사용되지 않는 경우 닫습니다.
+
+## 3.4. RK3568 HOST3 configuration
+
+| **usb_host1_ehci**     	| **usb_host1_ochi**        	| **usb2phy1**                           	| **u2phy1_host**  	|
+|------------------------	|---------------------------	|----------------------------------------	|-----------------	|
+| sub HS controller node 	| usb FS/LS controller node 	| usb phy parent node(shared with host2) 	| usb phy subnode 	|
+
+Rk3568 HOST3 dts configuration
+
+```dtb
+&u2phy1_host {
+	phy-supply = <&vcc5v0_host>;
+	status = "okay";
+};
+
+&usb2phy1 {
+	status = "okay";
+};
+
+&usb_host1_ehci {
+	status = "okay";
+};
+
+&usb_host1_ohci {
+	status = "okay";
+};
 ```
 
 -----
