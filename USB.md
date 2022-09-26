@@ -12,7 +12,8 @@ USB 인터페이스 이름과 인터페이스 유형 간의 해당 관계는 다
 | RK3566 	| USB2.0 OTG 	| USB 3.0 HOST 	| USB 2.0 HOST 	| USB 2.0 HOST 	|
 
 
-
+아래 그림은 RK356x USB controller와 PHY 간 다이어그램입니다.
+~[](./images/USB_03.png)
 
 
 -----
