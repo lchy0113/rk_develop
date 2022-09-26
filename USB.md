@@ -58,7 +58,7 @@ RK3568의 OTG 는 일반적으로 아래 3가지 타입으로 설계됩니다.
 
 ### 2.2.1. RK3568 OTG 포트 : Micro-B 인터페이스 회로 설계
 ### 2.2.2. RK3568 OTG 포트 : Type-A 인터페이스 회로 설계
-  - USB2.0 Type-A 인터페이스 
+  - USB2.0 Type-A 인터페이스 : (rk3568-poc)
   - USB3.0 Type-A 인터페이스 
 ### 2.2.3. RK3568 OTG 포트 : Type-C 인터페이스 회로 설계
 
@@ -123,6 +123,7 @@ USB3.0 으로 사용되는 RK3568 OTG의 DTS 구성은 아래와 같습니다.
 ### 3.1.3. USB 2.0 으로 configuration
 
 USB2.0 인터페이스로 구성된 RK3568 OTG의 DTS configuration 은 아래와 같습니다.
+(rk3568 poc)
 
 ```dtb
 &combphy0_us {				// usb 3.0 phy node
