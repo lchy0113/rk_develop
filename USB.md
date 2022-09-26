@@ -65,7 +65,6 @@ RK3568 USB 3.0 HOST Type-A 인터페이스 하드웨어 회로는 OTG 포트 Typ
 
 -----
 
-
 3. RK3568 USB DTS configuration 
 
 RK3568 USB 하드웨어 회로는 다양한 특성, 특히 USB OTG 포트의 유연한 하드웨어 회로와 복잡한 USB 3.0/SATA/QSGMII Combo PHY 다중화 관계를 가지고 있습니다. 
