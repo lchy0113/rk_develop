@@ -48,6 +48,8 @@ USB 인터페이스 이름과 인터페이스 유형 간의 해당 관계는 다
   * USB3_HOST1_SSRXN
 
 
+-----
+
 ✔ 용어 설명
 - USB 2.0 : PC의 각종 주변 장치들을 연결하기 위한 인터페이스 규격 중 하나. 
   다양한 버전이 있으며, 버전별로 속도가 다르다.(2.0의 경우, 480Mbit/s 의 데이터 속도)
@@ -61,6 +63,9 @@ USB 인터페이스 이름과 인터페이스 유형 간의 해당 관계는 다
   * SSTXN : SSUSB differential data pair, TX, negative, D+
   * SSRXP : SSUSB differential data pair, RX, positive, D-
   * SSRXN : SSUSB differential data pair, RX, negative, D-
+
+	  
+-----
 
 
 ✔ 커넥터
