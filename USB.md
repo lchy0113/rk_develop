@@ -390,7 +390,7 @@ echo otg > /sys/devices/platform/fe8a0000.usb2-phy/otg_mode
   * USB3_OTG0_SSRXP
   * USB3_OTG0_SSRXN
 
-**(USB30 HOST1_SS)**
+**(USB3.0 HOST1_SS)**
   * USB3_HOST1_SSTXP
   * USB3_HOST1_SSTXN
   * USB3_HOST1_SSRXP
