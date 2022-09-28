@@ -16,6 +16,7 @@ DDR 메모리에 대한 검증에 대한 내용을 설명합니다.
 
 [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
 [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
+[ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
 
 memtester : https://github.com/jnavila/memtester  
 stressapptest : https://github.com/stressapptest
