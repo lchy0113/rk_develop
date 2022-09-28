@@ -17,6 +17,8 @@ DDR 메모리에 대한 검증에 대한 내용을 설명합니다.
 [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
 [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
 
+stressapptest : https://github.com/stressapptest
+
 ```bash
 $ adb push memtester_64bit /data/memtester
 $ adb push stressapptest_64bit /data/stressapptest
@@ -247,3 +249,10 @@ DDR freq will change to 1560000000 3
 ### Reboot Test
 
 ### Sleep Test
+
+
+
+-----
+
+reference : 
+https://intrepidgeeks.com/tutorial/stressappst-user-guide 
