@@ -24,8 +24,13 @@ if [ ! -f $BUILD_PATH/.config ]; then
 	make $ADDON_ARGS ARCH=$KERNEL_ARCH O=$BUILD_PATH $KERNEL_DEFCONFIG
 fi
 
+if [ "$1" = "savedefconfig" ]; then
+	make $ADDON_ARGS ARCH=$KERNEL_ARCH O=$BUILD_PATH $1
+	exit
+fi
+
 if [ "$1" = "menuconfig" ]; then
-	make $ADDON_ARGS ARCH=$KERNEL_ARCH O=$BUILD_PATH menuconfig
+	make $ADDON_ARGS ARCH=$KERNEL_ARCH O=$BUILD_PATH $1
 	exit
 fi
 
