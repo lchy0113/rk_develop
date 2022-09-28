@@ -14,8 +14,8 @@ DDR 메모리에 대한 검증에 대한 내용을 설명합니다.
 
 1. test 파일 복사 
 
-[memtester test]: ./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/ "Go memtester"
-[stress test]: ./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/ "Go sttress"
+[memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/) "Go memtester"
+[stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/) "Go sttress"
 
 ```bash
 adb push 
