@@ -276,6 +276,9 @@ DDR freq will change to 1560000000 3
 (...)
 ```
 
+-----
+
+
 ### Reboot Test
 (작성 예정)
 
