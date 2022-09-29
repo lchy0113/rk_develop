@@ -36,6 +36,7 @@ $ adb shell chmod 0777 /data/ddr_freq_scan.sh
 2. wake lock 세팅
 
  wake_lock 을 활성화 하여, 항상 켜짐 상태를 유지 합니다.
+
 ```bash
 $ adb shell echo 1 > /sys/power/wake_lock
 ```
@@ -138,8 +139,8 @@ change frequency to available max frequency done.
 
 ### DDR stressapptest test 
 
-su 권한으로 동작합니다.
-시간을 정하여 시험을 진행합니다.
+su 권한으로 동작합니다.  
+시간을 정하여 시험을 진행합니다.  
 
 - stressapptest 
 
@@ -197,9 +198,9 @@ rk3568_poc:/# /data/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_errors -M 512
 ```
 - 결과 확인
 
-테스트가 종료되면 stressapptest 의 결과를 통해 PASS 또는 FAIL 인지 확인 할 수 있습니다.
-실패인 경우, Status: FAIL 이 노출됩니다.
-stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트 시간을 표시 합니다.
+테스트가 종료되면 stressapptest 의 결과를 통해 PASS 또는 FAIL 인지 확인 할 수 있습니다.  
+실패인 경우, Status: FAIL 이 노출됩니다.  
+stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트 시간을 표시 합니다.  
 
 
 -----
@@ -207,8 +208,8 @@ stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트
 
 ### memtester test 
 
-su 권한으로 동작합니다.
-시험 시간을 12시간 이상 입니다.
+su 권한으로 동작합니다.  
+시험 시간을 12시간 이상 입니다.  
 
 - memtester test
 
@@ -240,8 +241,8 @@ Loop 1:
 
 - 결과 확인
 
-memtester 도중 오류가 발견되면 중지됩니다. 
-memtester 시험이 12 시간 이상 실행되면 memtester에서 오류가 발견되지 않았다는 결과를 노출합니다.
+memtester 도중 오류가 발견되면 중지됩니다.   
+memtester 시험이 12 시간 이상 실행되면 memtester에서 오류가 발견되지 않았다는 결과를 노출합니다.  
 
 ```bash
 // 예제 입니다.
@@ -275,8 +276,8 @@ EXIT_FAIL_OTHERTEST
 
 ### DDR Frequency Scaling
 
-su 권한으로 동작합니다.
-시험 시간은 12시간 이상 소요되며, 로그를 통해 scaling이 동작 되는지 확인 할 수 있습니다.
+su 권한으로 동작합니다.  
+시험 시간은 12시간 이상 소요되며, 로그를 통해 scaling이 동작 되는지 확인 할 수 있습니다.  
 
 - DDR Frequency Scaling 
 
