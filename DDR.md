@@ -172,6 +172,28 @@ rk3568_poc:/ #
 // total capacity is 2GB, apply 256 MB for stressapptest. 12시간 
 rk3568_poc:/# /data/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_errors -M 512
 (...)
+
+2022/09/23-01:46:31(UTC) Log: Seconds remaining: 90
+2022/09/23-01:46:41(UTC) Log: Seconds remaining: 80
+2022/09/23-01:46:51(UTC) Log: Seconds remaining: 70
+2022/09/23-01:47:01(UTC) Log: Seconds remaining: 60
+2022/09/23-01:47:11(UTC) Log: Seconds remaining: 50
+2022/09/23-01:47:21(UTC) Log: Seconds remaining: 40
+2022/09/23-01:47:31(UTC) Log: Seconds remaining: 30
+2022/09/23-01:47:41(UTC) Log: Seconds remaining: 20
+2022/09/23-01:47:51(UTC) Log: Seconds remaining: 10
+2022/09/23-01:48:04(UTC) Stats: Found 0 hardware incidents
+2022/09/23-01:48:04(UTC) Stats: Completed: 117827448.00M in 43202.96s 2727.30MB/s, with 0 hardware incidents, 0 errors
+2022/09/23-01:48:04(UTC) Stats: Memory Copy: 61011528.00M at 1412.30MB/s
+2022/09/23-01:48:04(UTC) Stats: File Copy: 0.00M at 0.00MB/s
+2022/09/23-01:48:04(UTC) Stats: Net Copy: 0.00M at 0.00MB/s
+2022/09/23-01:48:04(UTC) Stats: Data Check: 0.00M at 0.00MB/s
+2022/09/23-01:48:04(UTC) Stats: Invert Data: 56815920.00M at 1315.18MB/s
+2022/09/23-01:48:04(UTC) Stats: Disk: 0.00M at 0.00MB/s
+2022/09/23-01:48:04(UTC)
+2022/09/23-01:48:04(UTC) Status: PASS - please verify no corrected errors
+2022/09/23-01:48:04(UTC)
+
 ```
 - 결과 확인
 
