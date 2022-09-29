@@ -14,12 +14,12 @@ DDR 메모리에 대한 검증에 대한 내용을 설명합니다.
 
 1. test 파일 복사 
 
-[memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
-[stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
-[ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
+  [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
+  [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
+  [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
 
-memtester : https://github.com/jnavila/memtester  
-stressapptest : https://github.com/stressapptest
+  memtester : https://github.com/jnavila/memtester  
+  stressapptest : https://github.com/stressapptest
 
 ```bash
 $ adb push memtester_64bit /data/memtester
@@ -95,7 +95,7 @@ CmaFree:               0 kB
 
 su 권한으로 동작합니다.
 
-1. fix DDR frequency
+- fix DDR frequency
 
 ```bash
 // run 1560 MHz
@@ -105,7 +105,7 @@ $ /data/ddr_freq_scan.sh 1560000000
 $ /data/ddr_freq_scan.sh 933000000
 ```
 
-2. 결과 확인
+- 결과 확인
 
 ```bash
 // 로그 예제
@@ -125,9 +125,12 @@ already change to 1560000000Hz done.
 change frequency to available max frequency done.
 ```
 
-3. google stressapptest test 
+### DDR google stressapptest test 
 
+su 권한으로 동작합니다.
 시간을 정하여 시험을 진행합니다.
+
+- stressapptest 
 
 ```bash
 // total capacity is 2GB, apply 256 MB for stressapptest. 10초
@@ -159,15 +162,18 @@ rk3568_poc:/ #
 rk3568_poc:/# /data/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_errors -M 512
 (...)
 ```
-4. 결과 확인
+- 결과 확인
 
 테스트가 종료되면 stressapptest 의 결과를 통해 PASS 또는 FAIL 인지 확인 할 수 있습니다.
 실패인 경우, Status: FAIL 이 노출됩니다.
 stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트 시간을 표시 합니다.
 
-5. memtester test 
+### memtester test 
 
+su 권한으로 동작합니다.
 시험 시간을 12시간 이상 입니다.
+
+- memtester test
 
 ```bash
 // total capacity is 2GB, apply 256 MB for memtester
@@ -195,7 +201,7 @@ Loop 1:
   rk3568_poc:/ #
 ```
 
-6. 결과 확인
+- 결과 확인
 
 memtester 도중 오류가 발견되면 중지됩니다. 
 memtester 시험이 12 시간 이상 실행되면 memtester에서 오류가 발견되지 않았다는 결과를 노출합니다.
@@ -228,7 +234,10 @@ EXIT_FAIL_OTHERTEST
 
 ### DDR Frequency Scaling
 
+su 권한으로 동작합니다.
 시험 시간은 12시간 이상 소요되며, 로그를 통해 scaling이 동작 되는지 확인 할 수 있습니다.
+
+- DDR Frequency Scaling 
 
 ```bash
 130|rk3568_poc:/ # /data/ddr_freq_scan.sh
