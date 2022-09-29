@@ -41,6 +41,9 @@ $ adb shell echo 1 > /sys/power/wake_lock
 ```
 
 
+-----
+
+
 ### Verify DDR Capacity
 
 타겟 보드의 MemTotal capacity는 아래 명령어를 통해 확인 할 수 있습니다.
@@ -91,6 +94,10 @@ CmaReleased:        7820 kB
 CmaFree:               0 kB
 ```
 
+
+-----
+
+
 ### DDR Frequency Test
 
 su 권한으로 동작합니다.
@@ -124,6 +131,10 @@ DMC_PATH:/sys/class/devfreq/dmc
 already change to 1560000000Hz done.
 change frequency to available max frequency done.
 ```
+
+
+-----
+
 
 ### DDR google stressapptest test 
 
@@ -167,6 +178,10 @@ rk3568_poc:/# /data/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_errors -M 512
 테스트가 종료되면 stressapptest 의 결과를 통해 PASS 또는 FAIL 인지 확인 할 수 있습니다.
 실패인 경우, Status: FAIL 이 노출됩니다.
 stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트 시간을 표시 합니다.
+
+
+-----
+
 
 ### memtester test 
 
@@ -232,6 +247,10 @@ EXIT_FAIL_OTHERTEST
 
 ```
 
+
+-----
+
+
 ### DDR Frequency Scaling
 
 su 권한으로 동작합니다.
@@ -259,6 +278,10 @@ DDR freq will change to 1560000000 3
 
 ### Reboot Test
 (작성 예정)
+
+
+-----
+
 
 ### Sleep Test
 (작성 예정)
