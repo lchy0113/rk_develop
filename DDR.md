@@ -136,7 +136,7 @@ change frequency to available max frequency done.
 -----
 
 
-### DDR google stressapptest test 
+### DDR stressapptest test 
 
 su 권한으로 동작합니다.
 시간을 정하여 시험을 진행합니다.
