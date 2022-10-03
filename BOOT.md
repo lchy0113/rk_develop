@@ -439,4 +439,18 @@ lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568
 Rebooting                                          OKAY [  0.001s]
 Finished. Total time: 0.051s
 ```
+
+
+5. firmware 다운로드(update.img)
+
+```bash
+update_tool uf /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_poc/update.img
+
+Loading firmware...
+Support Type:RK3568     FW Ver:c.0.00   FW Time:2022-09-29 17:42:17
+Loader ver:1.01 Loader Time:2022-09-29 17:36:37
+Download Image Total(3319014K),Current(1062258K)
+
+
+```
 - references : http://opensource.rock-chips.com/wiki_Boot_option
