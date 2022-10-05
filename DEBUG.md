@@ -39,6 +39,7 @@ Note access size (-1|2|4) does not apply to file based accesses.
 $ io -4 -r 0x1000				// read the value of 4-bit register starting from 0x1000
 $ io -4 -w 0x1000				// write the value of the 4-bit register from 0x1000
 ```
+## gpio iomux 
 
 ### 사용 예제
  -  View the multiplexing of GPIO3_C5 pins  
@@ -69,10 +70,45 @@ gpio3c5_sel
 
 Therefore, it can be determined that the GPIO is multiplexed as 3'h0: GPIO3_C5.
 
-
-
 ### GRF Address Mapping Table
 ![](./images/DEBUG_01.png)
+
+
+
+## gpio control
+> Rockchip_RK3568_TRM_Part1_V1.1-20210301.pdf 652 page
+- gpio pin의 data와 direction control은 GPIO_SWPORT_DR_L/GPIO_SWPORT_DR_H 레지스터에 의해 제어됩니다.
+- gpio pin의 direction control 은 GPIO_SWPORT_DDR_L/GPIO_SWPORT_DDR_H 레지스터에 의해 제어 됩니다.
+
+* 레지스터 설명
+
+| **GPIOs** 	| **Register** 	| **address** 	|
+|-----------	|--------------	|-------------	|
+| GPIO0     	| PD_PMU       	| 0xFDD60000  	|
+| GPIO1     	| PD_BUS       	| 0xFE740000  	|
+| GPIO2     	| PD_BUS       	| 0xFE750000  	|
+| GPIO3     	| PD_BUS       	| 0xFE760000  	|
+| GPIO4     	| PD_BUS       	| 0xFE770000  	|
+
+
+ex)
+GPIO4_D2 (gpio number;154)(gpio4_26)
+
+![](./images/DEBUG_03.png)
+
+```bash
+# gpio4 bank read value, direction
+rk3568_poc:/ # io -4 -r -l 0x10 0xfe770000
+fe770000:  00000000 00000400 00000000 00000400
+rk3568_poc:/ #
+
+
+# set out direction to gpio4_26 
+rk3568_poc:/ # io -4 -w 0xfe77000c 0x04000400 
+
+# set high value to gpio4_26
+rk3568_poc:/ # io -4 -w 0xfe770004 0x04000400 
+```
 
 ---
 
