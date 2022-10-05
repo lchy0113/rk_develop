@@ -41,15 +41,22 @@ $ io -4 -w 0x1000				// write the value of the 4-bit register from 0x1000
 ```
 
 ### 사용 예제
- -  View the multiplexing of GPIO1_B3 pins  
- -  From the datasheet of the master control, the base address of the register corresponding to GPIO1 is: 0xff320000  
- -  The offset of GPIO1B_IOMUX found from the datasheet of the master control is: 0x00014  
- -  The address of the iomux register of GPIO1_B3 is: base address (Operational Base) + offset (offset)=0xff320000+0x00014=0xff320014  
- -  Use the following command to check the multiplexing of GPIO1_B3:  
-```bash
-# io -4 -r 0xff320014
-ff320014:  0000816a
+ -  View the multiplexing of GPIO3_C5 pins  
+ -  From the datasheet of the master control, the base address of the register corresponding to GPIO3 is: 0xFDC60000 (SYS_GRF) 
+ -  The offset of GRF_GPIO3C_IOMUX_H found from the datasheet of the master control is: 0x0054 
+ -  The address of the iomux register of GPIO3_C5 is: base address (Operational Base) + offset (offset)=0xFDC60000 + 0x0054=0xFDC60054  
+ -  Use the following command to check the multiplexing of GPIO3_C5:  
 
+![](./images/DEBUG_02.png)
+
+```bash
+
+rk3568_poc:/ # io -4 -r -l 0x4 0xfdc60054
+fdc60054:  00000001
+```
+
+
+```bash
 rk3568_poc:/ # io -4 -r -l 100 0xfe040000
 fe040000:  0000c000 40158023 00000000 00000000
 fe040010:  00000ac0 00000000 00000000 00000000
