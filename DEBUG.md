@@ -56,35 +56,19 @@ fdc60054:  00000001
 ```
 
 
+ -  find [6:4] from the datasheet:
 ```bash
-rk3568_poc:/ # io -4 -r -l 100 0xfe040000
-fe040000:  0000c000 40158023 00000000 00000000
-fe040010:  00000ac0 00000000 00000000 00000000
-fe040020:  00000000 e0000010 00010010 00000000
-fe040030:  10000000 10000000 00000000 00000000
-fe040040:  68600000 10000030 00000000 00000000
-fe040050:  00000000 00000000 00000000 00000000
-fe040060:  00000002
-rk3568_poc:/ #
-
+gpio3c5_sel
+3'h0: GPIO3_C5
+3'h1: PWM15_M0
+3'h2: SPDIF_TXM1
+3'h3: GMAC1_MDIOM0
+3'h4: UART7_RXM1
+3'h5: I2S1_LRCKRXM2
 ```
 
- -  find [7:6] from the datasheet:
-```bash
-gpio1b3_sel
-GPIO1B[3] iomux select
-2'b00: gpio
-2'b01: i2c4sensor_sda
-2'b10: reserved
-2'b11: reserved
-```
+Therefore, it can be determined that the GPIO is multiplexed as 3'h0: GPIO3_C5.
 
-Therefore, it can be determined that the GPIO is multiplexed as i2c4sensor_sda.
-
- -  If you want to reuse as GPIO, you can use the following command setting
-```bash
-# io -4 -w 0xff320014 0x0000812a
-```
 
 
 ### GRF Address Mapping Table
