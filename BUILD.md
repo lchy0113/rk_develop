@@ -156,7 +156,11 @@ cp -a $OUT/parameter.txt $IMAGE_PATH/parameter.txt
 cp -a device/rockchip/common/baseparameter/v2.0/baseparameter.img $IMAGE_PATH/baseparameter.img
 ```
 
+- update.img 이미지 생성
 
+$ make -j32 rockdev
+$ cd RKTools/linux/Linux_Pack_Firmware/rockdev
+$ ./mkupdate.sh rk356x ../../../../rockdev/Image-rk3568_poc/
 
 - TO DO LIST
 
