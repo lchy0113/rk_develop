@@ -61,26 +61,25 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 	위의 그림에서 vccio_acodec이 RK809의 LDO4에 의해 power를 받는 다는 것을 확인 할 수 있습니다.  
 	다음과 같이 software의 dts에서 LDO_REG4(LDO4)의 구성 정보를 찾습니다.  
 
-```dtb
-
-&i2c0 {
-(...)
-	rk809: pmic@20 {
+	```dtb
+	&i2c0 {
 	(...)
-			vccio_acodec: LDO_REG4 {
-				regulator-always-on;
-				regulator-boot-on;
-				regulator-min-microvolt = <3300000>;
-				regulator-max-microvolt = <3300000>;
-				regulator-name = "vccio_acodec";
-				regulator-state-mem {
-					regulator-off-in-suspend;
+		rk809: pmic@20 {
+		(...)
+				vccio_acodec: LDO_REG4 {
+					regulator-always-on;
+					regulator-boot-on;
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
+					regulator-name = "vccio_acodec";
+					regulator-state-mem {
+						regulator-off-in-suspend;
+					};
 				};
-			};
-	(...)
+		(...)
+		};
 	};
-};
-```
+	```
 
 
 	위의 vccio_acodec를 pmu_io_domains 노드에서 vccio1-supply = <&&vccio_acodec>으로 구성하여 vccio1의 voltage 를 설정했습니다.
