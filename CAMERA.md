@@ -114,7 +114,7 @@ v4l2-ctl --verbose -d /dev/video0 --set-fmt-video=width=1920,height=1080,pixelfo
 ```bash
 # host pc
 ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
-# 
+```
 
 
 ---
