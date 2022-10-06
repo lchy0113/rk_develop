@@ -132,3 +132,8 @@ ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 		![](./images/CAMERA_01.png)
 
 	
+* rk3568-evb sensor 
+	- ov5695(4-0036)
+
+* reference code 
+	- drivers/media/i2c/techpoint/techpoint_dev.c
