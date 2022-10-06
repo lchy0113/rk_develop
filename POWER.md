@@ -66,6 +66,7 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 	(...)
 		rk809: pmic@20 {
 		(...)
+			regulators {
 				vccio_acodec: LDO_REG4 {
 					regulator-always-on;
 					regulator-boot-on;
@@ -76,6 +77,7 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 						regulator-off-in-suspend;
 					};
 				};
+			};
 		(...)
 		};
 	};
@@ -93,6 +95,43 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 	 회로도에서 *VDDA0V9_IMAGE*, *VCCA1V8_IMAGE* 을 검색하면 다음 모듈을 찾을 수 있습니다.
 
 	 ![](./images/POWER_07.png)
+
+	 ```dtb
+&i2c0 {
+	status = "okay";
+	(...)
+
+	rk809: pmic@20 {
+	(...)
+		regulators {
+		(...)
+			vdda0v9_image: LDO_REG1 {
+				regulator-boot-on;
+				regulator-always-on;
+				regulator-min-microvolt = <900000>;
+				regulator-max-microvolt = <900000>;
+				regulator-name = "vdda0v9_image";
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+		(...)
+			vcca1v8_image: LDO_REG9 {
+				regulator-always-on;
+				regulator-boot-on;
+				regulator-min-microvolt = <1800000>;
+				regulator-max-microvolt = <1800000>;
+				regulator-name = "vcca1v8_image";
+				regulator-state-mem {
+					regulator-off-in-suspend;
+				};
+			};
+		(...)
+		}
+	}
+	 ```
+
+//	 위의 **vdda0v9_image**, **vcca1v8_image** 를 pmu_io_domains 노드에서 
 
 <pr/>
 
