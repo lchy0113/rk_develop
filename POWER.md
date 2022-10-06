@@ -51,14 +51,15 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 
  * **VCCIO1(vccio1-supply) 기준(example)**
 
-![](./images/POWER_01.png)
-위 그림에서 VCCIO1의 power supply device는 vccio_acodec입니다.
-회로도에서 vccio_acodec를 검색하면 다음 모듈을 찾을 수 있습니다.
+	![](./images/POWER_01.png)
 
-![](./images/POWER_02.png)
+	위 그림에서 VCCIO1의 power supply device는 vccio_acodec입니다.  
+	회로도에서 vccio_acodec를 검색하면 다음 모듈을 찾을 수 있습니다.  
 
-위의 그림에서 vccio_acodec이 RK809의 LDO4에 의해 power를 받는 다는 것을 확인 할 수 있습니다.
-다음과 같이 software의 dts에서 LDO_REG4(LDO4)의 구성 정보를 찾습니다.
+	![](./images/POWER_02.png)  
+
+	위의 그림에서 vccio_acodec이 RK809의 LDO4에 의해 power를 받는 다는 것을 확인 할 수 있습니다.  
+	다음과 같이 software의 dts에서 LDO_REG4(LDO4)의 구성 정보를 찾습니다.  
 
 ```dtb
 
@@ -82,14 +83,14 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 ```
 
 
-위의 vccio_acodec를 pmu_io_domains 노드에서 vccio1-supply = <&&vccio_acodec>으로 구성하여 vccio1의 voltage 를 설정했습니다.
+	위의 vccio_acodec를 pmu_io_domains 노드에서 vccio1-supply = <&&vccio_acodec>으로 구성하여 vccio1의 voltage 를 설정했습니다.
 
 
  * **MIPI_CSI_RX_AVDD_0V9 & MIPI_CSI_RX_AVDD_1V8 기준(example)**
 
 	 ![](./images/POWER_06.png)
 
-	 위의 그림에서 MIPI_CSI_RX의 power supply device는 *VDDA0V9_IMAGE*, *VCCA1V8_IMAGE* 입니다. 
+	 위의 그림에서 MIPI_CSI_RX의 power supply device는 *VDDA0V9_IMAGE*, *VCCA1V8_IMAGE* 입니다.   
 	 회로도에서 *VDDA0V9_IMAGE*, *VCCA1V8_IMAGE* 을 검색하면 다음 모듈을 찾을 수 있습니다.
 
 <pr/>
