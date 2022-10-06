@@ -92,6 +92,8 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 	 위의 그림에서 MIPI_CSI_RX의 power supply device는 *VDDA0V9_IMAGE*, *VCCA1V8_IMAGE* 입니다.   
 	 회로도에서 *VDDA0V9_IMAGE*, *VCCA1V8_IMAGE* 을 검색하면 다음 모듈을 찾을 수 있습니다.
 
+	 ![](./images/POWER_07.png)
+
 <pr/>
 
 ## register check 
