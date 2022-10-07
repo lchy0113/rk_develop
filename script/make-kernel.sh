@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ ! -f ./kernel/configs/kconfig.config ]; then
+	echo "...link kconfig.config"
+	ln -s ../../../device/kdiwin/test/rk3568_poc/kconfig.config ./kernel/configs/kconfig.config
+fi
+
 export PATH=$ANDROID_BUILD_TOP/prebuilts/clang/host/linux-x86/clang-r416183b/bin:$PATH
 
 BUILD_PATH="../build_linux_4.19.232"
@@ -7,10 +12,10 @@ ADDON_ARGS="CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
 KERNEL_ARCH="arm64"
 KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config kconfig.config"
 # ./kernel-4.19/arch/arm64/configs/rockchip_defconfig 
-# ./mkcombinedroot/configs/android-11.config
-# ./kernel/configs/android-4.19/non_debuggable.config
-# ./mkcombinedroot/configs/disable_incfs.config
-# ./device/kdiwin/nova/rk3568/kconfig.config
+# ./kernel/configs/android-11.config -> ../../../mkcombinedroot/configs/android-11.config
+# ./kernel/configs/non_debuggable.config -> ../../../mkcombinedroot/configs/non_debuggable.config 
+# ./kernel/configs/disable_incfs.config -> ../../../mkcombinedroot/configs/disable_incfs.config
+# ./kernel/configs/kconfig.config -> ../../../device/kdiwin/test/rk3568_poc/kconfig.config
 KERNEL_DTS="rk3568-poc-v00"
 
 if [ ! -d $BUILD_PATH ]; then
