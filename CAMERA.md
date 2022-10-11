@@ -444,6 +444,8 @@ v4l2-ctl --verbose -d /dev/video0 --set-fmt-video=width=1920,height=1080,pixelfo
 ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 ```
 
+## Link relationship : 
+* sensor->csi2_dphy0->isp
 
 ---
 
@@ -494,3 +496,5 @@ struct v4l2_subdev_ops
 | MIPI_CSI_RX_CLK0P 	| MIPI_CSI_RX_CLK0P 	| 0xFE870000        	|
 | MIPI_CSI_RX_CLK0N 	| MIPI_CSI_RX_CLK0N 	| 0xFE870000        	|
 
+
+* RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
