@@ -465,3 +465,29 @@ ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 
 * reference code 
 	- drivers/media/i2c/techpoint/techpoint_dev.c
+
+
+
+
+---
+
+## Develop
+
+* v4l2
+```c
+struct v4l2_subdev_ops 
+```
+
+* hw Interface
+| **GPIOs**         	| **IOMUX**         	| **address**       	|
+|-------------------	|-------------------	|-------------------	|
+| GPIO4_B2          	| RESERVE_SDA       	| 0xFDC60068[08:10] 	|
+| GPIO4_B3          	| RESERVE_SCL       	| 0xFDC60068[14:12] 	|
+| GPIO3_C6          	| MIPI_CAM0_RST     	| 0xFDC60054[10:8]  	|
+| MIPI_CSI_RX_D0P   	| MIPI_CSI_RX_D0P   	| 0xFE870000        	|
+| MIPI_CSI_RX_D0N   	| MIPI_CSI_RX_D0N   	| 0xFE870000        	|
+| MIPI_CSI_RX_D1P   	| MIPI_CSI_RX_D1P   	| 0xFE870000        	|
+| MIPI_CSI_RX_D1N   	| MIPI_CSI_RX_D1N   	| 0xFE870000        	|
+| MIPI_CSI_RX_CLK0P 	| MIPI_CSI_RX_CLK0P 	| 0xFE870000        	|
+| MIPI_CSI_RX_CLK0N 	| MIPI_CSI_RX_CLK0N 	| 0xFE870000        	|
+
