@@ -517,7 +517,6 @@ static int __init tp2802_module_init(void)
 * rk3568-evb sensor 
 	- ov5695(4-0036)
 	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  : 외부 크리스탈을 대체 하여 Soc 에서 발진
-	- [ ] MIPI_CSI_RX_CLK0N, MIPI_CSI_RX_CLK0P 핀 확인. : 
 
 * reference code 
 	- drivers/media/i2c/techpoint/techpoint_dev.c
@@ -549,4 +548,5 @@ struct v4l2_subdev_ops
 | MIPI_CSI_RX_CLK0N 	| MIPI_CSI_RX_CLK0N 	| 0xFE870000        	|
 
 
-* RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
+* code 
+	- [ ] RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
