@@ -464,7 +464,7 @@ ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 	
 * rk3568-evb sensor 
 	- ov5695(4-0036)
-	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  :
+	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  : 외부 크리스탈을 대체 하여 Soc 에서 발진
 	- [ ] MIPI_CSI_RX_CLK0N, MIPI_CSI_RX_CLK0P 핀 확인. : 
 
 * reference code 
