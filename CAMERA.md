@@ -449,6 +449,58 @@ ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 
 ---
 
+# techpoint tp2825 
+
+
+* 코드 분석 
+```c
+static int __init tp2802_module_init(void)
+	|
+	+-> misc_regiser(&tp2802_dev);
+	|	// register misc device
+	|		static struct file_operations tp2802_fops =
+	|	    {
+	|			.owner = THIS_MODULE,
+	|			.unlocked_ioctl = tp2802_ioctl,
+	|			.open = tp2802_open,
+	|			.release = tp2802_close
+	|		};
+	|		|
+	|		+-> long tp2802_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+	|		|	/**
+	|		|	  * TP2802_READ_REG:
+	|		|	  * TP2802_WRITE_REG:
+	|		|	  * TP2802_SET_VIDEO_MODE:
+	|		|	  * TP2802_GET_VIDEO_MODE:
+	|		|	  * TP2802_GET_VIDEO_LOSS:
+	|		|	  * TP2802_SET_IMAGE_ADJUST:
+	|		|	  * TP2802_GET_IMAGE_ADJUST:
+	|		|	  * TP2802_SET_PTZ_DATA:
+	|		|	  * TP2802_GET_PTZ_DATA:
+	|		|	  * TP2802_SET_SCAN_MODE:
+	|		|	  * TP2802_DUMP_REG:
+	|		|	  * TP2802_FORCE_DETECT:
+	|		|	  * TP2802_SET_BURST_DATA:
+	|		|	  * TP2802_SET_VIDEO_INPUT:
+	|		|	  * TP2802_SET_PTZ_MODE:
+	|		|	  * TP2802_SET_RX_MODE:
+	|		|	  * TP2802_SET_FIFO_DATA:
+	|		+-> // open, release 는 특별한 기능 없음.
+	+-> i2c_client_init();
+	|	// register i2c device
+	|
+	+-> tp2802_comm_init();
+	|	// tp2860 초기화 코드 동작(write register)
+	|	// TP2825B_reset_default(chip, VIDEO_PAGE)
+	|	// tp2802_set_video_mode(chip, mode, VIDEO_PAGE, STD_TVI)
+	|	// TP2860_output(chip);
+	|	// TP2825B_RX_init(chip, PTZ_RX_TVI_CMD);
+	printk("TP2825B Driver Init Successful!\n");
+
+```
+
+---
+
 ## Note
 * CIF : 
 * ISP : Image Signal Processing  
