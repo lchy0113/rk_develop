@@ -493,6 +493,9 @@ static int __init tp2802_module_init(void)
 	|	// tp2860 초기화 코드 동작(write register)
 	|	// TP2825B_reset_default(chip, VIDEO_PAGE)
 	|	// tp2802_set_video_mode(chip, mode, VIDEO_PAGE, STD_TVI)
+	|		// mode : #define DEFAULT_FORMAT TP2802_1080P25(0x03) -> TP2802_NTSC(0x09)
+	|		|
+	|		+-> tp2802_set_work_mode_NTSC(chip)
 	|	// TP2860_output(chip);
 	|	// TP2825B_RX_init(chip, PTZ_RX_TVI_CMD);
 	printk("TP2825B Driver Init Successful!\n");
@@ -550,3 +553,4 @@ struct v4l2_subdev_ops
 
 * code 
 	- [ ] RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
+	- [ ] PTZ 란 ? :
