@@ -479,6 +479,7 @@ struct v4l2_subdev_ops
 ```
 
 * hw Interface
+
 | **GPIOs**         	| **IOMUX**         	| **address**       	|
 |-------------------	|-------------------	|-------------------	|
 | GPIO4_B2          	| RESERVE_SDA       	| 0xFDC60068[08:10] 	|
