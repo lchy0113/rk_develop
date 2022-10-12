@@ -21,7 +21,8 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 
 ## Full Mode 설정
 
-
+- link path :
+	* sensor -> csi2_dphy0 -> isp
 ### configure sensor
 
 - camera sensor와 통신하는 i2c 버스 세팅. 
