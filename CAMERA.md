@@ -535,6 +535,10 @@ static int __init tp2802_module_init(void)
 * v4l2
 ```c
 struct v4l2_subdev_ops 
+
+struct v4l2_ctrl_ops
+
+struct v4l2_ctrl_handler
 ```
 
 * hw Interface
@@ -554,4 +558,31 @@ struct v4l2_subdev_ops
 
 * code 
 	- [ ] RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
-	- [ ] PTZ 란 ? :
+	- [x] PTZ 란 ? : cctv 에서 카메라 모듈을 제어하는 기능
+	- [x] sensor와 cif가 바인딩되었는지 확인. : rkisp-vir0: Async subdev notifier completed 
+
+* debug 활성화
+	```bash
+	echo 1 > /sys/module/video_rkcif/parameters/debug
+	// vb2(vpu/isp)
+	echo 7 > /sys/module/videobuf2_core/parameters/debug
+	```
+
+* dumpsys CAMERA
+	```bash
+	dumpsys media.camera
+	```
+
+* write register timing
+```c
+__ov5695_start_stream
+	|	// preview 시작 시,
+	+-> ret = ov5695_write_array(ov5695->client, ov5695->cur_mode->reg_list);
+
+
+__ov5695_stop_stream
+	| preview 종료 시,	
+	+-> 
+```
+
+
