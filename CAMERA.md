@@ -560,6 +560,7 @@ struct v4l2_ctrl_handler
 	- [ ] RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
 	- [x] PTZ 란 ? : cctv 에서 카메라 모듈을 제어하는 기능
 	- [x] sensor와 cif가 바인딩되었는지 확인. : rkisp-vir0: Async subdev notifier completed 
+	- [ ] BLOB, YCbCr_420_888, IMPLEMENTATION_DEFINED
 
 * debug 활성화
 	```bash
