@@ -534,6 +534,41 @@ static int __init tp2802_module_init(void)
 
 * v4l2
 
+	- pad : pad는 entity 와 entity 간 연결 end-point 입니다.
+	- link : 2개의 pad간 연결 인터페이스 입니다. data는 source pad에서 sink pad로 이동합니다.
+	- media device : include/media/media-device.h 에 정의된 struct media_device 의 인스턴스 입니다. 
+	- entities : include/media/media-entity.h 에 정의된 struct media_entity 의 인스턴스 입니다. v4l2_subdev 또는 video_device instances 인스턴스와 같은 구조의 higher-level structure입니다.
+	- media_device 
+
+```c
+struct media_device {
+	struct device *dev;
+	struct media_devnode *devnode;
+	char model[32];
+	char driver_name[32];
+	char serial[40];
+	char bus_info[32];
+	u32 hw_revision;
+	u64 topology_version;
+	u32 id;
+	struct ida entity_internal_idx;
+	int entity_internal_idx_max;
+	struct list_head entities;
+	struct list_head interfaces;
+	struct list_head pads;
+	struct list_head links;
+	struct list_head entity_notify;
+	struct mutex graph_mutex;
+	struct media_graph pm_count_walk;
+	void *source_priv;
+	int (*enable_source)(struct media_entity *entity, struct media_pipeline *pipe);
+	void (*disable_source)(struct media_entity *entity);
+	const struct media_device_ops *ops;
+	struct mutex req_queue_mutex;
+	atomic_t request_id;
+};
+```
+
 	- v4l2_subdev
 
 ```c
@@ -601,6 +636,8 @@ struct v4l2_ctrl_ops
 
 struct v4l2_ctrl_handler
 ```
+
+--- 
 
 * hw Interface
 
