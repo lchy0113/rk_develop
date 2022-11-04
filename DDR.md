@@ -2,7 +2,7 @@
 
 ## DDR Verification 과정 
 
-DDR 메모리에 대한 검증에 대한 내용을 설명합니다.
+DDR 메모리 대한 검증에 대한 내용을 설명합니다.
 
 ### 조건 
 
@@ -22,13 +22,13 @@ DDR 메모리에 대한 검증에 대한 내용을 설명합니다.
   stressapptest : https://github.com/stressapptest
 
 ```bash
-$ adb push memtester_64bit /data/memtester
-$ adb push stressapptest_64bit /data/stressapptest
-$ adb push ddr_freq_scan.sh /data/ddr_freq_scan.sh
+$ adb push memtester_64bit /data/local/tmp/memtester
+$ adb push stressapptest_64bit /data/local/tmp/stressapptest
+$ adb push ddr_freq_scan.sh /data/local/tmp/ddr_freq_scan.sh
 
-$ adb shell chmod 0777 /data/memtester
-$ adb shell chmod 0777 /data/stressapptest
-$ adb shell chmod 0777 /data/ddr_freq_scan.sh
+$ adb shell chmod 0777 /data/local/tmp/memtester
+$ adb shell chmod 0777 /data/local/tmp/stressapptest
+$ adb shell chmod 0777 /data/local/tmp/ddr_freq_scan.sh
 
 ```
 
