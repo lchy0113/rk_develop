@@ -43,7 +43,7 @@ $ adb shell echo 1 > /sys/power/wake_lock
 
 -----
 
-## 3. 시험
+## 3. test
 
 
 ### Verify DDR Capacity
