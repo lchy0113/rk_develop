@@ -102,7 +102,8 @@ CmaFree:               0 kB
 
 su 권한으로 동작합니다.  
 
-- stressapptest 
+- stressapptest : stressful application test 이름이며, (stressapptest, Unix 이름) 메모리 인터페이스 테스트 툴 입니다. 프로세서 및 I/O 에서 random 트래픽을 생성하여 고부하 상황을 만들어 메모리를 시험합니다. 
+
 
 ```bash
 // total capacity is 2GB, apply 256 MB for stressapptest. 10초
