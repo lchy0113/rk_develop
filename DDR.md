@@ -98,10 +98,9 @@ CmaFree:               0 kB
 
 
 
-### DDR stressapptest test 
+### 3.2 DDR stress test 
 
 su 권한으로 동작합니다.  
-시간을 정하여 시험을 진행합니다.  
 
 - stressapptest 
 
@@ -167,7 +166,7 @@ stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트
 -----
 
 
-### memtester test 
+### 3.3 memtester test 
 
 su 권한으로 동작합니다.  
 시험 시간을 12시간 이상 입니다.  
@@ -203,7 +202,7 @@ Loop 1:
 - 결과 확인
 
 memtester 도중 오류가 발견되면 중지됩니다.   
-memtester 시험이 12 시간 이상 실행되면 memtester에서 오류가 발견되지 않았다는 결과를 노출합니다.  
+memtester 시험이 12 시간 이상 소요되며.  memtester에서 오류가 발견되지 않았다는 결과를 출력합니다.   
 
 ```bash
 // 예제 입니다.
@@ -233,35 +232,6 @@ EXIT_FAIL_OTHERTEST
 
 
 -----
-
-
-### DDR Frequency Scaling
-
-su 권한으로 동작합니다.  
-시험 시간은 12시간 이상 소요되며, 로그를 통해 scaling이 동작 되는지 확인 할 수 있습니다.  
-
-- DDR Frequency Scaling 
-
-```bash
-130|rk3568_poc:/ # /data/ddr_freq_scan.sh
-DMC_PATH:/sys/class/devfreq/dmc
-available_frequencies:
-324000000
-528000000
-780000000
-1560000000
-DDR freq will change to 528000000 0
-already change to 1560000000 done
-DDR freq will change to 1560000000 1
-already change to 1560000000 done
-DDR freq will change to 780000000 2
-already change to 1560000000 done
-DDR freq will change to 1560000000 3
-(...)
-```
-
------
-
 
 
 ### DDR Frequency Test
