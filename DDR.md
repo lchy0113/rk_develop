@@ -8,6 +8,8 @@
 - 타겟 장치의 total ddr memory size 를 타겟으로 합니다.
 - ddr frequency 가 고정된 상태인 경우, 최대 frequency 로 세팅해야 합니다.
 
+-----
+
 ## 2. 준비 과정 
 
 - test 파일 다운로드
@@ -33,15 +35,15 @@ $ adb shell chmod 0777 /data/local/tmp/ddr_freq_scan.sh
 
 
 - wake lock 세팅
-
  wake_lock 을 활성화 하여, 항상 켜짐 상태를 유지 합니다.
 
 ```bash
 $ adb shell echo 1 > /sys/power/wake_lock
 ```
 
-
 -----
+
+## 3. 시험
 
 
 ### Verify DDR Capacity
