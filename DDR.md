@@ -1,4 +1,4 @@
-# DDR 
+# DDR verification
 
 > DDR 메모리 대한 검증에 대한 내용을 설명합니다.
 
@@ -46,7 +46,7 @@ $ adb shell echo 1 > /sys/power/wake_lock
 ## 3. Verification
 
 
-### Verify DDR Capacity
+### 3.1 Verify DDR Capacity
 
 타겟 보드의 MemTotal capacity는 아래 명령어를 통해 확인 할 수 있습니다.
 
@@ -96,46 +96,6 @@ CmaReleased:        7820 kB
 CmaFree:               0 kB
 ```
 
-
------
-
-
-### DDR Frequency Test
-
-su 권한으로 동작합니다.
-
-- fix DDR frequency
-
-```bash
-// run 1560 MHz
-$ /data/ddr_freq_scan.sh 1560000000
-
-// run 928 MHz
-$ /data/ddr_freq_scan.sh 933000000
-```
-
-- 결과 확인
-
-```bash
-// 로그 예제
-rk3568_poc:/ # /data/ddr_freq_scan.sh 933000000
-DMC_PATH:/sys/class/devfreq/dmc
-already change to 1560000000Hz done.
-change frequency to available max frequency done.
-
-rk3568_poc:/ # /data/ddr_freq_scan.sh 800000000
-DMC_PATH:/sys/class/devfreq/dmc
-already change to 1560000000Hz done.
-change frequency to available max frequency done.
-
-rk3568_poc:/ # /data/ddr_freq_scan.sh 1560000000
-DMC_PATH:/sys/class/devfreq/dmc
-already change to 1560000000Hz done.
-change frequency to available max frequency done.
-```
-
-
------
 
 
 ### DDR stressapptest test 
@@ -303,16 +263,9 @@ DDR freq will change to 1560000000 3
 -----
 
 
-### Reboot Test
+
+### DDR Frequency Test
 (작성 예정)
-
-
------
-
-
-### Sleep Test
-(작성 예정)
-
 
 
 -----
