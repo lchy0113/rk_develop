@@ -12,11 +12,11 @@
 
 - test 파일 다운로드
 
-  - [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
+  * [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
   memtester : https://github.com/jnavila/memtester  
-  - [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
+  * [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
   stressapptest : https://github.com/stressapptest
-  - [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
+  * [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
 
 
 
@@ -32,7 +32,7 @@ $ adb shell chmod 0777 /data/local/tmp/ddr_freq_scan.sh
 ```
 
 
-2. wake lock 세팅
+- wake lock 세팅
 
  wake_lock 을 활성화 하여, 항상 켜짐 상태를 유지 합니다.
 
