@@ -8,16 +8,17 @@
 - 타겟 장치의 total ddr memory size 를 타겟으로 합니다.
 - ddr frequency 가 고정된 상태인 경우, 최대 frequency 로 세팅해야 합니다.
 
-### 준비 과정 
+## 2. 준비 과정 
 
-1. test 파일 복사 
+- test 파일 다운로드
 
-  [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
-  [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
-  [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
-
+  - [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
   memtester : https://github.com/jnavila/memtester  
+  - [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
   stressapptest : https://github.com/stressapptest
+  - [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
+
+
 
 ```bash
 $ adb push memtester_64bit /data/local/tmp/memtester
