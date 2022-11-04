@@ -131,7 +131,7 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 	}
 ```  
       
-	위의 **vdda0v9_image**, **vcca1v8_image** 를 pmu_io_domains 노드에서 ... 으로 구성하여 vccio1의 voltage 를 설정했습니다.
+위의 **vdda0v9_image**, **vcca1v8_image** 를 pmu_io_domains 노드에서 ... 으로 구성하여 vccio1의 voltage 를 설정했습니다.
 	  
 
 <pr/>
