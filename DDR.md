@@ -17,7 +17,7 @@
   * [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
  	 *stressapptest* : https://github.com/stressapptest
   * [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
-	  *memtester* : https://github.com/jnavila/memtester  
+	  *memtester* : https://pyropus.ca./software/memtester/, https://github.com/jnavila/memtester  
   * [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
 
 
@@ -172,7 +172,7 @@ stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트
 su 권한으로 동작합니다.  
 시험 시간을 12시간 이상 입니다.  
 
-- memtester test
+- memtester test : 메모리 서브시스템의 결합 여부를 시험하는 툴 입니다.
 
 ```bash
 // total capacity is 2GB, apply 256 MB for memtester
