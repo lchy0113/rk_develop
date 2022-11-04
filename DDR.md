@@ -106,8 +106,8 @@ su 권한으로 동작합니다.
 
 ```bash
 // total capacity is 2GB, apply 256 MB for stressapptest. 10초
-rk3568_poc:/ # /data/stressapptest -s 10 -i 4 -C 4 -W --stop_on_errors -M 128
-2022/09/22-13:22:10(UTC) Log: Commandline - /data/stressapptest -s 10 -i 4 -C 4 -W --stop_on_errors -M 128
+rk3568_poc:/ # /data/local/tmp/stressapptest -s 10 -i 4 -C 4 -W --stop_on_errors -M 128
+2022/09/22-13:22:10(UTC) Log: Commandline - /data/local/tmp/stressapptest -s 10 -i 4 -C 4 -W --stop_on_errors -M 128
 2022/09/22-13:22:10(UTC) Stats: SAT revision 1.0.7_autoconf, 64 bit binary
 2022/09/22-13:22:10(UTC) Log: cym @ HP on Thu Jan 16 10:30:56 CST 2020 from open source release
 2022/09/22-13:22:10(UTC) Log: 1 nodes, 4 cpus.
@@ -131,7 +131,7 @@ rk3568_poc:/ # /data/stressapptest -s 10 -i 4 -C 4 -W --stop_on_errors -M 128
 rk3568_poc:/ #
 
 // total capacity is 2GB, apply 256 MB for stressapptest. 12시간 
-rk3568_poc:/# /data/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_errors -M 512
+rk3568_poc:/# /data/local/tmp/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_errors -M 512
 (...)
 
 2022/09/23-01:46:31(UTC) Log: Seconds remaining: 90
@@ -176,7 +176,7 @@ su 권한으로 동작합니다.
 ```bash
 // total capacity is 2GB, apply 256 MB for memtester
 
-130|rk3568_poc:/ # /data/memtester 256m
+130|rk3568_poc:/ # /data/local/tmp/memtester 256m
 memtester version 4.3.0_20200721 (32-bit)
 Copyright (C) 2001-2012 Charles Cazabon.
 Licensed under the GNU General Public License version 2 (only).
