@@ -198,8 +198,8 @@ Usage: ./memtester [-p physaddrbase [-d device]] [-e exit_when_error][-t test_pa
        bit16: 16-bit Writes
        example: -t 0x1000,enable Bit Flip only
 
-// total capacity is 2GB, apply 256 MB for memtester
-130|rk3568_poc:/ # /data/local/tmp/memtester 256m
+// total capacity is 2GB, apply 512 MB for memtester
+130|rk3568_poc:/ # /data/local/tmp/memtester 512M 10
 memtester version 4.3.0_20200721 (32-bit)
 Copyright (C) 2001-2012 Charles Cazabon.
 Licensed under the GNU General Public License version 2 (only).
