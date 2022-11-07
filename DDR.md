@@ -175,8 +175,31 @@ su 권한으로 동작합니다.
 - memtester test : 메모리 서브시스템의 결합 여부를 시험하는 툴 입니다.
 
 ```bash
-// total capacity is 2GB, apply 256 MB for memtester
+// help
+Usage: ./memtester [-p physaddrbase [-d device]] [-e exit_when_error][-t test_pattern] [-c chip name]<mem>[B|K|M|G] [loops]
+-p  testing phys address
+-e  if not 0, exit immediately when test fail
+-t  testing pattern mask, if null or 0 enable all test pattern
+       bit0: Random Value
+       bit1: Compare XOR
+       bit2: Compare SUB
+       bit3: Compare MUL
+       bit4: Compare DIV
+       bit5: Compare OR
+       bit6: Compare AND
+       bit7: Sequential Increment
+       bit8: Solid Bits
+       bit9: Block Sequential
+       bit10: Checkerboard
+       bit11: Bit Spread
+       bit12: Bit Flip
+       bit13: Walking Ones
+       bit14: Walking Zeroes
+       bit15: 8-bit Writes
+       bit16: 16-bit Writes
+       example: -t 0x1000,enable Bit Flip only
 
+// total capacity is 2GB, apply 256 MB for memtester
 130|rk3568_poc:/ # /data/local/tmp/memtester 256m
 memtester version 4.3.0_20200721 (32-bit)
 Copyright (C) 2001-2012 Charles Cazabon.
