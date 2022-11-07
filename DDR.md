@@ -199,27 +199,47 @@ Usage: ./memtester [-p physaddrbase [-d device]] [-e exit_when_error][-t test_pa
        example: -t 0x1000,enable Bit Flip only
 
 // total capacity is 2GB, apply 512 MB for memtester
-130|rk3568_poc:/ # /data/local/tmp/memtester 512M 10
+rk3568_poc:/data/local/tmp # ./memtester 512M 1
 memtester version 4.3.0_20200721 (32-bit)
 Copyright (C) 2001-2012 Charles Cazabon.
 Licensed under the GNU General Public License version 2 (only).
 
 pagesize is 4096
 pagesizemask is 0xfffffffffffff000
-want 256MB (268435456 bytes)
-got  256MB (268435456 bytes), trying mlock ...locked.
-testing from phyaddress:0xe2e8000
+want 512MB (536870912 bytes)
+got  512MB (536870912 bytes), trying mlock ...locked.
+testing from phyaddress:0x319da000
 no available chip info, using default maping
-Loop 1:
-  Stuck Address       : setting   3^C
-  *************************************************************
-  memtester result:
-  Log: had found 0 failures.
+Loop 1/1:
+  Stuck Address       : ok
+  Random Value        : ok
+  Compare XOR         : ok
+  Compare SUB         : ok
+  Compare MUL         : ok
+  Compare DIV         : ok
+  Compare OR          : ok
+  Compare AND         : ok
+  Sequential Increment: ok
+  Solid Bits          : ok
+  Block Sequential    : ok
+  Checkerboard        : ok
+  Bit Spread          : ok
+  Bit Flip            : ok
+  Walking Ones        : ok
+  Walking Zeroes      : ok
+  8-bit Writes        : ok
+  16-bit Writes       : ok
 
-  Status: PASS.
 
-  *************************************************************
-  rk3568_poc:/ #
+*************************************************************
+memtester result:
+Log: had found 0 failures.
+
+Status: PASS.
+
+*************************************************************
+rk3568_poc:/data/local/tmp #
+
 ```
 
 - 결과 확인
