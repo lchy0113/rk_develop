@@ -475,8 +475,6 @@ __ov5695_stop_stream
 ```
 
 
-
-
 -----
 
 ## 2. CAMERA(dvp)
