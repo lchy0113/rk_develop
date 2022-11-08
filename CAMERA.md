@@ -613,10 +613,26 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 [    1.331093] rkisp-vir0: Async subdev notifier completed
 ```
 
+
 ---
 
-## 4. isp 
+## 4. VICAP
 
+ * VICAP : Video Input Processor
+ * VICAP 드라이버는 주로 v4l2 또는 media framework를 기반으로 하여 subdevices의 hardware configuration, interrupt processing, control buffer rotation, control power 처리를 제공합니다.
+ * RK3568의 경우, VICAP는 하나의 Core와 2개의 인터페이스(dvp, mipi)를 제공합니다.
+	 - dvp 인터페이스의 경우, rkvicap_dvp node 와 연결.
+	 - mipi 인터페이스의 경우, rkvicap_mipi_lvds node 와 연결.
+ * VICAP에 입력된 데이터를 ISP 드라이버와 동기화 하기 위해서 VICAP 드라이버는 sditf 노드를 사용합니다.
+ 	- dvp 인터페이스의 경우, rkvicap_dvp_sditf 노드를 생성.
+	- mipi/lvds 인터페이스의 경우, rkvicap_mipi_lvds_sditf 노드 생성.
+ * 아래 그림은 VICAP에 의해 구동되는 device topology를 설명합니다.
+	~[](./images/CAMERA_03.png)	
+
+
+---
+
+## 5. ISP 
 
  * ISP : Image Signal Processing  
 	- ISP 는 아래 기능을 포함합니다.
@@ -627,9 +643,15 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 		+ Resize
 	- block diagram
 		![](./images/CAMERA_01.png)
+
+ * ISP 와 VICAP 모듈 간 관계
+	- rk3568 플랫폼은 VICAP와  ISP,  2개의 독립적인 이미지 프로세싱 IP 를 가지고 있습니다. 
+	- VICAP에서 입력된 데이터를 ISP에서 처리하는 경우, VICAP의 인터페이스의 v4l2 subdev 를 생성하여 ISP 노드에 연결해야 합니다.
+
+
 ---
 
-## 5. techpoint tp2825 
+## 6. techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
