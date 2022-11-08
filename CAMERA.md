@@ -439,6 +439,7 @@ Linux Kernel-4.19
 	- [x] PTZ 란 ? : cctv 에서 카메라 모듈을 제어하는 기능
 	- [x] sensor와 cif가 바인딩되었는지 확인. : rkisp-vir0: Async subdev notifier completed 
 	- [x] BLOB, YCbCr_420_888, IMPLEMENTATION_DEFINED
+	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  : 외부 크리스탈을 대체 하여 Soc 에서 발진
 
 
 ### 1.5 Camera 디버깅
@@ -485,6 +486,16 @@ __ov5695_stop_stream
 
 ## 3. isp 
 
+
+ * ISP : Image Signal Processing  
+	- ISP 는 아래 기능을 포함합니다.
+		+ MIPI serial camera Interface
+		+ Image Signal Processing
+		+ Many Image Enhancement Blocks
+		+ Crop
+		+ Resize
+	- block diagram
+		![](./images/CAMERA_01.png)
 ---
 
 ## 4. techpoint tp2825 
@@ -545,26 +556,4 @@ static int __init tp2802_module_init(void)
 ---
 
 ## Note
-* CIF : 
-* ISP : Image Signal Processing  
-	- ISP 는 아래 기능을 포함합니다.
-		+ MIPI serial camera Interface
-		+ Image Signal Processing
-		+ Many Image Enhancement Blocks
-		+ Crop
-		+ Resize
-	- block diagram
-		![](./images/CAMERA_01.png)
-
-	
-* rk3568-evb sensor 
-	- ov5695(4-0036)
-	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  : 외부 크리스탈을 대체 하여 Soc 에서 발진
-
-* reference code 
-	- drivers/media/i2c/techpoint/techpoint_dev.c
-
-
-
-
 
