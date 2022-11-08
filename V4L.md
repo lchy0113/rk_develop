@@ -102,11 +102,34 @@ struct v4l2_subdev_internal_ops : v4l2 subdev internal ops
 
 ```
 
-```c
-struct v4l2_ctrl_ops
+ - *v4l2_ctrl_ops*
 
+```c
+struct v4l2_ctrl_ops : the control operations that the driver has to provide
+	|
+	+-> .g_volatile_ctrl : get a new value for this control, generally only relevant for volatile controls.
+	+-> .try_ctrl : test whether the control's value is valid.
+	+-> .s_ctrl : actually set the new control value.
+
+
+```
+
+ - *v4l2_ctrl_handler*
+
+```c
 struct v4l2_ctrl_handler
 ```
 
 --- 
+
+
+## media-ctl / v4l2-ctl 툴
+
+
+ - media-ctl
+	 /dev/mediaX와 같은 media 장치를 통해 동작하며, media topology 에서 각 노드의 형식 및 크기, 링크를 관리합니다.
+
+ - v4l2-ctl
+	 /dev/videoX와 같은 비디오 장치를 통해 동작하며, set_fmt, reqbuf, qbuf, dqbuf, stream_on, stream_off와 같은 동작을 수행합니다.
+	 
 
