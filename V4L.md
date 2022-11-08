@@ -128,13 +128,13 @@ struct v4l2_ctrl_handler
 
   1.1 i2c_driver의 아래 내용을 구현합니다.
 
-	```c
-	struct driver.name
-	struct driver.pm
-	struct driver.of_match_table
-	probe function
-	remove function
-	```
+  ```c
+  struct driver.name
+  struct driver.pm
+  struct driver.of_match_table
+  probe function
+  remove function
+  ```
 
   1.2 probe function에 대한 설명입니다.
 
