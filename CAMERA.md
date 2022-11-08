@@ -1,11 +1,14 @@
 # CAMERA 
 
+
+## 1. CAMERA(mipi)
+
 RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. physical mipi csi2 dphy는 2가지 모드를 선택할 수 있습니다.
-1. full mode : 
+ - full mode : 
 	* csi2_dphy0 (csi2_dphy0, csi2_dphy1/csi2_dphy2 을 동시에 사용하지 못합니다.)
 	* 최대 4 data lanes
 	* 최대 2.5Gbps/lane 속도
-2. split mode :
+ - split mode :
 	* csi2_dphy1 and/or csi2_dphy2 (csi2_dphy0 을 이 모드에서는 사용 할수 없습니다.)
 	* csi2_dphy1과 csi2_dphy2 는 동시에 사용 가능합니다.
 	* csi2_dphy1과 csi2_dphy2 는 동시에 사용하는경우, 최대 2 data lanes 을 사용가능 합니다.
@@ -19,84 +22,89 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 | _split mode_ 	| sensor1 x2lane + sensor2 x2lane 	| MIPI_CSI_RX_D0, MIPI_CSI_RX_D1, MIPI_CSI_RX_CLK0, & MIPI_CSI_RX_D2, MIPI_CSI_RX_D3, MIPI_CSI_RX_CLK1 	|
 
 
-## Full Mode 설정
+### 1.1 Full Mode 설정
 
 - link path :
-	* sensor -> csi2_dphy0 -> isp
-### configure sensor
+	* sensor->csi_dphy0->isp_vir0
+
+#### 1.1.1 configure sensor
 
 - camera sensor와 통신하는 i2c 버스 세팅. 
 
 ```dtb
 &i2c4 {
-        status = "okay";
-        XC7160: XC7160b@1b{
-                status = "okay";
-                compatible = "firefly,xc7160";
-                reg = <0x1b>;
-                clocks = <&cru CLK_CIF_OUT>;
-                clock-names = "xvclk";
-                power-domains = <&power RK3568_PD_VI>;
-                pinctrl-names = "default";
-                pinctrl-0 = <&cif_clk>;
-
-                power-gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;
-                reset-gpios = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;
-                pwdn-gpios = <&gpio4 RK_PB4 GPIO_ACTIVE_HIGH>;
-
-                firefly,clkout-enabled-index = <0>;
-                rockchip,camera-module-index = <0>;
-                rockchip,camera-module-facing = "back";
-                rockchip,camera-module-name = "NC";
-                rockchip,camera-module-lens-name = "NC";
-                port {
-                        xc7160_out: endpoint {
-                                remote-endpoint = <&mipi_in_ucam4>;
-                                data-lanes = <1 2 3 4>;
-                        };
-                };
-        };
+	status = "okay";
+	ov5695: ov5695@36 {
+		status = "okay";
+		compatible = "ovti,ov5695";
+		reg = <0x36>;
+		clocks = <&cru CLK_CIF_OUT>;
+		clock-names = "xvclk";
+		power-domains = <&power RK3568_PD_VI>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cif_clk>;
+		reset-gpios = <&gpio3 RK_PB6 GPIO_ACTIVE_HIGH>;
+		pwdn-gpios = <&gpio4 RK_PB4 GPIO_ACTIVE_HIGH>;
+		rockchip,camera-module-index = <0>;
+		rockchip,camera-module-facing = "back";
+		rockchip,camera-module-name = "TongJu";
+		rockchip,camera-module-lens-name = "CHT842-MD";
+		port {
+			ov5695_out: endpoint {
+				remote-endpoint = <&mipi_in_ucam2>;
+				data-lanes = <1 2>;
+			};
+		};
+	};
 };
 ```
 
-### configure logical dphy
+#### 1.1.2 configure logical dphy
 
 - csi2_dphy0, csi2_dphy1/csi2_dphy2 은 동시에 사용할 수 없습니다. 
 - csi2_dphy_hw 노드를 활성화 시킵니다.
 
 ```dtb
 &csi2_dphy0 {
-        status = "okay";
-        /*
-        * dphy0 only used for full mode,
-        * full mode and split mode are mutually exclusive
-        */
-        ports {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                port@0 {
-                        reg = <0>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
-...
-                        mipi_in_ucam4: endpoint@5 {
-                                reg = <5>;
-                                remote-endpoint = <&xc7160_out>;
-                                data-lanes = <1 2 3 4>;
-                        };
-                };
-                port@1 {
-                        reg = <1>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
+	status = "okay";
 
-                        csidphy_out: endpoint@0 {
-                                reg = <0>;
-                                remote-endpoint = <&isp0_in>;
-                        };
-                };
-        };
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi_in_ucam0: endpoint@1 {
+				reg = <1>;
+				remote-endpoint = <&ucam_out0>;
+				data-lanes = <1 2 3 4>;
+			};
+			mipi_in_ucam1: endpoint@2 {
+				reg = <2>;
+				remote-endpoint = <&gc8034_out>;
+				data-lanes = <1 2 3 4>;
+			};
+			mipi_in_ucam2: endpoint@3 {
+				reg = <3>;
+				remote-endpoint = <&ov5695_out>;
+				data-lanes = <1 2>;
+			};
+		};
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csidphy_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&isp0_in>;
+			};
+		};
+	};
 };
+
 
 &csi2_dphy_hw {
    status = "okay";
@@ -112,7 +120,7 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 ```
 
 
-### configure isp
+#### 1.1.3 configure isp
 
 - The remote-endpoint in rkisp_vir0 node should point to *csidphy_out*
 
@@ -126,93 +134,107 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 };
 
 &rkisp_vir0 {
-   status = "okay";
-   port {
-      #address-cells = <1>;
-      #size-cells = <0>;
+	status = "okay";
 
-      isp0_in: endpoint@0 {
-         reg = <0>;
-         remote-endpoint = <&csidphy_out>;
-      };
-   };
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		isp0_in: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&csidphy_out>;
+		};
+	};
 };
+
 ```
 
 
-## Split Mode 설정
+### 1.2 Split Mode 설정
+
 
 - link path:
+	* sensor->csi_dphy0->isp_vir0
+	or 
 	* sensor1->csi_dphy1->isp_vir0
 	* sensor2->csi_dphy2->mipi_csi2->vicap->isp_vir1
 
-### configure Sensor
+#### 1.2.1 configure Sensor
 
 ```dtb
 &i2c4 {
-            status = "okay";
-           gc2053: gc2053@37 { //IR
-                status = "okay";
-                compatible = "galaxycore,gc2053";
-                reg = <0x37>;
+	status = "okay";
 
-                avdd-supply = <&vcc_camera>;
-                power-domains = <&power RK3568_PD_VI>;
-                clock-names = "xvclk";
-                pinctrl-names = "default";
+	// MIPI
+	tp2860: tp2860@44 {
+			status = "okay";
+			compatible = "techpoint,tp2860";
+			reg = <0x44>;
 
-		clocks = <&pmucru CLK_WIFI>;
-                pinctrl-0 = <&refclk_pins>;
-                power-gpios = <&gpio0 RK_PD5 GPIO_ACTIVE_HIGH>;//IR_PWR_EN
-                pwdn-gpios = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;
+			// resetPin assignment and effective level
+			reset-gpios = <&gpio3 RK_PC6 GPIO_ACTIVE_LOW>;	/* low active */
+			//sensor Related power domain enable
+			power-domains = <&power RK3568_PD_VI>;
+			
+			// Module number, this number should not be repeated
+			rockchip,camera-module-index = <0>;
+			// Module orientation which are "back" and "front"
+			rockchip,camera-module-facing = "back";
+			// module name
+			rockchip,camera-module-name = "E-QFN40";
+			// lens name
+			rockchip,camera-module-lens-name = "DP-VIN3";
 
-                firefly,clkout-enabled-index = <1>;
-                rockchip,camera-module-index = <0>;
-                rockchip,camera-module-facing = "back";
-                rockchip,camera-module-name = "YT-RV1109-2-V1";
-                rockchip,camera-module-lens-name = "40IR-2MP-F20";
-                port {
-                        gc2053_out: endpoint {
-                                        remote-endpoint = <&dphy1_in>;
-                                        data-lanes = <1 2>;
-                        };
-                };
-        };
-        gc2093: gc2093b@7e{ //RGB
-                status = "okay";
-                compatible = "galaxycore,gc2093";
-                reg = <0x7e>;
+			port {
+				tp2860_out: endpoint {
+					// mipi dphy port
+					remote-endpoint = <&mipi_in_ucam0>;
+					//slave-mode;
+					// csi2 dphy lane name,2lane is <1 2>, 4lane is <1 2 3 4>
+					data-lanes = <1 2>;
 
-                avdd-supply = <&vcc_camera>;
-                power-domains = <&power RK3568_PD_VI>;
-                clock-names = "xvclk";
-                pinctrl-names = "default";
-                flash-leds = <&flash_led>;
-
-                pwdn-gpios = <&gpio4 RK_PB4 GPIO_ACTIVE_HIGH>;
-
-                firefly,clkout-enabled-index = <0>;
-                rockchip,camera-module-index = <1>;
-                rockchip,camera-module-facing = "front";
-                rockchip,camera-module-name = "YT-RV1109-2-V1";
-                rockchip,camera-module-lens-name = "40IR-2MP-F20";
-                port {
-                        gc2093_out: endpoint {
-                                        remote-endpoint = <&dphy2_in>;
-                                        data-lanes = <1 2>;
-                        };
-                };
-        };
-
+			};
+		};
+	};
 };
+
 ```
 
-### configure csi2_dphy1/csi2_dphy2
+#### 1.2.2 configure csi2_dphy0 (or csi2_dphy1/csi2_dphy2)
 
 ```dtb
 &csi2_dphy0 {
-         status = "disabled";
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			mipi_in_ucam0: endpoint@1 {
+				reg = <1>;
+				// The port name of the sensor
+				remote-endpoint = <&tp2860_out>;
+				// csi2 dphy lane number
+				data-lanes = <1 2>;
+			};
+		};
+		port@1 {
+			reg = <1>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			csidphy_out: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&isp0_in>;
+			};	
+		};
+	};	
 };
+
 
 &csi2_dphy1 {
         status = "okay";
@@ -322,30 +344,10 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
                 };
         };
 };
-
-&rkcif_mipi_lvds {
-        status = "okay";
-        port {
-                cif_mipi_in: endpoint {
-                        remote-endpoint = <&mipi_csi2_output>;
-                        data-lanes = <1 2>;
-                };
-        };
-};
-
-&rkcif_mipi_lvds_sditf {
-        status = "okay";
-        port {
-                mipi_lvds_sditf: endpoint {
-                        remote-endpoint = <&isp1_in>;
-                        data-lanes = <1 2>;
-                };
-        };
-};
 ```
 
 
-### configure isp
+#### 1.2.3 configure isp
 
 - The remote-endpoint in rkisp_vir0 node should point to dphy1_out
 
@@ -359,31 +361,17 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 };
 
 &rkisp_vir0 {
-        status = "okay";
-        port {
-                #address-cells = <1>;
-                #size-cells = <0>;
+	status = "okay";
 
-                isp0_in: endpoint@0 {
-                        reg = <0>;
-                        remote-endpoint = <&dphy1_out>;
-                };
-        };
-};
+	port {
+		#address-cells = <1>;
+		#size-cells = <0>;
 
-&rkisp_vir1 {
-        status = "okay";
-
-        port {
-                reg = <0>;
-                #address-cells = <1>;
-                #size-cells = <0>;
-
-                isp1_in: endpoint@0 {
-                        reg = <0>;
-                        remote-endpoint = <&mipi_lvds_sditf>;
-                };
-        };
+		isp0_in: endpoint@0 {
+			reg = <0>;
+			remote-endpoint = <&csidphy_out>;
+		};
+	};
 };
 
 &rkcif_mmu {
@@ -395,7 +383,7 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 };
 ```
 
-## Related Directory(kernel)
+### 1.3 Related Directory(kernel)
 
 ```bash
 Linux Kernel-4.19
@@ -430,7 +418,7 @@ Linux Kernel-4.19
 
 
 
-## Camera 디버깅
+### 1.4 Camera 디버깅
 
 v4l2-ctl 을 사용하여 카메라 프레임 데이터를 디버깅 합니다.
 
@@ -445,15 +433,24 @@ v4l2-ctl --verbose -d /dev/video0 --set-fmt-video=width=720,height=480,pixelform
 ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 ```
 
-## Link relationship : 
-* sensor->csi2_dphy0->isp
+-----
+
+## 2. CAMERA(dvp)
+
+
 
 ---
 
-# techpoint tp2825 
+## 3. isp 
 
+---
+
+## techpoint tp2825 
+
+> techpoint tp2826 코드 분석 자료 
 
 * 코드 분석 
+
 ```c
 static int __init tp2802_module_init(void)
 	|
@@ -528,114 +525,6 @@ static int __init tp2802_module_init(void)
 
 
 
----
-
-## Develop
-
-* v4l2
-
-	- pad : pad는 entity 와 entity 간 연결 end-point 입니다.
-	- link : 2개의 pad간 연결 인터페이스 입니다. data는 source pad에서 sink pad로 이동합니다.
-	- media device : include/media/media-device.h 에 정의된 struct media_device 의 인스턴스 입니다. 
-	- entities : include/media/media-entity.h 에 정의된 struct media_entity 의 인스턴스 입니다. v4l2_subdev 또는 video_device instances 인스턴스와 같은 구조의 higher-level structure입니다.
-	- media_device 
-
-```c
-struct media_device {
-	struct device *dev;
-	struct media_devnode *devnode;
-	char model[32];
-	char driver_name[32];
-	char serial[40];
-	char bus_info[32];
-	u32 hw_revision;
-	u64 topology_version;
-	u32 id;
-	struct ida entity_internal_idx;
-	int entity_internal_idx_max;
-	struct list_head entities;
-	struct list_head interfaces;
-	struct list_head pads;
-	struct list_head links;
-	struct list_head entity_notify;
-	struct mutex graph_mutex;
-	struct media_graph pm_count_walk;
-	void *source_priv;
-	int (*enable_source)(struct media_entity *entity, struct media_pipeline *pipe);
-	void (*disable_source)(struct media_entity *entity);
-	const struct media_device_ops *ops;
-	struct mutex req_queue_mutex;
-	atomic_t request_id;
-};
-```
-
-	- v4l2_subdev
-
-```c
-struct v4l2_subdev {
-#if defined(CONFIG_MEDIA_CONTROLLER)
-	struct media_entity entity;
-#endif
-	struct list_head list;
-	struct module *owner;
-	bool owner_v4l2_dev;
-	u32 flags;
-	struct v4l2_device *v4l2_dev;
-	const struct v4l2_subdev_ops *ops;
-	const struct v4l2_subdev_internal_ops *internal_ops;
-	struct v4l2_ctrl_handler *ctrl_handler;
-	char name[V4L2_SUBDEV_NAME_SIZE];
-	u32 grp_id;
-	void *dev_priv;
-	void *host_priv;
-	struct video_device *devnode;
-	struct device *dev;
-	struct fwnode_handle *fwnode;
-	struct list_head async_list;
-	struct v4l2_async_subdev *asd;
-	struct v4l2_async_notifier *notifier;
-	struct v4l2_async_notifier *subdev_notifier;
-	struct v4l2_subdev_platform_data *pdata;
-};
-```
-
-	- v4l2_subdev_ops
-```c
-struct v4l2_subdev_ops  : Subdev operations
-	|
-	+-> struct v4l2_subdev_core_ops // core : defines core ops callbacks for subdevs
-	|	+-> .s_power : puts subdevice in power saving mode(on==0) or normal operation mode(on==1)
-	|	+-> .ioctl : called at the end of ioctl() syscall handler at the v4l2 core.used to provide support for private ioctls used on the driver
-	|	+-> .compat_ioctl32 : called when a 32 bits applications used a 64 bits kernel, in order to fix data passed from/to userspace.in order to fix data passed from/to userspace.
-	|
-	+-> struct v4l2_subdev_video_ops // video : callbacks used when v4l device was opened in video mode
-	|	+-> .s_stream :  used to notify the driver that a video stream will start or has stopped
-	|	+-> .g_frame_interval : callback for VIDIOC_SUBDEV_G_FRAME_INTERVAL ioctl handler code
-	|	+-> .g_mbus_config : get supported mediabus configurations
-	|
-	+-> struct v4l2_subdev_pad_ops // pad : v4l2-subdev pad level operations
-		+-> .enum_mbus_code : callback for VIDIOC_SUBDEV_ENUM_MBUS_CODE ioctl handler code.
-		+-> .enum_frame_size :  callback for VIDIOC_SUBDEV_ENUM_FRAME_SIZE ioctl hndler code.
-		+-> .enum_frame_interval : callback for VIDIOC_SUBDIEV_ENUM_FRAME_INTERVAL() ioctl handler code.
-		+-> .get_fmt : callback for VIDIOC_SUBDEV_G_FMT ioctl handler code.
-		+-> .set_fmt : callback for VIDIOC_SUBDEV_S_FMT ioctl handler code.
-```
-
-	- v4l2_subdev_internal_ops
-
-```c
-struct v4l2_subdev_internal_ops : v4l2 subdev internal ops
-	|
-	+-> .open  : called when the subdev device node is opened by an application.
-	+-> .close : called when the subdev device node is closed.
-
-```
-
-```c
-struct v4l2_ctrl_ops
-
-struct v4l2_ctrl_handler
-```
 
 --- 
 
