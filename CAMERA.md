@@ -480,11 +480,77 @@ __ov5695_stop_stream
 
 ## 2. CAMERA(dvp)
 
+RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다. 
+
+### 2.1 DVP 인터페이스 설정
+
+#### 2.1.1 configure sensor
+
+- camera sensor와 통신하는 i2c 버스 세팅. 
+
+```dtb
+&i2c2 {
+	status = "okay";
+	pinctrl-0 = <&i2c2m1_xfer>;
+
+	gc2145: gc2145@3c{
+		status = "okay";
+		compatible = "galaxycore,gc2145";
+		reg = <0x3c>;
+		pinctrl-names = "default";
+		clocks = <&cru CLK_CIF_OUT>;
+		clock-names = "xvclk";
+		power-domains = <&power RK3568_PD_VI>;
+		pinctrl-0 = <&cif_clk &cif_dvp_clk &cif_dvp_bus16>;
+		/* avdd-supply = <>; */
+		/* dvdd-supply = <>; */
+		/* dovdd-supply = <>; */
+		/*power-gpios = <&gpio4 RK_PA6 GPIO_ACTIVE_HIGH>;*/
+		reset-gpios = <&gpio4 RK_PA7 GPIO_ACTIVE_LOW>;
+		pwdn-gpios = <&gpio4 RK_PA6 GPIO_ACTIVE_HIGH>;
+		rockchip,camera-module-index = <1>;
+		rockchip,camera-module-facing = "front";
+		rockchip,camera-module-name = "CameraKing";
+		rockchip,camera-module-lens-name = "Largan";
+		port {
+			gc2145_out: endpoint {
+				remote-endpoint = <&dvp_in_bcam>;
+			};
+		};
+	};
+};
+
+```
+
+#### 2.1.2 configure logical dvp
+
+- dvp 노드를 활성화 시킵니다.
+
+```dtb
+&rkcif_dvp {
+	status = "okay";
+	port {
+		/* Parallel bus endpoint */
+		dvp_in_bcam: endpoint {
+			remote-endpoint = <&gc2145_out>;
+			bus-width = <8>;
+			vsync-active = <0>;
+			hsync-active = <1>;
+		};
+	};
+};
+```
 
 
 ---
 
-## 3. isp 
+## 3. rkcif
+
+
+
+---
+
+## 4. isp 
 
 
  * ISP : Image Signal Processing  
@@ -498,7 +564,7 @@ __ov5695_stop_stream
 		![](./images/CAMERA_01.png)
 ---
 
-## 4. techpoint tp2825 
+## 5. techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
