@@ -417,21 +417,65 @@ Linux Kernel-4.19
 ```
 
 
+### 1.4 Develop 
 
-### 1.4 Camera 디버깅
+* hw Interface
 
-v4l2-ctl 을 사용하여 카메라 프레임 데이터를 디버깅 합니다.
+| **GPIOs**         	| **IOMUX**         	| **address**       	|
+|-------------------	|-------------------	|-------------------	|
+| GPIO4_B2          	| RESERVE_SDA       	| 0xFDC60068[08:10] 	|
+| GPIO4_B3          	| RESERVE_SCL       	| 0xFDC60068[14:12] 	|
+| GPIO3_C6          	| MIPI_CAM0_RST     	| 0xFDC60054[10:8]  	|
+| MIPI_CSI_RX_D0P   	| MIPI_CSI_RX_D0P   	| 0xFE870000        	|
+| MIPI_CSI_RX_D0N   	| MIPI_CSI_RX_D0N   	| 0xFE870000        	|
+| MIPI_CSI_RX_D1P   	| MIPI_CSI_RX_D1P   	| 0xFE870000        	|
+| MIPI_CSI_RX_D1N   	| MIPI_CSI_RX_D1N   	| 0xFE870000        	|
+| MIPI_CSI_RX_CLK0P 	| MIPI_CSI_RX_CLK0P 	| 0xFE870000        	|
+| MIPI_CSI_RX_CLK0N 	| MIPI_CSI_RX_CLK0N 	| 0xFE870000        	|
+
+
+* code 
+	- [x] RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
+	- [x] PTZ 란 ? : cctv 에서 카메라 모듈을 제어하는 기능
+	- [x] sensor와 cif가 바인딩되었는지 확인. : rkisp-vir0: Async subdev notifier completed 
+	- [x] BLOB, YCbCr_420_888, IMPLEMENTATION_DEFINED
+
+
+### 1.5 Camera 디버깅
+
+ * v4l2-ctl 을 사용하여 카메라 프레임 데이터를 디버깅 합니다.
 
 ```bash
 # camera test device
 v4l2-ctl --verbose -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat='NV12' --stream-mmap=4 --set-selection=target=crop,flags=0,top=0,left=0,width=720,height=480 --stream-to=/data/out.yuv
 ```
 
-
+ * debug 활성화
 ```bash
-# host pc
-ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
+echo 1 > /sys/module/video_rkcif/parameters/debug
+// vb2(vpu/isp)
+echo 7 > /sys/module/videobuf2_core/parameters/debug
 ```
+
+ * dumpsys CAMERA
+	```bash
+	dumpsys media.camera
+	```
+
+ * write register timing
+```c
+__ov5695_start_stream
+	|	// preview 시작 시,
+	+-> ret = ov5695_write_array(ov5695->client, ov5695->cur_mode->reg_list);
+
+
+__ov5695_stop_stream
+	| preview 종료 시,	
+	+-> 
+```
+
+
+
 
 -----
 
@@ -445,7 +489,7 @@ ffplay -f rawvideo -video_size 1920x1080 -pix_fmt nv12 out.yuv
 
 ---
 
-## techpoint tp2825 
+## 4. techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
@@ -524,53 +568,5 @@ static int __init tp2802_module_init(void)
 
 
 
-
-
---- 
-
-* hw Interface
-
-| **GPIOs**         	| **IOMUX**         	| **address**       	|
-|-------------------	|-------------------	|-------------------	|
-| GPIO4_B2          	| RESERVE_SDA       	| 0xFDC60068[08:10] 	|
-| GPIO4_B3          	| RESERVE_SCL       	| 0xFDC60068[14:12] 	|
-| GPIO3_C6          	| MIPI_CAM0_RST     	| 0xFDC60054[10:8]  	|
-| MIPI_CSI_RX_D0P   	| MIPI_CSI_RX_D0P   	| 0xFE870000        	|
-| MIPI_CSI_RX_D0N   	| MIPI_CSI_RX_D0N   	| 0xFE870000        	|
-| MIPI_CSI_RX_D1P   	| MIPI_CSI_RX_D1P   	| 0xFE870000        	|
-| MIPI_CSI_RX_D1N   	| MIPI_CSI_RX_D1N   	| 0xFE870000        	|
-| MIPI_CSI_RX_CLK0P 	| MIPI_CSI_RX_CLK0P 	| 0xFE870000        	|
-| MIPI_CSI_RX_CLK0N 	| MIPI_CSI_RX_CLK0N 	| 0xFE870000        	|
-
-
-* code 
-	- [ ] RKISP 드라이버는 프레임워크에서 제공하는 user control을 사용해야 합니다. 카메라 센서 드라이버는 다음 control functions을 구현해야 합니다. (CIS 드라이버 V4L2-controls list1 참조)
-	- [x] PTZ 란 ? : cctv 에서 카메라 모듈을 제어하는 기능
-	- [x] sensor와 cif가 바인딩되었는지 확인. : rkisp-vir0: Async subdev notifier completed 
-	- [ ] BLOB, YCbCr_420_888, IMPLEMENTATION_DEFINED
-
-* debug 활성화
-	```bash
-	echo 1 > /sys/module/video_rkcif/parameters/debug
-	// vb2(vpu/isp)
-	echo 7 > /sys/module/videobuf2_core/parameters/debug
-	```
-
-* dumpsys CAMERA
-	```bash
-	dumpsys media.camera
-	```
-
-* write register timing
-```c
-__ov5695_start_stream
-	|	// preview 시작 시,
-	+-> ret = ov5695_write_array(ov5695->client, ov5695->cur_mode->reg_list);
-
-
-__ov5695_stop_stream
-	| preview 종료 시,	
-	+-> 
-```
 
 
