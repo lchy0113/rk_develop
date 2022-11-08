@@ -8,7 +8,7 @@
 	- entities : include/media/media-entity.h 에 정의된 struct media_entity 의 인스턴스 입니다. v4l2_subdev 또는 video_device instances 인스턴스와 같은 구조의 higher-level structure입니다.
 
 
- - media_device 
+ - *media_device*
 
 ```c
 struct media_device {
@@ -39,7 +39,7 @@ struct media_device {
 };
 ```
 
- - v4l2_subdev
+ - *v4l2_subdev*
 
 ```c
 struct v4l2_subdev {
@@ -69,7 +69,7 @@ struct v4l2_subdev {
 };
 ```
 
- - v4l2_subdev_ops
+ - *v4l2_subdev_ops*
 
 ```c
 struct v4l2_subdev_ops  : Subdev operations
