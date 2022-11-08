@@ -482,6 +482,10 @@ __ov5695_stop_stream
 
 RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다. 
 
+- link path :
+	* sensor->vicap
+
+
 ### 2.1 DVP 인터페이스 설정
 
 #### 2.1.1 configure sensor
@@ -540,6 +544,25 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 	};
 };
 ```
+
+### 2.2 Develop(BT601)
+ - hsync-active, vsync-active 구성 여부에 따라 BT601 인터페이스를 식별합니다. 구성하지 않으면 BT656 으로 식별.
+ - v4l g_mbus_config 인터페이스를 통해 valid 한 polarity (hsync, vsync, pclk) 를 전달합니다.
+ - pinctrl을 사용하는 인터페이스에 맞도록 구성합니다.
+	 | **GPIOs** 	| **IOMUX** 	|
+	 |-----------	|-----------	|
+	 | GPIO3_D6  	| DATA0     	|
+	 | GPIO3_D7  	| DATA1     	|
+	 | GPIO4_A0  	| DATA2     	|
+	 | GPIO4_A1  	| DATA3     	|
+	 | GPIO4_A2  	| DATA4     	|
+	 | GPIO4_A3  	| DATA5     	|
+	 | GPIO4_A4  	| DATA6     	|
+	 | GPIO4_A5  	| DATA7     	|
+	 | GPIO4_B6  	| HSYNC     	|
+	 | GPIO4_B7  	| VSYNC     	|
+	 | GPIO4_C0  	| MCLK      	|
+	 | GPIO4_C1  	| PCLK      	|
 
 
 ---
