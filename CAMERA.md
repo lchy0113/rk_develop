@@ -548,7 +548,8 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 
 rkcif 드라이버는 v4l2/media framework를 기반으로 구성된 하드웨어 장치 subdevices의(mipi dphy, sensor)  인터럽트 처리, 버퍼 관리, power 제어 등을 담당합니다.
   
-		![](./images/CAMERA_02.png)
+ 
+![](./images/CAMERA_02.png)
 
 
 
