@@ -135,9 +135,9 @@ struct v4l2_ctrl_handler
   probe function
   remove function
   ```
-
-  1.2 probe function에 대한 설명입니다.
-
+  
+  1.2 probe function에 대한 설명입니다.  
+  
 	- dts로 부터 resource 를 얻습니다. 
 		ex. rockchip,camera-module-xxx와 같은 resource는 camera module에 대한 resourlce를 제공합니다.
 
