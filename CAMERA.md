@@ -627,7 +627,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
  	- dvp 인터페이스의 경우, rkvicap_dvp_sditf 노드를 생성.
 	- mipi/lvds 인터페이스의 경우, rkvicap_mipi_lvds_sditf 노드 생성.
  * 아래 그림은 VICAP에 의해 구동되는 device topology를 설명합니다.
-	~[](./images/CAMERA_03.png)	
+	![](./images/CAMERA_03.png)	
 
 
 ---
