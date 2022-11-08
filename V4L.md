@@ -92,7 +92,7 @@ struct v4l2_subdev_ops  : Subdev operations
 		+-> .set_fmt : callback for VIDIOC_SUBDEV_S_FMT ioctl handler code.
 ```
 
- - v4l2_subdev_internal_ops
+ - *v4l2_subdev_internal_ops*
 
 ```c
 struct v4l2_subdev_internal_ops : v4l2 subdev internal ops
