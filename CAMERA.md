@@ -154,8 +154,8 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 
 
 - link path:
-	* sensor->csi_dphy0->isp_vir0
-	or 
+	* sensor->csi_dphy0->isp_vir0  
+	or   
 	* sensor1->csi_dphy1->isp_vir0
 	* sensor2->csi_dphy2->mipi_csi2->vicap->isp_vir1
 
