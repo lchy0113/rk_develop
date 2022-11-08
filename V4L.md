@@ -138,11 +138,10 @@ struct v4l2_ctrl_handler
   
   1.2 probe function에 대한 설명입니다.  
   
-	- dts로 부터 resource 를 얻습니다. 
-		ex. rockchip,camera-module-xxx와 같은 resource는 camera module에 대한 resourlce를 제공합니다.
-
-	- v4l2 장치 media entity 초기화.
-		v4l2_i2c_subdev_init을 사용하여 subdev 장치로 등록합니다.
+ - dts로 부터 resource 를 얻습니다. 
+	ex. rockchip,camera-module-xxx와 같은 resource는 camera module에 대한 resourlce를 제공합니다.
+ - v4l2 장치 media entity 초기화.
+	v4l2_i2c_subdev_init을 사용하여 subdev 장치로 등록합니다.
 
 2. v4l2 sub-device driver를 구현합니다.
 
