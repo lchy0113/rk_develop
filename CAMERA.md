@@ -551,7 +551,67 @@ rkcif 드라이버는 v4l2/media framework를 기반으로 구성된 하드웨�
  
 ![](./images/CAMERA_02.png)
 
+### 3.1 cif 장치 
 
+#### 3.1.1 cif 장치 probe 확인.
+
+cif 장치가 probe 되면 /dev/ 경로에 비디오 및 미디어 장치 노드가 생성됩니다. (ex. /dev/media0)
+system에는 여러 /dev/video 장치가 있을 수 있으며, 해당되는 cif장치 노드는  /sys 노드를 통해서 확인할 수 있습니다.
+
+```bash
+rk3568_poc:/ # grep -H '' /sys/class/video4linux/video*/name
+/sys/class/video4linux/video0/name:stream_cif_dvp_id0
+/sys/class/video4linux/video1/name:stream_cif_dvp_id1
+/sys/class/video4linux/video10/name:rkisp_rawrd0_m
+/sys/class/video4linux/video11/name:rkisp_rawrd2_s
+/sys/class/video4linux/video12/name:rkisp-statistics
+/sys/class/video4linux/video13/name:rkisp-input-params
+/sys/class/video4linux/video2/name:stream_cif_dvp_id2
+/sys/class/video4linux/video3/name:stream_cif_dvp_id3
+/sys/class/video4linux/video4/name:rkcif-mipi-luma
+/sys/class/video4linux/video5/name:rkisp_mainpath
+/sys/class/video4linux/video6/name:rkisp_selfpath
+/sys/class/video4linux/video7/name:rkisp_rawwr0
+/sys/class/video4linux/video8/name:rkisp_rawwr2
+/sys/class/video4linux/video9/name:rkisp_rawwr3
+
+```
+
+media-ctl 명령어를 사용하여 topology 를 출력해 확인 할 수 있습니다.
+또는 커널 로그를 디버깅하여 확인 할 수 있습니다.
+
+```bash
+
+rk3568_poc:/ # dmesg | grep cif
+[    0.559511] phy phy-fe8b0000.usb2-phy.3: No vbus specified for otg port
+[    1.046449] rkcifhw fdfe0000.rkcif: iommu is disabled, using non-iommu buffers
+[    1.046476] rkcifhw fdfe0000.rkcif: No reserved memory region assign to CIF
+[    1.046663] rkcif rkcif_dvp: rkcif driver version: v00.01.0a
+[    1.046713] rkcif rkcif_dvp: attach to cif hw node
+[    1.046729] rkcif rkcif_dvp: rkcif wait line 0
+[    1.216975] rkcif rkcif_dvp: Entity type for entity rkcif-dvp-sof was not initialized!
+[    1.217393] rkcif_dvp: Async subdev notifier completed
+[    1.263367] rkcif rkcif_dvp: clear unready subdev num: 0
+[    7.691702] rkcif_dvp: get_remote_sensor: remote pad is null
+[    7.691765] rkcif_dvp: rkcif_update_sensor_info: stream[1] get remote sensor_sd failed!
+[    7.691773] stream_cif_dvp_id1: update sensor info failed -19
+[    9.384067] rkcif_dvp: get_remote_sensor: remote pad is null
+[    9.384105] rkcif_dvp: rkcif_update_sensor_info: stream[2] get remote sensor_sd failed!
+[    9.384113] stream_cif_dvp_id2: update sensor info failed -19
+[    9.384234] rkcif_dvp: get_remote_sensor: remote pad is null
+[    9.384258] rkcif_dvp: rkcif_update_sensor_info: stream[3] get remote sensor_sd failed!
+[    9.384266] stream_cif_dvp_id3: update sensor info failed -19
+```
+
+#### 3.1.2 snesor와 cif 바인딩 확인.
+
+cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이버가 로드된 후, 바인딩 됩니다.
+
+```bash
+127|rk3568_poc:/ # dmesg | grep Async
+[    1.217393] rkcif_dvp: Async subdev notifier completed
+[    1.331093] rkisp-vir0: Async subdev notifier completed
+```
 
 ---
 
