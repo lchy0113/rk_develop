@@ -736,24 +736,24 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
    - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.
 	 
 ### 6.2 sensor 등록
- 센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다. 
- HAL 코드 : hardware/rockchip/camera 
+ 센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다.   
+ HAL 코드 : hardware/rockchip/camera   
  * sensor tuning file.(soc sensor는 skip 해도 됨)
  * camera3_profile.xml 파일
 
 
 #### 6.2.1 sensor tuning file
- sensor의 turning file은 센서로 부터 raw data를 수신할 때 필요합니다.
- <sensor_name>_<module_name>_<lens_name>.xml 형식으로 파일이름을 지정해주어야 하며, /vendor/etc/camera/rkisp1 디렉토리에 위치해야 합니다. 3a 라이브러리는 위 경로를 참조합니다.
- ex) tp2860_E-QFN40_DP-VIN3.xml
+ sensor의 turning file은 센서로 부터 raw data를 수신할 때 필요합니다.  
+ <sensor_name>_<module_name>_<lens_name>.xml 형식으로 파일이름을 지정해주어야 하며, /vendor/etc/camera/rkisp1 디렉토리에 위치해야 합니다. 3a 라이브러리는 위 경로를 참조합니다.  
+ ex) tp2860_E-QFN40_DP-VIN3.xml  
 
 #### 6.2.2 camera3_profile.xml
- <hal3_camera>/etc/camera 경로에 camera3_profiles_<platform>.xml 파일들이 있습니다.
- 빌드 과정에서 /vendor/etc/camera/camera3_profile.xml 으로 해당 파일이 위치하게 됩니다.
- camera hal3은 camera3_profile.xml파일을 참조합니다.
+ <hal3_camera>/etc/camera 경로에 camera3_profiles_<platform>.xml 파일들이 있습니다.  
+ 빌드 과정에서 /vendor/etc/camera/camera3_profile.xml 으로 해당 파일이 위치하게 됩니다.  
+ camera hal3은 camera3_profile.xml파일을 참조합니다.  
 
- * camera3_profile.xml 파일은 다수의 Profiles Node가 포함되어 있으며, Profile Node에는 센서의 속성 정보가 포함되어 있습니다.
- * Profile 노드에는 아래 4개의 sub node가 있습니다.
+ * camera3_profile.xml 파일은 다수의 Profiles Node가 포함되어 있으며, Profile Node에는 센서의 속성 정보가 포함되어 있습니다.  
+ * Profile 노드에는 아래 4개의 sub node가 있습니다.  
 
 ```xml
 <Profiles cameraId="0" name="tp2860" moduleId="m00">
@@ -778,7 +778,7 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 ```bash
 $ adb shell dumpsys media.camera
 ```
-   - 그외 노드 : rkisp 및 sensor 초기화에 필요한 정보 입니다. 
+   - 그외 노드 : rkisp 및 sensor 초기화에 필요한 정보 입니다.   
 	 ex) sensor 의 타입을 정의합니다. raw 또는 soc
 ```xml
 	<Sensor_info_RKISP1>
