@@ -128,7 +128,7 @@ struct v4l2_ctrl_handler
  - sensor driver 를 5 part로 분리하여 설명합니다.
    * power-on sequence (datasheet에 따른 vdd, reset, powerdown, clk, etc).
    * configure sensor register (센서의 resolution, format, etc).
-   * v4l2_subdev_ops 구조체에 필요한 callback funcation.
+   * v4l2_subdev_ops callback funcation.
    * v4l2 controller 추가(fps, exposure, gain, test pattern, etc).
    * .probe() function 와 media control, v4l2 sub device 초기화 코드.
 
@@ -179,6 +179,35 @@ static void __tp2860_power_off(struct tp2860 *tp2860)
    * sensor 의 chip id를 read하여 성공적으로 power-up이 되었는지 여부를 확인 할 수 있습니다.
 
 ### 1.2 configure sensor regiser 
+ - tp2860 센서를 구성하는 register 데이터를 data sheet를 참고하여 작성합니다.
+ - tp2860 에서 struct tp2860_mode에는 sensor mode에 따른 초기화 register가 정의 되어 있습니다. 
+   * resolution, mbus, etc 
+```c
+/**
+ * @brief sensor can support the information of each mode
+ * The RKISP driver requires the use of use controls provided by the framework. 
+ * The cameras sensor driver must implement the following control functions
+ * .bus_fmt : sensor output format, reference MEDIA_BUS_FMT table
+ * .width : the effective image width
+ * .height : the effective image height
+ * .max_fps : Image FPS, denominator/numerator is fps
+ * *reg_list : Register list
+ */
+struct tp2860_mode {
+	u32 width;
+	u32 height;
+	struct v4l2_fract max_fps;
+	u32 field;
+	u32 bus_fmt;
+	const struct regval *reg_list;
+};
+```
+
+### 1.3 v4l2_subdev_ops callback function
+ - **v4l2_subdev_ops** callback function은 sensor 드라이버의 logic control의 core입니다. 
+   * callback function : include/meida/v4l2-subdev.h 
+   * 최소한으로  v4l2_subdev_ops의 callback function 을 따라야 합니다.
+
 
 
 
