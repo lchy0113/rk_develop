@@ -1,0 +1,48 @@
+* Techpoint MIPI CSI-2 sensor
+
+Required Properties:
+- compatible: shall be "techpoint,tp2860"
+- reset-gpios: Low active reset gpio
+
+The device node shall contain one 'port' child node with an
+'endpoint' subnode for its digital output video port,
+in accordance with the video interface bindings defined in
+Documentation/devicetree/bindings/media/video-interfaces.txt.
+The endpoint optional property 'data-lanes' shall be "<1 2>".
+
+Example:
+&i2c4 {
+	status = "okay";
+
+	// MIPI
+	tp2860: tp2860@44 {
+			status = "okay";
+			compatible = "techpoint,tp2860";
+			reg = <0x44>;
+
+			// resetPin assignment and effective level
+			reset-gpios = <&gpio3 RK_PC6 GPIO_ACTIVE_LOW>;	/* low active */
+			//sensor Related power domain enable
+			power-domains = <&power RK3568_PD_VI>;
+			
+			// Module number, this number should not be repeated
+			rockchip,camera-module-index = <0>;
+			// Module orientation which are "back" and "front"
+			rockchip,camera-module-facing = "back";
+			// module name
+			rockchip,camera-module-name = "E-QFN40";
+			// lens name
+			rockchip,camera-module-lens-name = "DP-VIN3";
+
+			port {
+				tp2860_out: endpoint {
+					// mipi dphy port
+					remote-endpoint = <&mipi_in_ucam0>;
+					//slave-mode;
+					// csi2 dphy lane name,2lane is <1 2>, 4lane is <1 2 3 4>
+					data-lanes = <1 2>;
+
+			};
+		};
+	};
+};

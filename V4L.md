@@ -123,6 +123,27 @@ struct v4l2_ctrl_handler
 ----- 
 
 ## v4l subdev driver 설명
+ - subdev driver(sensor driver)는 CIF, RKISP와 독립적인 코드 입니다. remote-endpoint에 의해 async적으로 등록되어 통신 합니다.
+ - Media Controller 구조에서 Sensor는 subdev로 사용되며 pad를 통해 cif, isp 또는 mipi_phy에 link 됩니다.
+ - sensor driver 를 5 part로 분리하여 설명합니다.
+   * power-on sequence (datasheet에 따른 vdd, reset, powerdown, clk, etc).
+   * configure sensor register (센서의 resolution, format, etc).
+   * v4l2_subdev_ops 구조체에 필요한 callback funcation.
+   * v4l2 controller 추가(fps, exposure, gain, test pattern, etc).
+   * .probe() function 와 media control, v4l2 sub device 초기화 코드.
+
+ **Note** : driver를 작성한 후, documentation을 추가해야 합니다.
+ - dts level에서 센서 driver를 작성할 때, 일반적으로 아래 field가 필요합니다.
+   * clk, io mux
+   * regulator and gpio (power-on sequence에 필요한..) 
+   * cif 또는 isp 모듈과 link에 필요한 node
+		[Documentation/devicetree/bindings/media/i2c/tp2860.txt](./attachment/V4L/tp2860.txt)
+	 
+ 
+
+
+-----
+
   
 1. i2c sub장치이므로 i2c driver로 구현 합니다.   
 
