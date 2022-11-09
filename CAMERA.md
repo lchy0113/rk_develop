@@ -677,6 +677,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 ## 6. camera hal(rockchip camera hal3)
  rockchip camera hal3 는 rkisp와 cif 드라이버를 기반으로 통신하고 있습니다.
 
+### 6.1 구조
  * Camera HAL3 구조  
    - android framework 에서 camera hal3의 구조는 아래와 같습니다.   
    - framework API 인터페이스를 제공하여 제어 명령에 응답하고 데이터 및 결과를 반환 합니다.  
@@ -686,7 +687,106 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 
 	 ![](./images/CAMERA_04.png)
 
+ * 코드 디렉토리
+```bash
+ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
+.
+├── AAL	i					// Android Abstraction Layer
+├── common					// common file (thread, message processingg, log, etc)
+│   ├── gcss				// xml parsing 
+│   │   ├── cipf_css
+│   │   ├── ia_cipf
+│   │   └── ia_tools
+│   ├── imageProcess		// image processing, (scale)
+│   ├── jpeg				// jpeg encoding 
+│   ├── mediacontroller		// media pipeline
+│   ├── platformdata		// 
+│   │   ├── gc
+│   │   └── metadataAutoGen
+│   │       └── 6.0.1
+│   ├── utils				//
+│   └── v4l2dev				// v4l2 driver와 상호 작용
+├── etc						// config file
+│   ├── camera
+│   │   └── rkisp1
+│   ├── firmware
+│   └── tools
+├── include					// control loop header files, buffer 관리 
+│   └── arc
+├── lib						// isp 에서 사용되는 3a lib(ae, af, awb)
+│   ├── arm
+│   └── arm64
+├── psl						// physical layer. 
+│   ├── rkisp1				// rkisp1 관련 코드
+│   │   ├── tasks
+│   │   ├── tunetool
+│   │   └── workers
+│   └── rkisp2				// rkisp2 관련 코드
+│       ├── eptz
+│       ├── rockx
+│       │   ├── modules
+│       │   └── utils
+│       ├── tasks
+│       └── workers
+└── tools
+
+38 directories
+```
+   - AAL : android framework와 통신 하는 모듈이며, camera_module, API 인터페이스 가 정의 되어 있습니다. android framework로 부터 받은 요청을 PSL에게 전달 합니다.
+   - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.
 	 
+### 6.2 sensor 등록
+ 센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다. 
+ HAL 코드 : hardware/rockchip/camera 
+ * sensor tuning file.(soc sensor는 skip 해도 됨)
+ * camera3_profile.xml 파일
+
+
+#### 6.2.1 sensor tuning file
+ sensor의 turning file은 센서로 부터 raw data를 수신할 때 필요합니다.
+ <sensor_name>_<module_name>_<lens_name>.xml 형식으로 파일이름을 지정해주어야 하며, /vendor/etc/camera/rkisp1 디렉토리에 위치해야 합니다. 3a 라이브러리는 위 경로를 참조합니다.
+ ex) tp2860_E-QFN40_DP-VIN3.xml
+
+#### 6.2.2 camera3_profile.xml
+ <hal3_camera>/etc/camera 경로에 camera3_profiles_<platform>.xml 파일들이 있습니다.
+ 빌드 과정에서 /vendor/etc/camera/camera3_profile.xml 으로 해당 파일이 위치하게 됩니다.
+ camera hal3은 camera3_profile.xml파일을 참조합니다.
+
+ * camera3_profile.xml 파일은 다수의 Profiles Node가 포함되어 있으며, Profile Node에는 센서의 속성 정보가 포함되어 있습니다.
+ * Profile 노드에는 아래 4개의 sub node가 있습니다.
+
+```xml
+<Profiles cameraId="0" name="tp2860" moduleId="m00">
+
+        <Supported_hardware>
+		</Supported_hardware>
+
+		<Android_metadata>
+		</Android_metadata>
+
+		<Hal_tuning_RKISP1>
+		</Hal_tuning_RKISP1>
+
+		<Sensor_info_RKISP1>
+		</Sensor_info_RKISP1>
+
+</Profiles>
+```
+
+   - Android_metadata : Node에 포함된 정보는 Sensor 에서 지원하는 기능이며, 각 필드는 camera_module의 get_camrea_info() API를 통해 얻을 수 있습니다.
+
+```bash
+$ adb shell dumpsys media.camera
+```
+   - 그외 노드 : rkisp 및 sensor 초기화에 필요한 정보 입니다. 
+	 ex) sensor 의 타입을 정의합니다. raw 또는 soc
+```xml
+	<Sensor_info_RKISP1>
+		<sensorType value="SENSOR_TYPE_SOC"/> <!-- SENSOR_TYPE_SOC or SENSOR_TYPE_RAW -->
+	</Sensor_info_RKISP1>
+
+```
+ 
 
 
 ---
