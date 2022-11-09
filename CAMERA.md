@@ -691,7 +691,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 ```bash
 ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 .
-├── AAL	i					// Android Abstraction Layer
+├── AAL						// Android Abstraction Layer
 ├── common					// common file (thread, message processingg, log, etc)
 │   ├── gcss				// xml parsing 
 │   │   ├── cipf_css
