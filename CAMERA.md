@@ -443,7 +443,7 @@ __ov5695_stop_stream
 RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다. 
 
 - link path :
-	* sensor->vicap
+	* sensor->rkcif_dvp
 
 
 ### 2.1 DVP 인터페이스 설정
