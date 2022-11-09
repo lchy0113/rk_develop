@@ -736,6 +736,7 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
    - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.
 	 
 ### 6.2 sensor 등록
+
  센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다. 
  HAL 코드 : hardware/rockchip/camera 
  * sensor tuning file.(soc sensor는 skip 해도 됨)
