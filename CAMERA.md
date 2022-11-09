@@ -659,11 +659,13 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 
  * ISP : Image Signal Processing  
 	- ISP 는 아래 기능을 포함합니다.
-		+ MIPI serial camera Interface
+		+ DVP 인터페이스를 지원합니다.
+		+ MIPI 인터페이스를 지원합니다.(mipi dphy가 필요)
 		+ Image Signal Processing
-		+ Many Image Enhancement Blocks
-		+ Crop
-		+ Resize
+			= ISP에 데이터가 입력되면 MP, SP 모듈로 데이터를 전달 합니다.
+			[ ] de-interlaced 기능은 SP 모듈에서만 지원합니다.
+			= Crop
+			= Resize
 	- block diagram
 		![](./images/CAMERA_01.png)
 
