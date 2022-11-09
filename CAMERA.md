@@ -525,6 +525,19 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 	 | GPIO4_C1  	| PCLK      	|
 
 
+### 2.3 debug cif & dvp driver
+
+ - [dvp_topology](./attachment/CAMERA/dvp_topology)
+
+```bash
+rk3568_poc:/ # grep '' /sys/class/video4linux/video*/name
+/sys/class/video4linux/video0/name:stream_cif_dvp_id0
+/sys/class/video4linux/video1/name:stream_cif_dvp_id1
+/sys/class/video4linux/video2/name:stream_cif_dvp_id2
+/sys/class/video4linux/video3/name:stream_cif_dvp_id3
+/sys/class/video4linux/video4/name:rkcif-mipi-luma
+```
+
 ---
 
 ## 3. rkcif
