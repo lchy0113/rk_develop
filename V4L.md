@@ -122,7 +122,7 @@ struct v4l2_ctrl_handler
 
 ----- 
 
-## v4l subdev driver 설명
+## 1. v4l subdev driver 설명
  - subdev driver(sensor driver)는 CIF, RKISP와 독립적인 코드 입니다. remote-endpoint에 의해 async적으로 등록되어 통신 합니다.
  - Media Controller 구조에서 Sensor는 subdev로 사용되며 pad를 통해 cif, isp 또는 mipi_phy에 link 됩니다.
  - sensor driver 를 5 part로 분리하여 설명합니다.
@@ -138,8 +138,49 @@ struct v4l2_ctrl_handler
    * regulator and gpio (power-on sequence에 필요한..) 
    * cif 또는 isp 모듈과 link에 필요한 node
 		[Documentation/devicetree/bindings/media/i2c/tp2860.txt](./attachment/V4L/tp2860.txt)
-	 
- 
+
+### 1.1 power-on sequence
+ - sensor장치 마다 다른 power-on timing을 요구합니다.
+   * mclk, vdd, reset, power status 구성에 따라 i2c 통신과 데이터가 출력 됩니다.
+ - datasheet를 통해 정보가 제공됩니다.  
+   * ex. tp2860 모듈은 __tp2860_power_on()를 사용하여 sensor power up 합니다.
+
+```c
+static int __tp2860_power_on(struct tp2860 *tp2860)
+{
+	DEGMSG();
+	int ret;
+	u32 delay_us;
+	struct device *dev = &tp2860->client->dev;
+
+	if (!IS_ERR(tp2860->reset_gpio)) {
+		gpiod_set_value_cansleep(tp2860->reset_gpio, 0);
+		usleep_range(10 * 1000, 20 * 1000);
+		gpiod_set_value_cansleep(tp2860->reset_gpio, 1);
+		usleep_range(10 * 1000, 20 * 1000);
+		gpiod_set_value_cansleep(tp2860->reset_gpio, 0);
+	}
+	usleep_range(10 * 1000, 20 * 1000);
+
+	return 0;
+}
+
+static void __tp2860_power_off(struct tp2860 *tp2860)
+{
+	DEGMSG();
+
+	if (!IS_ERR(tp2860->reset_gpio))
+		gpiod_set_value_cansleep(tp2860->reset_gpio, 1);
+}
+
+```  
+   * (작성 예정)	 
+ - power-on 여부 확인하기. 
+   * sensor 의 chip id를 read하여 성공적으로 power-up이 되었는지 여부를 확인 할 수 있습니다.
+
+### 1.2 configure sensor regiser 
+
+
 
 
 -----
