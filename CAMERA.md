@@ -678,10 +678,10 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
  rockchip camera hal3 는 rkisp와 cif 드라이버를 기반으로 통신하고 있습니다.
 
  * Camera HAL3 구조  
-  - android framework 에서 camera hal3의 구조는 아래와 같습니다.   
-  - framework API 인터페이스를 제공하여 제어 명령에 응답하고 데이터 및 결과를 반환 합니다.  
-  - driver 와 v4l2 interface 를 통해 커널과 통신합니다.   
-  - 기능 동작을 위해 camera buffer 할당과 같은 라이브러리를 호출하고, jpeg 인코딩을 위해 hwjpeg관련 라이브러리를 호출합니다.  
+   - android framework 에서 camera hal3의 구조는 아래와 같습니다.   
+   - framework API 인터페이스를 제공하여 제어 명령에 응답하고 데이터 및 결과를 반환 합니다.  
+   - driver 와 v4l2 interface 를 통해 커널과 통신합니다.   
+   - 기능 동작을 위해 camera buffer 할당과 같은 라이브러리를 호출하고, jpeg 인코딩을 위해 hwjpeg관련 라이브러리를 호출합니다.  
     
 
 	 ![](./images/CAMERA_04.png)
