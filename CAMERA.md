@@ -202,6 +202,10 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 
 #### 1.2.2 configure csi2_dphy0 (or csi2_dphy1/csi2_dphy2)
 
+ - dphy는  isp와 sensor 를 link 합니다. 
+   * mipi_in_ucam0 : sensor side의 link
+   * csidphy_out : isp side의 link
+
 ```dtb
 &csi2_dphy0 {
 	status = "okay";
@@ -233,79 +237,6 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 			};	
 		};
 	};	
-};
-
-
-&csi2_dphy1 {
-        status = "okay";
-        /*
-        * dphy1 only used for split mode,
-        * can be used  concurrently  with dphy2
-        * full mode and split mode are mutually exclusive
-        */
-        ports {
-                #address-cells = <1>;
-                #size-cells = <0>;
-
-                port@0 {
-                        reg = <0>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
-
-                        dphy1_in: endpoint@1 {
-                                        reg = <1>;
-                                        remote-endpoint = <&gc2053_out>;
-                                        data-lanes = <1 2>;
-                        };
-                };
-
-                port@1 {
-                        reg = <1>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
-
-                        dphy1_out: endpoint@1 {
-                                        reg = <1>;
-                                        remote-endpoint = <&isp0_in>;
-                        };
-                };
-        };
-};
-
-&csi2_dphy2 {
-        status = "okay";
-        /*
-        * dphy2 only used for split mode,
-        * can be used  concurrently  with dphy1
-        * full mode and split mode are mutually exclusive
-        */
-        ports {
-                #address-cells = <1>;
-                #size-cells = <0>;
-
-                port@0 {
-                        reg = <0>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
-
-                        dphy2_in: endpoint@1 {
-                                        reg = <1>;
-                                        remote-endpoint = <&gc2093_out>;
-                                        data-lanes = <1 2>;
-                        };
-                };
-
-                port@1 {
-                        reg = <1>;
-                        #address-cells = <1>;
-                        #size-cells = <0>;
-
-                        dphy2_out: endpoint@1 {
-                                        reg = <1>;
-                                        remote-endpoint = <&mipi_csi2_input>;
-                        };
-                };
-        };
 };
 
 &csi2_dphy_hw {
@@ -349,7 +280,7 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 
 #### 1.2.3 configure isp
 
-- The remote-endpoint in rkisp_vir0 node should point to dphy1_out
+ - The remote-endpoint in rkisp_vir0 node should point to dphy1_out
 
 ```dtb
 &rkisp {
@@ -382,6 +313,35 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
     status = "okay";
 };
 ```
+
+#### 1.2.4 debug cif & isp driver
+
+ - RKISP1 모듈이 성공적으로 probe되면, 다수의 /dev/video* 디바이스가 생성 됩니다. 
+ - RKISP1 모듈은 /sys filesystem 에도 video node를 등록하므로 아래 명령어를 통해 정보를 확인 할 수 있습니다.
+   * **rkisp1** 모듈은 4개의 device(selfpath, mainpath, statistics, input-params)를 등록합니다. 
+   * [mipi_topology](./attachment/CAMERA/mipi_topology)
+
+| **Device node** 	| **Name**     	| **Functions**         	|
+|-----------------	|--------------	|-----------------------	|
+| /dev/video0      	| Main Path    	| video output          	|
+| /dev/video1      	| Self Path    	| video output          	|
+| /dev/video7     	| Statistics   	| 3a statistics         	|
+| /dev/video8      	| Input-params 	| 3a parameter settings 	|
+
+```bash
+rk3568_poc:/ # grep '' /sys/class/video4linux/video*/name
+/sys/class/video4linux/video0/name:rkisp_mainpath
+/sys/class/video4linux/video1/name:rkisp_selfpath
+/sys/class/video4linux/video2/name:rkisp_rawwr0
+/sys/class/video4linux/video3/name:rkisp_rawwr2
+/sys/class/video4linux/video4/name:rkisp_rawwr3
+/sys/class/video4linux/video5/name:rkisp_rawrd0_m
+/sys/class/video4linux/video6/name:rkisp_rawrd2_s
+/sys/class/video4linux/video7/name:rkisp-statistics
+/sys/class/video4linux/video8/name:rkisp-input-params
+```
+
+
 
 ### 1.3 Related Directory(kernel)
 
