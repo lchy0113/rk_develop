@@ -674,7 +674,16 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 
 ---
 
-## 6. techpoint tp2825 
+## 6. camera hal(rockchip camera hal3)
+ rockchip camera hal3 는 rkisp와 cif 드라이버를 기반으로 통신하고 있습니다.
+
+ - Camera HAL3 구조
+	 ![](./images/CAMERA_04.png)
+
+
+---
+
+## 7. techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
