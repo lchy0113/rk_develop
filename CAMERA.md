@@ -641,7 +641,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 
 ## 4. VICAP
 
- * VICAP : Video Input Processor
+ * VICAP : Video Capture(Video Input Processor) 모듈은 DVP/MIPI 인터페이스의 장치로 부터 받은 데이터를 AXI bus를 사용하여 system main memory로 전달합니다.
  * VICAP 드라이버는 주로 v4l2 또는 media framework를 기반으로 하여 subdevices의 hardware configuration, interrupt processing, control buffer rotation, control power 처리를 제공합니다.
  * RK3568의 경우, VICAP는 하나의 Core와 2개의 인터페이스(dvp, mipi)를 제공합니다.
 	 - dvp 인터페이스의 경우, rkvicap_dvp node 와 연결.
@@ -668,8 +668,11 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 		![](./images/CAMERA_01.png)
 
  * ISP 와 VICAP 모듈 간 관계
-	- rk3568 플랫폼은 VICAP와  ISP,  2개의 독립적인 이미지 프로세싱 IP 를 가지고 있습니다. 
-	- VICAP에서 입력된 데이터를 ISP에서 처리하는 경우, VICAP의 인터페이스의 v4l2 subdev 를 생성하여 ISP 노드에 연결해야 합니다.
+	- rk3568 플랫폼은 VICAP와  ISP,  2개의 독립적인 이미지 관련 IP 를 가지고 있습니다. 
+	- VICAP에서 입력된 데이터를 ISP에게 전달하여 입력된 데이터를 처리 합니다. 
+	  * v4l2 subdev 를 생성하여 ISP 노드에 연결해야 합니다.
+		  ![](./images/CAMERA_05.png)
+
 
 
 ---
