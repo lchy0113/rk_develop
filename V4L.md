@@ -141,9 +141,11 @@ struct v4l2_ctrl_handler
 
 ### 1.1 power-on sequence
  - sensor장치 마다 다른 power-on timing을 요구합니다.
-   * mclk, vdd, reset, power status 구성에 따라 i2c 통신과 데이터가 출력 됩니다.
+   * mclk, vdd, reset 이후, power status 구성에 따라 i2c 통신과 데이터가 출력 됩니다.
  - datasheet를 통해 정보가 제공됩니다.  
-   * ex. tp2860 모듈은 __tp2860_power_on()를 사용하여 sensor power up 합니다.
+   * ex. tp2860 모듈은 __tp2860_power_on()를 사용하여 sensor power-on 합니다.
+     + tp2860 모듈을 특별히 power-on sequce가 없습니다. 
+	 + Note : 1.2V -> 1.3V -> RSTB(on) (from Techpoint)
 
 ```c
 static int __tp2860_power_on(struct tp2860 *tp2860)
@@ -154,8 +156,6 @@ static int __tp2860_power_on(struct tp2860 *tp2860)
 	struct device *dev = &tp2860->client->dev;
 
 	if (!IS_ERR(tp2860->reset_gpio)) {
-		gpiod_set_value_cansleep(tp2860->reset_gpio, 0);
-		usleep_range(10 * 1000, 20 * 1000);
 		gpiod_set_value_cansleep(tp2860->reset_gpio, 1);
 		usleep_range(10 * 1000, 20 * 1000);
 		gpiod_set_value_cansleep(tp2860->reset_gpio, 0);
@@ -172,15 +172,13 @@ static void __tp2860_power_off(struct tp2860 *tp2860)
 	if (!IS_ERR(tp2860->reset_gpio))
 		gpiod_set_value_cansleep(tp2860->reset_gpio, 1);
 }
-
 ```  
-   * (작성 예정)	 
  - power-on 여부 확인하기. 
    * sensor 의 chip id를 read하여 성공적으로 power-up이 되었는지 여부를 확인 할 수 있습니다.
 
 ### 1.2 configure sensor regiser 
- - tp2860 센서를 구성하는 register 데이터를 data sheet를 참고하여 작성합니다.
- - tp2860 에서 struct tp2860_mode에는 sensor mode에 따른 초기화 register가 정의 되어 있습니다. 
+ - tp2860 센서를 구성하는 register 데이터를 datasheet를 참고하여 작성합니다.
+ - tp2860 에서 struct tp2860_mode에는 sensor mode에 따른 초기화 register(**reg_list**)가 정의 되어 있습니다. 
    * resolution, mbus, etc 
 ```c
 /**
@@ -204,10 +202,20 @@ struct tp2860_mode {
 ```
 
 ### 1.3 v4l2_subdev_ops callback function
- - **v4l2_subdev_ops** callback function은 sensor 드라이버의 logic control의 core입니다. 
+ - **v4l2_subdev_ops** callback function을 기반으로 하여 sensor 드라이버의 logic을 제어합니다.
    * callback function : include/meida/v4l2-subdev.h 
-   * 최소한으로  v4l2_subdev_ops의 callback function 을 따라야 합니다.
+   * 최소한으로  v4l2_subdev_ops의 아래 callback function 을 구현해야 합니다.
+      + .open : upper layer에서 /dev/v4l2-subdev에 접근할 때 호출 됩니다. 
+	  + .s_stream : stream on 및 stream off 포함하여 stream을 구성하여 이미지를 출력합니다. (일반적으로 여기에서 레지스터를 구성합니다.)
+	  + .enum_mbus_code : 지원하는 mbus_code 를 반환 합니다.(ex. media bus format)
+	  + .enum_frame_size : 지원하는 resolution 정보를 반환 합니다.  
+	  + .get_fmt : 현재 sensor에서 선택된 format/size를 반환 합니다.
+	  + .set_fmt : format/size 를 세팅 합니다.
 
+### 1.4 V4l2 controller 추가
+ - fps, exposure, gain, test pattern, etc 과 같이 v4l2 controller가 필요한 경우, control 을 추가 합니다.
+   * tp2860_initialize_controls() 에서 지원하는 controls을 정의 합니다.
+   * struct v4l2_ctrl_ops 의 callback function(.s_ctrl)을 통해 control에 대해 기능을 구현합니다.
 
 
 
