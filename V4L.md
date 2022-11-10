@@ -122,9 +122,9 @@ struct v4l2_ctrl_handler
 
 ----- 
 
-## 1. v4l subdev driver 설명
- - subdev driver(sensor driver)는 CIF, RKISP와 독립적인 코드 입니다. remote-endpoint에 의해 async적으로 등록되어 통신 합니다.
- - Media Controller 구조에서 Sensor는 subdev로 사용되며 pad를 통해 cif, isp 또는 mipi_phy에 link 됩니다.
+## 1. sensor driver development
+ - sensor driver는 rockchip 플랫폼의 CIF, RKISP 모듈 독립적인 코드 입니다. remote-endpoint에 의해 async적으로 등록되어 통신 합니다.
+ - media controller 구조에서 sensor는 subdev로 사용되며 pad를 통해 cif, isp 또는 mipi_phy에 link 됩니다.
  - sensor driver 를 5 part로 분리하여 설명합니다.
    * power-on sequence (datasheet에 따른 vdd, reset, powerdown, clk, etc).
    * configure sensor register (센서의 resolution, format, etc).
@@ -133,11 +133,12 @@ struct v4l2_ctrl_handler
    * .probe() function 와 media entity, v4l2 sub device 초기화.
 
  **Note** : driver를 작성한 후, documentation을 추가해야 합니다.
- - dts level에서 센서 driver를 작성할 때, 일반적으로 아래 field가 필요합니다.
+ - dts 에서 센서 driver를 작성할 때, 일반적으로 아래 field가 필요합니다.
    * clk, io mux
    * regulator and gpio (power-on sequence에 필요한..) 
    * cif 또는 isp 모듈과 link에 필요한 node
 		[Documentation/devicetree/bindings/media/i2c/tp2860.txt](./attachment/V4L/tp2860.txt)
+		 
 
 ### 1.1 power-on sequence
  - sensor장치 마다 다른 power-on timing을 요구합니다.
@@ -200,6 +201,7 @@ struct tp2860_mode {
 	const struct regval *reg_list;
 };
 ```
+  
 
 ### 1.3 v4l2_subdev_ops callback function
  - **v4l2_subdev_ops** callback function을 기반으로 하여 sensor 드라이버의 logic을 제어합니다.
@@ -212,6 +214,7 @@ struct tp2860_mode {
 	  + .get_fmt : 현재 sensor에서 선택된 format/size를 반환 합니다.
 	  + .set_fmt : format/size 를 세팅 합니다.
 
+		    
 ### 1.4 V4l2 controller 추가
  - fps, exposure, gain, test pattern 설정이 필요한 경우, v4l2 controller을 사용하여 control 이 가능합니다.
    * tp2860_initialize_controls() 에서 지원하는 controls을 정의 합니다.
@@ -243,6 +246,7 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 }
 ```
 
+ 
 ### 1.5 .probe() function 와 media entity, v4l2 sub device 초기화 
  - probe function은 아래 기능을 담당합니다.
    * dts node 파싱. (ex. regulator, gpio, clk, etc) 
