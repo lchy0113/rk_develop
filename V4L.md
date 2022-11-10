@@ -123,7 +123,8 @@ struct v4l2_ctrl_handler
 ----- 
 
 ## 1. sensor driver development
- - sensor driver는 rockchip 플랫폼의 CIF, RKISP 모듈 독립적인 코드 입니다. remote-endpoint에 의해 async적으로 등록되어 통신 합니다.
+ - sensor driver는 rockchip 플랫폼의 CIF, RKISP 모듈 독립적인 코드 입니다.
+   * remote-endpoint에 의해 async적으로 등록되어 통신 합니다.
  - media controller 구조에서 sensor는 subdev로 사용되며 pad를 통해 cif, isp 또는 mipi_phy에 link 됩니다.
  - sensor driver 를 5 part로 분리하여 설명합니다.
    * power-on sequence (datasheet에 따른 vdd, reset, powerdown, clk, etc).
