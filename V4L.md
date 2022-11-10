@@ -138,6 +138,7 @@ struct v4l2_ctrl_handler
    * regulator and gpio (power-on sequence에 필요한..) 
    * cif 또는 isp 모듈과 link에 필요한 node
 		[Documentation/devicetree/bindings/media/i2c/tp2860.txt](./attachment/V4L/tp2860.txt)  
+
  **Note** : driver를 작성한 후, documentation을 추가하여 개발 자료를 문서화 합니다.
 		 
 
