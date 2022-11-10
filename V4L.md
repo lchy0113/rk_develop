@@ -1,6 +1,6 @@
 # V4L
 
-## V4L 관련 용어 
+## 0. V4L 관련 용어 
 
 	- pad : pad는 entity 와 entity 간 연결 end-point 입니다.
 	- link : 2개의 pad간 연결 인터페이스 입니다. data는 source pad에서 sink pad로 이동합니다.
