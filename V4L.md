@@ -133,7 +133,7 @@ struct v4l2_ctrl_handler
    * v4l2 controller 추가(fps, exposure, gain, test pattern, etc).
    * .probe() function 와 media entity, v4l2 sub device 초기화.
 
- - dts 에서 센서 driver를 작성할 때, 일반적으로 아래 field가 필요합니다.
+ - sensor driver를 작성할 때, dts 에서 아래 field가 필요합니다.(일반적으로 사용됨)
    * clk, io mux
    * regulator and gpio (power-on sequence에 필요한..) 
    * cif 또는 isp 모듈과 link에 필요한 node
