@@ -261,38 +261,12 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 
 -----
 
-  
-1. i2c sub장치이므로 i2c driver로 구현 합니다.   
 
-  1.1 i2c_driver의 아래 내용을 구현합니다.
-
-  ```c
-  struct driver.name
-  struct driver.pm
-  struct driver.of_match_table
-  probe function
-  remove function
-  ```
-  
-  1.2 probe function에 대한 설명입니다.  
-  
- - dts로 부터 resource 를 얻습니다.   
-	ex. rockchip,camera-module-xxx와 같은 resource는 camera module에 대한 resourlce를 제공합니다.
-
- - v4l2 장치 media entity 초기화.  
-	v4l2_i2c_subdev_init을 사용하여 subdev 장치로 등록합니다.
-
-2. v4l2 sub-device driver를 구현합니다.
-
-
-
------
-
-## media-ctl / v4l2-ctl 툴
+## media-ctl / v4l2-ctl tools
 
 
  - media-ctl
-	 /dev/mediaX와 같은 media 장치를 통해 동작하며, media topology 에서 각 노드의 형식 및 크기, 링크를 관리합니다.
+	 /dev/mediaX와 같은 media 장치를 통해 동작하며, media framework의 fmt, size, link node를 구성하는데 사용합니다.
 
  - v4l2-ctl
 	 /dev/videoX와 같은 비디오 장치를 통해 동작하며, set_fmt, reqbuf, qbuf, dqbuf, stream_on, stream_off와 같은 동작을 수행합니다.
