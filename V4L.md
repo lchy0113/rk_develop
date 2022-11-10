@@ -145,7 +145,7 @@ struct v4l2_ctrl_handler
    * mclk, vdd, reset 이후, power status 구성에 따라 i2c 통신과 데이터가 출력 됩니다.
  - datasheet를 통해 정보가 제공됩니다.  
    * ex. tp2860 모듈은 __tp2860_power_on()를 사용하여 sensor power-on 합니다.
-     + tp2860 모듈을 특별히 power-on sequce가 없습니다. 
+     + tp2860 모듈을 특별히 power-on sequence가 없습니다. 
 	 + Note : 1.2V -> 1.3V -> RSTB(on) (from Techpoint)
 
 ```c
