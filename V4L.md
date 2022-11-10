@@ -265,7 +265,7 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 ## media-ctl / v4l2-ctl tools
 
 
- - media-ctl
+ - **media-ctl**
    * /dev/mediaX와 같은 media 장치를 통해 동작하며, media framework의 fmt, size, link node를 구성하는데 사용합니다.
    * ISP camera topology
      + [mipi_topology](./attachment/CAMERA/mipi_topology)
@@ -275,7 +275,7 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
    * tp2860 의 cif, isp topologies에 대해 설명합니다.
    ![](./images/V4L_01.png)	
 
- - v4l2-ctl
+ - **v4l2-ctl**
    * /dev/videoX와 같은 비디오 장치를 통해 동작하며, set_fmt, reqbuf, qbuf, dqbuf, stream_on, stream_off와 같은 동작을 수행합니다.
    * set control (such as exposure, gain, etc)
    sensor driver에서 v4l control을 구현한 경우, v4l2-ctl을 통해 제어 가능합니다.
