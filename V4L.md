@@ -251,7 +251,7 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
  - probe function은 아래 기능을 담당합니다.
    * dts node 파싱. (ex. regulator, gpio, clk, etc) 
    * media entity, v4l2 subdev, v4l2 controller 정보를 등록.
-     + v4l2_i2c_subdev_init() : v4l2 subdev를 등록합니다.(callback function 정보)
+     + v4l2_i2c_subdev_init() : v4l2 subdev를 등록합니다.(callback function 정보 등록)
 	 + tp2860_initialize_controls() : v4l2 controls 를 초기화 합니다.
 	 + media_entity_pads_init() : meida entity를 등록합니다.
 	   (ex. tp2860는 1개의 출력 pad가 있습니다.)
@@ -267,7 +267,7 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 
  - **media-ctl**
    * /dev/mediaX와 같은 media 장치를 통해 동작하며, media framework의 fmt, size, link node를 구성하는데 사용합니다.
-   * ISP camera topology
+   * camera topology
      + [mipi_topology](./attachment/CAMERA/mipi_topology)
 	 + sensor(tp2860)은 mipi dphy 모듈에 mipi bus를 통해 연결되어 있습니다.
 	 + isp 모듈은 mipi data가 수집되면 isp 처리를 수행 합니다.
