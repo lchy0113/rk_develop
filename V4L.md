@@ -296,5 +296,36 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 
  - v4l2-ctl
 	 /dev/videoX와 같은 비디오 장치를 통해 동작하며, set_fmt, reqbuf, qbuf, dqbuf, stream_on, stream_off와 같은 동작을 수행합니다.
+   * set control (such as exposure, gain, etc)
+   sensor driver에서 v4l control을 구현한 경우, v4l2-ctl을 통해 제어 가능합니다.
+
+```bash
+
+rk3568_poc:/ # v4l2-ctl -V -d /dev/video0
+Format Video Capture Multiplanar:
+        Width/Height      : 1920/1080
+        Pixel Format      : 'NV12'
+        Field             : None
+        Number of planes  : 1
+        Flags             :
+        Colorspace        : Default
+        Transfer Function : Default
+        YCbCr Encoding    : Default
+        Quantization      : Full Range
+        Plane 0           :
+           Bytes per Line : 1920
+           Size Image     : 3110400
+rk3568_poc:/ #
+
+rk3568_poc:/ # v4l2-ctl -d /dev/video0 -l
+
+Image Processing Controls
+
+                 link_frequency 0x009f0901 (intmenu): min=0 max=0 default=0 value=0 flags=read-only
+                     pixel_rate 0x009f0902 (int64)  : min=0 max=74250000 step=1 default=74250000 value=74250000 flags=read-only
+                   test_pattern 0x009f0903 (menu)   : min=0 max=1 default=0 value=0
+                   
+rk3568_poc:/ # v4l2-ctl -d /dev/video0 --set-ctrl 'test_pattern=1'
+``` 
 	 
 
