@@ -179,7 +179,7 @@ static void __tp2860_power_off(struct tp2860 *tp2860)
 
 ### 1.2 configure sensor regiser 
  - tp2860 센서를 구성하는 register 데이터를 datasheet를 참고하여 작성합니다.
- - tp2860 에서 struct tp2860_mode에는 sensor mode에 따른 초기화 register(**reg_list**)가 정의 되어 있습니다. 
+ - tp2860 driver 코드에서 struct tp2860_mode에는 sensor mode에 따른 초기화 register(**reg_list**)가 정의 되어 있습니다. 
    * resolution, mbus, etc 
 ```c
 /**
@@ -217,7 +217,7 @@ struct tp2860_mode {
 		    
 ### 1.4 V4l2 controller 추가
  - fps, exposure, gain, test pattern 설정이 필요한 경우, v4l2 controller을 사용하여 control 이 가능합니다.
-   * tp2860_initialize_controls() 에서 지원하는 controls을 정의 합니다.
+   * tp2860_initialize_controls() 에서 지원하는 controls을 등록 합니다.
    * struct v4l2_ctrl_ops 에 포함된  callback function(.s_ctrl)을 통해 control에 대한 기능을 구현합니다.
 
 ```c
