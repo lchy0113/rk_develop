@@ -130,7 +130,7 @@ struct v4l2_ctrl_handler
    * configure sensor register (센서의 resolution, format, etc).
    * v4l2_subdev_ops callback funcation.
    * v4l2 controller 추가(fps, exposure, gain, test pattern, etc).
-   * .probe() function 와 media control, v4l2 sub device 초기화 코드.
+   * .probe() function 와 media entity, v4l2 sub device 초기화.
 
  **Note** : driver를 작성한 후, documentation을 추가해야 합니다.
  - dts level에서 센서 driver를 작성할 때, 일반적으로 아래 field가 필요합니다.
@@ -213,10 +213,45 @@ struct tp2860_mode {
 	  + .set_fmt : format/size 를 세팅 합니다.
 
 ### 1.4 V4l2 controller 추가
- - fps, exposure, gain, test pattern, etc 과 같이 v4l2 controller가 필요한 경우, control 을 추가 합니다.
+ - fps, exposure, gain, test pattern 설정이 필요한 경우, v4l2 controller을 사용하여 control 이 가능합니다.
    * tp2860_initialize_controls() 에서 지원하는 controls을 정의 합니다.
-   * struct v4l2_ctrl_ops 의 callback function(.s_ctrl)을 통해 control에 대해 기능을 구현합니다.
+   * struct v4l2_ctrl_ops 에 포함된  callback function(.s_ctrl)을 통해 control에 대한 기능을 구현합니다.
 
+```c
+static int tp2860_initialize_controls(struct tp2860 *tp2860)
+{
+// ...
+	tp2860->test_pattern = v4l2_ctrl_new_std_menu_items(handler, &tp2860_ctrl_ops, V4L2_CID_TEST_PATTERN,
+		ARRAY_SIZE(tp2860_test_pattern_menu) - 1, 0, 0, tp2860_test_pattern_menu);
+// ...
+}
+
+static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
+{
+	DEGMSG();
+// ...
+	switch (ctrl->id) {
+	case V4L2_CID_TEST_PATTERN:
+		ret = tp2860_enable_test_pattern(tp2860, ctrl->val);
+		break;
+	default:
+		dev_warn(&client->dev, "%s Unhandled id:0x%x, val:0x%x\n",
+			 __func__, ctrl->id, ctrl->val);
+		break;
+	}
+// ...
+}
+```
+
+### 1.5 .probe() function 와 media entity, v4l2 sub device 초기화 
+ - probe function은 아래 기능을 담당합니다.
+   * dts node 파싱. (ex. regulator, gpio, clk, etc) 
+   * media entity, v4l2 subdev, v4l2 controller 정보를 등록.
+     + v4l2_i2c_subdev_init() : v4l2 subdev를 등록합니다.(callback function 정보)
+	 + tp2860_initialize_controls() : v4l2 controls 를 초기화 합니다.
+	 + media_entity_pads_init() : meida entity를 등록합니다.
+	   (ex. tp2860는 1개의 출력 pad가 있습니다.)
+	 + v4l2_async_register_subdev_sensor_common() : sensor 를 async 로 등록한다는 정보를 선언(rockchip platform의 rkisp, cif는 sub device(sensor)와 async로 등록되어 동작함.) 
 
 
 
