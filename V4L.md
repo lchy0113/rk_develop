@@ -223,6 +223,17 @@ struct tp2860_mode {
    * struct v4l2_ctrl_ops 에 포함된  callback function(.s_ctrl)을 통해 control에 대한 기능을 구현합니다.
 
 ```c
+/** 
+ * v4l interface begin  
+ */
+/** 
+ * @brief the control operations that the driver has to provide
+ * .s_ctrl : actually set the new control value.
+ */
+static const struct v4l2_ctrl_ops tp2860_ctrl_ops = {
+	.s_ctrl = tp2860_set_ctrl,
+};
+
 static int tp2860_initialize_controls(struct tp2860 *tp2860)
 {
 // ...
