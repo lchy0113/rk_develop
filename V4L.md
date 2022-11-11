@@ -259,6 +259,7 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 }
 ```
 
+ref : https://www.kernel.org/doc/html/v4.10/media/kapi/v4l2-controls.html
  
 ### 1.5 .probe() function 와 media entity, v4l2 sub device 초기화 
  - probe function은 아래 기능을 담당합니다.
