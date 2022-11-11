@@ -179,7 +179,7 @@ static void __tp2860_power_off(struct tp2860 *tp2860)
  - power-on 여부 확인하기. 
    * sensor 의 chip id를 read하여 성공적으로 power-up이 되었는지 여부를 확인 할 수 있습니다.
 
-### 1.2 configure sensor regiser 
+### 1.2 configure sensor register 
  - tp2860 센서를 구성하는 register 데이터를 datasheet를 참고하여 작성합니다.
  - tp2860 driver 코드에서 struct tp2860_mode에는 sensor mode에 따른 초기화 register(**reg_list**)가 정의 되어 있습니다. 
    * resolution, mbus, etc 
@@ -207,8 +207,8 @@ struct tp2860_mode {
 
 ### 1.3 v4l2_subdev_ops callback function
  - **v4l2_subdev_ops** callback function을 기반으로 하여 sensor 드라이버의 logic을 제어합니다.
-   * callback function : include/meida/v4l2-subdev.h 
-   * 최소한으로  v4l2_subdev_ops의 아래 callback function 을 구현해야 합니다.
+   * callback function : include/media/v4l2-subdev.h 
+   * v4l2_subdev_ops의 아래 callback function 을 구현해야 합니다.(최소한으로 필요한 callback function)
       + .open : upper layer에서 /dev/v4l2-subdev에 접근할 때 호출 됩니다. 
 	  + .s_stream : stream on 및 stream off 포함하여 stream을 구성하여 이미지를 출력합니다. (일반적으로 여기에서 레지스터를 구성합니다.)
 	  + .enum_mbus_code : 지원하는 mbus_code 를 반환 합니다.(ex. media bus format)
@@ -218,8 +218,8 @@ struct tp2860_mode {
 
 		    
 ### 1.4 V4l2 controller 추가
- - fps, exposure, gain, test pattern 설정이 필요한 경우, v4l2 controller을 사용하여 control 이 가능합니다.
-   * tp2860_initialize_controls() 에서 지원하는 controls을 등록 합니다.
+ - fps, exposure, gain, test pattern 에 대한 설정은 v4l2 controller을 사용하여 control 합니다.
+   * tp2860_initialize_controls() 에서 지원하고자 하는 controls을 등록 합니다.
    * struct v4l2_ctrl_ops 에 포함된  callback function(.s_ctrl)을 통해 control에 대한 기능을 구현합니다.
 
 ```c
