@@ -323,3 +323,25 @@ rk3568_poc:/ # v4l2-ctl -d /dev/video0 --set-ctrl 'test_pattern=1'
 ``` 
 	 
 
+
+---- 
+
+🖋 Note 
+ * V4L 동작 flow
+  1. camera device 를 open
+  2. VIDEO_QUERYCAP을 통해 Capture가 가능한지(V4L2_VIDEO_CAPTURE), 스트리밍 방식인지(V4L2_CAP_STREAMING)을 구분
+  3. VIDEO_S_FMT를 통해 가지고 올 카메라 데이터의 포맷을 결정.(버퍼 타입, 해상도, 컬러스페이스 등)
+  4. VIDEO_REQBUFS를 통해 버퍼를 결정(버퍼의 개수, 버퍼 타입, read, mmap, user pointer 방식 선택)
+  5. VIDEO_QUERYBUF를 통해 원하는 버퍼의 인덱스를 넘겨주고 그 버퍼의 오프셋 정보를 가지고 옴. 
+    * 이 정보를 이용해 mmap()을 통해 버퍼를 유저공간에 맵핑함. 
+	* 버퍼에 할당하는 공간만큼 메모리를 할당받아서(calloc(req.count, sizeof(*buffers)))각각의 버퍼에 대해 따로 mmap()을 통해 공간을 할당함. 
+	* 즉 버퍼가 4개라면 0번 버퍼의 정보를 얻기 위해 VIDIOC_QUERYBUF, 인덱스는 0, ioctl을 실행하고 그결과 넘어온 버퍼의 offset값에 따라 mmap을 통해 그 버퍼에 대한 공간을 매핑. 1번, 2번, 3번에 대해서도 똑같은 작업을 반복함. 
+	* VIDIOC_QUERYBUF와 mmap()이 각각 4번 씩 실행. 
+  6. VIDIOC_QBUF을 통해 프레임을 달라고 요청.
+  7. VIDIOC_STREAMMON을 통해 스트림을 켬.
+  8. polling을 통해 새 프레임이 들어오기를 기다림.
+  9. 새 프레임이 들어오면 DQBUF을 통해 새로 들어온 프레임의 인덱스를 가져옴.
+  10. 가져온 인덱스를 통해 mmap된 메모리 공간에서 이미지 데이터를 가져옴.
+  11. 다시 QBUF를 통해 프레임을 달라고 요청함. 이 작업을 반복해서 데이터를 계쏙적으로 가지고 감.
+  12. VIDIOC_STREAMOFF를 통해 스트림을 끔. munmap을 통해 메모리를 해제.
+  13. camera device 를 close
