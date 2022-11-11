@@ -263,10 +263,10 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 ### 1.5 .probe() function 와 media entity, v4l2 sub device 초기화 
  - probe function은 아래 기능을 담당합니다.
    * dts node 파싱. (ex. regulator, gpio, clk, etc) 
-   * media entity, v4l2 subdev, v4l2 controller 정보를 등록.
+   * media entity, v4l2 sub device, v4l2 controller 정보를 등록.
      + v4l2_i2c_subdev_init() : v4l2 subdev를 등록합니다.(callback function 정보 등록)
 	 + tp2860_initialize_controls() : v4l2 controls 를 초기화 합니다.
-	 + media_entity_pads_init() : meida entity를 등록합니다.
+	 + media_entity_pads_init() : media entity를 등록합니다.
 	   (ex. tp2860는 1개의 출력 pad가 있습니다.)
 	 + v4l2_async_register_subdev_sensor_common() : sensor 를 async 로 등록한다는 정보를 선언(rockchip platform의 rkisp, cif는 sub device(sensor)와 async로 등록되어 동작함.) 
 
@@ -280,11 +280,11 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 
  - **media-ctl**
    * /dev/mediaX와 같은 media 장치를 통해 동작하며, media framework의 fmt, size, link node를 구성하는데 사용합니다.
-   * camera topology
+   * ex. rk3568 platform camera topology
      + [mipi_topology](./attachment/CAMERA/mipi_topology)
 	 + sensor(tp2860)은 mipi dphy 모듈에 mipi bus를 통해 연결되어 있습니다.
 	 + isp 모듈은 mipi data가 수집되면 isp 처리를 수행 합니다.
-	 + mp, sp는 출력되는 data의 format과 size를 처리합니다.
+	 + mp, sp는 각각 출력되는 data의 format과 size를 처리합니다.
    * tp2860 의 cif, isp topologies에 대해 설명합니다.
    ![](./images/V4L_01.png)	
 
