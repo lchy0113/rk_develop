@@ -3,6 +3,8 @@
 -----
 ## 1. hardware
 
+ * pin connected
+
 | **pin**             	| **name**      	| **connected**  	| **device** 	|
 |---------------------	|---------------	|----------------	|------------	|
 | GPIO4_C3 (I2S3)     	| I2S_BCLK      	| BICK           	| -          	|
