@@ -23,7 +23,7 @@
 -----
 
 
-🖋 Note 
+🖋 *Note* 
 
  * reference : RK3568_AIoT_REF_SCH
    - I2S1 : connected audio codec(rk809-5; PMIC+Codec)(I2S1, I2C0)
