@@ -129,7 +129,7 @@ struct v4l2_ctrl_handler
  - sensor driver 를 5 part로 분리하여 설명합니다.
    * power-on sequence (datasheet에 따른 vdd, reset, powerdown, clk, etc).
    * configure sensor register (센서의 resolution, format, etc).
-   * v4l2_subdev_ops callback funcation.
+   * v4l2_subdev_ops callback function.
    * v4l2 controller 추가(fps, exposure, gain, test pattern, etc).
    * .probe() function 와 media entity, v4l2 sub device 초기화.
 
