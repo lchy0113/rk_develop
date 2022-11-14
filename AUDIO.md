@@ -80,10 +80,10 @@
 ```
 
  * asahi-kasei device in rk3568
-   - [ ] ak4458 : sound/soc/codecs/ak4458.c
-   - [ ] ak4613 : sound/soc/codecs/ak4613.c
-   - [ ] ak4642 : sound/soc/codecs/ak4642.c
-   - [ ] ak4554 : sound/soc/codecs/ak4554.c
-   - [ ] ak5386 : sound/soc/codecs/ak5386.c
-   - [ ] ak4104 : sound/soc/codecs/ak4104.c
-   - [ ] ak5558 : sound/soc/codecs/ak5558.c
+   - [ ] ak4458  sound/soc/codecs/ak4458.c : playback only
+   - [x] ak4613  sound/soc/codecs/ak4613.c : best(2nd)
+   - [x] ak4642  sound/soc/codecs/ak4642.c : best(1st)
+   - [ ] ak4554  sound/soc/codecs/ak4554.c : simple..
+   - [ ] ak5386  sound/soc/codecs/ak5386.c : capture only
+   - [ ] ak4104  sound/soc/codecs/ak4104.c : playback only 
+   - [ ] ak5558  sound/soc/codecs/ak5558.c : capture only
