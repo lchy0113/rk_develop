@@ -78,3 +78,6 @@
 [2022-11-11 12:08:08] [    2.463764] Freeing unused kernel memory: 1280K
 
 ```
+
+ * asahi-kasei device in rk3568
+   - [ ] ak4458
