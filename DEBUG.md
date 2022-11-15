@@ -115,6 +115,11 @@ rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C040
 # set low value to gpio0_a6
 rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C000
 
+# set strength value to gpio0_a6 (level 5)
+rk3568_poc:/ # io -4 -r -l 0x4 0xfdc6007c
+fdc6007c:  00000000
+rk3568_poc:/ # io -4 -w 0xfdc6007c 0x3f003f
+
 ```
 
 ---
