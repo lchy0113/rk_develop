@@ -19,6 +19,26 @@
 | -                         	| -             	| OUT1           	| SPK        	|
 
 
+-----
+
+🗿 ***Develop***
+
+ * codec driver에서 i2c인터페이스를 사용하여 명령어 전송.(kernel 4.19)
+ kernel 3.8 을 오면서 무조건 regmap을 사용하도록 되어있다. 
+
+```c
+static int hw_write(struct snd_soc_codec *codec, unsigned int reg, unsigned int value)
+{
+	...
+	return regmap_write(codec->control_data, reg, value);
+}
+
+static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
+{
+	...
+	ret = snd_soc_cache_read(codec, reg, &val);
+}
+```
 
 -----
 
