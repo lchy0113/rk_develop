@@ -108,6 +108,13 @@ rk3568_poc:/ # io -4 -w 0xfe77000c 0x04000400
 
 # set high value to gpio4_26
 rk3568_poc:/ # io -4 -w 0xfe770004 0x04000400 
+
+# set high value to gpio0_a6
+rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C040
+
+# set low value to gpio0_a6
+rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C000
+
 ```
 
 ---
