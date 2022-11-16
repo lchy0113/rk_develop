@@ -19,6 +19,26 @@
 | -                         	| -             	| OUT1           	| SPK        	|
 
 
+```bash
+# pdn
+# set high value to gpio0_a6
+rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C040
+
+# set low value to gpio0_a6
+rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C000
+```
+
+```bash
+# mute
+# set high value to gpio4_d1
+rk3568_poc:/ # io -4 -w 0xfe770004 0x2000200
+
+# set low value to gpio4_d1
+rk3568_poc:/ # io -4 -w 0xfe770004 0x2000000
+```
+
+
+
 -----
 
 🗿 ***Develop***
@@ -107,3 +127,6 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
    - [ ] ak5386  sound/soc/codecs/ak5386.c : capture only
    - [ ] ak4104  sound/soc/codecs/ak4104.c : playback only 
    - [ ] ak5558  sound/soc/codecs/ak5558.c : capture only
+
+ - [ ] ak7755 SAMPLEING_RATE 세팅 값 확인 :
+ - [ ] ak7755 SAMPLEING_RATE 변경 : 기존 tcc제품에서는 16000 으로 사용. 44100 으로 변경 
