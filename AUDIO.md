@@ -68,6 +68,8 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
    - [ ] second display enable 시, audio 출력 확인.
 
 
+ * ak7755 interface
+	![](./images/AUDIO_01.png)
 
 
 
