@@ -60,6 +60,24 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
 }
 ```
 
+ * sample rate 확인.
+   - [x] ak7755 SAMPLEING_RATE 세팅 값 확인 :
+   - [x] ak7755 SAMPLEING_RATE 변경 : ~~기존 tcc제품에서는 16000 으로 사용.~~ 44100 으로 변경
+   - [x] spk 동작 확인.
+   - [ ] mic 동작 확인.
+   - [ ] second display enable 시, audio 출력 확인.
+
+
+
+
+
+ * register 확인.
+   - CONT00 : AK7755_C0_CLOCK_SETTING1
+     + clock mode : 12 MHz fixed를 XTI 로 부터 입력받음. (Master mode) 
+   - CONT01 : AK7755_C1_CLOCK_SETTING2
+     + 
+
+
 -----
 
 
@@ -128,5 +146,3 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
    - [ ] ak4104  sound/soc/codecs/ak4104.c : playback only 
    - [ ] ak5558  sound/soc/codecs/ak5558.c : capture only
 
- - [ ] ak7755 SAMPLEING_RATE 세팅 값 확인 :
- - [ ] ak7755 SAMPLEING_RATE 변경 : 기존 tcc제품에서는 16000 으로 사용. 44100 으로 변경 
