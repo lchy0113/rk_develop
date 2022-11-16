@@ -4,19 +4,23 @@
 ## 1. hardware
 
  * pin connected
-
-| **pin**                   	| **name**      	| **connected**  	| **device** 	|
-|---------------------------	|---------------	|----------------	|------------	|
-| GPIO4_C3 (I2S3_SCLK_M1)     	| I2S_BCLK      	| BICK           	| -          	|
-| GPIO4_C4 (I2S3_LRCK_M1)     	| I2S_LRCK      	| LRCK           	| -          	|
-| GPIO4_C5 (I2S3_SDO_M1)     	| I2S_DAO       	| SDIN1/JX0      	| -           	|
-| GPIO4_C6 (I2S3_SDI_M1)     	| I2S_DAI       	| SDOUT1/EEST    	| -          	|
-| GPIO4_B2 (I2C4_SDA)       	| I2C_SDA_EC_DE 	| SO/SDA         	| -          	|
-| GPIO4_B3 (I2C4_SCL)       	| I2C_SCL_EC_DE 	| SCLK/SCL       	| -          	|
-| GPIO0_A6                   	| I2S_RESET     	| PDN            	| -          	|
-| GPIO4_D1                  	| NMUTE_SPK     	| -              	| -          	|
-| -                         	| -             	| IN1/NP1/DMDAT1 	| MIC        	|
-| -                         	| -             	| OUT1           	| SPK        	|
+| **pin**             	| **name**             	| **AK7755**          	| **connected** 	|
+|---------------------	|----------------------	|---------------------	|---------------	|
+| GPIO4_C3 (I2S3)     	| I2S_BCLK             	| BICK                	| -             	|
+| GPIO4_C4 (I2S3)     	| I2S_LRCK             	| LRCK                	| -             	|
+| GPIO4_C5 (I2S3)     	| I2S_DAO              	| SDIN1/JX0           	|               	|
+| GPIO4_C6 (I2S3)     	| I2S_DAI              	| SDOUT1/EEST         	| -             	|
+| GPIO4_B2 (I2C4_SDA) 	| I2C_SDA_EC_DE        	| SO/SDA              	| -             	|
+| GPIO4_B3 (I2C4_SCL) 	| I2C_SCL_EC_DE        	| SCLK/SCL            	| -             	|
+| GPIO0_A6            	| I2S_RESET            	| PDN                 	| -             	|
+| GPIO4_D1            	| NMUTE_SPK (0_unmute) 	| -                   	| -             	|
+| -                   	| -                    	| OUT2(26)            	| BACK_CALL_OUT 	|
+| -                   	| -                    	| OUT3(27)            	| ECHO_LINE_OUT 	|
+| -                   	| -                    	| OUT1(28)            	| SPK           	|
+| -                   	| -                    	| IN4/INN2/DMCLK2(31) 	| -             	|
+| -                   	| -                    	| IN3/INP2/DMDAT2(32) 	| ECHO_LINE_IN  	|
+| -                   	| -                    	| IN2/INN1/DMCLK1(33) 	| -             	|
+| -                   	| -                    	| IN1/INP1/DMDAT1(34) 	| MIC           	|
 
 
 ```bash
