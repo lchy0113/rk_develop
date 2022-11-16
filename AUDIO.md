@@ -5,23 +5,25 @@
 
  * pin connected
 
-| **pin**             	| **name**             	| **AK7755**          	| **connected** 	|
-|---------------------	|----------------------	|---------------------	|---------------	|
-| GPIO4_C3 (I2S3)     	| I2S_BCLK             	| BICK                	| -             	|
-| GPIO4_C4 (I2S3)     	| I2S_LRCK             	| LRCK                	| -             	|
-| GPIO4_C5 (I2S3)     	| I2S_DAO              	| SDIN1/JX0           	|               	|
-| GPIO4_C6 (I2S3)     	| I2S_DAI              	| SDOUT1/EEST         	| -             	|
-| GPIO4_B2 (I2C4_SDA) 	| I2C_SDA_EC_DE        	| SO/SDA              	| -             	|
-| GPIO4_B3 (I2C4_SCL) 	| I2C_SCL_EC_DE        	| SCLK/SCL            	| -             	|
-| GPIO0_A6            	| I2S_RESET            	| PDN                 	| -             	|
-| GPIO4_D1            	| NMUTE_SPK (0_unmute) 	| -                   	| -             	|
-| -                   	| -                    	| OUT2(26)            	| BACK_CALL_OUT 	|
-| -                   	| -                    	| OUT3(27)            	| ECHO_LINE_OUT 	|
-| -                   	| -                    	| OUT1(28)            	| SPK           	|
-| -                   	| -                    	| IN4/INN2/DMCLK2(31) 	| -             	|
-| -                   	| -                    	| IN3/INP2/DMDAT2(32) 	| ECHO_LINE_IN  	|
-| -                   	| -                    	| IN2/INN1/DMCLK1(33) 	| -             	|
-| -                   	| -                    	| IN1/INP1/DMDAT1(34) 	| MIC           	|
+
+| **pin**             	| **name**             	| **AK7755**              	| **connected** 	|
+|---------------------	|----------------------	|-------------------------	|---------------	|
+| GPIO4_C3 (I2S3)     	| I2S_BCLK             	| BICK(8)(I/O)            	| -             	|
+| GPIO4_C4 (I2S3)     	| I2S_LRCK             	| LRCK(7)(I/O)            	| -             	|
+| GPIO4_C5 (I2S3)     	| I2S_DAO              	| SDIN1/JX0(5)(Input)     	|               	|
+| GPIO4_C6 (I2S3)     	| I2S_DAI              	| SDOUT1/EEST(16)(Output) 	| -             	|
+| GPIO4_B2 (I2C4_SDA) 	| I2C_SDA_EC_DE        	| SO/SDA(17)(I/O)         	| -             	|
+| GPIO4_B3 (I2C4_SCL) 	| I2C_SCL_EC_DE        	| SCLK/SCL(18)(I/O)       	| -             	|
+| GPIO0_A6            	| I2S_RESET            	| PDN(22)(Input)          	| -             	|
+| GPIO4_D1            	| NMUTE_SPK (0_unmute) 	| -                       	| -             	|
+| -                   	| -                    	| CLKO(9)(Output)         	|               	|
+| -                   	| -                    	| OUT2(26)(Output)        	| BACK_CALL_OUT 	|
+| -                   	| -                    	| OUT3(27)(Output)        	| ECHO_LINE_OUT 	|
+| -                   	| -                    	| OUT1(28)(Output)        	| SPK           	|
+| -                   	| -                    	| IN4/INN2/DMCLK2(31)     	| -             	|
+| -                   	| -                    	| IN3/INP2/DMDAT2(32)     	| ECHO_LINE_IN  	|
+| -                   	| -                    	| IN2/INN1/DMCLK1(33)     	| -             	|
+| -                   	| -                    	| IN1/INP1/DMDAT1(34)     	| MIC           	|
 
 
 ```bash
