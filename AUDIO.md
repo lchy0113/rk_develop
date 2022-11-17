@@ -67,7 +67,7 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
 
  * sample rate 확인.
    - [x] ak7755 SAMPLEING_RATE 세팅 값 확인 :
-   - [x] ak7755 SAMPLEING_RATE 변경 : ~~기존 tcc제품에서는 16000 으로 사용.~~ 44100 으로 변경
+   - [x] ak7755 SAMPLEING_RATE 변경 : ~~기존 tcc제품에서는 16000 으로 사용.~~ 48000 으로 변경
    - [x] spk 동작 확인.
    - [ ] mic 동작 확인.
    - [ ] second display enable 시, audio 출력 확인.
