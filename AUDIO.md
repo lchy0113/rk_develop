@@ -43,6 +43,14 @@ rk3568_poc:/ # io -4 -w 0xfe770004 0x2000000
 ```
 
 
+## 2. kernel
+
+
+
+
+
+## 3. audio hal
+> todo : /proc/asound/cards 에서 해당 stream의 hw device를 확인하고, audio hal에서 연결해주어야 함.
 
 -----
 
@@ -70,7 +78,7 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
    - [x] ak7755 SAMPLEING_RATE 변경 : ~~기존 tcc제품에서는 16000 으로 사용.~~ 48000 으로 변경
    - [x] spk 동작 확인.
    - [ ] mic 동작 확인.
-   - [ ] second display enable 시, audio 출력 확인.
+   - [x] second display enable 시, audio 출력 확인.
 
 
  * ak7755 interface
