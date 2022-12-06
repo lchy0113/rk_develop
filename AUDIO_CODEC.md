@@ -41,7 +41,13 @@ struct regmap_config {
 	/* register status 를 판단하는데 사용(ex. read 가능 여부, write 가능 여부)
 	bool (*writeable_reg)(struct device *dev, unsigned int reg);
 	bool (*readable_reg)(struct device *dev, unsigned int reg);
-	bool (*volatile_reg)(struct device *dev, unsigned int reg);
+	bool (*volatile_reg)(struct device *dev, unsigned int reg);	
+	/**
+	  * volatile_reg : cache를 통해 register 를 write 하거나 read 할때마다 호출됩니다.
+	  * driver가 regmap cache를 통해 레지스터를 read 하거나 write 할때마다 이 함수가 먼저 호출되고, 
+	  * 'false'를 반환하면 cache method가 사용 됩니다. 
+	  * 'true'를 반환하면 register 가 휘발성이고 cache를 사용하지 않기 때문에 register를 read, write 합니다.
+	  */
 	bool (*precious_reg)(struct device *dev, unsigned int reg);
 	bool (*readable_noinc_reg)(struct device *dev, unsigned int reg);
 
@@ -64,6 +70,15 @@ struct regmap_config {
 	const struct regmap_access_table *rd_noinc_table;
 	const struct reg_default *reg_defaults;	/* 초기화 후 기본 레지스터 값 */
 	unsigned int num_reg_defaults;	/* 기본 레지스터 갯수 */
+
+	/** 
+	  * regmap은 caching을 지원합니다. cache_type field에 따라서 cache system 사용 여부를 판단합니다. 
+	  * REGCACHE_NONE : (default) cache 비활성화
+	  * cache 저장 방법을 정의합니다.
+	  * REGCACHE_RBTREE  
+	  * REGCACHE_COMPORESSED  
+	  * REGCACHE_FLAT 
+	  */
 	enum regcache_type cache_type;
 	const void *reg_defaults_raw;
 	unsigned int num_reg_defaults_raw;
@@ -117,4 +132,18 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
 
 ```c
 void regmap_exit(struct regmap *map);
+```
+
+
+### AK7755
+
+> note : ak7755 Low 상태에서 소리 출력
+
+```c
+set_DSP_write_pram()
+set_DSP_write_cram()
+set_DSP_write_ofreg()
+set_DSP_write_acram()
+	|
+	+-> ak7755_firmware_write_ram()
 ```
