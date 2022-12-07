@@ -134,6 +134,280 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
 void regmap_exit(struct regmap *map);
 ```
 
+### ALSA 
+
+#### Kcontrol
+
+##### Kcontrol 이란?
+
+ - audio codec의 기능(register)을 user space application에서 제어할 수 있도록 ALSA kernel driver 에서 제공하는 인터페이스 중 핵심이 되는 중요 요소.
+
+ user space application은 audio codec을 문자열을 통하여 제어한다. 
+
+ ex>
+```bash
+Mixer name: 'rockchip,ak7755'
+Number of controls: 76
+ctl     type    num     name                                     value
+
+0       INT     1       MIC Input Volume L                       0
+1       INT     1       MIC Input Volume R                       0
+2       INT     1       Line Out Volume 1                        15
+3       INT     1       Line Out Volume 2                        15
+4       INT     1       Line Out Volume 3                        15
+5       ENUM    1       Line Input Volume                        0dB
+6       INT     1       ADC Digital Volume L                     207
+7       INT     1       ADC Digital Volume R                     207
+8       INT     1       ADC2 Digital Volume L                    207
+9       INT     1       ADC2 Digital Volume R                    207
+10      INT     1       DAC Digital Volume L                     231
+11      INT     1       DAC Digital Volume R                     231
+12      BOOL    1       ADC Mute                                 Off
+13      BOOL    1       ADC2 Mute                                Off
+14      BOOL    1       DAC Mute                                 On
+15      BOOL    1       Analog DRC Lch                           Off
+16      BOOL    1       Analog DRC Rch                           Off
+17      BOOL    1       MICGAIN Lch Zero-cross                   Off
+18      BOOL    1       MICGAIN Rch Zero-cross                   Off
+19      ENUM    1       DAC De-emphasis                          Off
+20      BOOL    1       JX0 Enable                               Off
+21      BOOL    1       JX1 Enable                               Off
+22      BOOL    1       JX2 Enable                               Off
+23      BOOL    1       JX3 Enable                               Off
+24      ENUM    1       DLRAM Mode(Bank1:Bank0)                  0:8192
+25      ENUM    1       DRAM Size(Bank1:Bank0)                   512:1536
+26      ENUM    1       DRAM Addressing Mode(Bank1:Bank0)        Ring:Ring
+27      ENUM    1       POMODE DLRAM Pointer 0                   DBUS Immediate
+28      ENUM    1       CRAM Memory Assignment                   33 word
+29      ENUM    1       FIRMODE1 Accelerator Ch1                 Adaptive Filter
+30      ENUM    1       FIRMODE2 Accelerator Ch2                 Adaptive Filter
+31      ENUM    1       SUBMODE1 Accelerator Ch1                 Fullband
+32      ENUM    1       SUBMODE2 Accelerator Ch2                 Fullband
+33      ENUM    1       Accelerator Memory(ch1:ch2)              2048:-
+34      ENUM    1       CLKO pin                                 CLKO=L
+35      ENUM    1       CLKO Output Clock                        XTI or BICK
+36      ENUM    1       BICK fs                                  48fs
+37      ENUM    1       DSP Firmware PRAM                        basic
+38      ENUM    1       DSP Firmware CRAM                        basic
+39      ENUM    1       DSP Firmware OFREG                       basic
+40      ENUM    1       DSP Firmware ACRAM                       basic
+41      ENUM    1       Set CRAM Address H                       00
+42      ENUM    1       Set CRAM Address L                       00
+43      ENUM    1       Set CRAM Data H                          00
+44      ENUM    1       Set CRAM Data M                          00
+45      ENUM    1       Set CRAM Data L                          00
+46      INT     1       Read MIR                                 0
+47      ENUM    1       CRAM EQ1 Level                           0dB
+48      ENUM    1       CRAM EQ2 Level                           0dB
+49      ENUM    1       CRAM EQ3 Level                           0dB
+50      ENUM    1       CRAM EQ4 Level                           0dB
+51      ENUM    1       CRAM EQ5 Level                           0dB
+52      ENUM    1       CRAM HPF1 fc                             Off
+53      ENUM    1       CRAM HPF2 fc                             Off
+54      ENUM    1       CRAM Limiter Release Time                128ms
+55      ENUM    1       CRAM Limiter Volume                      Off
+56      ENUM    1       SELMIX2-0                                SDOUTAD
+57      BOOL    1       LineOut Amp3 Mixer LOSW1                 Off
+58      BOOL    1       LineOut Amp3 Mixer LOSW2                 Off
+59      BOOL    1       LineOut Amp3 Mixer LOSW3                 Off
+60      ENUM    1       LineOut Amp2                             Off
+61      ENUM    1       LineOut Amp1                             Off
+62      ENUM    1       RIN MUX                                  IN3
+63      ENUM    1       LIN MUX                                  IN1
+64      ENUM    1       DSPIN SDOUTAD2                           Off
+65      ENUM    1       DSPIN SDOUTAD                            Off
+66      BOOL    1       SDOUT3 Enable Switch                     Off
+67      BOOL    1       SDOUT2 Enable Switch                     Off
+68      BOOL    1       SDOUT1 Enable Switch                     Off
+69      ENUM    1       SDOUT3 MUX                               DSP DOUT3
+70      ENUM    1       SDOUT2 MUX                               DSP
+71      ENUM    1       SDOUT1 MUX                               DSP
+72      ENUM    1       DAC MUX                                  DSP
+73      ENUM    1       SELMIX DSP                               Off
+74      ENUM    1       SELMIX AD2                               Off
+75      ENUM    1       SELMIX AD                                Off
+
+rk3568_poc:/ # tinymix  35
+CLKO Output Clock: 12.288MHz 6.144MHz 3.072MHz 8.192MHz 4.096MHz 2.048MHz 256fs >XTI or BICK
+```
+ - widget 이나 path 에 독립적인 kcontrol 도 있으며, widget과 path 와 깊이 연관된 kcontrol도 있다.
+
+ - kcontrol 은 구조체 이름을 말하며 종류가 두가지 있다.
+ > snd_kcontrol_new 구조체와 snd_kcontrol 구조체가 있다.
+   * snd_kcontrol_new 구조체는 선언 및 kcontrol 등록 함수에 매개 변수로 사용되는 구조체.
+   * snd_kcontrol 구조체는 운용되기 위해 사용되는 구조체.
+   * snd_soc_add_controls 함수에서 snd_kcontrol_new 가 snd_kcontrol로 변환되어 등록 됨.
+
+
+##### Kcontrol 구조체
+
+ - snd_kcontrol_new 구조체와 snd_kcontrol 구조체. 
+
+```c
+struct snd_kcontrol_new {
+	snd_ctl_elem_iface_t iface;	/* interface identifier */
+	// kcontrol 의 interface 종류를 나타낸다. 명시적인 것이라 제어에 영향을 미치지 않는다
+	unsigned int device;		/* device/client number */
+	// 사용하지 않는다.(미확인)
+	unsigned int subdevice;		/* subdevice (substream) number */
+	// 사용하지 않는다.(미확인)
+	const unsigned char *name;	/* ASCII name of item */
+	// kcontrol 의 이름
+	unsigned int index;		/* index of item */
+	// 사용처 없음(확인 필요)
+	unsigned int access;		/* access rights */
+	// kcontrol 접근 권한에 대해 설정한다.(RW)
+	unsigned int count;		/* count of same elements */
+	// 사용처 없음 (확인 필요), 대부분 0 이기 때문에 1로 세팅 된다.
+	snd_kcontrol_info_t *info;
+	// User Space 에서 Kcontrol 에 대한 정보 요청시 수행 할 함수 포인터
+	snd_kcontrol_get_t *get;
+	// User Space 에서 Kcontrol 에 대한 현재 값 요청시 수행 할 함수 포인터
+	snd_kcontrol_put_t *put;
+	// User Space 에서 Kcontrol 에 대한 값 수정시 수행 할 함수 포인터
+	union {
+		snd_kcontrol_tlv_rw_t *c;
+		// 사용처 없음 (확인 필요)
+		const unsigned int *p;
+		// 종류에 따라 soc_enum 구조체의 첫 주소나, dB 범위를 지정한 int 형 배열의 첫 주소가 들어 간다.
+	} tlv;
+	unsigned long private_value;
+	// 대부분 soc_mixer_control 구조체의 첫 주소가 들어간다.
+};
+
+struct snd_kcontrol_volatile {
+	struct snd_ctl_file *owner;	/* locked */
+	unsigned int access;	/* access rights */
+};
+
+struct snd_kcontrol {
+	struct list_head list;		/* list of controls */
+	struct snd_ctl_elem_id id;
+	unsigned int count;		/* count of same elements */
+	snd_kcontrol_info_t *info;
+	snd_kcontrol_get_t *get;
+	snd_kcontrol_put_t *put;
+	union {
+		snd_kcontrol_tlv_rw_t *c;
+		const unsigned int *p;
+	} tlv;
+	unsigned long private_value;
+	void *private_data;
+	void (*private_free)(struct snd_kcontrol *kcontrol);
+	struct snd_kcontrol_volatile vd[0];	/* volatile data */
+};
+```
+
+##### Kcontrol 선언
+
+ - ALSA driver 에서는 kcontrol 을 쉽게 선언하기 위해서 MACRO를 제공한다.
+	 MACRO를 통하여 snd_kcontrol_new을 생성한다.
+
+```c
+#define AK7755_C1_CLOCK_SETTING2			0xC1
+
+static const char *ak7755_bank_select_texts[] = 
+		{"0:8192", "1024:7168","2048:6144","3072:5120","4096:4096",
+			"5120:3072","6144:2048","7168:1024","8192:0"};
+static const char *ak7755_drms_select_texts[] = 
+		{"512:1536", "1024:1024", "1536:512"};
+static const char *ak7755_dram_select_texts[] = 
+		{"Ring:Ring", "Ring:Linear", "Linear:Ring", "Linear:Linear"};
+static const char *ak7755_pomode_select_texts[] = {"DBUS Immediate", "OFREG"};
+static const char *ak7755_wavp_select_texts[] = 
+		{"33 word", "65 word", "129 word", "257 word"};
+static const char *ak7755_filmode1_select_texts[] = {"Adaptive Filter", "FIR Filter"};
+static const char *ak7755_filmode2_select_texts[] = {"Adaptive Filter", "FIR Filter"};
+static const char *ak7755_submode1_select_texts[] = {"Fullband", "Subband"};
+static const char *ak7755_submode2_select_texts[] = {"Fullband", "Subband"};
+static const char *ak7755_memdiv_select_texts[] = 
+		{"2048:-", "1792:256", "1536:512", "1024:1024"};
+static const char *ak7755_dem_select_texts[] = {"Off", "48kHz", "44.1kHz", "32kHz"};
+static const char *ak7755_clkoe_select_texts[] = {"CLKO=L", "CLKO Out Enable"};
+static const char *ak7755_clks_select_texts[] = 			// CLKO Output Clock
+		{"12.288MHz", "6.144MHz", "3.072MHz", "8.192MHz",
+			"4.096MHz", "2.048MHz", "256fs", "XTI or BICK"};
+
+static const struct soc_enum ak7755_set_enum[] = {
+	SOC_ENUM_SINGLE(AK7755_C3_DELAY_RAM_DSP_IO, 0,
+			ARRAY_SIZE(ak7755_bank_select_texts), ak7755_bank_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C4_DATARAM_CRAM_SETTING, 6,
+			ARRAY_SIZE(ak7755_drms_select_texts), ak7755_drms_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C4_DATARAM_CRAM_SETTING, 4,
+			ARRAY_SIZE(ak7755_dram_select_texts), ak7755_dram_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C4_DATARAM_CRAM_SETTING, 3,
+			ARRAY_SIZE(ak7755_pomode_select_texts), ak7755_pomode_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C4_DATARAM_CRAM_SETTING, 0,
+			ARRAY_SIZE(ak7755_wavp_select_texts), ak7755_wavp_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C5_ACCELARETOR_SETTING, 5,
+			ARRAY_SIZE(ak7755_filmode1_select_texts), ak7755_filmode1_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C5_ACCELARETOR_SETTING, 4,
+			ARRAY_SIZE(ak7755_filmode2_select_texts), ak7755_filmode2_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C5_ACCELARETOR_SETTING, 3,
+			ARRAY_SIZE(ak7755_submode1_select_texts), ak7755_submode1_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C5_ACCELARETOR_SETTING, 2,
+			ARRAY_SIZE(ak7755_submode2_select_texts), ak7755_submode2_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C5_ACCELARETOR_SETTING, 0,
+			ARRAY_SIZE(ak7755_memdiv_select_texts), ak7755_memdiv_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C6_DAC_DEM_SETTING, 6,
+			ARRAY_SIZE(ak7755_dem_select_texts), ak7755_dem_select_texts),
+	SOC_ENUM_SINGLE(AK7755_CA_CLK_SDOUT_SETTING, 7,
+			ARRAY_SIZE(ak7755_clkoe_select_texts), ak7755_clkoe_select_texts),
+	SOC_ENUM_SINGLE(AK7755_C1_CLOCK_SETTING2, 1,			// CLKO Output Clock
+			ARRAY_SIZE(ak7755_clks_select_texts), ak7755_clks_select_texts),
+};
+
+#define SOC_ENUM(xname, xenum) \
+{	.iface = SNDRV_CTL_ELEM_IFACE_MIXER, .name = xname,\
+	.info = snd_soc_info_enum_double, \
+	.get = snd_soc_get_enum_double, .put = snd_soc_put_enum_double, \
+	.private_value = (unsigned long)&(struct soc_mixer_control)
+									{
+										.reg = reg_left, 
+										.rreg = reg_right, 
+										.shift = xshift,
+										.max = xmax,
+										.platform_max = xmax,
+										.invert = xinvert
+									}
+
+static const struct snd_kcontrol_new ak7755_snd_controls[] = {
+	(...)
+	SOC_ENUM("CLKO Output Clock", ak7755_set_enum[12]), 
+	(...)
+}	
+
+```
+
+ - MACRO를 모두 해석하면 아래와 같은 snd_kcontrol_new 구조체가 나온다.
+
+```c
+static const struct snd_kcontrol_new ak7755_snd_controls[] = {
+	.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
+	.device = 0,
+	.subdevice = 0,
+	.name = "CLKO Output Clock",
+	.index = 0,
+	.access = SNDRV_CTL_ELEM_ACCESS_TLV_READ | SNDRV_CTL_ELEM_ACCESS_READWRITE,
+	.count = 0,
+	.info = snd_soc_info_enum_double,
+	.get = snd_soc_get_enum_double, 
+	.put = snd_soc_put_enum_double, 
+	.tlv.p , 
+	.private_value = (unsigned long)&(struct soc_mixer_control)
+									{
+										.reg = AK7755_C1_CLOCK_SETTING2, 
+										.items = 8, 
+										.texts =  {"12.288MHz", "6.144MHz", "3.072MHz", "8.192MHz",
+										"4.096MHz", "2.048MHz", "256fs", "XTI or BICK"};
+									}
+};
+```
+![](images/AUDIO_CODEC_04.png)
+
+ - User Space에서 "Playback Path"에 대한 값을 요청 했을 경우, 수행되는 함수.
+
+-----
 
 ### AK7755
 
@@ -147,3 +421,73 @@ set_DSP_write_acram()
 	|
 	+-> ak7755_firmware_write_ram()
 ```
+
+
+
+### RK817
+
+> rockchip evboard codec
+
+
+```c
+static const struct snd_soc_component_driver soc_codec_dev_rk817 = {
+	.probe = rk817_probe,
+	(...)
+};
+
+
+static int rk817_probe(struct snd_soc_component *component)
+{
+	(...)
+	snd_soc_add_component_controls(component, rk817_snd_path_controls,
+					       ARRAY_SIZE(rk817_snd_path_controls));
+}
+
+
+static struct snd_kcontrol_new rk817_snd_path_controls[] = {
+	SOC_ENUM_EXT("Playback Path", rk817_playback_path_type,
+		rk817_playback_path_get, rk817_playback_path_put),
+				 	
+	SOC_ENUM_EXT("Capture MIC Path", rk817_capture_path_type,
+		rk817_capture_path_get, rk817_capture_path_put),
+};
+
+/* For tiny alsa playback/capture/voice call path */
+static const char * const rk817_playback_path_mode[] = {
+	"OFF", "RCV", "SPK", "HP", "HP_NO_MIC", "BT", "SPK_HP", /* 0-6 */
+	"RING_SPK", "RING_HP", "RING_HP_NO_MIC", "RING_SPK_HP"}; /* 7-10 */
+
+static SOC_ENUM_SINGLE_DECL(rk817_playback_path_type,
+	0, 0, rk817_playback_path_mode);
+
+static int rk817_playback_path_get(struct snd_kcontrol *kcontrol,
+				   struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
+	struct rk817_codec_priv *rk817 = snd_soc_component_get_drvdata(component);
+
+	DBG("%s : playback_path %ld\n", __func__, rk817->playback_path);
+
+	ucontrol->value.integer.value[0] = rk817->playback_path;
+
+	return 0;
+}
+
+static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
+				   struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_component *component = snd_soc_kcontrol_component(kcontrol);
+	struct rk817_codec_priv *rk817 = snd_soc_component_get_drvdata(component);
+
+	if (rk817->playback_path == ucontrol->value.integer.value[0]) {
+		DBG("%s : playback_path is not changed!\n",
+		    __func__);
+		return 0;
+	}
+
+	return rk817_playback_path_config(component, rk817->playback_path,
+					  ucontrol->value.integer.value[0]);
+}
+
+```
+
