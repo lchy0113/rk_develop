@@ -405,8 +405,36 @@ static const struct snd_kcontrol_new ak7755_snd_controls[] = {
 ```
 ![](images/AUDIO_CODEC_04.png)
 
- - User Space에서 "Playback Path"에 대한 값을 요청 했을 경우, 수행되는 함수.
+ - User Space 에서 "CLKO Output Clock" 대한 값을 요청 했을 경우, 수행되는 함수.
+ "CLKO Output Clock" snd_kcontrol_new  선언 시, 멤버 변수 get 포인트 함수를 수행하여 읽어온다.
+ get 에는 snd_soc_get_enum_double 이 연결되어 있다. 
+ put 에는 snd_soc_put_enum_double 이 연결되어 있다.
 
+```c
+int snd_soc_get_enum_double(struct snd_kcontrol *kcontrol,
+	struct snd_ctl_elem_value *ucontrol)
+{
+	struct snd_soc_component *component = snd_kcontrol_chip(kcontrol);
+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+	unsigned int val, item;
+	unsigned int reg_val;
+	int ret;
+
+	ret = snd_soc_component_read(component, e->reg, &reg_val);
+	if (ret)
+		return ret;
+	val = (reg_val >> e->shift_l) & e->mask;
+	item = snd_soc_enum_val_to_item(e, val);
+	ucontrol->value.enumerated.item[0] = item;
+	if (e->shift_l != e->shift_r) {
+		val = (reg_val >> e->shift_r) & e->mask;
+		item = snd_soc_enum_val_to_item(e, val);
+		ucontrol->value.enumerated.item[1] = item;
+	}
+
+	return 0;
+}
+```
 -----
 
 ### AK7755
