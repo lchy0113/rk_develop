@@ -435,6 +435,101 @@ int snd_soc_get_enum_double(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 ```
+
+
+ - Linux kernel source의 audio codec device drier 의 source code안에 MACRO를 통하여 많은 snd_kcontrol_new가 선언되어 있다.
+
+```c
+static const struct snd_kcontrol_new ak7755_snd_controls[] = {
+	SOC_SINGLE_TLV("MIC Input Volume L",
+			AK7755_D2_MIC_GAIN_SETTING, 0, 0x0F, 0, mgnl_tlv),
+	SOC_SINGLE_TLV("MIC Input Volume R",
+			AK7755_D2_MIC_GAIN_SETTING, 4, 0x0F, 0, mgnr_tlv),
+	SOC_SINGLE_TLV("Line Out Volume 1",
+			AK7755_D4_LO1_LO2_VOLUME_SETTING, 0, 0x0F, 0, lovol1_tlv),
+	SOC_SINGLE_TLV("Line Out Volume 2",
+			AK7755_D4_LO1_LO2_VOLUME_SETTING, 4, 0x0F, 0, lovol2_tlv),
+	SOC_SINGLE_TLV("Line Out Volume 3",
+			AK7755_D3_LIN_LO3_VOLUME_SETTING, 0, 0x0F, 0, lovol3_tlv),
+	SOC_ENUM_EXT("Line Input Volume", ak7755_linein_enum, get_linein, set_linein),  // 16/03/25 ak7755_linein_enum[0] => ak7755_linein_enum
+	SOC_SINGLE_TLV("ADC Digital Volume L",
+			AK7755_D5_ADC_DVOLUME_SETTING1, 0, 0xFF, 1, voladl_tlv),
+	SOC_SINGLE_TLV("ADC Digital Volume R",
+			AK7755_D6_ADC_DVOLUME_SETTING2, 0, 0xFF, 1, voladr_tlv),
+	SOC_SINGLE_TLV("ADC2 Digital Volume L",
+			AK7755_D7_ADC2_DVOLUME_SETTING1, 0, 0xFF, 1, volad2l_tlv),
+	SOC_SINGLE_TLV("ADC2 Digital Volume R",
+			AK7755_DD_ADC2_DVOLUME_SETTING2, 0, 0xFF, 1, volad2r_tlv),
+	SOC_SINGLE_TLV("DAC Digital Volume L",
+			AK7755_D8_DAC_DVOLUME_SETTING1, 0, 0xFF, 1, voldal_tlv),
+	SOC_SINGLE_TLV("DAC Digital Volume R",
+			AK7755_D9_DAC_DVOLUME_SETTING2, 0, 0xFF, 1, voldar_tlv),
+
+	SOC_SINGLE("ADC Mute", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 7, 1, 0),
+	SOC_SINGLE("ADC2 Mute", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 6, 1, 0), 
+	SOC_SINGLE("DAC Mute", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 5, 1, 0), 
+	SOC_SINGLE("Analog DRC Lch", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 2, 1, 0), 
+	SOC_SINGLE("Analog DRC Rch", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 3, 1, 0), 
+	SOC_SINGLE("MICGAIN Lch Zero-cross", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 0, 1, 0), 
+	SOC_SINGLE("MICGAIN Rch Zero-cross", AK7755_DA_MUTE_ADRC_ZEROCROSS_SET, 1, 1, 0), 
+
+	SOC_ENUM("DAC De-emphasis", ak7755_set_enum[10]), 
+
+	SOC_SINGLE("JX0 Enable", AK7755_C2_SERIAL_DATA_FORMAT, 0, 1, 0),
+	SOC_SINGLE("JX1 Enable", AK7755_C2_SERIAL_DATA_FORMAT, 1, 1, 0),
+	SOC_SINGLE("JX2 Enable", AK7755_C1_CLOCK_SETTING2, 7, 1, 0),
+	SOC_SINGLE("JX3 Enable", AK7755_C5_ACCELARETOR_SETTING, 6, 1, 0),
+
+	SOC_ENUM("DLRAM Mode(Bank1:Bank0)", ak7755_set_enum[0]), 
+	SOC_ENUM("DRAM Size(Bank1:Bank0)", ak7755_set_enum[1]), 
+	SOC_ENUM("DRAM Addressing Mode(Bank1:Bank0)", ak7755_set_enum[2]), 
+	SOC_ENUM("POMODE DLRAM Pointer 0", ak7755_set_enum[3]), 
+	SOC_ENUM("CRAM Memory Assignment", ak7755_set_enum[4]), 
+	SOC_ENUM("FIRMODE1 Accelerator Ch1", ak7755_set_enum[5]), 
+	SOC_ENUM("FIRMODE2 Accelerator Ch2", ak7755_set_enum[6]), 
+	SOC_ENUM("SUBMODE1 Accelerator Ch1", ak7755_set_enum[7]), 
+	SOC_ENUM("SUBMODE2 Accelerator Ch2", ak7755_set_enum[8]), 
+	SOC_ENUM("Accelerator Memory(ch1:ch2)", ak7755_set_enum[9]), 
+	SOC_ENUM("CLKO pin", ak7755_set_enum[11]), 
+	SOC_ENUM("CLKO Output Clock", ak7755_set_enum[12]), 
+```
+
+##### Kcontrol 등록 
+
+ - 대부분 같은 audio codec device driver 안에서 MACRO를 통해 선언된 snd_kcontrol_new가 snd_soc_add_controls 함수를 통하여 snd_kcontrol 구조체로 변환되어 snd_card의 controls에 연결된다.
+   * snd_soc_cnew 함수를 통해 snd_kcontrol_new 구조체가 snd_kcontrol 구조체로 변환.
+   * snd_ctl_add 함수는 snd_card의 controls에 snd_kcontrol을 NUmbering하며 링크드리스트로 연결하고, kcontrol 총 개수를 관리.
+```c
+
+static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
+	const struct snd_kcontrol_new *controls, int num_controls,
+	const char *prefix, void *data)
+{
+	int err, i;
+
+	for (i = 0; i < num_controls; i++) {
+		const struct snd_kcontrol_new *control = &controls[i];
+		err = snd_ctl_add(card, snd_soc_cnew(control, data,
+						     control->name, prefix));
+		if (err < 0) {
+			dev_err(dev, "ASoC: Failed to add %s: %d\n",
+				control->name, err);
+			return err;
+		}
+	}
+
+	return 0;
+}
+```
+
+ - kcontrol이 등록되면 snd_card 구조체의 controls에 다음과 같이 연결된다.
+
+![](images/AUDIO_CODEC_06.png)
+
+
+##### Kcontrol 운용
+
+
 -----
 
 ### AK7755
