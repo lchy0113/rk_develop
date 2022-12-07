@@ -529,6 +529,212 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 
 ##### Kcontrol 운용
 
+ - user space application에서는 ALSA Library를 이용하여 Kcontrol들을 access 접근 제한(대부분R/W)에 따라 제어할수 있다.
+ - ALSA Library를 이용한 amixer(not alsamixer!)라는 program으로 console command 형식으로 사용 가능하다. 
+ > amixer는 ALSA project(http://www.alsa-project.org)에서 alsa-utils packages를 통해 제공
+ - Android platform의 경우는 tinyalsa 패키지를 통해 ALSA Library를 이용한다.
+    * 아래와 같이 tinymix 명령을 내려 현재 sound card의 모든 kcontrol을 확인 할 수 있다.
+
+```bash
+# tinymix
+```
+
+##### Kcontrol 정리
+ - tinymix는 test 용으로 사용하는 것이며, User space application(HAL) 작성 시에는 ALSA Library를 이용한다. 
+ - amixer를 보면 scontrol(mixer controls) 및 scontents(mixer controls with contents)도 있다. 
+   * 이 scontrol은 비슷한 kcontrol을 묶어서 ALSA Library에서 제공하는 것이다. 
+   (ex> DAC1 Switch 와 DAC1 Volume 를 묶어서 DAC1 으로 제공)
+
+
+#### Widget
+
+##### Widget 이란?
+
+ - Audio Codec 내부의 DAC, ADC, Mixer, Mux 등을 각각 하나의 가상 장치로 표현 한 것이며 종류는 다음과 같다.
+
+		o Mixer
+		 - Mixes several analog signals into a single analog signal.
+		o Mux
+		 - An analog switch that outputs only one of many inputs.
+		o PGA
+		 - A programmable gain amplifier or attenuation widget.
+		o ADC
+		 - Analog to Digital Converter
+		o DAC
+		 - Digital to Analog Converter
+		o Switch
+		 - An analog switch
+		o Input
+		 - A codec input pin
+		o Output
+		 - A codec output pin
+		o Headphone
+		 - Headphone (and optional Jack)
+		o Mic
+		 - Mic (and optional Jack)
+		o Line
+		 - Line Input/Output (and optional Jack)
+		o Speaker
+		 - Speaker
+		o Supply
+		 - Power or clock supply widget used by other widgets.
+		o Pre
+		 - Special PRE widget (exec before all others)
+		o Post
+		 - Special POST widget (exec after all others)
+
+ - 프로그래머가 직접 작성하여 등록하는 것이며, codec driver와 machine driver에서 등록된다.
+ - widget은 이름을 필수로 가져야 한다. 몇몇 widget은 register, kcontrol을 가진다.
+ - user space application은 전혀 신경을 쓰지 않아도 되는 부분이다.
+
+ - 실제 audio codec의 block diagram을 가상의 장치로 표현한 것이라 볼 수 있다.
+	![](images/AUDIO_CODEC_01.png)
+
+
+##### Widget 구조체
+
+ - struct snd_soc_dapm_widget 구조체
+
+```c
+/* dapm widget */
+struct snd_soc_dapm_widget {
+	enum snd_soc_dapm_type id;
+	const char *name;		/* widget name */
+	const char *sname;	/* stream name */
+	struct list_head list;
+	struct snd_soc_dapm_context *dapm;
+
+	void *priv;				/* widget specific data */
+	struct regulator *regulator;		/* attached regulator */
+	struct pinctrl *pinctrl;		/* attached pinctrl */
+	const struct snd_soc_pcm_stream *params; /* params for dai links */
+	unsigned int num_params; /* number of params for dai links */
+	unsigned int params_select; /* currently selected param for dai link */
+
+	/* dapm control */
+	int reg;				/* negative reg = no direct dapm */
+	unsigned char shift;			/* bits to shift */
+	unsigned int mask;			/* non-shifted mask */
+	unsigned int on_val;			/* on state value */
+	unsigned int off_val;			/* off state value */
+	unsigned char power:1;			/* block power status */
+	unsigned char active:1;			/* active stream on DAC, ADC's */
+	unsigned char connected:1;		/* connected codec pin */
+	unsigned char new:1;			/* cnew complete */
+	unsigned char force:1;			/* force state */
+	unsigned char ignore_suspend:1;         /* kept enabled over suspend */
+	unsigned char new_power:1;		/* power from this run */
+	unsigned char power_checked:1;		/* power checked this run */
+	unsigned char is_supply:1;		/* Widget is a supply type widget */
+	unsigned char is_ep:2;			/* Widget is a endpoint type widget */
+	int subseq;				/* sort within widget type */
+
+	int (*power_check)(struct snd_soc_dapm_widget *w);
+
+	/* external events */
+	unsigned short event_flags;		/* flags to specify event types */
+	int (*event)(struct snd_soc_dapm_widget*, struct snd_kcontrol *, int);
+
+	/* kcontrols that relate to this widget */
+	int num_kcontrols;
+	const struct snd_kcontrol_new *kcontrol_news;
+	struct snd_kcontrol **kcontrols;
+	struct snd_soc_dobj dobj;
+
+	/* widget input and output edges */
+	struct list_head edges[2];
+
+	/* used during DAPM updates */
+	struct list_head work_list;
+	struct list_head power_list;
+	struct list_head dirty;
+	int endpoints[2];
+
+	struct clk *clk;
+};
+
+/* dapm widget types */
+enum snd_soc_dapm_type {
+	snd_soc_dapm_input = 0,		/* input pin */
+	snd_soc_dapm_output,		/* output pin */
+	snd_soc_dapm_mux,			/* selects 1 analog signal from many inputs */
+	snd_soc_dapm_demux,			/* connects the input to one of multiple outputs */
+	snd_soc_dapm_mixer,			/* mixes several analog signals together */
+	snd_soc_dapm_mixer_named_ctl,		/* mixer with named controls */
+	snd_soc_dapm_pga,			/* programmable gain/attenuation (volume) */
+	snd_soc_dapm_out_drv,			/* output driver */
+	snd_soc_dapm_adc,			/* analog to digital converter */
+	snd_soc_dapm_dac,			/* digital to analog converter */
+	snd_soc_dapm_micbias,		/* microphone bias (power) - DEPRECATED: use snd_soc_dapm_supply */
+	snd_soc_dapm_mic,			/* microphone */
+	snd_soc_dapm_hp,			/* headphones */
+	snd_soc_dapm_spk,			/* speaker */
+	snd_soc_dapm_line,			/* line input/output */
+	snd_soc_dapm_switch,		/* analog switch */
+	snd_soc_dapm_vmid,			/* codec bias/vmid - to minimise pops */
+	snd_soc_dapm_pre,			/* machine specific pre widget - exec first */
+	snd_soc_dapm_post,			/* machine specific post widget - exec last */
+	snd_soc_dapm_supply,		/* power/clock supply */
+	snd_soc_dapm_pinctrl,		/* pinctrl */
+	snd_soc_dapm_regulator_supply,	/* external regulator */
+	snd_soc_dapm_clock_supply,	/* external clock */
+	snd_soc_dapm_aif_in,		/* audio interface input */
+	snd_soc_dapm_aif_out,		/* audio interface output */
+	snd_soc_dapm_siggen,		/* signal generator */
+	snd_soc_dapm_sink,
+	snd_soc_dapm_dai_in,		/* link to DAI structure */
+	snd_soc_dapm_dai_out,
+	snd_soc_dapm_dai_link,		/* link between two DAI structures */
+	snd_soc_dapm_kcontrol,		/* Auto-disabled kcontrol */
+	snd_soc_dapm_buffer,		/* DSP/CODEC internal buffer */
+	snd_soc_dapm_scheduler,		/* DSP/CODEC internal scheduler */
+	snd_soc_dapm_effect,		/* DSP/CODEC effect component */
+	snd_soc_dapm_src,		/* DSP/CODEC SRC component */
+	snd_soc_dapm_asrc,		/* DSP/CODEC ASRC component */
+	snd_soc_dapm_encoder,		/* FW/SW audio encoder component */
+	snd_soc_dapm_decoder,		/* FW/SW audio decoder component */
+};
+```
+
+ - snd_soc_dapm_widget의 중요 멤버 변수 설명
+
+```c
+struct snd_soc_dapm_widget {
+	enum snd_soc_dapm_type id;		// 현재 widget 의 type 을 나타 낸다.
+	char *name;						// widget name
+	char *sname;					// play 나 capture 시 비교 된다. 이름이 같을 경우 power check한다.
+	struct snd_soc_codec *codec;	// widget 이 소속된 codec 을 가르킨다.
+	struct list_head list;			// snd_soc_card 의 widgets 에 연결 되는 point
+
+	short reg;						// widget 도 Audio Codec 의 Reg 정보를 가진다. 대부분 Power 관련 된 Register 이다.
+	unsigned char shift;			// Register 의 몇 번째 bit 에 해당하는지 나타낸다.
+	unsigned char power:1;			// widget 의 power status이다. 1이면 ON 0이면 OFF,
+	unsigned char active:1;			// DAC, ADC, AIFIN, AIFOUT widget 만 해당 되며 Power Check 시 중요한 flag 이다.
+									// Play나 Capture 시 sname, stream_name 비교 후 set 된다.
+	unsigned char connected:1; 		// widget 생성 될 때 무조건 1로 set 된다. snd_soc_dapm_enable_pin, snd_soc_dapm_disable_pin 함수를
+									// 통하여 set, clear 된다. 대부분 외부 단자 widget ( input , output ,mic ,line , hp, spk ) 에 enable,
+									// disable 시켜서 DAPM power 를 제어 하도록 한다.
+	unsigned char ext:1;			// Audio codec 외부에 붙는 widget 에 연결 되었는지 설정 한다.
+									// output widget 에 hp,spk widget 이 연결 되면 ouput widget 의 ext 가 1로 set
+									// input widget 에 mic widget 이 연결 되었다면 input widget 의 ext 는 1로 set
+	unsigned char force:1;			// widget 의 power 를 강제로 ON 하는 flag.
+	
+	int (*power_check)(struct snd_soc_dapm_widget *w); // widget 의 power check 함수 포인터
+	
+	int num_kcontrols;				// widget 에 연결 된 kcontrol 개수
+	const struct snd_kcontrol_new *kcontrol_news; // widget 에 연결 할 정적으로 작성된 kcontrol 주소를 가르킨다.
+	struct snd_kcontrol **kcontrols;// widget 에 연결 된 kcontrol 가르키는 포인터
+	struct list_head sources; 		// widget 에 연결된 path 중 widget 을 sink(목적지)로 하고 있는 path list
+	struct list_head sinks;			// widget 에 연결된 path 중 widget 에서 sources(출발지)로 하고 있는 path list
+}
+
+```
+
+#### Route(path)
+
+
+#### DAPM Operation
+
 
 -----
 
