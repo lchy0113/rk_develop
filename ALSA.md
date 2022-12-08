@@ -896,6 +896,57 @@ static const struct snd_soc_dapm_route ak7755_intercon[] =
 
 	![](images/ALSA_05.png)
 
+ - 실제 Audio codec block diagram의 일정 부분이 동일한 것으로 확인할 수있다.
+
+	![](images/ALSA_06.png)
+
+ - 결과적으로 보면 widget과 route(path)는 Audio Codec Block Diagram을 자료구조로 표현 한 것이다. 
+ - kcontrol은 자료구조 안에서 Audio codec을 제어하기 위한 존재한다.
+ - PMADL, PMADR의 Power onoff는 LIN MUX, RIN MUX widget이 담당하고, IN1, IN2, INPN1 kcontrol들과, IN3, IN4, INPN2 kcontrol 들은 어떤 Input 을 mute/unmute할 것인지 담당한다.
+
+
+## Route(path) 등록
+
+ - snd_soc_dapm_route 구조체 배열을 snd_soc_dapm_add_routes 함수의 매개 변수로 넘겨 같은 이름으로 된 widget을 찾은 후 snd_soc_dapm_path 구조체를 생성 한 뒤 snd_soc_card의 paths에 링크드 리스트로 연결된다.
+
+```c
+/**
+ * snd_soc_dapm_add_routes - Add routes between DAPM widgets
+ * @dapm: DAPM context
+ * @route: audio routes
+ * @num: number of routes
+ *
+ * Connects 2 dapm widgets together via a named audio path. The sink is
+ * the widget receiving the audio signal, whilst the source is the sender
+ * of the audio signal.
+ *
+ * Returns 0 for success else error. On error all resources can be freed
+ * with a call to snd_soc_card_free().
+ */
+int snd_soc_dapm_add_routes(struct snd_soc_dapm_context *dapm,
+			    const struct snd_soc_dapm_route *route, int num)
+{
+	int i, r, ret = 0;
+
+	mutex_lock_nested(&dapm->card->dapm_mutex, SND_SOC_DAPM_CLASS_RUNTIME);
+	for (i = 0; i < num; i++) {
+		r = snd_soc_dapm_add_route(dapm, route);
+		if (r < 0) {
+			dev_err(dapm->dev, "ASoC: Failed to add route %s -> %s -> %s\n",
+				route->source,
+				route->control ? route->control : "direct",
+				route->sink);
+			ret = r;
+		}
+		route++;
+	}
+	mutex_unlock(&dapm->card->dapm_mutex);
+
+	return ret;
+}
+EXPORT_SYMBOL_GPL(snd_soc_dapm_add_routes);
+
+```
 
 
 -----
