@@ -612,9 +612,291 @@ struct snd_soc_dapm_widget {
 
 	![](images/ALSA_04.png)
 	 
+
+## 3.3 Widget 선언
+
+ - widget 역시 kcontrol과 마찬가지로 MACRO를 통해 선언한다.
+ - 많은 widget들이 MACRO를 통해서 선언된다.
+
+```c
+#define AK7755_CE_POWER_MANAGEMENT			0xCE
+
+#define SND_SOC_DAPM_MIXER(wname, wreg, wshift, winvert, \
+	 wcontrols, wncontrols)\
+ {	.id = snd_soc_dapm_mixer, .name = wname, \
+	 SND_SOC_DAPM_INIT_REG_VAL(wreg, wshift, winvert), \
+	 .kcontrol_news = wcontrols, .num_kcontrols = wncontrols}
+
+static const struct snd_kcontrol_new ak7755_lo3sw_mixer_controls[] = {
+	SOC_DAPM_SINGLE("LOSW1", AK7755_C9_ANALOG_IO_SETTING, 1, 1, 0), 
+	SOC_DAPM_SINGLE("LOSW2", AK7755_C9_ANALOG_IO_SETTING, 2, 1, 0), 
+};
+
+/* ak7755 dapm widgets */
+static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
+
+// ADC, DAC
+	SND_SOC_DAPM_ADC_E("ADC Left", NULL, AK7755_CE_POWER_MANAGEMENT, 6, 0,
+		ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+	SND_SOC_DAPM_ADC_E("ADC Right", NULL, AK7755_CE_POWER_MANAGEMENT, 7, 0,
+		ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+	SND_SOC_DAPM_ADC_E("ADC2 Left", NULL, AK7755_CE_POWER_MANAGEMENT, 5, 0,
+		ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+	SND_SOC_DAPM_DAC_E("DAC Left", NULL, SND_SOC_NOPM, 0, 0,
+		ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+	SND_SOC_DAPM_DAC_E("DAC Right", NULL, SND_SOC_NOPM, 0, 0,
+		ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+	SND_SOC_DAPM_SUPPLY("CLOCK", AK7755_C1_CLOCK_SETTING2, 0, 0,
+		ak7755_clock_event, SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
+
+// Analog Output
+	SND_SOC_DAPM_OUTPUT("Line Out1"),
+	SND_SOC_DAPM_OUTPUT("Line Out2"),
+	SND_SOC_DAPM_OUTPUT("Line Out3"),
+
+	SND_SOC_DAPM_MIXER("LineOut Amp3 Mixer", AK7755_CE_POWER_MANAGEMENT, 4, 0, 
+			&ak7755_lo3sw_mixer_controls[0], ARRAY_SIZE(ak7755_lo3sw_mixer_controls)),
+	SND_SOC_DAPM_MUX("LineOut Amp2", AK7755_CE_POWER_MANAGEMENT, 3, 0, &ak7755_pmlo2_mux_control),
+	SND_SOC_DAPM_MUX("LineOut Amp1", AK7755_CE_POWER_MANAGEMENT, 2, 0, &ak7755_pmlo1_mux_control),
+
+// Analog Input
+	SND_SOC_DAPM_INPUT("LIN"),
+	SND_SOC_DAPM_INPUT("IN1"),
+	SND_SOC_DAPM_INPUT("IN2"),
+	SND_SOC_DAPM_INPUT("IN3"),
+	SND_SOC_DAPM_INPUT("IN4"),
+	SND_SOC_DAPM_INPUT("INPN1"),
+	SND_SOC_DAPM_INPUT("INPN2"),
+
+	SND_SOC_DAPM_PGA("LineIn Amp", AK7755_CF_RESET_POWER_SETTING, 5, 0, NULL, 0),
+	SND_SOC_DAPM_MUX("RIN MUX", SND_SOC_NOPM, 0, 0,	&ak7755_rin_mux_control),
+	SND_SOC_DAPM_MUX("LIN MUX", SND_SOC_NOPM, 0, 0,	&ak7755_lin_mux_control),
+
+	SND_SOC_DAPM_MUX("DSPIN SDOUTAD2", SND_SOC_NOPM, 0, 0, &ak7755_dspinad2_control),
+	SND_SOC_DAPM_MUX("DSPIN SDOUTAD", SND_SOC_NOPM, 0, 0, &ak7755_dspinad_control),
+
+// Multiplexer (selects 1 analog signal from many inputs) & Mixer
+	SND_SOC_DAPM_MUX("SDOUT3 MUX", SND_SOC_NOPM, 0, 0, &ak7755_seldo3_mux_control),
+	SND_SOC_DAPM_MUX("SDOUT2 MUX", SND_SOC_NOPM, 0, 0, &ak7755_seldo2_mux_control),
+	SND_SOC_DAPM_MUX("SDOUT1 MUX", SND_SOC_NOPM, 0, 0, &ak7755_seldo1_mux_control),
+	SND_SOC_DAPM_MUX("DAC MUX", SND_SOC_NOPM, 0, 0, &ak7755_seldai_mux_control),
+
+	SND_SOC_DAPM_MUX("SELMIX DSP", SND_SOC_NOPM, 0, 0, &ak7755_dsp_selmix_control),
+	SND_SOC_DAPM_MUX("SELMIX AD2", SND_SOC_NOPM, 0, 0, &ak7755_sdoutad2_selmix_control),
+	SND_SOC_DAPM_MUX("SELMIX AD", SND_SOC_NOPM, 0, 0, &ak7755_sdoutad_selmix_control),
+
+	SND_SOC_DAPM_PGA("SELMIX Mixer", SND_SOC_NOPM, 0, 0, NULL, 0),
+};
+```
+
+ - MACRO를 snd_soc_dapm_widget 구조체로 풀어서 보면 다음과 같다.
+
+```c
+static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
+	.id = snd_soc_dapm_mixer,
+	.name = "LineOut Amp3 Mixer",
+	.reg = AK7755_CE_POWER_MANAGEMENT,
+	.shift = 4, 
+	.invert = 0,
+	.kcontrol_news = ak7755_lo3sw_mixer_controls,
+	.num_kcontrols = ARRAY_SIZE(ak7755_lo3sw_mixer_controls)
+
+};
+```
+
+## 3.4 Widget 등록
+
+ - DAPM MACRO를 이용하여 배열로 작성된 widget들은 snd_soc_dapm_new_controls 함수를 통하여 모두 등록된다.
+ - snd_soc_dapm_new_controls 함수 안에서 snd_soc_dapm_new_control 호출하여 snd_soc_card 의 멤버변수 widgets에 모두 연결 된다.
+
+
 -----
 
 # 4. Route(path)
+
+## 4.1 Route(path)란 ?
+
+ - widget과 widget 사이를 연결하는 추상화된 Line이다.
+ - 실제 Audio codec에서 block 과 block을 연결하는 Line과 일치하도록 작성되어 있다.
+
+## 4.2 Route(path) 구조체
+ - snd_soc_dapm_route 구조체는 연결 선언 시 사용되는 구조체이며, 
+ - snd_soc_dapm_path 구조체는 widget과 widget을 연결하는 자료 구조이다. 
+
+```c
+/*
+ * DAPM audio route definition.
+ *
+ * Defines an audio route originating at source via control and finishing
+ * at sink.
+ */
+struct snd_soc_dapm_route {
+	const char *sink;
+	const char *control;
+	const char *source;
+
+	/* Note: currently only supported for links where source is a supply */
+	int (*connected)(struct snd_soc_dapm_widget *source,
+			 struct snd_soc_dapm_widget *sink);
+};
+
+
+
+/* dapm audio path between two widgets */
+struct snd_soc_dapm_path {
+	const char *name;				// path의 이름이다. 없을수도 있으며, 없는 path를 static path라 부른다.
+									// 대부분 mixer widget을 목적지(sink)로 가지는 path에 long_name이 붙는다.
+									// "sink widget name + contol name"
+
+	/*
+	 * source (input) and sink (output) widgets
+	 * The union is for convience, since it is a lot nicer to type
+	 * p->source, rather than p->node[SND_SOC_DAPM_DIR_IN]
+	 */
+	union {
+		struct {
+			struct snd_soc_dapm_widget *source;	// path의 source widget의 주소가 들어간다.
+			struct snd_soc_dapm_widget *sink;	// path의 sink widget의 주소가 들어간다.
+		};
+		struct snd_soc_dapm_widget *node[2];
+	};
+
+	/* status */
+	u32 connect:1;	/* source and sink widgets are connected */
+	u32 walking:1;  /* path is in the process of being walked */	// path를 따라 power check중일 때 flag set.
+	u32 weak:1;	/* path ignored for power management */
+	u32 is_supply:1;	/* At least one of the connected widgets is a supply */
+
+	int (*connected)(struct snd_soc_dapm_widget *source,
+			 struct snd_soc_dapm_widget *sink);
+
+	struct list_head list_node[2];	// source widget의 sink, sink widget의 sources에 연결될 list point 
+	struct list_head list_kcontrol;	// kcontrol 에  연결될 list point
+	struct list_head list;			// snd_soc_card의 path에 연결될 list point
+};
+
+```
+
+
+## 4.3 Route(path) 선언
+
+ - snd_soc_dapm_route 구조체는 route(path) 선언 시 사용되는 구조체로 목적지(sink) widget과 출발지(source) widget을 문자열로 적어준다.
+
+```c
+static const struct snd_soc_dapm_route ak7755_intercon[] = 
+{
+
+#ifdef DIGITAL_MIC
+	{"DMIC1 Left", NULL, "CLOCK"},
+	{"DMIC1 Right", NULL, "CLOCK"},
+	{"DMIC2 Left", NULL, "CLOCK"},
+	{"DMIC2 Right", NULL, "CLOCK"},
+
+	{"DMICIN1", NULL, "DMIC1 CLK"},
+	{"DMICIN2", NULL, "DMIC2 CLK"},
+	{"DMIC1 Left", NULL, "DMICIN1"},
+	{"DMIC1 Right", NULL, "DMICIN1"},
+	{"DMIC2 Left", NULL, "DMICIN2"},
+	{"DMIC2 Right", NULL, "DMICIN2"},
+	{"SDOUTAD", NULL, "DMIC1 Left"},
+	{"SDOUTAD", NULL, "DMIC1 Right"},
+	{"SDOUTAD2", NULL, "DMIC2 Left"},
+	{"SDOUTAD2", NULL, "DMIC2 Right"},
+#else	
+	{"ADC Left", NULL, "CLOCK"},
+	{"ADC Right", NULL, "CLOCK"},
+	{"ADC2 Left", NULL, "CLOCK"},
+
+	{"LineIn Amp", NULL, "LIN"},
+	{"ADC2 Left", NULL, "LineIn Amp"},
+	{"SDOUTAD2", NULL, "ADC2 Left"},
+
+	{"LIN MUX", "IN1", "IN1"},
+	{"LIN MUX", "IN2", "IN2"},
+	{"LIN MUX", "INPN1", "INPN1"},
+	{"RIN MUX", "IN3", "IN3"},
+	{"RIN MUX", "IN4", "IN4"},
+	{"RIN MUX", "INPN2", "INPN2"},
+	{"ADC Left", NULL, "LIN MUX"},
+	{"ADC Right", NULL, "RIN MUX"},
+	{"SDOUTAD", NULL, "ADC Left"},
+	{"SDOUTAD", NULL, "ADC Right"},
+#endif
+	
+	{"DAC Left", NULL, "CLOCK"},
+	{"DAC Right", NULL, "CLOCK"},
+	{"DSP", NULL, "CLOCK"},
+
+	{"DSP", NULL, "SDIN1"},
+	{"DSP", NULL, "SDIN2"},
+
+	{"DSPIN SDOUTAD", "On", "SDOUTAD"},
+	{"DSPIN SDOUTAD2", "On", "SDOUTAD2"},
+	{"DSP", NULL, "DSPIN SDOUTAD"},
+	{"DSP", NULL, "DSPIN SDOUTAD2"},
+
+	{"SELMIX AD", "On", "SDOUTAD"},
+	{"SELMIX AD2", "On", "SDOUTAD2"},
+	{"SELMIX DSP", "On", "DSP"},
+	{"SELMIX Mixer", NULL, "SELMIX AD"},
+	{"SELMIX Mixer", NULL, "SELMIX AD2"},
+	{"SELMIX Mixer", NULL, "SELMIX DSP"},
+	{"DAC MUX", "MIXOUT", "SELMIX Mixer"},
+	{"DAC MUX", "DSP", "DSP"},
+	{"DAC MUX", "SDIN2", "SDIN2"},
+	{"DAC MUX", "SDIN1", "SDIN1"},
+
+	{"DAC Left", NULL, "DAC MUX"},
+	{"DAC Right", NULL, "DAC MUX"},
+
+	{"LineOut Amp1", "On", "DAC Left"},
+	{"LineOut Amp2", "On", "DAC Right"},
+	{"Line Out1", NULL, "LineOut Amp1"},
+	{"Line Out2", NULL, "LineOut Amp2"},
+	{"LineOut Amp3 Mixer", "LOSW1", "DAC Left"},
+	{"LineOut Amp3 Mixer", "LOSW2", "DAC Right"},
+#ifndef DIGITAL_MIC		//LOSW3 used only Analog MIC
+	{"LineOut Amp3 Mixer", "LOSW3", "LineIn Amp"},
+#endif
+	{"Line Out3", NULL, "LineOut Amp3 Mixer"},
+
+	{"SDOUT1 MUX", "DSP", "DSP"},
+	{"SDOUT1 MUX", "DSP GP0", "DSP GP0"},
+	{"SDOUT1 MUX", "SDIN1", "SDIN1"},
+	{"SDOUT1 MUX", "SDOUTAD", "SDOUTAD"},
+	{"SDOUT1 MUX", "EEST", "EEST"},
+	{"SDOUT1 MUX", "SDOUTAD2", "SDOUTAD2"},
+
+	{"SDOUT2 MUX", "DSP", "DSP"},
+	{"SDOUT2 MUX", "DSP GP1", "DSP GP1"},
+	{"SDOUT2 MUX", "SDIN2", "SDIN2"},
+	{"SDOUT2 MUX", "SDOUTAD2", "SDOUTAD2"},
+
+	{"SDOUT3 MUX", "DSP DOUT3", "DSP"},
+	{"SDOUT3 MUX", "MIXOUT", "DAC MUX"},
+	{"SDOUT3 MUX", "DSP DOUT4", "DSP"},
+	{"SDOUT3 MUX", "SDOUTAD2", "SDOUTAD2"},
+
+	{"SDOUT1 Enable", "Switch", "SDOUT1 MUX"},
+	{"SDOUT2 Enable", "Switch", "SDOUT2 MUX"},
+	{"SDOUT3 Enable", "Switch", "SDOUT3 MUX"},
+
+	{"SDOUT1", NULL, "SDOUT1 Enable"},
+	{"SDOUT2", NULL, "SDOUT2 Enable"},
+	{"SDOUT3", NULL, "SDOUT3 Enable"},
+
+};
+```
+
+ - 의미는 {"목적지(sink)", "컨트롤(sink's control)", "출발지(source"} 이다.
+ - sink와 source 에 해당하는 문자열은 동일한 이름으로 된 widget이 존재해야 한다.
+ - 컨트롤은 sink widget이 가지고 있는 kcontrol_new들에 같은 이름으로 된 kcontrol_new가 있어야 한다.
+
+ - 위의 route(path)를 도식화 한 그림이다. path위의 이름은 kcontrol이름이다.
+
+	![](images/ALSA_05.png)
+
+
 
 -----
 
