@@ -693,6 +693,36 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 
 ```c
 static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
+	{
+	.id = snd_soc_dapm_adc,
+	.name = "ADC Left",
+	.reg = AK7755_CE_POWER_MANAGEMENT,
+	.shift = 6, 
+	.invert = 0,
+	.event = ak7755_clkset_event,
+	.wflags = SND_SOC_DAPM_POST_PMU
+	},
+	{
+	.id = snd_soc_dapm_adc,
+	.name = "ADC Right",
+	.reg = AK7755_CE_POWER_MANAGEMENT,
+	.shift = 7, 
+	.invert = 0,
+	.event = ak7755_clkset_event,
+	.wflags = SND_SOC_DAPM_POST_PMU
+
+	},
+	{
+	.id = snd_soc_dapm_adc,
+	.name = "ADC2 Left",
+	.reg = AK7755_CE_POWER_MANAGEMENT,
+	.shift = 5, 
+	.invert = 0,
+	.event = ak7755_clkset_event,
+	.wflags = SND_SOC_DAPM_POST_PMU
+
+	},
+	{
 	.id = snd_soc_dapm_mixer,
 	.name = "LineOut Amp3 Mixer",
 	.reg = AK7755_CE_POWER_MANAGEMENT,
@@ -700,9 +730,14 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 	.invert = 0,
 	.kcontrol_news = ak7755_lo3sw_mixer_controls,
 	.num_kcontrols = ARRAY_SIZE(ak7755_lo3sw_mixer_controls)
+	},
 
 };
 ```
+
+	![](images/ALSA_07.png)
+	![](images/ALSA_08.png)
+ 
 
 ## 3.4 Widget 등록
 
