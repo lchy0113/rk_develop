@@ -6,6 +6,41 @@
 
 # 1. DAPM 
 
+## 1.1 DAPM 이란?
+
+ - Linux Device Audio subsystem을 이용할 때 최소한의 power로 사용하기 위해 설계된 메커니즘.
+ - Linux Kernel 의 PM(Power Management0과는 관련 없음.
+ - User space application에서 DAPM을 제어할 수 없으나, User space application의 동작(control command, play, capture)으로 자기가 판단하여 Audio subsystem 의 power를 On/Off 한다.
+ - DAPM은 Machine에 연결되는 Audio Codec(device) 내부의 power block과 Machine level의 power을 다룰 수 있다.
+ - Power 를 On/Off 하는 결정은 widget과 route(path)의 연결 상태에 보고 판단.
+ - DAPM이 자동적으로 동작하기 위해서는 Audio Codec에 대한 이해가 깊은 엔지니어가(Codec company's engineer) ALSA에서 제공하는 DAPM macro를 이용하여 widget 및 control을 등록하고 path에 대한 설정을 모두 정적으로 코딩해야 한다.
+
+## 1.2 DAPM Power domain
+
+ - Guide 문서에 따르면 4개의 power domain이 있다. (=widget의 종류)
+   * Codec domain
+	   VREF, VMID 와 같은 Audio Codec Power.
+	   kernel codec device driver 중, probe/remove/suspend/resume 시 제어된다.
+   * Platform / Machine domain
+	   Target에 물리적으로 연결된 input, output 단자.
+	   User 가 HP를 삽입하면 인지하여 자동으로 Audio codec 내부의 power 를 on/off 한다.
+   * Path domain
+	   Audio Codec 내부의 signal path들이다.
+	   User space application에서 mixer나 mux를 setting하게 되면 DAPM이 구동되어 Audio codec 내부의 power를 on/off한다.
+   * Stream domain
+	   Audio Codec 내부의 DAC, ADC 이다.
+	   Play 나 Record 시, enable, disable 된다.
+
+## 1.3 DAPM 간단 정리
+
+ - Audio Codec 내에서 Power 를 소모하는 Block 들을 Play, Record 시 모든 Block 에 Power를 On 하지 않고, 동작을 수행하기 위해 필요한 Block만 On시키고 그 외 나머지 Block 은 Off하는 것을 자동적으로 관리하는 방법을 말한다.
+
+
+	![](images/ALSA_09.png)
+
+ - 특정 Audio Codec Block diabram이다. OUT #1에 연결된 Speaker 를 통해 소리가 출력되고 있다고 가정 시, DAPM을 통해서 꼭 필요한 Power Block(widget)만 Power ON한다.
+ - 모든 Power Block(widget)이 모두 ON 될 필요가 없다.
+
 -----
 
 # 2. Kcontrol
