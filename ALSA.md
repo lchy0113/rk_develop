@@ -1023,4 +1023,79 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_add_routes);
 
 # 5. DAPM Operation
 
+## 5.1 dapm_power_widgets 함수
+
+ - dapm_power_widgets 함수 안에서 DAPM 운영이 모두 이루어 진다.
+ - dapm_power_widgets 함수는 widget 을 모두 검색하여 widget power가 on/off 되어야 하는지 살펴보고 on/off할 필요가 있다면 on/off시키는 함수.
+ - dapm_power_widgets 함수를 호출해야 하는 경우는 다음과 같다.
+   * 모든 widget과 path가 연결되고 난 뒤, 
+   * snd_soc_dapm_sync 함수 호출 시, 
+   * jack insert시 (snd_soc_dapm_sync함수를 호출)
+   * user space application에서 path switch 관련한 control을 on/off  했을 경우, (kcontrol's put function)
+   * snd_soc_dapm_stream_event 함수가 호출 될 때(playback / capture start, stop)
+ - 중요한 부분은 widget power가 on/off 되어야 하는지 판단하는 부분이 제일 중요하다.
+   그 판단 하는 부분에 대해서 핵심적으로 짚고 넘어 간다.
+
+
+## 5.2 widget's power check function
+
+ - dapm_power_widgets 함수 안에서 모든 widget을 순회하면서 power_check 포인터 함수 값이 NULL인지 살피고 NULL이 아니라면 power_check 포인터 함수를 호출한다.
+ - power_check 포인터 함수의 연결은 앞 챕터 route(path) 등록 부분에서 설명한 snd_soc_dapm_new_control_unlocked 함수 안에서 이루어 진다.
+	
+```c
+	switch (w->id) {
+	case snd_soc_dapm_mic:
+		w->is_ep = SND_SOC_DAPM_EP_SOURCE;
+		w->power_check = dapm_generic_check_power;
+		break;
+	case snd_soc_dapm_input:
+		if (!dapm->card->fully_routed)
+			w->is_ep = SND_SOC_DAPM_EP_SOURCE;
+		w->power_check = dapm_generic_check_power;
+		break;
+	case snd_soc_dapm_spk:
+	case snd_soc_dapm_hp:
+		w->is_ep = SND_SOC_DAPM_EP_SINK;
+		w->power_check = dapm_generic_check_power;
+		break;
+	case snd_soc_dapm_output:
+		if (!dapm->card->fully_routed)
+			w->is_ep = SND_SOC_DAPM_EP_SINK;
+		w->power_check = dapm_generic_check_power;
+		break;
+	case snd_soc_dapm_vmid:
+	case snd_soc_dapm_siggen:
+		w->is_ep = SND_SOC_DAPM_EP_SOURCE;
+		w->power_check = dapm_always_on_check_power;
+		break;
+	case snd_soc_dapm_sink:
+		w->is_ep = SND_SOC_DAPM_EP_SINK;
+		w->power_check = dapm_always_on_check_power;
+```
+ - widget ID에 따라 check_power 함수가 연결된다.
+ 	* dapm_generic_check_power
+	* dapm_supply_check_power
+	* dapm_always_on_check_power
+ - dapm_generic_check_power 함수만 살펴보면 check_power 함수 원리를 이해할 수 있다.
+
+## 5.3 dapm_generic_check_power
+
+ - dapm_generic_check_power 함수 안에 내용은 다음과 같다.
+
+```c
+
+/* Generic check to see if a widget should be powered. */
+static int dapm_generic_check_power(struct snd_soc_dapm_widget *w)
+{
+	int in, out;
+
+	DAPM_UPDATE_STAT(w, power_checks);
+
+	in = is_connected_input_ep(w, NULL, NULL);
+	out = is_connected_output_ep(w, NULL, NULL);
+	return out != 0 && in != 0;
+}
+```
+
+
 -----
