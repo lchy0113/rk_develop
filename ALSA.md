@@ -1078,9 +1078,14 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_add_routes);
 	* dapm_always_on_check_power
  - dapm_generic_check_power 함수만 살펴보면 check_power 함수 원리를 이해할 수 있다.
 
-## 5.3 dapm_generic_check_power
+## 5.3 dapm_generic_check_power(is_connected_input_ep)
 
  - dapm_generic_check_power 함수 안에 내용은 다음과 같다.
+ * in 변수를 선언한 뒤 in 변수에 is_connected_input_ep 함수의 결과를 return한다. 
+ * 쉽게 말하면 현재 widget 중심에서 input 족으로 path가 열려있는지 질의한다. 
+ * out 변수는 is_connected_output_ep함수를 호출하는데, 현재 widget중심으로 output쪽으로 path가 열려 있는지 질의한다.
+ * 최종 결과 in 과 out 이 0 이 아니라면 1(true)을 리턴하게 된다.
+ * 의미는 현재 widget을 중심으로 input, output 쪽이 모든 path의 연결 유무 결과를 리턴한다.
 
 ```c
 
@@ -1097,5 +1102,9 @@ static int dapm_generic_check_power(struct snd_soc_dapm_widget *w)
 }
 ```
 
+## 5.4 dapm_power_widgets 함수 내용
+
+
+## 5.5 정리
 
 -----
