@@ -20,6 +20,19 @@
 	
 ## Develop
 
+
+### sound card 
+
+ - ALSA sound card 구성
+![](images/AUDIO_CODEC_06.png)
+
+
+
+
+### dts
+
+ 
+
 ### regmap
  regmap 메커니즘은 Linux 3.1 에 추가 된 새로운 기능입니다.
  주요 목적은 I/O 드라이버에서 반복적인 논리 코드를 줄이고 기본 하드웨어에서 레지스터를 작동 할 수 있는 범용 인터페이스를 제공하는 것 입니다.
