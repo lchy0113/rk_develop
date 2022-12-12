@@ -1,5 +1,7 @@
 # AUDIO_CODEC
 
+ - Linux Sound Subsystem Documentation : https://www.kernel.org/doc/html/latest/sound/index.html
+
 > AUDIO_CODEC 드라이버에 대한 문서.
 >> AsahiKASEI 사 AK7755 를 레퍼런스 함.
 
@@ -26,12 +28,46 @@
  - ALSA sound card 구성
 ![](images/AUDIO_CODEC_06.png)
 
+   * DAI : Digital Audio Interface
+   * MACHINE : Link dai and codec to be a new sound card
+   * DMAENGINE : Transfer data between memory and dai's fifo
+
+ > 일반적으로 SDK를 기반으로하여 sound card를 추가하려면 codec driver를 작성만 하면되지만, 경우에 따라서 machine driver를 추가해야 하는 경우도 있다. 
 
 
+### I2S
 
-### dts
+#### master / slave
 
+ - 설정  
+   master / slave설정은 machine driver를 통해 dts를 파싱 한 후, set_fmt API를 호출하여 controler 의 protocol type을 설정한다.   
+
+
+### Machine driver  
+
+ - simple card는 ASoC용 공통으로 사용되는 Machine driver로 대부분의 표준 사운드 카드 추가를 지원합니다. 
  
+#### dts
+
+```dtb
+ak7755_sound: ak7755-sound {
+	status = "okay";
+	compatible = "simple-audio-card";
+	simple-audio-card,format = "i2s";			// protocol; i2s, right_j, left_j, dsp_a, dsp_b, pdm
+	simple-audio-card,name = "rockchip,ak7755";
+	simple-audio-card,mclk-fs = <256>;			// sampling rate; by default, mclk is 256 time
+
+	simple-audio-card,cpu {
+		sound-dai = <&i2s_2ch>;
+	};
+
+	simple-audio-card,codec {
+		sound-dai = <&ak7755_codec>;
+	};
+};
+
+
+```
 
 ### regmap
  regmap 메커니즘은 Linux 3.1 에 추가 된 새로운 기능입니다.
