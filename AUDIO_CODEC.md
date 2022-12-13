@@ -183,6 +183,53 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
 void regmap_exit(struct regmap *map);
 ```
 
+###
+
+ * mixer control
+
+```bash
+tinymix 72 0 ; tinymix 73 1 ; tinymix 61 1
+
+tinymix 72 0 ; tinymix 61 1 ; tinymix 71 5
+```
+
+
+| Addr 	| Name                                                                  	| Value 	| Func                                                                                                                                                             	|
+|------	|-----------------------------------------------------------------------	|-------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| C0h  	| clock setting1, analog input setting                                  	| 0x38  	| Slave, Main Clock(BICK), Analog Input Setting                                                                                                                    	|
+| C1h  	| clock setting2, JX2 setting                                           	| 0x0E  	| JX2 is disabled, LRCK sampling frequency set by DFS[2:0] bits, BITFS mode(0) BICK(64fs), CLKO output clock select(XTI or BICk)                                   	|
+| C2h  	| serial data format, JX1, JX0 setting                                  	| 0x10  	| TDM interface(no), BICK Edge(falling), LRCK I/F Format(I2S), DSPDIN3&DSPDIN4 Input Source Select(no), JX1(no), JX)(no)                                           	|
+| C3h  	| delay ram, dsp input / output setting                                 	| 0x05  	| DSP DIN2 Input Format Select(MSB 24bit), DSP DOUT2 Output Format Select(MSB (24bit), DLRAM mode setting(5120words,3072words)                                     	|
+| C4h  	| data ram, cram setting                                                	| 0x61  	| Data RAM Size Setting(1024:1024), Data RAM Addressing mode Setting(Ring:Linear), DLRAM Pointer(OFREG), CRAM Memory Assignment(65word)                            	|
+| C5h  	| accelerator setting, JX3 setting                                      	| 0x03  	| Accelator Memory Select(1024:1024)                                                                                                                               	|
+| C6h  	| DAC De-emphasis, DAC and DSP Input Format Settings                    	| 0x00  	| DAC De-emphasis Setting(OFF), DAC Input Format Select(MSB Justified(24-bit)), MSB (24-bit)                                                                       	|
+| C7h  	| DSP output format setting                                             	| 0x00  	| DSP DOUT4 Output Format Select(MSB justified (24-bit)), DSP DOUT3 Format Select(MSB justified (24-bit)), DSP DOUT1 Output Format Select(MSB(24-bit))             	|
+| C8h  	| DAC input, SDOUT2 Output, SDOUT3 Output, Digital Mixer Input Settings 	| 0xC4  	| DAC Input Select(SDIN1), SDOUT3 pin Output Select(DSP DOUT3), SDOUT2 pint Output Select(GP1), Digital Mixer Input Select(SDOUTAD Rch)                            	|
+| C9h  	| analog input / output setting                                         	| 0x02  	| INL ADC Lch Analog Input(IN1), OUT3 Mixing Select 3(LIN off), OUT3 Mixing Select 2(DAC Rch on), OUT3 Mixing Select 1(DAC Lch off), Digital Mixer Input Select(0) 	|
+| CAh  	| CLK and SDOUT output setting                                          	| 0x00  	| CLKO(Low), BICK(Low), LRCK(Low), OUT3E(Low), OUT2E(Low), OUT1E(Low)                                                                                              	|
+| CEh  	| ADC, DAC Lineout Power Management                                     	| 0x05  	| Lineout1 Power(normal), DAC Lch(normal) when CODEC Reset (CRESETN bit = "1")                                                                                     	|
+| CFh  	| Reset Settings Lineout and Digital MIC2 Rch Power Management          	| 0x00  	| CODEC Reset N(CODEC Reset)                                                                                                                                       	|
+
+   - C1h_D0 (CKRESETN Clock Reset) : 0 인경우, Clock Reset 을 진행합니다. 1 인경우, Clock Reset 을 release 합니다.
+
+   - CFh_D3 (CRESETN; CODEC Reset N) : CODEC 의미는 ADC, DAC입니다.
+   - CFh_D2 (DSPRESETN; DSP Reset N) : CRESETN bit = "0"이고 DSPRESETN bit = "0" 인경우, system reset 상태가 됩니다.
+   - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우, **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다. 다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.
+ * play
+
+```bash
+tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0; 
+
+[2022-12-13 11:47:48]   [ak7755]        ak7755_reg_read(1375) :
+[2022-12-13 11:47:48] [  230.351505]            [ak7755]        ak7755_i2c_read(1316) :
+[2022-12-13 11:47:48] [  230.351698]            [ak7755]        ak7755_hw_params_set(2460) : receive nfs value(44100)
+[2022-12-13 11:47:48] [  230.351718]            [ak7755]        ak7755_hw_params_set(2461) : addr 0xc0 read value(0x3d)
+[2022-12-13 11:47:48] [ [  230.739491]          [ak7755]        ak7755_trigger(2643) :
+[2022-12-13 11:47:48] [  230.739703]            [ak7755]        ak7755_set_dai_mute(2671) :
+
+
+```
+
 -----
 
 ### AK7755
@@ -196,6 +243,41 @@ set_DSP_write_ofreg()
 set_DSP_write_acram()
 	|
 	+-> ak7755_firmware_write_ram()
+
+ * legacy code 
+
+```c
+	/**
+	  * register write (0xC0 ~ 0xEA)
+	  */
+	next = ak7755_normal_register;
+	ak7755_reg_write(component, next->reg, next->def);
+
+	/**
+	  * 
+	  */
+	  apply_register(component, KDIWIN_AUDIO_PATH_NORMAL, 1);
+	  	|
+		+-> reg_control(component, AK7755_C1_CLOCK_SETTING2, 0x01, BIT_SET)
+		|	|
+		|	+-> /* C1h 레지스터의 값을 읽은 후, C1h_D0 (CKRESETN Clock Reset) 을 세팅 하여 clock reset 을 reset 한다. */
+		+-> fw_download(component, pram_default, sizeof(pram_default));
+		+-> fw_download(component, cram_door_default, sizeof(cram_door_default));
+		|	|
+		|	+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x01, BIT_SET); 
+		|		/*
+		|		 * 1. DSP download ready 상태 : CFh_D0 (DLRDY; DSP Download Ready field) 를 세팅. 
+		|		 * 2. write firmware
+		|		 * 3. DSP download ready 상태 해제 : CFh_D0 (DLRDY; DSP Download Ready field) 를 해제 
+		|		 */
+		+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x08, BIT_SET);
+		|	/* CFh_CRESETN; CODEC Reset N : CODEC Reset Release */
+		+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x04, BIT_SET);
+		|	/* CFh_DSPRESETN; DSP Reset N : DSP Reset Release */
+
+
+```
+
 ```
 
 
