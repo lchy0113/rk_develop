@@ -191,6 +191,9 @@ void regmap_exit(struct regmap *map);
 tinymix 72 0 ; tinymix 73 1 ; tinymix 61 1
 
 tinymix 72 0 ; tinymix 61 1 ; tinymix 71 5
+
+
+> tinymix  24 5 ; tinymix 25 1 ; tinymix 26 1 ; tinymix 27 1 ; tinymix 28 1 ; tinymix 33 3 ; tinymix 36 0 ; tinymix  72 3 ;  
 ```
 
 
@@ -215,6 +218,7 @@ tinymix 72 0 ; tinymix 61 1 ; tinymix 71 5
    - CFh_D3 (CRESETN; CODEC Reset N) : CODEC 의미는 ADC, DAC입니다.
    - CFh_D2 (DSPRESETN; DSP Reset N) : CRESETN bit = "0"이고 DSPRESETN bit = "0" 인경우, system reset 상태가 됩니다.
    - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우, **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다. 다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.
+
  * play
 
 ```bash
@@ -229,6 +233,16 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 
 
 ```
+-----
+
+### AUDIO HAL
+
+ * alsa_route.c
+	 ```c
+	 route_card_init
+	 ```
+   - config_list.h : default_config.h cx2072_config.h
+   -
 
 -----
 
