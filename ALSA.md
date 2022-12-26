@@ -41,9 +41,9 @@
  - 특정 Audio Codec Block diabram이다. OUT #1에 연결된 Speaker 를 통해 소리가 출력되고 있다고 가정 시, DAPM을 통해서 꼭 필요한 Power Block(widget)만 Power ON한다.
  - 모든 Power Block(widget)이 모두 ON 될 필요가 없다.
 
------
-
 <br />
+
+-----
 
 # 2. Kcontrol
 
@@ -454,6 +454,8 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
    * 이 scontrol은 비슷한 kcontrol을 묶어서 ALSA Library에서 제공하는 것이다. 
    (ex> DAC1 Switch 와 DAC1 Volume 를 묶어서 DAC1 으로 제공)
 
+
+<br />
 
 -----
 
