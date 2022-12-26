@@ -412,7 +412,7 @@ static const struct snd_kcontrol_new ak7755_snd_controls[] = {
 
  - 대부분 같은 audio codec device driver 안에서 MACRO를 통해 선언된 snd_kcontrol_new가 snd_soc_add_controls 함수를 통하여 snd_kcontrol 구조체로 변환되어 snd_card의 controls에 연결된다.
    * snd_soc_cnew 함수를 통해 snd_kcontrol_new 구조체가 snd_kcontrol 구조체로 변환.
-   * snd_ctl_add 함수는 snd_card의 controls에 snd_kcontrol을 NUmbering하며 링크드리스트로 연결하고, kcontrol 총 개수를 관리.
+   * snd_ctl_add 함수는 snd_card의 controls에 snd_kcontrol을 Numbering하며 링크드 리스트로 연결하고, kcontrol 총 개수를 관리.
 
 ```c
 
