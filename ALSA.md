@@ -9,7 +9,7 @@
 ## 1.1 DAPM 이란?
 
  - Linux Device Audio subsystem을 이용할 때 최소한의 power로 사용하기 위해 설계된 메커니즘.
- - Linux Kernel 의 PM(Power Management0과는 관련 없음.
+ - Linux Kernel 의 PM(Power Management)과는 관련 없음.
  - User space application에서 DAPM을 제어할 수 없으나, User space application의 동작(control command, play, capture)으로 자기가 판단하여 Audio subsystem 의 power를 On/Off 한다.
  - DAPM은 Machine에 연결되는 Audio Codec(device) 내부의 power block과 Machine level의 power을 다룰 수 있다.
  - Power 를 On/Off 하는 결정은 widget과 route(path)의 연결 상태에 보고 판단.
