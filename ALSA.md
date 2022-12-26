@@ -42,6 +42,8 @@
  - 모든 Power Block(widget)이 모두 ON 될 필요가 없다.
 
 <br />
+<br />
+<br />
 
 -----
 
@@ -456,6 +458,8 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 
 
 <br />
+<br />
+<br />
 
 -----
 
@@ -783,6 +787,9 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
  - DAPM MACRO를 이용하여 배열로 작성된 widget들은 snd_soc_dapm_new_controls 함수를 통하여 모두 등록된다.
  - snd_soc_dapm_new_controls 함수 안에서 snd_soc_dapm_new_control 호출하여 snd_soc_card 의 멤버변수 widgets에 모두 연결 된다.
 
+<br />
+<br />
+<br />
 
 -----
 
@@ -1022,6 +1029,9 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_add_routes);
 
 ```
 
+<br />
+<br />
+<br />
 
 -----
 
