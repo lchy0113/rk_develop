@@ -18,7 +18,7 @@
 ## 1.2 DAPM Power domain
 
  - Guide 문서에 따르면 4개의 power domain이 있다. (=widget의 종류)
-   * Codec domain  
+   * *Codec domain*  
 	   VREF, VMID 와 같은 Audio Codec Power.  
 	   kernel codec device driver 중, probe/remove/suspend/resume 시 제어된다.  
    * Platform / Machine domain  
