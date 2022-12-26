@@ -56,7 +56,7 @@
 
  - audio codec의 기능(register)을 user space application에서 제어할 수 있도록 ALSA kernel driver 에서 제공하는 인터페이스 중 핵심이 되는 중요 요소.
 
- user space application은 audio codec을 문자열을 통하여 제어한다. 
+> user space application은 audio codec을 문자열을 통하여 제어한다. 
 
  ex>
 ```bash
