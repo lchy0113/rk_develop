@@ -1108,3 +1108,7 @@ static int dapm_generic_check_power(struct snd_soc_dapm_widget *w)
 ## 5.5 정리
 
 -----
+
+
+
+* reference : furmuwon@gmail.com
