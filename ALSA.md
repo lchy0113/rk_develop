@@ -21,13 +21,13 @@
    * *Codec domain*  
 	   VREF, VMID 와 같은 Audio Codec Power.  
 	   kernel codec device driver 중, probe/remove/suspend/resume 시 제어된다.  
-   * Platform / Machine domain  
+   * *Platform / Machine domain*  
 	   Target에 물리적으로 연결된 input, output 단자.  
 	   User 가 HP를 삽입하면 인지하여 자동으로 Audio codec 내부의 power 를 on/off 한다.  
-   * Path domain  
+   * *Path domain*  
 	   Audio Codec 내부의 signal path들이다.  
 	   User space application에서 mixer나 mux를 setting하게 되면 DAPM이 구동되어 Audio codec 내부의 power를 on/off한다.  
-   * Stream domain  
+   * *Stream domain*  
 	   Audio Codec 내부의 DAC, ADC 이다.  
 	   Play 나 Record 시, enable, disable 된다.  
 
