@@ -148,8 +148,8 @@ CLKO Output Clock: 12.288MHz 6.144MHz 3.072MHz 8.192MHz 4.096MHz 2.048MHz 256fs 
 
  - kcontrol 은 구조체 이름을 말하며 종류가 두가지 있다.
  > snd_kcontrol_new 구조체와 snd_kcontrol 구조체가 있다.
-   * snd_kcontrol_new 구조체는 선언 및 kcontrol 등록 함수에 매개 변수로 사용되는 구조체.
-   * snd_kcontrol 구조체는 운용되기 위해 사용되는 구조체.
+   * *snd_kcontrol_new* 구조체 : 선언 및 kcontrol 등록 함수에 매개 변수로 사용되는 구조체.
+   * *snd_kcontrol* 구조체 : 운용되기 위해 사용되는 구조체.
    * snd_soc_add_controls 함수에서 snd_kcontrol_new 가 snd_kcontrol로 변환되어 등록 됨.
 
 
@@ -214,7 +214,7 @@ struct snd_kcontrol {
 
 ## 2.3 Kcontrol 선언
 
- - ALSA driver 에서는 kcontrol 을 쉽게 선언하기 위해서 MACRO를 제공한다.
+ - ALSA driver 에서는 kcontrol 을 쉽게 선언하기 위해서 MACRO를 제공한다.  
 	 MACRO를 통하여 snd_kcontrol_new을 생성한다.
 
 ```c
@@ -319,10 +319,10 @@ static const struct snd_kcontrol_new ak7755_snd_controls[] = {
 ```
 ![](images/ALSA_01.png)
 
- - User Space 에서 "CLKO Output Clock" 대한 값을 요청 했을 경우, 수행되는 함수.
- "CLKO Output Clock" snd_kcontrol_new  선언 시, 멤버 변수 get 포인트 함수를 수행하여 읽어온다.
- get 에는 snd_soc_get_enum_double 이 연결되어 있다. 
- put 에는 snd_soc_put_enum_double 이 연결되어 있다.
+ - User Space 에서 "CLKO Output Clock" 대한 값을 요청 했을 경우, 수행되는 함수.  
+ "CLKO Output Clock" snd_kcontrol_new  선언 시, 멤버 변수 get 포인트 함수를 수행하여 읽어온다.  
+ get 에는 snd_soc_get_enum_double 이 연결되어 있다.   
+ put 에는 snd_soc_put_enum_double 이 연결되어 있다.  
 
 ```c
 int snd_soc_get_enum_double(struct snd_kcontrol *kcontrol,
@@ -413,6 +413,7 @@ static const struct snd_kcontrol_new ak7755_snd_controls[] = {
  - 대부분 같은 audio codec device driver 안에서 MACRO를 통해 선언된 snd_kcontrol_new가 snd_soc_add_controls 함수를 통하여 snd_kcontrol 구조체로 변환되어 snd_card의 controls에 연결된다.
    * snd_soc_cnew 함수를 통해 snd_kcontrol_new 구조체가 snd_kcontrol 구조체로 변환.
    * snd_ctl_add 함수는 snd_card의 controls에 snd_kcontrol을 NUmbering하며 링크드리스트로 연결하고, kcontrol 총 개수를 관리.
+
 ```c
 
 static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
@@ -456,7 +457,7 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 ## 2.6 Kcontrol 정리
  - tinymix는 test 용으로 사용하는 것이며, User space application(HAL) 작성 시에는 ALSA Library를 이용한다. 
  - amixer를 보면 scontrol(mixer controls) 및 scontents(mixer controls with contents)도 있다. 
-   * 이 scontrol은 비슷한 kcontrol을 묶어서 ALSA Library에서 제공하는 것이다. 
+   * 이 scontrol은 비슷한 kcontrol을 묶어서 ALSA Library에서 제공하는 것이다.   
    (ex> DAC1 Switch 와 DAC1 Volume 를 묶어서 DAC1 으로 제공)
 
 
@@ -508,7 +509,7 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
  - 프로그래머가 직접 작성하여 등록하는 것이며, codec driver와 machine driver에서 등록된다.
  - widget은 이름을 필수로 가져야 한다. 몇몇 widget은 register, kcontrol을 가진다.
  - user space application은 전혀 신경을 쓰지 않아도 되는 부분이다.
-
+  
  - 실제 audio codec의 block diagram을 가상의 장치로 표현한 것이라 볼 수 있다.
 	![](images/ALSA_03.png)
 
