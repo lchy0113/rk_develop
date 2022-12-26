@@ -44,6 +44,8 @@
 <br />
 <br />
 <br />
+<br />
+<br />
 
 -----
 
@@ -460,6 +462,8 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 <br />
 <br />
 <br />
+<br />
+<br />
 
 -----
 
@@ -790,6 +794,8 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 <br />
 <br />
 <br />
+<br />
+<br />
 
 -----
 
@@ -1029,6 +1035,8 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_add_routes);
 
 ```
 
+<br />
+<br />
 <br />
 <br />
 <br />
