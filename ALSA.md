@@ -309,12 +309,12 @@ static const struct snd_kcontrol_new ak7755_snd_controls[] = {
 	.put = snd_soc_put_enum_double, 
 	.tlv.p , 
 	.private_value = (unsigned long)&(struct soc_mixer_control)
-									{
-										.reg = AK7755_C1_CLOCK_SETTING2, 
-										.items = 8, 
-										.texts =  {"12.288MHz", "6.144MHz", "3.072MHz", "8.192MHz",
-										"4.096MHz", "2.048MHz", "256fs", "XTI or BICK"};
-									}
+						{
+							.reg = AK7755_C1_CLOCK_SETTING2, 
+							.items = 8, 
+							.texts =  {"12.288MHz", "6.144MHz", "3.072MHz", "8.192MHz",
+							"4.096MHz", "2.048MHz", "256fs", "XTI or BICK"};
+						}
 };
 ```
 ![](images/ALSA_01.png)
