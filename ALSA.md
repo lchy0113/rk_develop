@@ -987,7 +987,7 @@ static const struct snd_soc_dapm_route ak7755_intercon[] =
  - PMADL, PMADR의 Power onoff는 LIN MUX, RIN MUX widget이 담당하고, IN1, IN2, INPN1 kcontrol들과, IN3, IN4, INPN2 kcontrol 들은 어떤 Input 을 mute/unmute할 것인지 담당한다.
 
 
-## Route(path) 등록
+## 4.4 Route(path) 등록
 
  - snd_soc_dapm_route 구조체 배열을 snd_soc_dapm_add_routes 함수의 매개 변수로 넘겨 같은 이름으로 된 widget을 찾은 후 snd_soc_dapm_path 구조체를 생성 한 뒤 snd_soc_card의 paths에 링크드 리스트로 연결된다.
 
