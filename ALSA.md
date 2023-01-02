@@ -321,8 +321,8 @@ static const struct snd_kcontrol_new ak7755_snd_controls[] = {
 
  - User Space 에서 "CLKO Output Clock" 대한 값을 요청 했을 경우, 수행되는 함수.  
  "CLKO Output Clock" snd_kcontrol_new  선언 시, 멤버 변수 get 포인트 함수를 수행하여 읽어온다.  
- get 에는 snd_soc_get_enum_double 이 연결되어 있다.   
- put 에는 snd_soc_put_enum_double 이 연결되어 있다.  
+   * get 에는 snd_soc_get_enum_double 이 연결되어 있다.   
+   * put 에는 snd_soc_put_enum_double 이 연결되어 있다.  
 
 ```c
 int snd_soc_get_enum_double(struct snd_kcontrol *kcontrol,
