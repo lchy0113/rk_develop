@@ -264,10 +264,25 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 
 ## Analysis
 
+> datasheet 분석 
+
+ - Control Register 설정.
+   * power down(PDN pin = "L" -> "H") 이 release 되었을 때, Control Register 는 초기화 됨.
+   * CONT00 ~ CONT01은 clock generation과 관련이있음. 
+     + clock reset 시, (CKRESETN bit (CONT01:D0) = "0")으로 변경해야 함.
+   * CONT12 ~ CONT19는 동작중에 write가능함. 
+   * 그외 다른 register는 error 및 noise를 방지하기 위해 clock reset 또는 system reset(CRESETN bit(CONT0F:D3) 및 DSPRESETN bit(CONT0F:D2)="0") 중에 하나를 변경해야 함. 
+
+   * 시스템 reset중에는 CONT0D:D6, CONT1A:D4, CONT26:D0, CONT2A:D7 bit 를 "1"로 설정해야 함.
+     + 한번 "1"로 설정된 경우, power down이 발생되기 전까지, 값을 유지함. 
+   * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는 write 하면 안됨.
+
+
+
 
 ## Develop
 
-> note : ak7755 Low 상태에서 소리 출력
+> note : ak7755 MUTE pin Low 상태에서 소리 출력
 
 ```c
 set_DSP_write_pram()
