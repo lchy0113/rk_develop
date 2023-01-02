@@ -277,6 +277,8 @@ set_DSP_write_acram()
 	|
 	+-> ak7755_firmware_write_ram()
 
+
+```
  * legacy code 
 
 ```c
@@ -308,8 +310,6 @@ set_DSP_write_acram()
 		+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x04, BIT_SET);
 		|	/* CFh_DSPRESETN; DSP Reset N : DSP Reset Release */
 
-
-```
 
 ```
 
