@@ -730,6 +730,7 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 
 ```c  
 static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
+	// SND_SOC_DAPM_ADC_E("ADC Left", NULL, AK7755_CE_POWER_MANAGEMENT, 6, 0, ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
 	{
 	.id = snd_soc_dapm_adc,
 	.name = "ADC Left",
@@ -739,6 +740,7 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 	.event = ak7755_clkset_event,
 	.wflags = SND_SOC_DAPM_POST_PMU
 	},
+	// SND_SOC_DAPM_ADC_E("ADC Right", NULL, AK7755_CE_POWER_MANAGEMENT, 7, 0, ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
 	{
 	.id = snd_soc_dapm_adc,
 	.name = "ADC Right",
@@ -749,6 +751,7 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 	.wflags = SND_SOC_DAPM_POST_PMU
 
 	},
+	// SND_SOC_DAPM_ADC_E("ADC2 Left", NULL, AK7755_CE_POWER_MANAGEMENT, 5, 0, ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
 	{
 	.id = snd_soc_dapm_adc,
 	.name = "ADC2 Left",
@@ -759,6 +762,7 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 	.wflags = SND_SOC_DAPM_POST_PMU
 
 	},
+	// SND_SOC_DAPM_MIXER("LineOut Amp3 Mixer", AK7755_CE_POWER_MANAGEMENT, 4, 0, &ak7755_lo3sw_mixer_controls[0], ARRAY_SIZE(ak7755_lo3sw_mixer_controls)),
 	{
 	.id = snd_soc_dapm_mixer,
 	.name = "LineOut Amp3 Mixer",
