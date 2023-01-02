@@ -642,7 +642,7 @@ struct snd_soc_dapm_widget {
 
 ```
 
- - snd_soc_dapm_widget 의 중요 멤버 변수 중 sources와 sinks 개념. 
+ - snd_soc_dapm_widget 의 중요 멤버 변수 중 *sources*와 *sinks* 개념. 
  - 향후 route(path)에 대해서 나오는데 widget을 중심으로 연결된 path들의 링크드 리스트이다.
  - widget을 중심으로 widget을 목적지로 하고 있는 path들은 sources에 연결되고 
  - widget을 중심으로 widget에서 출발하는 path들은 sinks에 연결된다. 
