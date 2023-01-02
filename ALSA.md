@@ -633,7 +633,7 @@ struct snd_soc_dapm_widget {
 
 	int (*power_check)(struct snd_soc_dapm_widget *w); // widget 의 power check 함수 포인터
 	
-	int num_kcontrols;				// widget 에 연결 된 kcontrol 개수
+	int num_kcontrols;			// widget 에 연결 된 kcontrol 개수
 	const struct snd_kcontrol_new *kcontrol_news; // widget 에 연결 할 정적으로 작성된 kcontrol 주소를 가르킨다.
 	struct snd_kcontrol **kcontrols;// widget 에 연결 된 kcontrol 가르키는 포인터
 	struct list_head sources; 		// widget 에 연결된 path 중 widget 을 sink(목적지)로 하고 있는 path list
