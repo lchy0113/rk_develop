@@ -614,23 +614,23 @@ enum snd_soc_dapm_type {
 struct snd_soc_dapm_widget {
 	enum snd_soc_dapm_type id;		// 현재 widget 의 type 을 나타 낸다.
 	char *name;				// widget name
-	char *sname;					// play 나 capture 시 비교 된다. 이름이 같을 경우 power check한다.
-	struct snd_soc_codec *codec;	// widget 이 소속된 codec 을 가르킨다.
+	char *sname;				// play 나 capture 시 비교 된다. 이름이 같을 경우 power check한다.
+	struct snd_soc_codec *codec;		// widget 이 소속된 codec 을 가르킨다.
 	struct list_head list;			// snd_soc_card 의 widgets 에 연결 되는 point
 
-	short reg;						// widget 도 Audio Codec 의 Reg 정보를 가진다. 대부분 Power 관련 된 Register 이다.
+	short reg;				// widget 도 Audio Codec 의 Reg 정보를 가진다. 대부분 Power 관련 된 Register 이다.
 	unsigned char shift;			// Register 의 몇 번째 bit 에 해당하는지 나타낸다.
 	unsigned char power:1;			// widget 의 power status이다. 1이면 ON 0이면 OFF,
 	unsigned char active:1;			// DAC, ADC, AIFIN, AIFOUT widget 만 해당 되며 Power Check 시 중요한 flag 이다.
-									// Play나 Capture 시 sname, stream_name 비교 후 set 된다.
+						// Play나 Capture 시 sname, stream_name 비교 후 set 된다.
 	unsigned char connected:1; 		// widget 생성 될 때 무조건 1로 set 된다. snd_soc_dapm_enable_pin, snd_soc_dapm_disable_pin 함수를
-									// 통하여 set, clear 된다. 대부분 외부 단자 widget ( input , output ,mic ,line , hp, spk ) 에 enable,
-									// disable 시켜서 DAPM power 를 제어 하도록 한다.
+						// 통하여 set, clear 된다. 대부분 외부 단자 widget ( input , output ,mic ,line , hp, spk ) 에 enable,
+						// disable 시켜서 DAPM power 를 제어 하도록 한다.
 	unsigned char ext:1;			// Audio codec 외부에 붙는 widget 에 연결 되었는지 설정 한다.
-									// output widget 에 hp,spk widget 이 연결 되면 ouput widget 의 ext 가 1로 set
-									// input widget 에 mic widget 이 연결 되었다면 input widget 의 ext 는 1로 set
+						// output widget 에 hp,spk widget 이 연결 되면 ouput widget 의 ext 가 1로 set
+						// input widget 에 mic widget 이 연결 되었다면 input widget 의 ext 는 1로 set
 	unsigned char force:1;			// widget 의 power 를 강제로 ON 하는 flag.
-	
+
 	int (*power_check)(struct snd_soc_dapm_widget *w); // widget 의 power check 함수 포인터
 	
 	int num_kcontrols;				// widget 에 연결 된 kcontrol 개수
