@@ -728,7 +728,7 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 
  - MACRO를 snd_soc_dapm_widget 구조체로 풀어서 보면 다음과 같다.
 
-```c
+```c  
 static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 	{
 	.id = snd_soc_dapm_adc,
@@ -770,8 +770,8 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 	},
 
 };
-```  
-
+```    
+  
 	![](images/ALSA_07.png)
 	 
 	![](images/ALSA_08.png)
