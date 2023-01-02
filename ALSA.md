@@ -862,7 +862,7 @@ struct snd_soc_dapm_path {
 
 ## 4.3 Route(path) 선언
 
- - snd_soc_dapm_route 구조체는 route(path) 선언 시 사용되는 구조체로 *목적지(sink) widget*과 *출발지(source) widget*을 문자열로 적어준다.
+ - snd_soc_dapm_route 구조체는 route(path) 선언 시 사용되는 구조체로 **목적지(sink) widget**과 **출발지(source) widget**을 문자열로 적어준다.
 
 ```c
 static const struct snd_soc_dapm_route ak7755_intercon[] = 
