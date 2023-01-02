@@ -278,6 +278,7 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
    * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는 write 하면 안됨.
 
 
+![](./images/AUDIO_CODEC_07.png)
 
 
 ## Develop
