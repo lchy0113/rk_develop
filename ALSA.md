@@ -150,7 +150,7 @@ CLKO Output Clock: 12.288MHz 6.144MHz 3.072MHz 8.192MHz 4.096MHz 2.048MHz 256fs 
  > snd_kcontrol_new 구조체와 snd_kcontrol 구조체가 있다.
    * ***snd_kcontrol_new*** 구조체 : 선언 및 kcontrol 등록 함수에 매개 변수로 사용되는 구조체.
    * ***snd_kcontrol*** 구조체 : 운용되기 위해 사용되는 구조체.
-   * snd_soc_add_controls 함수에서 snd_kcontrol_new 가 snd_kcontrol로 변환되어 등록 됨.
+   > snd_soc_add_controls 함수에서 snd_kcontrol_new 가 snd_kcontrol로 변환되어 등록 됨.
 
 
 ## 2.2 Kcontrol 구조체
