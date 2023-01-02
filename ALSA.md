@@ -826,9 +826,9 @@ struct snd_soc_dapm_route {
 
 /* dapm audio path between two widgets */
 struct snd_soc_dapm_path {
-	const char *name;				// path의 이름이다. 없을수도 있으며, 없는 path를 static path라 부른다.
-									// 대부분 mixer widget을 목적지(sink)로 가지는 path에 long_name이 붙는다.
-									// "sink widget name + contol name"
+	const char *name;	// path의 이름이다. 없을수도 있으며, 없는 path를 static path라 부른다.
+				// 대부분 mixer widget을 목적지(sink)로 가지는 path에 long_name이 붙는다.
+				// "sink widget name + contol name"
 
 	/*
 	 * source (input) and sink (output) widgets
