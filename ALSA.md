@@ -771,10 +771,10 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 
 };
 ```    
-  
-	![](images/ALSA_07.png)
+    
+![](images/ALSA_07.png)
 	 
-	![](images/ALSA_08.png)
+![](images/ALSA_08.png)
  
 
 ## 3.4 Widget 등록
