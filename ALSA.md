@@ -494,36 +494,6 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 	| 14 	| Pre       	| - Special PRE widget (exec before all others)               	|
 	| 15 	| Post      	| - Special POST widget (exec after all others)               	|
 
-		o Mixer
-		 - Mixes several analog signals into a single analog signal.
-		o Mux
-		 - An analog switch that outputs only one of many inputs.
-		o PGA
-		 - A programmable gain amplifier or attenuation widget.
-		o ADC
-		 - Analog to Digital Converter
-		o DAC
-		 - Digital to Analog Converter
-		o Switch
-		 - An analog switch
-		o Input
-		 - A codec input pin
-		o Output
-		 - A codec output pin
-		o Headphone
-		 - Headphone (and optional Jack)
-		o Mic
-		 - Mic (and optional Jack)
-		o Line
-		 - Line Input/Output (and optional Jack)
-		o Speaker
-		 - Speaker
-		o Supply
-		 - Power or clock supply widget used by other widgets.
-		o Pre
-		 - Special PRE widget (exec before all others)
-		o Post
-		 - Special POST widget (exec after all others)
 
  - 프로그래머가 직접 작성하여 등록하는 것이며, codec driver와 machine driver에서 등록된다.
  - widget은 이름을 필수로 가져야 한다. 몇몇 widget은 register, kcontrol을 가진다.
@@ -643,7 +613,7 @@ enum snd_soc_dapm_type {
 ```c
 struct snd_soc_dapm_widget {
 	enum snd_soc_dapm_type id;		// 현재 widget 의 type 을 나타 낸다.
-	char *name;						// widget name
+	char *name;				// widget name
 	char *sname;					// play 나 capture 시 비교 된다. 이름이 같을 경우 power check한다.
 	struct snd_soc_codec *codec;	// widget 이 소속된 codec 을 가르킨다.
 	struct list_head list;			// snd_soc_card 의 widgets 에 연결 되는 point
