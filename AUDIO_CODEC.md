@@ -10,24 +10,32 @@
 
  - Path and Sequence 
    * playback(digital to analog)
-	   ![](images/AUDIO_CODEC_02.png)
 	  + SDIN1 -> DSP -> DAC -> OUT1/OUT2
+	   ![](images/AUDIO_CODEC_02.png)
 
 
    * recoding(analog to digital)
-	   ![](images/AUDIO_CODEC_03.png)
 	  + IN1/IN3 -> ADC -> DSP -> SDOUT1
+	   ![](images/AUDIO_CODEC_03.png)
 
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
 
 	
-## Develop
+# Develop
 
 
-### sound card 
+## sound card 
 
- - ALSA sound card 구성
+ - ALSA sound card 구성  
 ![](images/AUDIO_CODEC_06.png)
-
+  
    * DAI : Digital Audio Interface
    * MACHINE : Link dai and codec to be a new sound card
    * DMAENGINE : Transfer data between memory and dai's fifo
@@ -35,19 +43,19 @@
  > 일반적으로 SDK를 기반으로하여 sound card를 추가하려면 codec driver를 작성만 하면되지만, 경우에 따라서 machine driver를 추가해야 하는 경우도 있다. 
 
 
-### I2S
+## I2S
 
-#### master / slave
+### master / slave
 
  - 설정  
    master / slave설정은 machine driver를 통해 dts를 파싱 한 후, set_fmt API를 호출하여 controler 의 protocol type을 설정한다.   
 
 
-### Machine driver  
+## Machine driver  
 
  - simple card는 ASoC용 공통으로 사용되는 Machine driver로 대부분의 표준 사운드 카드 추가를 지원합니다. 
  
-#### dts
+### dts
 
 ```dtb
 ak7755_sound: ak7755-sound {
@@ -69,7 +77,7 @@ ak7755_sound: ak7755-sound {
 
 ```
 
-### regmap
+## regmap
  regmap 메커니즘은 Linux 3.1 에 추가 된 새로운 기능입니다.
  주요 목적은 I/O 드라이버에서 반복적인 논리 코드를 줄이고 기본 하드웨어에서 레지스터를 작동 할 수 있는 범용 인터페이스를 제공하는 것 입니다.
  
@@ -152,7 +160,7 @@ struct regmap_config {
 };
 ```
 
-### regmap api 
+## regmap api 
  디바이스 드라이버 초기화 시, device의 register 정보, bit length, address bit length, register bus 등을 정의합니다. 
  regmap을 초기화 하고 다른 bus에  해당하는 초기화 함수를 호출합니다.
  초기화가 완료된 후 regmap API를 호출하여 정상적으로 read  write 를 할수 있습니다.
@@ -183,7 +191,7 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
 void regmap_exit(struct regmap *map);
 ```
 
-###
+##
 
  * mixer control
 
@@ -235,7 +243,7 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 ```
 -----
 
-### AUDIO HAL
+## AUDIO HAL
 
  * alsa_route.c
 	 ```c
@@ -244,9 +252,20 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
    - config_list.h : default_config.h cx2072_config.h
    -
 
+<br />
+<br />
+<br />
+<br />
+<br />
+
 -----
 
-### AK7755
+# AK7755
+
+
+
+
+## Develop
 
 > note : ak7755 Low 상태에서 소리 출력
 
@@ -295,8 +314,15 @@ set_DSP_write_acram()
 ```
 
 
+<br />
+<br />
+<br />
+<br />
+<br />
 
-### RK817
+-----
+
+# RK817
 
 > rockchip evboard codec
 
