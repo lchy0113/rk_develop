@@ -475,6 +475,25 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 
  - Audio Codec 내부의 DAC, ADC, Mixer, Mux 등을 각각 하나의 가상 장치로 표현 한 것이며 종류는 다음과 같다.
 
+
+	| No 	| Widget    	| Mean                                                        	|
+	|----	|-----------	|-------------------------------------------------------------	|
+	| 1  	| Mixer     	| - Mixes several analog signals into a single analog signal. 	|
+	| 2  	| Mux       	| - An analog switch that outputs only one of many inputs.    	|
+	| 3  	| PGA       	| - A programmable gain amplifier or attenuation widget.      	|
+	| 4  	| ADC       	| - Analog to Digital Converter                               	|
+	| 5  	| DAC       	| - Digital to Analog Converter                               	|
+	| 6  	| Switch    	| - An analog switch                                          	|
+	| 7  	| Input     	| - A codec input pin                                         	|
+	| 8  	| Output    	| - A codec output pin                                        	|
+	| 9  	| Headphone 	| - Headphone (and optional Jack)                             	|
+	| 10 	| Mic       	| - Mic (and optional Jack)                                   	|
+	| 11 	| Line      	| - Line Input/Output (and optional Jack)                     	|
+	| 12 	| Speaker   	| - Speaker                                                   	|
+	| 13 	| Supply    	| - Power or clock supply widget used by other widgets.       	|
+	| 14 	| Pre       	| - Special PRE widget (exec before all others)               	|
+	| 15 	| Post      	| - Special POST widget (exec after all others)               	|
+
 		o Mixer
 		 - Mixes several analog signals into a single analog signal.
 		o Mux
