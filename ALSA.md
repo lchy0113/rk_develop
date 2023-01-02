@@ -215,7 +215,7 @@ struct snd_kcontrol {
 ## 2.3 Kcontrol 선언
 
  - ALSA driver 에서는 kcontrol 을 쉽게 선언하기 위해서 MACRO를 제공한다.  
-	 MACRO를 통하여 snd_kcontrol_new을 생성한다.
+ - MACRO를 통하여 snd_kcontrol_new을 생성한다.
 
 ```c
 #define AK7755_C1_CLOCK_SETTING2			0xC1
