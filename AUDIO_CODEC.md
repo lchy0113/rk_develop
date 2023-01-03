@@ -123,7 +123,7 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
 ```
 
 ### Implementing regmap
- regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap/ **에 구현되어있다.
+ regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap**에 구현되어있다.
  struct **regmap_config**와 struct **regmap** 이 중요함.
  
  - struct regmap_config
