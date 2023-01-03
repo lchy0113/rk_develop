@@ -83,7 +83,45 @@ ak7755_sound: ak7755-sound {
  
  에를 들어 이전에 i2c 장치의 레지스터를 조작하려면 i2c_transfer 인터페이스를 호출해야 합니다. 
  spi 장치 인터페이스를 조작하려면 spi_write / spi_read 와 같은 인터페이스를 호출해야 합니다.
+
+ kernel 3.8 버전으로 오면서 regmap을 사용하도록 되어 있다.
+
  regmap 구조체의 regmap_read / regmap_write 를 호출해 대신 사용가능합니다.
+ 아래 함수를 통해 addr_bits, data_bits 를 정해준다.
+
+ snd_soc_codec_set_cache_io의 3번째 매개변수를 통하여 다음과 같이 구분하여 regmap_init을 한다.
+ (SND_SOC_REGMAP을 처음부터 하였다면 그전에 이미 register set이 REGMAP으로 등록되어 있어야 한다.
+ ex. snd_soc_codec_set_cache_io(codec, 8, 16, SND_SOC_I2S))
+```c
+enum snd_soc_control_type {
+	SND_SOC_I2C = 1,
+	SND_SOC_SPI,
+	SND_SOC_REGMAP,
+};
+
+int snd_soc_codec_set_cache_io(struct snd_soc_codec *codec, 
+	int addr_bits, int data_bits, 
+	enum snd_soc_control_type contol)
+
+
+	codec->write = hw_write;
+	codec->read = hw_read;
+
+
+static int hw_write(struct snd_soc_codec *codec, unsigned int reg, unsigned int value)
+{
+	(...)
+	return regmap_write(codec->control_data, reg, value);
+}
+
+static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
+{
+	(...)
+	ret = snd_soc_cache_read(codec, reg, &val);
+}
+
+```
+
 
  **struct regmap_config** 구조는 초기화 중에 구성해야 하는 장치의 레지스터 구성 정보를 나타냅니다.
 ```c
@@ -180,7 +218,17 @@ struct regmap_config {
 ```
  * read write interface
 ```c
-int regmap_write(struct regmap *map, unsigned int reg, unsigned int val);
+
+int snd_soc_component_write(struct snd_soc_component *component, unsigned reg, unsigned int val)
+|	// return: 0 on success, a negative error code otherwise.
+|	// component->regmap
++->	int regmap_write(struct regmap *map, unsigned int reg, unsigned int val);
+	|	// drivers/base/regmap/regmap.c
+	+->	int _regmap_write(struct regmap *map, unsigned int reg, unsigned int val)
+		|
+
+
+
 int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
 
 ```
