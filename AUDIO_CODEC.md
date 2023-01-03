@@ -123,14 +123,14 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
 ```
 
 ### Implementing regmap
- regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap**에 구현되어있다.
+ regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap**에 구현되어있다.  
  struct **regmap_config**와 struct **regmap** 이 중요함.
  
- - struct regmap_config
- 	device와 통신하기 위해 regmap sub-system에서 사용하는 device별 configuration structure이다.
-	driver code에 의해 정의되며 device의 register와 관련된 모든 정보를 포함한다.
-	중요한 필드에 대한 설명은 다음과 같다.
-		
+ - struct regmap_config  
+ 	device와 통신하기 위해 regmap sub-system에서 사용하는 device별 configuration structure이다.  
+	driver code에 의해 정의되며 device의 register와 관련된 모든 정보를 포함한다.  
+	중요한 필드에 대한 설명은 다음과 같다.  
+		  
    * reg_bits : This is the number of bits in the registers of the device, e.g., in case of 1 byte registers it will be set to the value 8.
    * val_bits : This is the number of bits in the value that will be set in the device register.
    * writeable_reg : This is a user-defined function written in driver code which is called whenever a register is to be written. Whenever the driver calls the regmap sub-system to write to a register, this driver function is called; it will return ‘false’ if this register is not writeable and the write operation will return an error to the driver. This is a ‘per register’ write operation callback and is optional.
