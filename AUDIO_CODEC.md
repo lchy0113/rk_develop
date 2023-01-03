@@ -122,6 +122,30 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
 
 ```
 
+### Implementing regmap
+ regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap/**에 구현되어있다.
+ struct **regmap_config**와 struct **regmap** 이 중요함.
+ 
+ - struct regmap_config
+ 	device와 통신하기 위해 regmap sub-system에서 사용하는 device별 configuration structure이다.
+	driver code에 의해 정의되며 device의 register와 관련된 모든 정보를 포함한다.
+	중요한 필드에 대한 설명은 다음과 같다.
+		
+   * reg_bits : 
+   * val_bits : 
+   * writeable_reg : 
+   * wr_table : 
+   * readable_reg : 
+   * rd_table : 
+   * volatile_reg : 
+   * volatile_table : 
+   * lock : 
+   * unlock : 
+   * lock_arg : 
+   * fast_io : 
+   * max_register :
+   * read_flag_mask : 
+   * write_flag_mask :
 
  **struct regmap_config** 구조는 초기화 중에 구성해야 하는 장치의 레지스터 구성 정보를 나타냅니다.
 ```c
@@ -204,7 +228,41 @@ struct regmap_config {
  초기화가 완료된 후 regmap API를 호출하여 정상적으로 read  write 를 할수 있습니다.
  
  * interface 초기화
+ 	regmap API 는 **include/linux/regmap.h**에 정의되어 있음.
+	regmap 초기화 루틴에서 regmap_config 구성이 사용된다. 
+	그런 다음 regmap structure가 할당되고 configuration이 복사된다.
 
+	각 bus의 read/write function도 regmap structure에 복사됩니다.
+  	예를 들어 SPI bus의 경우 regmap read 및 write function pointer는 SPI read 및 write function을 가리킵니다.
+
+	regmap 초기화 후 드라이버는 다음 루틴을 사용하여 device와 통신할 수 있다.
+
+	- regmap_write 
+		+ regmap_write takes the lock.
+		+ check register length. 
+		 	(if it is less **max_register**, then only the write operation is performed; else -EIO(invalid I/O) is return)
+		+ **writeable_reg** callback 이 **regmap_config** 에 정의된 경우, callback function가 호출된다. 
+			(if that callback returns 'true', then further operations are done; if it returns 'false', then an error -EIO is returned.)
+		+ cache permitted 여부를 확인한다.
+			= permitted 되는 경우, hardware에 직접 write 하는 대신, register value을 cache에 저장하고 이 단계에서 작업을 마친다.
+			= permitted 되지 않는 경우, 다음 단계로 넘어간다.
+		+ hardware register에 value을 write하기 위해 hardware write routine이 호출된 경우, write_flag_mask를 첫번째 byte에 write한 후, value를 device에  write한다.
+		+ write 이 완료되면 lock을 해제 되고 함수 returen한다.
+
+	- regmap_read
+
+	- caching
+    	+ chching은 device에 직접 operations을 수행하지 않도록 한다. 
+		+ 대신 device와 driver간에 전송되는 값을 cache에 저장하고 참조하여 사용한다.
+		+ 초창기에는 flat arrays 를 사용했으나, 32-bit address 에 적합하지 않아 더 나은 cache type으로 변경되었다.
+  		  = rbtree stores blocks of contiguous registers in a red/black tree
+		  = Compressed stores blocks of compressed data
+		  Both rely on the existing kernel library:
+
+		  ```c
+		  enum regcache_type cache_type;
+		  ```
+	  
 ```c
 //i2c
 #define devm_regmap_init_i2c(i2c, config)        \
@@ -227,11 +285,10 @@ int snd_soc_component_write(struct snd_soc_component *component, unsigned reg, u
 	+->	int _regmap_write(struct regmap *map, unsigned int reg, unsigned int val)
 		|
 
-
-
 int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val);
-
 ```
+
+
 
  * 종료
 
