@@ -398,7 +398,7 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 
 | Addr 	| Name                                                                  	| Value 	| Func                                                                                                                                                             	|
 |------	|-----------------------------------------------------------------------	|-------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| C0h  	| clock setting1, analog input setting                                  	| 0x38  	| Slave, Main Clock(BICK), Analog Input Setting                                                                                                                    	|
+| C0h  	| clock setting1, analog input setting                                  	| 0x3D  	| Slave, Main Clock(BICK), Analog Input Setting                                                                                                                    	|
 | C1h  	| clock setting2, JX2 setting                                           	| 0x0E  	| JX2 is disabled, LRCK sampling frequency set by DFS[2:0] bits, BITFS mode(0) BICK(64fs), CLKO output clock select(XTI or BICk)                                   	|
 | C2h  	| serial data format, JX1, JX0 setting                                  	| 0x10  	| TDM interface(no), BICK Edge(falling), LRCK I/F Format(I2S), DSPDIN3&DSPDIN4 Input Source Select(no), JX1(no), JX)(no)                                           	|
 | C3h  	| delay ram, dsp input / output setting                                 	| 0x05  	| DSP DIN2 Input Format Select(MSB 24bit), DSP DOUT2 Output Format Select(MSB (24bit), DLRAM mode setting(5120words,3072words)                                     	|
@@ -413,11 +413,12 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 | CFh  	| Reset Settings Lineout and Digital MIC2 Rch Power Management          	| 0x00  	| CODEC Reset N(CODEC Reset)                                                                                                                                       	|
 
    - C1h_D0 (CKRESETN Clock Reset) : 0 인경우, Clock Reset 을 진행합니다. 1 인경우, Clock Reset 을 release 합니다.
-
    - CFh_D3 (CRESETN; CODEC Reset N) : CODEC 의미는 ADC, DAC입니다.
    - CFh_D2 (DSPRESETN; DSP Reset N) : CRESETN bit = "0"이고 DSPRESETN bit = "0" 인경우, system reset 상태가 됩니다.
    - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우, **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다. 다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.
 
+ - Note:
+ > Slave Mode 2 (CKM mode 3: BICK Input Clock) : CKM mode 3에서 필요한 system clock 은 BICK, LRCK이다. 이 모드에서 BICK는 XTI대신에 사용된다.  BICK 와 LRCK 는 동기화되어 제공되어야 함. BITFS[1:0] 비트로 LRCK에 대한 BICK clock을 설정. sampling rate 는 DFS[2:0] 베트로 설정. XTI pin을 open해 놓는다.
 
 ## Develop
 
@@ -543,3 +544,11 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
 ```
 
+
+## Memo
+
+ - regmap read 시, 0x24 ~ 0x7C 까지read됨. 
+ - tinymix command 
+ ```bash
+ tinymix 'DSP Firmware PRAM' 'basic' ; tinymix 'DSP Firmware CRAM' 'basic' ;  tinymix 'LIN MUX' 'IN1' ; tinymix 'DSPIN SDOUTAD' On ; tinymix 'SDOUT1 MUX' DSP ; tinymix 'SDOUT1 Enable Switch'  1 ; tinymix 'DAC MUX' 'DSP' ; tinymix 'LineOut Amp1' On ; tinymix 'DAC Mute' 0 ; tinymix 'Line Out Volume 1' 15 ; tinymix 'Line Out Volume 2' 15; tinymix 'Line Out Volume 3' 15
+ ```
