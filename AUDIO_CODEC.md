@@ -552,3 +552,67 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
  ```bash
  tinymix 'DSP Firmware PRAM' 'basic' ; tinymix 'DSP Firmware CRAM' 'basic' ;  tinymix 'LIN MUX' 'IN1' ; tinymix 'DSPIN SDOUTAD' On ; tinymix 'SDOUT1 MUX' DSP ; tinymix 'SDOUT1 Enable Switch'  1 ; tinymix 'DAC MUX' 'DSP' ; tinymix 'LineOut Amp1' On ; tinymix 'DAC Mute' 0 ; tinymix 'Line Out Volume 1' 15 ; tinymix 'Line Out Volume 2' 15; tinymix 'Line Out Volume 3' 15
  ```
+
+ - dsp inout mixer setting
+ [v] normal : IN1 -> SDOUT1, SDIN2 -> OUT1
+ [ ] echo line :   
+
+
+ - Data RAM, CRAM Setting
+ 	> Program RAM(PRAM), Coefficient RAM (CRAM)
+
+	* Format 
+	
+	**Write Operation during System Reset**
+
+	  + Program RAM (PRAM) Write (during system reset)
+	
+		| Field            	| Write data                                                       	|
+		|------------------	|------------------------------------------------------------------	|
+		| (1) COMMAND Code 	| 0xB8                                                             	|
+		| (2) ADDRESS1     	| 0 0 0 0 0 0 0                                                    	|
+		| (3) ADDRESS2     	| 0 0 0 0 0 0 0                                                    	|
+		| (4) DATA1        	| 0 0 0 0 D35 D34 D33 D32                                          	|
+		| (5) DATA2        	| D31 ~ D24                                                        	|
+		| (6) DATA3        	| D23 ~ D16                                                        	|
+		| (7) DATA4        	| D15 ~ D8                                                         	|
+		| (8) DATA5        	| D7 ~ D0                                                          	|
+		|                  	| Five bytes of data may be written continuously for each address. 	|
+
+	  + Coefficient RAM (CRAM) Write (during system reset)
+
+		| **Field**        	| **Write data**                                                  	|
+		|------------------	|-----------------------------------------------------------------	|
+		| (1) COMMAND Code 	| 0xB4                                                            	|
+		| (2) ADDRESS1     	| 0 0 0 0 A10 A9 A8                                               	|
+		| (3) ADDRESS2     	| A7 A6 A5 A4 A3 A2 A1 A0                                         	|
+		| (4) DATA1        	| D23 ~ D16                                                       	|
+		| (5) DATA2        	| D15 ~ D8                                                        	|
+		| (6) DATA3        	| D7 ~ D0                                                         	|
+		|                  	| Three bytes of data may be written continuosly for each address 	|
+
+	  + Offset REG (OFREG) Write (during sytem reset)
+	
+		| **Field**        	| **Write data**                                                  	|
+		|------------------	|-----------------------------------------------------------------	|
+		| (1) COMMAND Code 	| 0xB2                                                            	|
+		| (2) ADDRESS1     	| 0 0 0 0 0 0 0 0                                                 	|
+		| (3) ADDRESS2     	| 0 0 A5 A4 A3 A2 A1 A0                                           	|
+		| (4) DATA1        	| 0 0 0 0 0 0 0 0                                                 	|
+		| (5) DATA2        	| 0 0 0 D12 D11 D10 D9 D8                                         	|
+		| (6) DATA3        	| D7 ~ D0                                                         	|
+		|                  	| Three bytes of data may be written continuosly for each address 	|
+		
+	  + Accelerator Coefficient RAM (ACCRAM) Write (during system reset)
+
+		| **Field**        	| **Write data**                                                  	|
+		|------------------	|-----------------------------------------------------------------	|
+		| (1) COMMAND Code 	| 0xBB                                                            	|
+		| (2) ADDRESS1     	| 0 0 0 0 0 A10 A9 A8                                             	|
+		| (3) ADDRESS2     	| A7 A6 A5 A4 A3 A2 A1 A0                                         	|
+		| (4) DATA1        	| D19 ~ D12                                                       	|
+		| (5) DATA2        	| D11 ~ D4                                                        	|
+		| (6) DATA3        	| D3 ~ D0 0 0 0 0                                                 	|
+		|                  	| Three bytes of data may be written continuosly for each address 	|
+
+
