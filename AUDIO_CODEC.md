@@ -616,3 +616,9 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 		|                  	| Three bytes of data may be written continuosly for each address 	|
 
 
+
+ - Digital Mixer
+    ADC output (SDOUTAD) ADC2 output (SDOUTAD2), DSP-DOUT4 의 데이터는 single serial data 으로 mixer circuit에 의해 mixed 될 수 있다. 
+	SELMIX[2:0] bit를 통해 제어 됨.
+
+	![](./images/AUDIO_CODEC_08.png);
