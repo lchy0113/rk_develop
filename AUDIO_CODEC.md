@@ -554,8 +554,9 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
  ```
 
  - dsp inout mixer setting  
- [v] normal : IN1 -> SDOUT1, SDIN2 -> OUT1  
- [ ] echo line :   
+
+  [v] normal : IN1 -> SDOUT1, SDIN2 -> OUT1  
+  [ ] echo line :   
 
 
  - Data RAM, CRAM Setting
