@@ -829,3 +829,17 @@ static int __init tp2802_module_init(void)
 
 ## Note
 
+
+### video format
+
+ 해상도가 1080p, 720p, NTSC, PAL 이렇게 있다고 가정하자. 
+ NTSC, PAL은 기존 표준(SD급) 이라 상관이 없는데, Analog HD로 넘어가면서 field에 video format 이 3 종이 있다.
+ CVI는 거의 사용하지 않으며, TVI, AHD 로 설명하면 
+  - TVI는 Techpoint에서 만든 Analog HD 방식,
+  - AHD는 Nextchip이 만든 방식,
+ 따라서 해상도가 동일한 상황에 카메라가 TVI이고, TP2860 설정이 AHD이면 흑백으로 출력된다.
+ 반대 상황도 마찬가지..
+
+ 우선 TVI 카메라 확인 방법은 카메라의 비디오 출력을 스코프로 보면 1H(1Line) 파형에서 burst 주파수가 대략 40~45MHz 정도이면 TVI 1080Op이고,
+ 20~25MHz 정도이면 TVI 720p 이다. 
+
