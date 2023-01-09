@@ -543,6 +543,26 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 }
 
 ```
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
+
+## Audio path control by micom
+> micom 에 의해 제어되는  audio path 에 대해 정리.
+
+ - ak7755모듈의 입/출력 인터페이스로 (**IN3** <- **ECHO_LINE_IN**, **OUT3** -> **ECHO_LINE_OUT**) 통신되는 audio path가 정의됨.
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
 
 
 ## Memo
