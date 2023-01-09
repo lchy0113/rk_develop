@@ -553,8 +553,8 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
  tinymix 'DSP Firmware PRAM' 'basic' ; tinymix 'DSP Firmware CRAM' 'basic' ;  tinymix 'LIN MUX' 'IN1' ; tinymix 'DSPIN SDOUTAD' On ; tinymix 'SDOUT1 MUX' DSP ; tinymix 'SDOUT1 Enable Switch'  1 ; tinymix 'DAC MUX' 'DSP' ; tinymix 'LineOut Amp1' On ; tinymix 'DAC Mute' 0 ; tinymix 'Line Out Volume 1' 15 ; tinymix 'Line Out Volume 2' 15; tinymix 'Line Out Volume 3' 15
  ```
 
- - dsp inout mixer setting
- [v] normal : IN1 -> SDOUT1, SDIN2 -> OUT1
+ - dsp inout mixer setting  
+ [v] normal : IN1 -> SDOUT1, SDIN2 -> OUT1  
  [ ] echo line :   
 
 
