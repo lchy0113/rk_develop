@@ -567,6 +567,29 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
 ## Memo
 
+ - audio codec 드라이버 개발 업무 순서(절차).
+  1. 디바이스 드라이버 소스를 제공하는지 부터 확인(중요)
+  2. datasheet중 spec관련 내용과 pin map 부분 정독.  나머지는 필요할때 마다 꺼내보면 됨.
+  3. main clock, 전원, reset pin 상태를 확인. 오디오 코덱은 이 세가지만 잘 인가되고 있으면 별 문제 없이 동작됨.
+  4. data sheet에서 analog loop-back 모드를 확인하여 analog loop-back 모드로 설정하고 loop-back 기능이 잘 동작되면 코덱 자체(HW)는 잘 구성되어 있다고 판단됨. 
+
+  그런 다음 아래 명령을 사용하여 record, play를 진행해본다.
+  ```bash
+	audio device file name : /dev/dsp
+	record : cat /dev/dsp > raw.wav
+	play : cat raw.wav > /dev/dsp
+  ```
+  여기 까지 했을때 record, play가 잘되면 디바이스 드라이버 단까지는 완료된 것으로 판단해도 됨.
+
+  디바이스 드라이버 기능 동작까지는 잘 확인했으니, 한 이삼일동안 데이터 시트 보면서 오디오 코덱의 여러 기능들을 테스트 해 보는 시간을 가져야 한다.
+  시간을 버리는 것처럼 보일 수 있지만 이번에 이런걸 해보아야 Application 개발자에게 전달할 때 Application을 쉽게 짤 수 있도록 여러 준비를 할 수 있는 토대를 마련할 수 있다.
+
+  **꼭 기억. 플랫폼 개발자는 자기 개발건만 생각하면 안된다. H/W, S/W 엔지니어가 쉽게 개발을 할 수 있도록 항상 신경써 주면서 개발해야 한다.**
+
+  이제 디바이스 드라이버단에 대한 개발은 완료되었으니 application 개발자를 위해 library를 만들어 주자.
+  요즘은 디바이스 드라이버 단독으로 동작하는 경우는 거의 없고, ALSA나 OSS같은 프레임워크에 연동되도록 디바이스 드라이버를 작성하고 잇다.
+  하지만  그렇다 하더라도 '네가 알아서 ALSA, OSS 프레임워크에 맞게 Application을 작성해라' 라고 하는 것은 능력 없는 플랫폼 개발자나 하는 행동이고 뛰어난 플랫폼 개발자는 Application 개발자가 API만 호출해서 쓸수 있도록 준비해 줘야 합니다.
+
  - regmap read 시, 0x24 ~ 0x7C 까지read됨. 
  - tinymix command 
  ```bash
