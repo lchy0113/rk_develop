@@ -599,6 +599,7 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
  - dsp inout mixer setting  
 
    - [x] normal : IN1 -> SDOUT1, SDIN2 -> OUT1  
+	   basic-basic
    - [ ] echo line :   
 
 
@@ -662,7 +663,12 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
 
 ```
-/vendor/etc/firmware/
+
+    * locate firmware file : 
+	 /vendor/etc/firmware/
+
+
+	* test
 ```
 
  - Digital Mixer
