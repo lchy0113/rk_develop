@@ -2,14 +2,14 @@ I2S interface
 =====
 
 
-1. I2S
+# 1. I2S
 ----- 
 
  - I2S : Inter-IC Sound, Intergrated Interchip Sound
 
 	 ![](./images/I2S_01.png)
 
-2. network 구성
+# 2. network 구성
 ----- 
 
  - I2S는 버스 구조를 갖기 때문에 여러 대의 장치와 연결이 될 수 있다. 
