@@ -127,3 +127,5 @@ private static final AudioFormat AUDIO_FORMAT_STEREO =
    * MP3는 I2S를 통해서 직접 전송이 될 수 없다. I2S는 PCM데이터, 즉 압축되지 않은 오디오 데이터만을 전송한다.
      따라서 MP3는 CPU에 의해서 메모리에서 PCM데이터 형태로 변환이 된 후에 I2S를 통해서 스피커로 전송되게 된다.
 
+----
+ref : https://m.blog.naver.com/prnbada7/221194850771
