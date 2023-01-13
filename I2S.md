@@ -17,18 +17,18 @@ I2S interface
 	![](./images/I2S_02.png)
 
  - 3개의 라인으로 구성된다.
-   * clock 라인 : SCK(Serial Clock), 또는 BCLK(Bit Clock)으로 표시.
+   * clock 라인 : SCK(Serial Clock), 또는 BCLK(Bit Clock)으로 표시. (ex. I2S_BCLK)
      동기식 통신에서 사용되는 클럭.
-   * L/R 채널 라인 : 오디오의 왼쪽 채널과 오른쪽 채널을 구분할 수 있는 좌우 채널 선택 클럭 라인으로 LRCK(Left Right Clock), 또는 FS(Frame select), WS(Word Select)라고 표시.
+   * L/R 채널 라인 : 오디오의 왼쪽 채널과 오른쪽 채널을 구분할 수 있는 좌우 채널 선택 클럭 라인으로 LRCK(Left Right Clock), 또는 FS(Frame select), WS(Word Select)라고 표시. (ex. I2S_LRCK)
      좌우 채널은 일정한 주기로 반복이 되기 때문에 클럭으로 표기하기도 한다.
-   * 시리얼 데이터 라인 : SD(Sound Data, Serial Data), SDATA, SDINT, SDOUT으로 표시.
+   * 시리얼 데이터 라인 : SD(Sound Data, Serial Data), SDATA, SDINT, SDOUT으로 표시. (ex. I2S_DAI, I2S_DAO)
    
 
    추가로 I2S 규격에는 포함되어 있지 않지만, 실제 제품에서 흔히 사용되는 네번째 라인이 있다.
-   * 마스터 클럭 : 좌우 채널 선택 클럭(LRCK)의 256 배에 해당하는 클럭을 사용한다. 
-     오디오 코덱은 이 신호에 동기화 하여 작동된다. 별도로 외부에 클럭 발생 장치를 사용하는 이유는 오디오 라는 특수성 때문이다.
-	 오디오 데이터는 끊김이 없이 일정한 속도로 흘러가야 하며, 그렇지 못하면 스피커를 통하여 재생되는 중 소리가 끊기거나 튀는 소리 등 비정상적인 소리가 발생한다. 
-	 이러한 이유로 시스템 내부의 모든 부품이 일사 분란하게 동작되어야 한다.
+   * 마스터 클럭 : 좌우 채널 선택 클럭(LRCK)의 256 배에 해당하는 클럭을 사용한다.   
+     오디오 코덱은 이 신호에 동기화 하여 작동된다. 별도로 외부에 클럭 발생 장치를 사용하는 이유는 오디오 라는 특수성 때문이다.  
+	 오디오 데이터는 끊김이 없이 일정한 속도로 흘러가야 하며, 그렇지 못하면 스피커를 통하여 재생되는 중 소리가 끊기거나 튀는 소리 등 비정상적인 소리가 발생한다.   
+	 이러한 이유로 시스템 내부의 모든 부품이 일사 분란하게 동작되어야 한다.  
 
 # 3. 데이터 전송 속도
  - 일반적으로 데이터를 전송하는 UART, I2C, SPI 와 달리 오디오 데이터를 전송하는 I2S는 전송하는 데이터에 따라서 데이터의 전송 속도가 정해진다.  
@@ -136,6 +136,9 @@ private static final AudioFormat AUDIO_FORMAT_STEREO =
  - MP3와 I2S 관계  
    * MP3는 I2S를 통해서 직접 전송이 될 수 없다. I2S는 PCM데이터, 즉 압축되지 않은 오디오 데이터만을 전송한다.  
      따라서 MP3는 CPU에 의해서 메모리에서 PCM데이터 형태로 변환이 된 후에 I2S를 통해서 스피커로 전송되게 된다.  
+
+ - test : rate(16000), format(PCM_FORMAT_S16_LE)
+	 BCLK(1.024MHz), LRCK(16KHz)
   
 ----
 ref : https://m.blog.naver.com/prnbada7/221194850771
