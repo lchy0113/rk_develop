@@ -365,7 +365,6 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 	 route_card_init
 	 ```
    - config_list.h : default_config.h cx2072_config.h
-   -
 
 <br />
 <br />
