@@ -116,6 +116,73 @@ AUDIO ANDROID
 
  ```
 
+ top-level structure 는 각 audio HAL hardware module에 해당하는 module 이 포함되어 있으며, 
+ 각 module은 mix port, device port, and route 가 포함되어 있습니다. 
+
+ - mixPorts : Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다. 
+ - devicePorts : Device ports는 연결할 수 있는 type 을 기술한다.
+ - reoutes : Routes는 device에서 device로 또는 stream 에서 device 의 route 를 기술한다.
+
+ Volume table은 UI 인덱스에서 volume(dB)로 변환하는데 사용되는 curve 을 정의하는 간단한 리스트 이다.
+
+ volume table sample
+ ```
+ <?xml version="1.0" encoding="UTF-8"?>
+<volumes>
+    <reference name="FULL_SCALE_VOLUME_CURVE">
+        <point>0,0</point>
+        <point>100,0</point>
+    </reference>
+    <reference name="SILENT_VOLUME_CURVE">
+        <point>0,-9600</point>
+        <point>100,-9600</point>
+    </reference>
+    <reference name="DEFAULT_VOLUME_CURVE">
+        <point>1,-4950</point>
+        <point>33,-3350</point>
+        <point>66,-1700</point>
+        <point>100,0</point>
+    </reference>
+</volumes>
+ ```
+
+ ### File inclusions
+
+ XML include(XINclude) method는 다른 XML 파일에 있는 audio policy configuration information을 include할 수 있다. 
+ include 된 XML파일은 위에 설명된 구조를 따라야 하며 아래 제한 사항이 적용 된다.
+
+ - File에는 최상위 요소만 포함될 수 있다.
+ - File은 XInclude 요소를 포함할 수 없다.
+
+ ### Audio policy code organization
+
+ AudioPolicyManager.cpp는 유지 관리 및 configure을 쉽게 하기 위해 여러 module로 분할한다.
+ frameworks/av/services/audiopolicy의 구성에는 다음 모듈이 포함된다.
+
+ - /managerdefault
+ - /common
+ - /engine
+ - /engineconfigurable
+ - /enginedefault
+ - /service
+
+ ### Configuration using Parameter Framework
+
+ Audio policy code는 configuration files에 의해 정의된 audio policy 를 지원하면서 쉽게 이해하고 유지 할 수 있도록 구성된다. 
+ organization and audio policy 설계는 Intel's Parameter Framework 베이스로 한다.
+
+
+ ### Audio policy routing APIs
+
+ Android 6.0 버전에서는 Audio patch/audio port infra 상위에 있는 public Enumeration 과 Selection API를 통해, App 개발자가 연결된 audio records 또는 tracks에 대한 특정 device output or input에 대한 설정을 나타냈다. 
+ 
+ Android 7.0에서 Enumeration and Selection API는 CTS 테스트를 통해 확인되었으며 네이티브 C/C++(OpenSL ES) 오디오 스트림에 대한 라우팅을 포함하도록 확장되었습니다.
+ 네이티브 스트림의 라우팅은 AudioTrack 및 AudioRecord 클래스에 고유한 명시적 라우팅 메서드를 대체, 결합 및 폐기하는 AudioRouting 인터페이스를 추가하여 Java에서 계속 수행됩니다.
+ Enumeration and Selection API에 대한 자세한 내용은 Android 구성 인터페이스 및 OpenSLES_AndroidConfiguration.h를 참조하세요.
+ 오디오 라우팅에 대한 자세한 내용은 AudioRouting을 참조하십시오.
+
+
+
 # reference 
 
  - AOSP : https://source.android.com/docs/core/audio
