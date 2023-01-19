@@ -2,6 +2,9 @@ AUDIO ANDROID
 =====
 > Android의 Audio에 대한 문서.
 
+[![Status](https://travis-ci.org/tinyalsa/tinyalsa.svg?branch=master)](https://travis-ci.org/tinyalsa/tinyalsa)
+
+
 
  ![](./images/AUDIO_ANDROID_01.png)
 
@@ -183,6 +186,111 @@ AUDIO ANDROID
 
 
 
+# Develop 
+
+
+```c
+struct audio_device {
+    struct audio_hw_device hw_device;
+
+    pthread_mutex_t lock; /* see note below on mutex acquisition order */
+    audio_devices_t out_device; /* "or" of stream_out.device for all active output streams */
+    audio_devices_t in_device;
+    bool mic_mute;
+    struct audio_route *ar;
+    audio_source_t input_source;
+    audio_channel_mask_t in_channel_mask;
+
+    struct stream_out *outputs[OUTPUT_TOTAL];
+    pthread_mutex_t lock_outputs; /* see note below on mutex acquisition order */
+    unsigned int mode;
+    bool   screenOff;
+#ifdef AUDIO_3A
+    rk_process_api* voice_api;
+#endif
+
+    /*
+     * hh@rock-chips.com
+     * this is for HDMI/SPDIF bitstream
+     * when HDMI/SPDIF bistream AC3/EAC3/DTS/TRUEHD/DTS-HD, some key tone or other pcm
+     * datas may come(play a Ac3 audio and seek the file to play). It is not allow to open sound card
+     * as pcm format and not allow to write pcm datas to HDMI/SPDIF sound cards when open it
+     * with config.flag = 1.
+     */
+    int*  owner[2];
+
+    struct dev_info dev_out[SND_OUT_SOUND_CARD_MAX];
+    struct dev_info dev_in[SND_IN_SOUND_CARD_MAX];
+};
+```
+
+
+```c
+static int adev_open(const hw_module_t* module, const char* name,
+                     hw_device_t** device)
+{
+    struct audio_device *adev;
+    int ret;
+
+    ALOGD(AUDIO_HAL_VERSION);
+
+    if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
+        return -EINVAL;
+
+    adev = calloc(1, sizeof(struct audio_device));
+    if (!adev)
+        return -ENOMEM;
+
+    adev->hw_device.common.tag = HARDWARE_DEVICE_TAG;
+    adev->hw_device.common.version = AUDIO_DEVICE_API_VERSION_2_0;
+    adev->hw_device.common.module = (struct hw_module_t *) module;
+    adev->hw_device.common.close = adev_close;
+
+    adev->hw_device.init_check = adev_init_check;
+    adev->hw_device.set_voice_volume = adev_set_voice_volume;
+    adev->hw_device.set_master_volume = adev_set_master_volume;
+    adev->hw_device.set_mode = adev_set_mode;
+    adev->hw_device.set_mic_mute = adev_set_mic_mute;
+    adev->hw_device.get_mic_mute = adev_get_mic_mute;
+    adev->hw_device.set_parameters = adev_set_parameters;
+    adev->hw_device.get_parameters = adev_get_parameters;
+    adev->hw_device.get_input_buffer_size = adev_get_input_buffer_size;
+    adev->hw_device.open_output_stream = adev_open_output_stream;
+    adev->hw_device.close_output_stream = adev_close_output_stream;
+    adev->hw_device.open_input_stream = adev_open_input_stream;
+    adev->hw_device.close_input_stream = adev_close_input_stream;
+    adev->hw_device.dump = adev_dump;
+    adev->hw_device.get_microphones = adev_get_microphones;
+    //adev->ar = audio_route_init(MIXER_CARD, NULL);
+    //route_init();
+    /* adev->cur_route_id initial value is 0 and such that first device
+     * selection is always applied by select_devices() */
+    *device = &adev->hw_device.common;
+
+    adev_open_init(adev);
+    return 0;
+}
+```
+
 # reference 
 
+ ## site 
  - AOSP : https://source.android.com/docs/core/audio
+
+ ## code
+ 
+ - rk817 mixer info
+```
+rk3568_evb:/ # tinymix
+Mixer name: 'rockchip,rk809-codec'
+Number of controls: 2
+ctl     type    num     name                                     value
+
+0       ENUM    1       Playback Path                            OFF
+1       ENUM    1       Capture MIC Path                         MIC OFF
+rk3568_evb:/ # tinymix  'Playback Path'
+Playback Path: >OFF RCV SPK HP HP_NO_MIC BT SPK_HP RING_SPK RING_HP RING_HP_NO_MIC RING_SPK_HP
+rk3568_evb:/ #
+rk3568_evb:/ # tinymix  'Capture MIC Path'
+Capture MIC Path: >MIC OFF Main Mic Hands Free Mic BT Sco Mic
+```
