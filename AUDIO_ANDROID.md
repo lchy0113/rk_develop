@@ -271,7 +271,33 @@ hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk
 PRODUCT_COPY_FILES += \
     hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
 ```
+
+## audio_route 분석
+ audio_route.c 는 /system/media/audio_route 디렉토리에 있는 android에서 제공하는 audio path library(libaudioroute.so) 이다.
+ 1. /system/etc/mixer_paths.xml 구성 파일을 파싱한다.
+ 2. audio ctl access 방법을 capsulate 하여, audio_hw(hal) 호출을 편리하게 한다.
+
+ 안드로이드 시스템에서는 mixer_paths.xml에 정의된 ctl nodes 를 사용하여 코덱을 제어한다.
 ```bash
+ROCKCHIP_ANDROID12$ rg mixer_paths
+system/media/audio_route/audio_route.c
+32:#define MIXER_XML_PATH "/system/etc/mixer_paths.xml"
+
+hardware/qcom/audio/hal/msm8916/platform.c
+38:#define MIXER_XML_PATH "mixer_paths.xml"
+
+hardware/qcom/audio/hal/msm8974/platform.c
+41:#define MIXER_XML_DEFAULT_PATH "mixer_paths.xml"
+1762:     * <iii> mixer_paths.xml
+
+hardware/qcom/audio/hal/msm8960/platform.c
+41:#define MIXER_XML_PATH "/system/etc/mixer_paths.xml"
+
+hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk
+2:    hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
+
+hardware/rockchip/audio/tinyalsa_hal/cscope.out
+45998:/mixer_paths.xml
 
 ```
 
