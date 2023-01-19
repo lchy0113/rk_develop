@@ -2,7 +2,6 @@ AUDIO ANDROID
 =====
 > Android의 Audio에 대한 문서.
 
-[![Status](https://travis-ci.org/tinyalsa/tinyalsa.svg?branch=master)](https://travis-ci.org/tinyalsa/tinyalsa)
 
 
 
