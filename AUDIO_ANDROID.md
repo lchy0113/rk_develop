@@ -187,6 +187,94 @@ AUDIO ANDROID
 
 # Develop 
 
+device/kdiwin/test/rk3568_poc/rk3568_poc.mk
+device/kdiwin/nova/rk3568/device.mk
+device/rockchip/common/BoardConfig.mk
+```
+TARGET_BOARD_HARDWARE ?= rk30board
+```
+device/rockchip/common/device.mk
+```
+	PRODUCT_COPY_FILES += \
+		$(LOCAL_PATH)/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+		$(LOCAL_PATH)/audio_policy_volumes_drc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes_drc.xml \
+		frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+		frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration_7_0.xml \
+		frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+		frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
+		frameworks/av/media/libeffects/data/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+
+	(...)
+
+	$(call inherit-product-if-exists, hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk)
+
+	(...)
+
+	# audio lib
+	PRODUCT_PACKAGES += \
+		audio_policy.$(TARGET_BOARD_HARDWARE) \
+		audio.primary.$(TARGET_BOARD_HARDWARE) \
+		audio.alsa_usb.$(TARGET_BOARD_HARDWARE) \
+		audio.a2dp.default\
+		audio.r_submix.default\
+		libaudioroute\
+		audio.usb.default\
+		libanr
+
+	PRODUCT_PACKAGES += \
+		android.hardware.audio@2.0-service \
+		android.hardware.audio@7.0-impl \
+		android.hardware.audio.effect@7.0-impl
+
+	(...)
+		
+	# audio lib
+	PRODUCT_PACKAGES += \
+		libasound \
+		alsa.default \
+		acoustics.default \
+		libtinyalsa \
+		tinymix \
+		tinyplay \
+		tinycap \
+		tinypcminfo
+
+	PRODUCT_PACKAGES += \
+		alsa.audio.primary.$(TARGET_BOARD_HARDWARE)\
+		alsa.audio_policy.$(TARGET_BOARD_HARDWARE)
+
+	(...)
+
+	USE_XML_AUDIO_POLICY_CONF := 1
+
+	(...)
+
+	# add AudioSetting
+	PRODUCT_PACKAGES += \
+		rockchip.hardware.rkaudiosetting@1.0-service \
+		rockchip.hardware.rkaudiosetting@1.0-impl \
+		rockchip.hardware.rkaudiosetting@1.0
+
+	PRODUCT_COPY_FILES += \
+		$(LOCAL_PATH)/rt_audio_config.xml:/system/etc/rt_audio_config.xml
+
+```
+device/rockchip/common/BoardConfig.mk
+```
+	(...)
+	# Audio
+	BOARD_USES_GENERIC_AUDIO ?= true
+
+```
+hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk
+```
+PRODUCT_COPY_FILES += \
+    hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
+```
+```bash
+
+```
+
 
 ```c
 struct audio_device {
