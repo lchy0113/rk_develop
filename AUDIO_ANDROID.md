@@ -184,8 +184,29 @@ AUDIO ANDROID
  오디오 라우팅에 대한 자세한 내용은 AudioRouting을 참조하십시오.
 
 
+# Audio on Android
 
-# Develop 
+## Mixer configuration
+ > Android Audio HAL이 ALSA mixer 를 configuration하는 방법에 대해 설명.
+ Android 기기에는 headphone, speaker, mic 와 같은 다양한 mixer configuration이 있다.
+ audio route configuration은 mixer_paths.xml에 정의되어 있다. 
+
+ Android audio HAL은 tinyalsa 및 audio_route를 사용한다.
+
+ tinyalsa는 linux 커널에서 ALSA와 interface하는 standalone library이다. 
+ audio HAL은 XML에서 audio path를 load하고, tinyalsa를 통해 mixer를 제어하는 audio_route library를 호출한다. 
+
+## Format of mixer_paths.xml
+ - ALSA 제어는 *ctl* elements로 정의한다.
+ - Audio route는 *path* elements로 정의한다.
+   *path* element에는 *ctl* elements와 other *path* elements 를 포함한다.
+ - path *name* attribute 는 audio route를 선택하는데 사용된다.
+
+  경로 요소에는 ctl 요소와 기타 경로 요소의 컬렉션이 포함됩니다.
+
+
+
+# Analyse
 
 device/kdiwin/test/rk3568_poc/rk3568_poc.mk
 device/kdiwin/nova/rk3568/device.mk
@@ -272,6 +293,25 @@ PRODUCT_COPY_FILES += \
     hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
 ```
 
+
+## AudioFlinger -> HAL
+
+ HAL layer initialization is done during AF initialization.
+ When AF is initialized, use the DeviceFactoryHalInterface static method to create a Hal factory object
+
+ [->AudioFlinger.cpp]
+```cpp
+AudioFlinger::AudioFlinger()	{
+	(...)
+    mDevicesFactoryHal = DevicesFactoryHalInterface::create();
+	(...)
+}
+```
+ [->DeviceFactoryHalInterface.cpp]
+```cpp
+
+```
+
 ## audio_route 분석
  audio_route.c 는 /system/media/audio_route 디렉토리에 있는 android에서 제공하는 audio path library(libaudioroute.so) 이다.
  1. /system/etc/mixer_paths.xml 구성 파일을 파싱한다.
@@ -302,6 +342,7 @@ hardware/rockchip/audio/tinyalsa_hal/cscope.out
 ```
 
 
+### temp
 ```c
 struct audio_device {
     struct audio_hw_device hw_device;
