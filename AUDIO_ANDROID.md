@@ -228,7 +228,7 @@ class DeviceHalInterface : public RefBase
 };
 ```
 
- [->AudioHwDevice.h]
+ [-> *AudioHwDevice.h* ]
 ```cpp
 class AudioHwDevice {
 	(...)
