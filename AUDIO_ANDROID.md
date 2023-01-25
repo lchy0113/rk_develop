@@ -210,7 +210,7 @@ AUDIO ANDROID
 
 ## 1. Analysis of important interface files
   
-HAL 인터페이스 파일을 통하여 HAL Layer  분석.   
+> HAL 인터페이스 파일을 통하여 HAL Layer  분석.   
   
 *DeviceHalInterface.h* (frameworks/av/media/libaudiohal/include/media/audiohal/DeviceHalInterface.h)  
 *AudioHwDevice.h* (frameworks/av/services/audioflinger/AudioHwDevice.h)  
