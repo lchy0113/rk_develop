@@ -219,17 +219,49 @@ DeviceHalInterface.h는 HAL layer를 연결하는 Interface 이고,
 AudioHwDevice.h 는 hw Dev의 packaging 입니다.  
     
  ✅ 이 두 인터페이스 파일에서 관련 메서드의 기능을 분석.    
-   
-[->DeviceHalInterface.h]
+     
+ [->DeviceHalInterface.h]  
 ```cpp
-namespace android {
-
-class StreamInHalInterface;
-class StreamOutHalInterface;
-
 class DeviceHalInterface : public RefBase
 {
+	(...)
+};
 ```
+
+ [->AudioHwDevice.h]
+```cpp
+class AudioHwDevice {
+	(...)
+};
+```
+
+
+## 2. HAL Initialization
+
+ AudioFlinger -> HAL
+
+ HAL layer 초기화는 AF 초기화 진행 중에 수행됩니다.
+
+ AF가 초기화되면 *DevicesFactoryHalInterface* static method를 사용하여 HAL factory object를 생성합니다.
+
+ [->AudioFlinger.cpp]
+```cpp
+AudioFlinger::AudioFlinger()	{
+	(...)
+    mDevicesFactoryHal = DevicesFactoryHalInterface::create();
+	(...)
+}
+```
+
+
+ [->DeviceFactoryHalInterface.cpp]
+```cpp
+
+```
+
+
+
+
 
 
 
@@ -324,23 +356,6 @@ PRODUCT_COPY_FILES += \
 ```
 
 
-## AudioFlinger -> HAL
-
- HAL layer initialization is done during AF initialization.
- When AF is initialized, use the DeviceFactoryHalInterface static method to create a Hal factory object
-
- [->AudioFlinger.cpp]
-```cpp
-AudioFlinger::AudioFlinger()	{
-	(...)
-    mDevicesFactoryHal = DevicesFactoryHalInterface::create();
-	(...)
-}
-```
- [->DeviceFactoryHalInterface.cpp]
-```cpp
-
-```
 
 ## audio_route 분석
  audio_route.c 는 /system/media/audio_route 디렉토리에 있는 android에서 제공하는 audio path library(libaudioroute.so) 이다.
