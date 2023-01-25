@@ -217,9 +217,9 @@ AUDIO ANDROID
   
 DeviceHalInterface.h는 HAL layer를 연결하는 Interface 이고,   
 AudioHwDevice.h 는 hw Dev의 packaging 입니다.  
-  
-✅ 이 두 인터페이스 파일에서 관련 메서드의 기능을 분석.  
-  
+    
+ ✅ 이 두 인터페이스 파일에서 관련 메서드의 기능을 분석.    
+   
 [->DeviceHalInterface.h]
 ```cpp
 namespace android {
