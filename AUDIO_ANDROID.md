@@ -220,12 +220,132 @@ AudioHwDevice.h 는 hw Dev의 packaging 입니다.
     
  ✅ 이 두 인터페이스 파일에서 관련 메서드의 기능을 분석.    
      
- [->DeviceHalInterface.h]  
+
+
+ [-> *frameworks/av/media/libaudiohal/include/media/audiohal/DeviceHalInterface.h* ]  
 ```cpp
+namespace android {
+//// Input stream HAL 인터페이스
+class StreamInHalInterface;
+//// Output stream HAL 인터페이스
+class StreamOutHalInterface;
+//// Device operation 인터페이스
 class DeviceHalInterface : public RefBase
 {
-	(...)
+  public:
+    // Sets the value of 'devices' to a bitmask of 1 or more values of audio_devices_t.
+    virtual status_t getSupportedDevices(uint32_t *devices) = 0;
+
+    // Check to see if the audio hardware interface has been initialized.
+    virtual status_t initCheck() = 0;
+
+    //// Set call volume, range 0-1.0 
+	// Set the audio volume of a voice call. Range is between 0.0 and 1.0.
+    virtual status_t setVoiceVolume(float volume) = 0;
+
+	//// Set the volume of all audio stream types except call volume, range 0-1.0, 
+	//// if the hardware does not support this function, the function is completed by the mixer of the software layer
+    // Set the audio volume for all audio activities other than voice call.
+    virtual status_t setMasterVolume(float volume) = 0;
+
+    // Get the current master volume value for the HAL.
+    virtual status_t getMasterVolume(float *volume) = 0;
+
+	//// Setting mode, NORMAL state is normal mode, RINGTONE means incoming call mode
+	//// (the sound heard at this time is the ringtone of the incoming call) 
+	//// IN_CALL means call mode (the sound heard at this time is the voice during the phone call)
+    // Called when the audio mode changes.
+    virtual status_t setMode(audio_mode_t mode) = 0;
+
+	//// Microphone switch control
+    // Muting control.
+    virtual status_t setMicMute(bool state) = 0;
+    virtual status_t getMicMute(bool *state) = 0;
+    virtual status_t setMasterMute(bool state) = 0;
+    virtual status_t getMasterMute(bool *state) = 0;
+
+	//// Set the global audio parameters in the form of key/value organization
+    // Set global audio parameters.
+    virtual status_t setParameters(const String8& kvPairs) = 0;
+
+    // Get global audio parameters.
+    virtual status_t getParameters(const String8& keys, String8 *values) = 0;
+
+    // Returns audio input buffer size according to parameters passed.
+    virtual status_t getInputBufferSize(const struct audio_config *config,
+            size_t *size) = 0;
+
+	//// Create an audio output stream object (equivalent to opening an audio output device) AF writes data through write, 
+	//// and the pointer type will return the type, number of channels, and sampling rate supported by the audio output stream
+    // Creates and opens the audio hardware output stream. The stream is closed
+    // by releasing all references to the returned object.
+    virtual status_t openOutputStream(
+            audio_io_handle_t handle,
+            audio_devices_t deviceType,
+            audio_output_flags_t flags,
+            struct audio_config *config,
+            const char *address,
+            sp<StreamOutHalInterface> *outStream) = 0;
+
+	//// Create an audio input stream object (equivalent to opening an audio input device) AF can read data
+    // Creates and opens the audio hardware input stream. The stream is closed
+    // by releasing all references to the returned object.
+    virtual status_t openInputStream(
+            audio_io_handle_t handle,
+            audio_devices_t devices,
+            struct audio_config *config,
+            audio_input_flags_t flags,
+            const char *address,
+            audio_source_t source,
+            audio_devices_t outputDevice,
+            const char *outputDeviceAddress,
+            sp<StreamInHalInterface> *inStream) = 0;
+
+    // Returns whether createAudioPatch and releaseAudioPatch operations are supported.
+    virtual status_t supportsAudioPatches(bool *supportsPatches) = 0;
+
+	//// The AudioPatch concept is used to represent the end-to-end connecton relationship in audio, 
+	//// such as connecting source and sink, which can be a real audio input device, such as MIC, 
+	//// or the audio stream after mixing in the bottom layer; here Sink represents the output device, such as speakers, headphones, etc.
+    // Creates an audio patch between several source and sink ports.
+    virtual status_t createAudioPatch(
+            unsigned int num_sources,
+            const struct audio_port_config *sources,
+            unsigned int num_sinks,
+            const struct audio_port_config *sinks,
+            audio_patch_handle_t *patch) = 0;
+
+    // Releases an audio patch.
+    virtual status_t releaseAudioPatch(audio_patch_handle_t patch) = 0;
+
+    // Fills the list of supported attributes for a given audio port.
+    virtual status_t getAudioPort(struct audio_port *port) = 0;
+
+    // Fills the list of supported attributes for a given audio port.
+    virtual status_t getAudioPort(struct audio_port_v7 *port) = 0;
+
+    // Set audio port configuration.
+    virtual status_t setAudioPortConfig(const struct audio_port_config *config) = 0;
+
+    // List microphones
+    virtual status_t getMicrophones(std::vector<media::MicrophoneInfo> *microphones) = 0;
+
+    virtual status_t addDeviceEffect(
+            audio_port_handle_t device, sp<EffectHalInterface> effect) = 0;
+    virtual status_t removeDeviceEffect(
+            audio_port_handle_t device, sp<EffectHalInterface> effect) = 0;
+
+    virtual status_t dump(int fd, const Vector<String16>& args) = 0;
+
+  protected:
+    // Subclasses can not be constructed directly by clients.
+    DeviceHalInterface() {}
+
+    // The destructor automatically closes the device.
+    virtual ~DeviceHalInterface() {}
 };
+
+} // namespace android
 ```
 
  [-> *AudioHwDevice.h* ]
@@ -244,7 +364,7 @@ class AudioHwDevice {
 
  AF가 초기화되면 *DevicesFactoryHalInterface* static method를 사용하여 HAL factory object를 생성합니다.
 
- [->AudioFlinger.cpp]
+ [-> *AudioFlinger.cpp* ]
 ```cpp
 AudioFlinger::AudioFlinger()	{
 	(...)
@@ -253,9 +373,74 @@ AudioFlinger::AudioFlinger()	{
 }
 ```
 
-
- [->DeviceFactoryHalInterface.cpp]
+ [-> *DevicesFactoryHalInterface.cpp* ]
 ```cpp
+// static
+sp<DevicesFactoryHalInterface> DevicesFactoryHalInterface::create() {
+    return createPreferredImpl<DevicesFactoryHalInterface>(
+            "android.hardware.audio", "IDevicesFactory");
+}
+```
+
+ [-> *hardware/interfaces/audio/common/all-versions/default/service/Android.bp* ]
+```bp
+package {
+    // See: http://go/android-license-faq
+    // A large-scale-change added 'default_applicable_licenses' to import
+    // all of the 'license_kinds' from "hardware_interfaces_license"
+    // to get the below license kinds:
+    //   SPDX-license-identifier-Apache-2.0
+    default_applicable_licenses: ["hardware_interfaces_license"],
+}
+
+cc_binary {
+    name: "android.hardware.audio.service",
+
+    init_rc: ["android.hardware.audio.service.rc"],
+    relative_install_path: "hw",
+    vendor: true,
+    // Prefer 32 bit as the binary must always be installed at the same
+    // location for init to start it and the build system does not support
+    // having two binaries installable to the same location even if they are
+    // not installed in the same build.
+    compile_multilib: "prefer32",
+    srcs: ["service.cpp"],
+
+    cflags: [
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+    ],
+
+    shared_libs: [
+        "libcutils",
+        "libbinder",
+        "libhidlbase",
+        "liblog",
+        "libutils",
+        "libhardware",
+    ],
+}
+
+// Legacy service name, use android.hardware.audio.service instead
+phony {
+    name: "android.hardware.audio@2.0-service",
+    required: ["android.hardware.audio.service"],
+}
+
+```
+
+ [-> *hardware/interfaces/audio/common/all-versions/default/service/android.hardware.audio.service.rc* ]
+```bash
+service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
+    class hal
+    user audioserver
+    # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+    group audio camera drmrpc inet media mediadrm net_bt net_bt_admin net_bw_acct wakelock context_hub
+    capabilities BLOCK_SUSPEND
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance
+    onrestart restart audioserver
 
 ```
 
