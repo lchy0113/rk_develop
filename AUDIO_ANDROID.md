@@ -206,6 +206,36 @@ AUDIO ANDROID
 
 
 
+# Audio HAL
+
+1. Analysis of important interface files
+
+HAL 인터페이스 파일을 통하여 HAL Layer  분석. 
+
+    *DeviceHalInterface.h* (frameworks/av/media/libaudiohal/include/media/audiohal/DeviceHalInterface.h)
+	*AudioHwDevice.h* (frameworks/av/services/audioflinger/AudioHwDevice.h)
+
+	DeviceHalInterface.h는 HAL layer를 연결하는 Interface 이고, 
+	AudioHwDevice.h 는 hw Dev의 packaging 입니다.
+
+	✅ 이 두 인터페이스 파일에서 관련 메서드의 기능을 분석.
+
+[->DeviceHalInterface.h]
+```cpp
+namespace android {
+
+class StreamInHalInterface;
+class StreamOutHalInterface;
+
+class DeviceHalInterface : public RefBase
+{
+```
+
+
+
+
+-----
+
 # Analyse
 
 device/kdiwin/test/rk3568_poc/rk3568_poc.mk
@@ -425,6 +455,14 @@ static int adev_open(const hw_module_t* module, const char* name,
     return 0;
 }
 ```
+
+
+### route_init
+
+ route_init() (hardware/rockchip/audio/tinyalsa_hal/alsa_route.c) : sound_card_config_list의 데이터 config
+ adev_open() (hardware/rockchip/audio/tinyalsa_hal/audio_hw.c)에 의해 부팅 시 호출.
+
+
 
 # reference 
 
