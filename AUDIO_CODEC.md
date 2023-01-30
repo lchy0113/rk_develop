@@ -447,7 +447,7 @@ set_DSP_write_acram()
 	/**
 	  * 
 	  */
-	  apply_register(component, KDIWIN_AUDIO_PATH_NORMAL, 1);
+	  apply_register(component, COMPANY_AUDIO_PATH_NORMAL, 1);
 	  	|
 		+-> reg_control(component, AK7755_C1_CLOCK_SETTING2, 0x01, BIT_SET)
 		|	|
