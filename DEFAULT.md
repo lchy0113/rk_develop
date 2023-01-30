@@ -323,7 +323,7 @@ EraseBlock:             EB <CS> <BeginBlock> <BlokcLen> [--Force]
 RunSystem:              RUN <uboot_addr> <trust_addr> <boot_addr> <uboot> <trust> <boot>
 -------------------------------------------------------
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$
+lchy0113@company-nb:~/Develop/Rockchip/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$
 
 
 ```
@@ -338,6 +338,6 @@ lchy0113@kdiwin-nb:~/Develop/Rockchip/RKTools/linux/Linux_Upgrade_Tool/Linux_Upg
 # 👨‍💻 private/develop
 
 private/develop 
-	device/kdiwin/test/rk3568_poc
+	device/company/test/rk3568_poc
 	kernel-4.19
 	u-boot

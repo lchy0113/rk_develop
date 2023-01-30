@@ -143,10 +143,10 @@ target 장치의 eMMC에 flash하는 예제 입니다.
 
 target 장치에 GPT partition을 flash 합니다.
 ```bash
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/u-boot$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool db rk356x_spl_loader_v1.10.111.bin 
+lchy0113@company-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/u-boot$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool db rk356x_spl_loader_v1.10.111.bin 
 Downloading bootloader succeeded.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+lchy0113@company-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
 Writing gpt succeeded.
 ```
 
@@ -156,11 +156,11 @@ Writing gpt succeeded.
 
 - for with miniloader
 ```bash
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool db ../../u-boot/rk356x_spl_loader_v1.10.111.bin 
+lchy0113@company-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool db ../../u-boot/rk356x_spl_loader_v1.10.111.bin 
 Downloading bootloader succeeded.
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool ul ../../u-boot/rk356x_spl_loader_v1.10.111.bin 
+lchy0113@company-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool ul ../../u-boot/rk356x_spl_loader_v1.10.111.bin 
 Upgrading loader succeeded.
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool wl 0x40 ../../u-boot/uboot.im
+lchy0113@company-nb:~/Develop/Rockchip/rk3568b2/Android11/rk3568_android11/rkbin/tools$ ~/Develop/Rockchip/rockchip-linux/rkdeveloptool/rkdeveloptool wl 0x40 ../../u-boot/uboot.im
 ```
 ### 2.1 Boot from eMMC
 
@@ -232,18 +232,18 @@ upgradetool은 maskrom rockusb mode에서 아래 경로 이미지를 flash 합�
 (ANDROID_ROOT)/rockdev/Image-rk3568_r/
 
 ```bash
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool ul
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool ul
 Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
 Loading loader...
 Support Type:RK3568     Loader ver:1.01 Loader Time:2022-06-16 15:56:49
 Upgrade loader ok.
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -p /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -p /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
 Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
 directlba=1,first4access=1,gpt=1
 Write gpt...
 Write gpt ok.
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -p /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt^C
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool pl
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -p /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt^C
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool pl
 Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
 Partition Info(gpt):
 NO  LBA        Size       Name
@@ -261,15 +261,15 @@ NO  LBA        Size       Name
 12  0x001d8800 0x00000800 baseparameter
 13  0x001d9000 0x00614000 super
 14  0x007ed000 0x0325cfc0 userdata
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -u /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool di -u /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
 Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
 directlba=1,first4access=1,gpt=1
 Download uboot start...(0x00004000)
 Download image ok.
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool rd
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$ ./upgrade_tool rd
 Program Data in /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65
 Reset Device OK.
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/RKTools/linux/Linux_Upgrade_Tool/Linux_Upgrade_Tool_v1.65$
 ```
 
 #### rkdeveloptool
@@ -297,29 +297,29 @@ make install
 2. host pc와 usb interface 연결합니다.
 3. emmc에 tool command를 사용하여 write 합니다.
 ```bash
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
 
 Downloading bootloader succeeded.
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ef
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ef
 Erasing flash complete.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ld
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ld
 DevNo=1 Vid=0x2207,Pid=0x350a,LocationID=103    Maskrom
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool db /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
 Downloading bootloader succeeded.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ul /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ul /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/rk356x_spl_loader_v1.10.111.bin
 Upgrading loader succeeded.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool gpt /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/rockdev/Image-rk3568_r/parameter.txt
 // rkdeveloptool gpt out/target/product/rk3568_poc/parameter.txt
 Writing gpt succeeded.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ppt
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool ppt
 **********Partition Info(GPT)**********
 NO  LBA       Name
 00  00002000  security
@@ -336,45 +336,45 @@ NO  LBA       Name
 11  001D8800  baseparameter
 12  001D9000  super
 13  007ED000  userdata
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool wl 0x4000 /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool wl 0x4000 /home/lchy0113/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
 Write LBA from file (100%)
 
-lchy0113@kdiwin-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
+lchy0113@company-nb:~/Develop/Rockchip/rockchip-linux/rkdeveloptool$ ./rkdeveloptool rd
 Reset Device OK.
 ```
 4. flash image to each partition
 ```bash
 
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash misc misc.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash misc misc.img
 // fastboot flash misc  ../../../../rkst/Image/misc.img
 Sending 'misc_a' (48 KB)                           OKAY [  0.006s]
 Writing 'misc_a'                                   OKAY [  0.026s]
 Finished. Total time: 0.056s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash dtbo dtbo.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash dtbo dtbo.img
 // fastboot flash dtbo dtb.img
 Sending 'dtbo_a' (0 KB)                            OKAY [  0.001s]
 Writing 'dtbo_a'                                   OKAY [  0.006s]
 Finished. Total time: 0.026s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash boot boot.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash boot boot.img
 Sending 'boot_a' (30136 KB)                        OKAY [  1.260s]
 Writing 'boot_a'                                   OKAY [  0.228s]
 Finished. Total time: 4.167s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash recovery recovery.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash recovery recovery.img
 Invalid sparse file format at header magic
 Sending sparse 'recovery_a' 1/2 (65532 KB)         OKAY [  2.902s]
 Writing 'recovery_a'                               OKAY [  0.511s]
 Sending sparse 'recovery_a' 2/2 (31632 KB)         OKAY [  1.388s]
 Writing 'recovery_a'                               OKAY [  0.237s]
 Finished. Total time: 13.646s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash baseparameter baseparameter.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash baseparameter baseparameter.img
 // fastboot flash baseparameter ../../../../device/rockchip/common/baseparameter/v2.0/baseparameter.img 
 Sending 'baseparameter_a' (1024 KB)                OKAY [  0.093s]
 Writing 'baseparameter_a'                          OKAY [  0.017s]
 Finished. Total time: 0.128s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash super super.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash super super.img
 Sending sparse 'super_a' 1/27 (65532 KB)           OKAY [  5.882s]
 Writing 'super_a'                                  OKAY [  0.486s]
 Sending sparse 'super_a' 2/27 (63536 KB)           OKAY [  5.681s]
@@ -430,12 +430,12 @@ Writing 'super_a'                                  OKAY [  0.484s]
 Sending sparse 'super_a' 27/27 (1148 KB)           OKAY [  0.100s]
 Writing 'super_a'                                  OKAY [  0.024s]
 Finished. Total time: 167.641s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash vbmeta vbmeta.img
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot flash vbmeta vbmeta.img
 // fastboot flash vbmeta ../../../../device/rockchip/common/vbmeta.img
 Sending 'vbmeta_a' (4 KB)                          OKAY [  0.001s]
 Writing 'vbmeta_a'                                 OKAY [  0.005s]
 Finished. Total time: 0.024s
-lchy0113@kdiwin-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot reboot
+lchy0113@company-nb:~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID12/rockdev/Image-rk3568_s$ fastboot reboot
 Rebooting                                          OKAY [  0.001s]
 Finished. Total time: 0.051s
 ```

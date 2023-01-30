@@ -348,10 +348,71 @@ class DeviceHalInterface : public RefBase
 } // namespace android
 ```
 
- [-> *AudioHwDevice.h* ]
+ [-> *frameworks/av/services/audioflinger/AudioHwDevice.h* ]
 ```cpp
+//// Audio output stream
+class AudioStreamOut;
+
 class AudioHwDevice {
-	(...)
+public:
+    enum Flags {
+        AHWD_CAN_SET_MASTER_VOLUME  = 0x1,
+        AHWD_CAN_SET_MASTER_MUTE    = 0x2,
+        // Means that this isn't a terminal module, and software patches
+        // are used to transport audio data further.
+        AHWD_IS_INSERT              = 0x4,
+    };
+
+    AudioHwDevice(audio_module_handle_t handle,
+                  const char *moduleName,
+                  sp<DeviceHalInterface> hwDevice,
+                  Flags flags)
+        : mHandle(handle)
+        , mModuleName(strdup(moduleName))
+        , mHwDevice(hwDevice)
+        , mFlags(flags) { }
+    virtual ~AudioHwDevice() { free((void *)mModuleName); }
+
+    bool canSetMasterVolume() const {
+        return (0 != (mFlags & AHWD_CAN_SET_MASTER_VOLUME));
+    }
+
+    bool canSetMasterMute() const {
+        return (0 != (mFlags & AHWD_CAN_SET_MASTER_MUTE));
+    }
+
+    bool isInsert() const {
+        return (0 != (mFlags & AHWD_IS_INSERT));
+    }
+
+    audio_module_handle_t handle() const { return mHandle; }
+    const char *moduleName() const { return mModuleName; }
+    sp<DeviceHalInterface> hwDevice() const { return mHwDevice; }
+
+    /** This method creates and opens the audio hardware output stream.
+     * The "address" parameter qualifies the "devices" audio device type if needed.
+     * The format format depends on the device type:
+     * - Bluetooth devices use the MAC address of the device in the form "00:11:22:AA:BB:CC"
+     * - USB devices use the ALSA card and device numbers in the form  "card=X;device=Y"
+     * - Other devices may use a number or any other string.
+     */
+    status_t openOutputStream(
+            AudioStreamOut **ppStreamOut,
+            audio_io_handle_t handle,
+            audio_devices_t deviceType,
+            audio_output_flags_t flags,
+            struct audio_config *config,
+            const char *address);
+
+    bool supportsAudioPatches() const;
+
+    status_t getAudioPort(struct audio_port_v7 *port) const;
+
+private:
+    const audio_module_handle_t mHandle;
+    const char * const          mModuleName;
+    sp<DeviceHalInterface>      mHwDevice;
+    const Flags                 mFlags;
 };
 ```
 
@@ -364,7 +425,7 @@ class AudioHwDevice {
 
  AF가 초기화되면 *DevicesFactoryHalInterface* static method를 사용하여 HAL factory object를 생성합니다.
 
- [-> *AudioFlinger.cpp* ]
+ [-> *frameworks/av/services/audioflinger/AudioFlinger.cpp* ]
 ```cpp
 AudioFlinger::AudioFlinger()	{
 	(...)
@@ -373,7 +434,7 @@ AudioFlinger::AudioFlinger()	{
 }
 ```
 
- [-> *DevicesFactoryHalInterface.cpp* ]
+ [-> *frameworks/av/media/libaudiohal/t DevicesFactoryHalInterface.cpp* ]
 ```cpp
 // static
 sp<DevicesFactoryHalInterface> DevicesFactoryHalInterface::create() {
@@ -455,8 +516,8 @@ service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
 
 # Analyse
 
-device/kdiwin/test/rk3568_poc/rk3568_poc.mk
-device/kdiwin/nova/rk3568/device.mk
+device/company/test/rk3568_poc/rk3568_poc.mk
+device/company/nova/rk3568/device.mk
 device/rockchip/common/BoardConfig.mk
 ```
 TARGET_BOARD_HARDWARE ?= rk30board
