@@ -419,10 +419,8 @@ private:
 
 ## 2. HAL Initialization
 
- AudioFlinger -> HAL
-
  HAL layer 초기화는 AF 초기화 진행 중에 수행됩니다.
-
+ AudioFlinger -> HAL
  AF가 초기화되면 *DevicesFactoryHalInterface* static method를 사용하여 HAL factory object를 생성합니다.
 
  [-> *frameworks/av/services/audioflinger/AudioFlinger.cpp* ]
