@@ -34,6 +34,8 @@ AUDIO ANDROID
  Android 7.0은 audio_policy.conf를 사용하지 않으며, audio topology를 더 쉽고 광범위하게 적용할 수 있는 XML 파일 형식이 도입되었다.  
  Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택한다.
  > Android 10 에서 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원한다.
+  
+ - [ ] rockchip platform 확인.
 
  ### Advantages of the XML format
  
