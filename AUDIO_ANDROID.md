@@ -124,12 +124,12 @@ AUDIO ANDROID
 
  ```
 
- top-level structure 는 각 audio HAL hardware module에 해당하는 module 이 포함되어 있으며, 
- 각 module은 mix port, device port, and route 가 포함되어 있습니다. 
+ top-level structure 는 각 audio HAL hardware module에 해당하는 module 이 포함되어 있으며,   
+ 각 module은 mix port, device port, and route 가 포함되어 있습니다.   
 
- - mixPorts : Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다. 
- - devicePorts : Device ports는 연결할 수 있는 type 을 기술한다.
- - reoutes : Routes는 device에서 device로 또는 stream 에서 device 의 route 를 기술한다.
+ - **mixPorts** : Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다. 
+ - **devicePorts** : Device ports는 연결할 수 있는 type 을 기술한다.
+ - **routes** : Routes는 device에서 device로 또는 stream 에서 device 의 route 를 기술한다.
 
  Volume table은 UI 인덱스에서 volume(dB)로 변환하는데 사용되는 curve 을 정의하는 간단한 리스트 이다.
 
@@ -752,4 +752,59 @@ Playback Path: >OFF RCV SPK HP HP_NO_MIC BT SPK_HP RING_SPK RING_HP RING_HP_NO_M
 rk3568_evb:/ #
 rk3568_evb:/ # tinymix  'Capture MIC Path'
 Capture MIC Path: >MIC OFF Main Mic Hands Free Mic BT Sco Mic
+```
+
+
+ - AudioRoute index
+```
+typedef enum _AudioRoute {
+    SPEAKER_NORMAL_ROUTE = 0,
+    SPEAKER_INCALL_ROUTE, // 1
+    SPEAKER_RINGTONE_ROUTE,
+    SPEAKER_VOIP_ROUTE,
+
+    EARPIECE_NORMAL_ROUTE, // 4
+    EARPIECE_INCALL_ROUTE,
+    EARPIECE_RINGTONE_ROUTE,
+    EARPIECE_VOIP_ROUTE,
+
+    HEADPHONE_NORMAL_ROUTE, // 8
+    HEADPHONE_INCALL_ROUTE,
+    HEADPHONE_RINGTONE_ROUTE,
+    SPEAKER_HEADPHONE_NORMAL_ROUTE,
+    SPEAKER_HEADPHONE_RINGTONE_ROUTE,
+    HEADPHONE_VOIP_ROUTE,
+
+    HEADSET_NORMAL_ROUTE, // 14
+    HEADSET_INCALL_ROUTE,
+    HEADSET_RINGTONE_ROUTE,
+    HEADSET_VOIP_ROUTE,
+
+    BLUETOOTH_NORMAL_ROUTE, // 18
+    BLUETOOTH_INCALL_ROUTE,
+    BLUETOOTH_VOIP_ROUTE,
+
+    MAIN_MIC_CAPTURE_ROUTE, // 21
+    HANDS_FREE_MIC_CAPTURE_ROUTE,
+    BLUETOOTH_SOC_MIC_CAPTURE_ROUTE,
+
+    PLAYBACK_OFF_ROUTE, // 24
+    CAPTURE_OFF_ROUTE,
+    INCALL_OFF_ROUTE,
+    VOIP_OFF_ROUTE,
+
+    HDMI_NORMAL_ROUTE, // 28
+
+    SPDIF_NORMAL_ROUTE,
+
+    USB_NORMAL_ROUTE, // 30
+    USB_CAPTURE_ROUTE,
+
+    HDMI_IN_NORMAL_ROUTE,
+    HDMI_IN_OFF_ROUTE,
+    HDMI_IN_CAPTURE_ROUTE,
+    HDMI_IN_CAPTURE_OFF_ROUTE,
+
+    MAX_ROUTE, //36
+} AudioRoute;
 ```
