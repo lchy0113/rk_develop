@@ -127,9 +127,25 @@ AUDIO ANDROID
  top-level structure 는 각 audio HAL hardware module에 해당하는 module 이 포함되어 있으며,   
  각 module은 mix port, device port, and route 가 포함되어 있습니다.   
 
- - **mixPorts** : Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다. 
- - **devicePorts** : Device ports는 연결할 수 있는 type 을 기술한다.
- - **routes** : Routes는 device에서 device로 또는 stream 에서 device 의 route 를 기술한다.
+ - **mixPorts** : 
+   Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다. 
+   audio HAL이 제공하는 모든 output streams, input streams list 를 기술. 각 mixPort instance는 Android AudioService에 전달되는 물리적 오디오 스트림으로 생각할 수 있다.     
+
+ - **devicePorts** : 
+   Device ports는 연결할 수 있는 type 을 기술한다.  
+   해당 module에서 access 할수 있는 모든 input, output에 대한 device list 를 기술.  
+
+ - **routes** :
+   Routes는 device에서 device로 또는 stream 에서 device 의 route 를 기술한다.
+   input device와 output device 사이 또는 audio stream과 device 사이에 가능한 연결 list 를 정의.
+
+ mixPorts와 devicePorts의 차이점.
+
+  - devicePorts에는 실제 연결되는 physical device 가 기술 되어 있다. 
+  AUDIO_DEVICE_OUT_SPEAKER, AUDIO_DEVICE_IN_HDMI, AUDIO_DEVICE_OUT_BLUETOOTH_A2DP 등과 같은 Device Type이 정이 되어 있다.
+
+  - mixPorts 는 ligical audio stream 정보이다. 
+
 
  Volume table은 UI 인덱스에서 volume(dB)로 변환하는데 사용되는 curve 을 정의하는 간단한 리스트 이다.
 
@@ -753,6 +769,12 @@ rk3568_evb:/ #
 rk3568_evb:/ # tinymix  'Capture MIC Path'
 Capture MIC Path: >MIC OFF Main Mic Hands Free Mic BT Sco Mic
 ```
+
+ - Android의 오디오 모듈에 대한 config file 정리.
+   * /system/etc/mixer_paths.xml : route list (system audio stream)
+   * /vendor/etc/audio_policy_configuration.xml  
+      : xml 내의 <modules>는 각 audio HAL 의 so 파일에 해당하며 모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 나타낸다.
+     + module name : primary(for in-vehicle usage), A2DP, remote_submix, USB 를 지원하며, module 이름과 해당 오디오 드라이버는 audio.primary.$(variant).so 으로 컴파일 되어야 한다.  
 
 
  - AudioRoute index
