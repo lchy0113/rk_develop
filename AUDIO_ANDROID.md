@@ -176,32 +176,34 @@ AUDIO ANDROID
 
  ### Configuration using Parameter Framework
 
- Audio policy code는 configuration files에 의해 정의된 audio policy 를 지원하면서 쉽게 이해하고 유지 할 수 있도록 구성된다. 
- organization and audio policy 설계는 Intel's Parameter Framework 베이스로 한다.
+ Audio policy code는 configuration files에 의해 정의된 audio policy 를 지원하면서 쉽게 이해하고 유지 할 수 있도록 구성된다.   
+ organization and audio policy 설계는 Intel's Parameter Framework 베이스로 한다.  
 
 
  ### Audio policy routing APIs
 
- Android 6.0 버전에서는 Audio patch/audio port infra 상위에 있는 public Enumeration 과 Selection API를 통해, App 개발자가 연결된 audio records 또는 tracks에 대한 특정 device output or input에 대한 설정을 나타냈다. 
+ Android 6.0 버전에서는 Audio patch/audio port infra 상위에 있는 public Enumeration 과 Selection API를 통해,  
+ App 개발자가 연결된 audio records 또는 tracks에 대한 특정 device output or input에 대한 설정을 나타냈다.   
  
- Android 7.0에서 Enumeration and Selection API는 CTS 테스트를 통해 확인되었으며 네이티브 C/C++(OpenSL ES) 오디오 스트림에 대한 라우팅을 포함하도록 확장되었습니다.
- 네이티브 스트림의 라우팅은 AudioTrack 및 AudioRecord 클래스에 고유한 명시적 라우팅 메서드를 대체, 결합 및 폐기하는 AudioRouting 인터페이스를 추가하여 Java에서 계속 수행됩니다.
- Enumeration and Selection API에 대한 자세한 내용은 Android 구성 인터페이스 및 OpenSLES_AndroidConfiguration.h를 참조하세요.
- 오디오 라우팅에 대한 자세한 내용은 AudioRouting을 참조하십시오.
+ Android 7.0에서 Enumeration and Selection API는 CTS 테스트를 통해 확인되었으며 네이티브 C/C++(OpenSL ES) 오디오 스트림에 대한 라우팅을 포함하도록 확장되었습니다.  
+ 네이티브 스트림의 라우팅은 AudioTrack 및 AudioRecord 클래스에 고유한 명시적 라우팅 메서드를 대체, 결합 및 폐기하는 AudioRouting 인터페이스를 추가하여 Java에서 계속 수행됩니다.  
+ Enumeration and Selection API에 대한 자세한 내용은 Android 구성 인터페이스 및 OpenSLES_AndroidConfiguration.h를 참조하세요.  
+ 오디오 라우팅에 대한 자세한 내용은 AudioRouting을 참조하십시오.  
 
 
 # Audio on Android
 
 ## Mixer configuration
  > Android Audio HAL이 ALSA mixer 를 configuration하는 방법에 대해 설명.
- Android 기기에는 headphone, speaker, mic 와 같은 다양한 mixer configuration이 있다.
- audio route configuration은 mixer_paths.xml에 정의되어 있다. 
 
- Android audio HAL은 tinyalsa 및 audio_route를 사용한다.
-
- tinyalsa는 linux 커널에서 ALSA와 interface하는 standalone library이다. 
- audio HAL은 XML에서 audio path를 load하고, tinyalsa를 통해 mixer를 제어하는 audio_route library를 호출한다. 
-
+ Android 기기에는 headphone, speaker, mic 와 같은 다양한 mixer configuration이 있다.  
+ audio route configuration은 mixer_paths.xml에 정의되어 있다.   
+  
+ Android audio HAL은 tinyalsa 및 audio_route를 사용한다.    
+  
+ tinyalsa는 linux 커널에서 ALSA와 interface하는 standalone library이다.   
+ audio HAL은 XML에서 audio path를 load하고, tinyalsa를 통해 mixer를 제어하는 audio_route library를 호출한다.   
+  
 ## Format of mixer_paths.xml
  - ALSA 제어는 *ctl* elements로 정의한다.
  - Audio route는 *path* elements로 정의한다.
