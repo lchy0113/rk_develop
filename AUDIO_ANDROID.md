@@ -27,12 +27,15 @@ AUDIO ANDROID
 
  ## Policy Configuration
 
- Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy configuration file format(XML)이 도입되었다.
- 이전의 Android 버전에서는 device/<company>/<device>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해야 했습니다.
+ Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy configuration file format(XML)이 도입되었다.  
+ 이전의 Android 버전에서는 device/<company>/<device>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해야 했습니다.  
+
  > Galaxy Nexus 오디오 하드웨어에 대한 예제는 device/samsung/tuna/audio/audio_policy.conf 에서 볼 수 있다. 
- 그러나 audio_policy.conf 파일은 TV, automobiles와 같은 복잡한 topology를 기술하기에는 제한이 있다.
+ >
+ 그러나 audio_policy.conf 파일은 TV, automobiles와 같은 복잡한 topology를 기술하기에는 제한이 있다.  
  Android 7.0은 audio_policy.conf를 사용하지 않으며, audio topology를 더 쉽고 광범위하게 적용할 수 있는 XML 파일 형식이 도입되었다.  
- Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택한다.
+ Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택한다.  
+
  > Android 10 에서 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원한다.
   
  - [ ] rockchip platform 확인.
