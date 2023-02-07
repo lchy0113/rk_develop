@@ -199,7 +199,7 @@ AUDIO ANDROID
  Android 기기에는 headphone, speaker, mic 와 같은 다양한 mixer configuration이 있다.  
  audio route configuration은 mixer_paths.xml에 정의되어 있다.   
   
- Android audio HAL은 [tinyalsa]: https://android.googlesource.com/platform/external/tinyalsa/ 및 [audio_route]: https://android.googlesource.com/platform/system/media/+/kitkat-release/audio_route/ 를 사용한다.    
+ Android audio HAL은 [tinyalsa]: https://android.googlesource.com/platform/external/tinyalsa 및 [audio_route]: https://android.googlesource.com/platform/system/media/+/kitkat-release/audio_route 를 사용한다.    
   
  tinyalsa는 linux 커널에서 ALSA와 interface하는 standalone library이다.   
  audio HAL은 XML에서 audio path를 load하고, tinyalsa를 통해 mixer를 제어하는 audio_route library를 호출한다.   
