@@ -38,7 +38,7 @@ AUDIO ANDROID
 
  > Android 10 에서 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원한다.
   
- - [] rockchip platform 확인.  :  device/rockchip/common/device.mk USE_XML_AUDIO_POLICY_CONF := 1
+ - [x] rockchip platform 확인.  :  device/rockchip/common/device.mk USE_XML_AUDIO_POLICY_CONF := 1
 	 
 
  ### Advantages of the XML format
