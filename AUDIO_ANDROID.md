@@ -831,10 +831,14 @@ typedef enum _AudioRoute {
 } AudioRoute;
 ```
 
-
+## 3. Audio Framework
 
 # Note
 
 ## android_automotive
  - [ ] Car audio policy의 경우, alarm, notification, system sound는 cpu board에서 출력되고, 그외 sound는 extend audio board 에서 출력  
  - [ ] *android_policy_configuration.xml*에서 **role** 의 속성으로 *sink(output)*, *source(input)* 을 세팅하는데, door와 같은 시나리오에 어떻게 적용해야 하나 ?
+ - [ ] prebuilts/vndk/v31/x86_x64/include/hardware/libhardware/include/hardware/audio.h : 뭐하는 곳?
+ - [ ] to enable the audio patch feature, the audio HAL should set the major HAL version 3.0 or higher? : https://source.android.com/docs/core/audio/device-type-limit
+	 ref : audio HAL for Cuttlefish 
+ - [ ] 자동차 오디오 HAL 구현 :  https://source.android.com/docs/devices/automotive/audio/audio-hal?hl=ko
