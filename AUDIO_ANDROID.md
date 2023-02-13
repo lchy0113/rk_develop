@@ -833,6 +833,47 @@ typedef enum _AudioRoute {
 
 ## 3. Audio Framework
 
+### Audio Patch
+
+ audio patch는 하나 이상의 source port 와 하나 이상의 sink port 간 연결을 나타낸다.  
+ patch는 framework api를 통해 audio policy manager 또는 application에서 framework API를 통해 연결 및 연결 해제 가능하다.  
+ 각 patch는 해당 patch를 만드는데 사용되는 interface의 handle로 식별됨. (예, audio hal에 의해 patch가 생성되면 hal은 patch를 할당하고 handle을 반환한다.)  
+
+```cpp
+// audio patch 구조
+#define AUDIO_PATCH_PORTS_MAX   16
+
+struct audio_patch {
+    audio_patch_handle_t id;            /* patch unique ID */
+    /* audio input(source) 갯수 */
+    unsigned int      num_sources;      /* number of sources in following array */
+    struct audio_port_config sources[AUDIO_PATCH_PORTS_MAX];
+    /* audio output(sinks) 갯수 */
+    unsigned int      num_sinks;        /* number of sinks in following array */
+    struct audio_port_config sinks[AUDIO_PATCH_PORTS_MAX];
+};
+
+// audio_port_config 구조 (아래와 같은 포트의 모든 정보가 포함되어져 있음)
+struct audio_port_config {
+    audio_port_handle_t      id;           /* port unique ID */
+    audio_port_role_t        role;         /* sink or source */
+    audio_port_type_t        type;         /* device, mix ... */
+    unsigned int             config_mask;  /* e.g AUDIO_PORT_CONFIG_ALL */
+    unsigned int             sample_rate;  /* sampling rate in Hz */
+    audio_channel_mask_t     channel_mask; /* channel mask if applicable */
+    audio_format_t           format;       /* format if applicable */
+    struct audio_gain_config gain;         /* gain to apply if applicable */
+#ifndef AUDIO_NO_SYSTEM_DECLARATIONS
+    union audio_io_flags     flags;        /* framework only: HW_AV_SYNC, DIRECT, ... */
+#endif
+    union {
+        struct audio_port_config_device_ext  device;  /* device specific info */
+        struct audio_port_config_mix_ext     mix;     /* mix specific info */
+        struct audio_port_config_session_ext session; /* session specific info */
+    } ext;
+};
+```
+
 # Note
 
 ## android_automotive
