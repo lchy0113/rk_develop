@@ -830,3 +830,11 @@ typedef enum _AudioRoute {
     MAX_ROUTE, //36
 } AudioRoute;
 ```
+
+
+
+# Note
+
+## android_automotive
+ - [ ] Car audio policy의 경우, alarm, notification, system sound는 cpu board에서 출력되고, 그외 sound는 extend audio board 에서 출력  
+ - [ ] *android_policy_configuration.xml*에서 **role** 의 속성으로 *sink(output)*, *source(input)* 을 세팅하는데, door와 같은 시나리오에 어떻게 적용해야 하나 ?
