@@ -883,3 +883,6 @@ struct audio_port_config {
  - [ ] to enable the audio patch feature, the audio HAL should set the major HAL version 3.0 or higher? : https://source.android.com/docs/core/audio/device-type-limit
 	 ref : audio HAL for Cuttlefish 
  - [ ] 자동차 오디오 HAL 구현 :  https://source.android.com/docs/devices/automotive/audio/audio-hal?hl=ko
+ 
+ - [ ] audiopolicymanager_tests :  gtest Framework를 사용하는 테스트 프로그램
+ - [ ] libaudiopolicymanagercustom : 
