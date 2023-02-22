@@ -82,9 +82,9 @@ AUDIO_HAL
  * AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
  * open_output_stream 함수를 호출하면 struct audio_stream를 하나 생성하여 각 포인터를 연결합니다.
 
- - Audio HAL의 연결 포인터 3그룹.
+### Audio HAL의 연결 포인터 3그룹.
 
-### 1. module open시 일어나는 audio hw device 관련 연결 작업.
+#### 1. module open시 일어나는 audio hw device 관련 연결 작업.
 
 ```c
    static int adev_open(....)
@@ -109,7 +109,7 @@ AUDIO_HAL
    }
 ```
 
-### 2. openOutput에서 일어나는 audio hw output 관련 연결 작업
+#### 2. openOutput에서 일어나는 audio hw output 관련 연결 작업
  
 ```c
  static int adev_open_output_stream(.... ) 
@@ -135,7 +135,7 @@ AUDIO_HAL
    }
 ```
 
-### 3. openInput에서 일어나는 audio hw input 관련 연결 작업
+#### 3. openInput에서 일어나는 audio hw input 관련 연결 작업
  
 ```c
    static int adev_open_input_stream(....)
