@@ -30,7 +30,7 @@ AUDIO_HAL
  ```
 
    * AudioFlinger에서 libhardware 함수 hw_get_module(hw_get_module_by_class)을 통해 struct hw_module_t정보를 획득합니다.
-   * 이후, audio_hw_device_open을 통해 audio_hw_device_t 정보를 얻어옵니다.
+   * 이후, audio_hw_device_open을 통해 audio_hw_device_t 정보를 얻어옵니다.  
     방법은 hw_module_t->methods(hw_module_methods_t)->open 을 호출하면 audio hal에서 adev_open 함수를 호출하여
 
 	```c
