@@ -20,6 +20,7 @@ AUDIO_HAL
    * **struct audio_hw_device** : struct audio_hw_device 를 통해 인터페이스를 제공합니다.
 
  - AudioFlinger가 library를 호출하는 과정은 아래와 같습니다.
+
  ```bash
 	AudioFlinger::loadHwModule
 	->AudioFlinger::loadHwModule_l
@@ -27,9 +28,11 @@ AUDIO_HAL
 	--->audio_hw_device_open(mod, dev);
 	---->module->methods->open 
  ```
+
    * AudioFlinger에서 libhardware 함수 hw_get_module(hw_get_module_by_class)을 통해 struct hw_module_t정보를 획득합니다.
    * 이후, audio_hw_device_open을 통해 audio_hw_device_t 정보를 얻어옵니다.
     방법은 hw_module_t->methods(hw_module_methods_t)->open 을 호출하면 audio hal에서 adev_open 함수를 호출하여
+
 	```c
 	struct audio_device {
 		struct audio_hw_device device;
