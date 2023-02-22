@@ -21,27 +21,27 @@ AUDIO_HAL
 
  - AudioFlinger가 library를 호출하는 과정은 아래와 같습니다.
 
- ```bash
+```bash
 	AudioFlinger::loadHwModule
 	->AudioFlinger::loadHwModule_l
 	-->load_audio_interface
 	--->audio_hw_device_open(mod, dev);
 	---->module->methods->open 
- ```
+```
 
    * AudioFlinger에서 libhardware 함수 hw_get_module(hw_get_module_by_class)을 통해 struct hw_module_t정보를 획득합니다.
    * 이후, audio_hw_device_open을 통해 audio_hw_device_t 정보를 얻어옵니다.  
- >    방법은 hw_module_t->methods(hw_module_methods_t)->open 을 호출하면 audio hal에서 adev_open 함수를 호출합니다.
+    방법은 hw_module_t->methods(hw_module_methods_t)->open 을 호출하면 audio hal에서 adev_open 함수를 호출합니다.
 
-	```c
+```c
 	struct audio_device {
 		struct audio_hw_device device;
 		...
 	};
-	```
+```
 	struct audio_device를 생성하여 멤버변수 struct audio_hw_device device를 리턴합니다.
 
-	```c
+```c
 	struct audio_hw_device {
 		struct hw_device_t common;
 		uint32_t (*get_supported_devices)(const struct audio_hw_device *dev);
@@ -77,7 +77,7 @@ AUDIO_HAL
 		int (*get_master_mute)(struct audio_hw_device *dev, bool *mute);
 	};
 	typedef struct audio_hw_device audio_hw_device_t;
-	```
+```
 
 	* AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
 	* open_output_stream 함수를 호출하면 struct audio_stream를 하나 생성하여 각 포인터를 연결합니다.
@@ -86,7 +86,7 @@ AUDIO_HAL
 
 ### 1. module open시 일어나는 audio hw device 관련 연결 작업.
 
- ```c
+```c
    static int adev_open(....)
    {
        adev->device.init_check = adev_init_check;
@@ -107,11 +107,11 @@ AUDIO_HAL
        adev->device.close_input_stream = adev_close_input_stream;
        adev->device.dump = adev_dump;
    }
- ```
+```
 
 ### 2. openOutput에서 일어나는 audio hw output 관련 연결 작업
  
- ```c
+```c
  static int adev_open_output_stream(.... ) 
    {
        out->stream.common.get_sample_rate = out_get_sample_rate;
@@ -133,11 +133,11 @@ AUDIO_HAL
        out->stream.get_next_write_timestamp = out_get_next_write_timestamp;
        out->stream.get_presentation_position = out_get_presentation_position;
    }
- ```
+```
 
 ### 3. openInput에서 일어나는 audio hw input 관련 연결 작업
  
- ```c
+```c
    static int adev_open_input_stream(....)
    {
        in->stream.common.get_sample_rate = in_get_sample_rate;
@@ -157,7 +157,7 @@ AUDIO_HAL
        in->stream.get_input_frames_lost = in_get_input_frames_lost;
    }
 
- ```
+```
 
 
 
