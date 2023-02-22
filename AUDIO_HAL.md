@@ -84,7 +84,7 @@ AUDIO_HAL
 
  - Audio HAL의 연결 포인터 3그룹.
 
-1. module open시 일어나는 audio hw device 관련 연결 작업.
+### 1. module open시 일어나는 audio hw device 관련 연결 작업.
 
  ```c
    static int adev_open(....)
@@ -109,7 +109,7 @@ AUDIO_HAL
    }
  ```
 
-2. openOutput에서 일어나는 audio hw output 관련 연결 작업
+### 2. openOutput에서 일어나는 audio hw output 관련 연결 작업
  
  ```c
  static int adev_open_output_stream(.... ) 
@@ -135,7 +135,7 @@ AUDIO_HAL
    }
  ```
 
-3. openInput에서 일어나는 audio hw input 관련 연결 작업
+### 3. openInput에서 일어나는 audio hw input 관련 연결 작업
  
  ```c
    static int adev_open_input_stream(....)
