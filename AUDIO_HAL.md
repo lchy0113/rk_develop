@@ -1,15 +1,58 @@
 AUDIO_HAL
 =====
 
+# Audio HAL blockdiagram
+
+ ![](images/AUDIO_HAL_01.png)
+
+## HAL layer 
+ - audio HAL에는 audio_module과 audio_policy_module이 존재합니다. 
+ - HAL layer의 아래의 layer는 tinyalsa를 사용합니다. 
+
+ - audio.a2dp.default.so(bluetooth a2dp audio 관리), audio.usb.default.so(usb 외부 audio 관리)와 같은 독립적인 lib 파일로 구현됩니다. 
+ - audio.primary.default.so(장치의 대부분의 audio 관리)
+ - 일부 manufacturer 은 audio.primary.rk30board.so 와 같은 lib를 구현해 배포합니다.
+
+-----
+
+## key class 및 structure
+ - HAL은 upper layer에 hardware에 대한 인터페이스를 제공해야 합니다.
+   * **struct audio_hw_device** : struct audio_hw_device 를 통해 인터페이스를 제공합니다.
+
+ - AudioFlinger가 library를 호출하는 과정은 아래와 같습니다.
+ ```bash
+
+ ```
+
+
+# Code Analyse
+
 
  [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.c* ]
 ```c
+static struct hw_module_methods_t hal_module_methods = {
+    .open = adev_open,
+};
+
+struct audio_module HAL_MODULE_INFO_SYM = {
+    .common = {
+        .tag = HARDWARE_MODULE_TAG,
+        .module_api_version = AUDIO_MODULE_API_VERSION_0_1,
+        .hal_api_version = HARDWARE_HAL_API_VERSION,
+        .id = AUDIO_HARDWARE_MODULE_ID,
+        .name = "Manta audio HW HAL",
+        .author = "The Android Open Source Project",
+        .methods = &hal_module_methods,
+    },
+};
+
 static int adev_open(const hw_module_t* module, const char* name,
                      hw_device_t** device)
 {
     struct audio_device *adev;
     int ret;
-
+	
+	// log : ALSA Audio Version: V1.1.0
     ALOGD(AUDIO_HAL_VERSION);
 
     if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
@@ -48,23 +91,8 @@ static int adev_open(const hw_module_t* module, const char* name,
     adev_open_init(adev);
     return 0;
 }
-
-static struct hw_module_methods_t hal_module_methods = {
-    .open = adev_open,
-};
-
-struct audio_module HAL_MODULE_INFO_SYM = {
-    .common = {
-        .tag = HARDWARE_MODULE_TAG,
-        .module_api_version = AUDIO_MODULE_API_VERSION_0_1,
-        .hal_api_version = HARDWARE_HAL_API_VERSION,
-        .id = AUDIO_HARDWARE_MODULE_ID,
-        .name = "Manta audio HW HAL",
-        .author = "The Android Open Source Project",
-        .methods = &hal_module_methods,
-    },
-};
 ```
+
  [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.h* ]
 ```c
 struct audio_device {
