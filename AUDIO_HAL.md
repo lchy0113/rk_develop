@@ -79,8 +79,8 @@ AUDIO_HAL
 	typedef struct audio_hw_device audio_hw_device_t;
 ```
 
-	* AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
-	* open_output_stream 함수를 호출하면 struct audio_stream를 하나 생성하여 각 포인터를 연결합니다.
+ * AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
+ * open_output_stream 함수를 호출하면 struct audio_stream를 하나 생성하여 각 포인터를 연결합니다.
 
  - Audio HAL의 연결 포인터 3그룹.
 
