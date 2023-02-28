@@ -860,6 +860,12 @@ typedef enum _AudioRoute {
  Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.  
 	- *AudioRoute class*
 
+#### route를 통해 devicePort와 mixPort를 연결하는 방법  
+
+ route는 mixport stream data를 devicPort장치로 전송할 수 있는지 결정하고, 둘 사이의 연결 관계를 설정한다.
+ [ -> *frameworks/av/services/audiopolicy/common/managerdefinitions/src/HwModule.cpp* ]
+
+ ![](images/AUDIO_ANDROID_02.png)
 
 
 ### Audio Patch
