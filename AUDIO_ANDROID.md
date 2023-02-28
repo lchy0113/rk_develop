@@ -867,6 +867,17 @@ typedef enum _AudioRoute {
 
  ![](images/AUDIO_ANDROID_02.png)
 
+#### MixPort의 플래그
+
+| **AUDIO_OUTPUT_FLAG**              	| **설명**                                                                                                                                     	|
+|------------------------------------	|----------------------------------------------------------------------------------------------------------------------------------------------	|
+| AUDIO_OUTPUT_FLAG_PRIMARY          	| 일반적으로 벨소리에 사용되는 기본 출력 장치로 오디오 스트림을 출력해야 함을 나타냅니다.                                                      	|
+| AUDIO_OUTPUT_FLAG_DIRECT           	| 오디오 스트림이 소프트웨어 믹싱 없이 오디오 장치로 직접 출력됨을 나타내며 일반적으로 HDMI 장치의 사운드 출력에 사용됩니다.                   	|
+| AUDIO_OUTPUT_FLAG_FAST             	| 오디오 스트림을 오디오 장치로 빠르게 출력해야 함을 나타내며 일반적으로 버튼 소리 및 게임 배경음과 같이 대기 시간이 긴 장면에서 사용됩니다.   	|
+| AUDIO_OUTPUT_FLAG_DEEP_BUFFER      	| 오디오 스트림 출력이 일반적으로 높은 지연이 필요하지 않은 음악, 비디오 재생 및 기타 장면에서 사용되는 큰 지연을 허용할 수 있음을 나타냅니다. 	|
+| AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD 	| 오디오 스트림이 소프트웨어에 의해 디코딩되지 않았으며 하드웨어 디코더에 의한 디코딩을 위해 하드웨어 디코더로 출력되어야 함을 나타냅니다.     	|
+
+ 이외에도 AUDIO_OUTPUT_FLAG_NOW_BLOCKING, AUDIO_OUTPUT_FLAG_HW_AV_SYNC, AUDIO_OUTPUT_FLAG_TTS, AUDIO_OUTPUT_FLAG_RAW, AUDIO_OUTPUT_FLAG_SYNC, AUDIO_OUTPUT_FLAG_IEC958_MONAUDIO, AUDIO_OUTPUT_FLAG_DIRECT_PCM, AUDIO_OUTPUT_FLAG_MMAP_NOIRQ, AUDIO_OUTPUT_VOIP_RX, AUDIO_OUTPUT_FLAG_INCALL_MUSIC
 
 ### Audio Patch
 
