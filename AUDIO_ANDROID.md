@@ -853,6 +853,7 @@ typedef enum _AudioRoute {
 		samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
 </devicePort>
 ```  
+
 	- DeviceDescriptor class
 
  * **Route** label  
