@@ -854,7 +854,7 @@ typedef enum _AudioRoute {
 	<profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
 		samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
 </devicePort>
- ```
+```
 
 	 - DeviceDescriptor class
 
