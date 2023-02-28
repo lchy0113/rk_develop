@@ -842,11 +842,11 @@ typedef enum _AudioRoute {
   
  * **MixPort** label  
 	MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.  
- 	- AudioProfile class  
+ 	- *AudioProfile class*  
 
  * **DevicePort** label  
 	 DevicePort tag는 device 로 이해할 수 있으며 device도 output, input이 구분되지만 MixPort와 깥은 역할로 구분되지 않고 다음과 같이 type에서 "IN", "OUT"으로 구분된다.  
-	- DeviceDescriptor class
+	- *DeviceDescriptor class*  
 
 ```xml
 <devicePort tagName="BT A2DP Headphones" types="AUDIO_DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES" role="sink"
@@ -858,7 +858,7 @@ typedef enum _AudioRoute {
   
  * **Route** label  
  Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.  
-	- AudioRoute class
+	- *AudioRoute class*
 
 
 
