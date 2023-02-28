@@ -13,6 +13,30 @@ AUDIO_HAL
  - audio.primary.default.so(장치의 대부분의 audio 관리)
  - 일부 manufacturer 은 audio.primary.rk30board.so 와 같은 lib를 구현해 배포합니다.
 
+
+## HAL module
+
+ [-> */system/media/audio/include/system/audio.h* ]
+```c
+ * List of known audio HAL modules. This is the base name of the audio HAL
+ * library composed of the "audio." prefix, one of the base names below and
+ * a suffix specific to the device.
+ * e.g: audio.primary.goldfish.so or audio.a2dp.default.so
+ *
+ * The same module names are used in audio policy configuration files.
+ */
+
+#define AUDIO_HARDWARE_MODULE_ID_PRIMARY "primary"
+#define AUDIO_HARDWARE_MODULE_ID_A2DP "a2dp"
+#define AUDIO_HARDWARE_MODULE_ID_USB "usb"
+#define AUDIO_HARDWARE_MODULE_ID_REMOTE_SUBMIX "r_submix"
+#define AUDIO_HARDWARE_MODULE_ID_CODEC_OFFLOAD "codec_offload"
+#define AUDIO_HARDWARE_MODULE_ID_STUB "stub"
+#define AUDIO_HARDWARE_MODULE_ID_HEARING_AID "hearing_aid"
+#define AUDIO_HARDWARE_MODULE_ID_MSD "msd"
+```
+
+
 -----
 
 ## key class 및 structure
@@ -278,5 +302,18 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
 	|
 	+->	adev_open_init(struct audio_device *adev)
 				
+
+```
+
+## createAudioPatch()
+
+ [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.c* ]
+```c
+	in_set_parameters();
+	out_set_parameters();
+	start_output_stream();
+		|
+		+-> route_pcm_card_open();	// hardware/rockchip/audio/tinyalsa_hal/alsa_route.c
+
 
 ```
