@@ -837,37 +837,33 @@ typedef enum _AudioRoute {
  
  *AudioPolicyManager*가 초기화 될 때, *deseralizeAudioPolicyXmlConfig* 함수에서 audio_policy_configuration.xml 분석 및 반환 된다. 
 
-	 * **module** tag
-		Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp등과 같이 나눠져 있다.
+ * **module** tag
+	Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp등과 같이 나눠져 있다.
 
-	 * **MixPort** label
-		MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.
+ * **MixPort** label
+	MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.
 
-		- AudioProfile class
-
-	 * **DevicePort** label
-		 DevicePort tag는 device 로 이해할 수 있으며 device도 output, input이 구분되지만 MixPort와 깥은 역할로 구분되지 않고 다음과 같이 type에서 "IN", "OUT"으로 구분된다.  
-		 ```xml
-		 <devicePort tagName="BT A2DP Headphones" types="AUDIO_DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES" role="sink"
-			encodedFormats="AUDIO_FORMAT_LDAC AUDIO_FORMAT_APTX AUDIO_FORMAT_APTX_HD AUDIO_FORMAT_AAC AUDIO_FORMAT_SBC">
-			<profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-				samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
-		 </devicePort>
-		 ```
-		 - DeviceDescriptor class
-
-	 * **Route** label
-		 Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.
-
-		 - AudioRoute class
+	- AudioProfile class
 
 
- 
-
-
-
+ * **DevicePort** label
+	 DevicePort tag는 device 로 이해할 수 있으며 device도 output, input이 구분되지만 MixPort와 깥은 역할로 구분되지 않고 다음과 같이 type에서 "IN", "OUT"으로 구분된다.  
 ```xml
-```
+<devicePort tagName="BT A2DP Headphones" types="AUDIO_DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES" role="sink"
+		encodedFormats="AUDIO_FORMAT_LDAC AUDIO_FORMAT_APTX AUDIO_FORMAT_APTX_HD AUDIO_FORMAT_AAC AUDIO_FORMAT_SBC">
+	<profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+		samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+</devicePort>
+ ```
+
+	 - DeviceDescriptor class
+
+ * **Route** label
+ Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.
+
+	 - AudioRoute class
+
+
 
 ### Audio Patch
 
