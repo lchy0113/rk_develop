@@ -841,9 +841,8 @@ typedef enum _AudioRoute {
 	Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp등과 같이 나눠져 있다.
 
  * **MixPort** label
-	MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.
-
-	- AudioProfile class
+	MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.  
+ 	- AudioProfile class
 
 
  * **DevicePort** label
@@ -855,13 +854,11 @@ typedef enum _AudioRoute {
 		samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
 </devicePort>
 ```
-
-	 - DeviceDescriptor class
+	- DeviceDescriptor class
 
  * **Route** label
  Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.
-
-	 - AudioRoute class
+	- AudioRoute class
 
 
 
