@@ -1,6 +1,9 @@
 # AUDIO
 
 -----
+
+> audio codec 개발 시 작성 wiki page
+
 ## 1. hardware
 
  * pin connected
