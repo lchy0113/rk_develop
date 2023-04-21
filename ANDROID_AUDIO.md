@@ -28,7 +28,7 @@ ANDROID AUDIO
  ## Policy Configuration
 
  Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy configuration file format(XML)이 도입되었다.  
- 이전의 Android 버전에서는 device/\<company\>/<device>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해야 했습니다.  
+ 이전의 Android 버전에서는 device/\<company\>/\<device\>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해야 했습니다.  
 
  > Galaxy Nexus 오디오 하드웨어에 대한 예제는 device/samsung/tuna/audio/audio_policy.conf 에서 볼 수 있다. 
  >
