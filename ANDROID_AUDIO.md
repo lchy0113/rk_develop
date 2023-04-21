@@ -30,22 +30,22 @@ ANDROID AUDIO
 Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy configuration file format(XML)이 도입되었다.  
 이전의 Android 버전에서는 device/\<company\>/\<device\>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해야 했습니다.  
 
- > Galaxy Nexus 오디오 하드웨어에 대한 예제는 device/samsung/tuna/audio/audio_policy.conf 에서 볼 수 있다. 
- >
- 그러나 audio_policy.conf 파일은 TV, automobiles와 같은 복잡한 topology를 기술하기에는 제한이 있다.  
- Android 7.0은 audio_policy.conf를 사용하지 않으며, audio topology를 더 쉽고 광범위하게 적용할 수 있는 XML 파일 형식이 도입되었다.  
- Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택한다.  
+> Galaxy Nexus 오디오 하드웨어에 대한 예제는 device/samsung/tuna/audio/audio_policy.conf 에서 볼 수 있다. 
+>
+그러나 audio_policy.conf 파일은 TV, automobiles와 같은 복잡한 topology를 기술하기에는 제한이 있다.  
+Android 7.0은 audio_policy.conf를 사용하지 않으며, audio topology를 더 쉽고 광범위하게 적용할 수 있는 XML 파일 형식이 도입되었다.  
+Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택한다.  
 
- > Android 10 에서 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원한다.
+> Android 10 에서 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원한다.
   
  - [x] rockchip platform 확인.  :  device/rockchip/common/device.mk USE_XML_AUDIO_POLICY_CONF := 1
 	 
 
- ### Advantages of the XML format
+### Advantages of the XML format
  
- conf 파일에서와 마찬가지로 XML파일을 사용하면 output 및 input Stream profiles 의 수와 유형, play, capture에서 사용할 수 있는  
- device, audio attributes 을 정의 할 수 있다.   
- 또한 XML파일은 아래와 같은 향상된 기능을 제공.  
+conf 파일에서와 마찬가지로 XML파일을 사용하면 output 및 input Stream profiles 의 수와 유형, play, capture에서 사용할 수 있는  
+device, audio attributes 을 정의 할 수 있다.   
+또한 XML파일은 아래와 같은 향상된 기능을 제공.  
 
  - 동시에 멀티 recording app 동작을 지원.   
  - client는 무음 오디오 샘플을 지원한다.   
@@ -56,10 +56,10 @@ Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy con
  - 볼륨 곡선은 사용자 정의할 수 있습니다. 이전에는 볼륨 테이블이 하드코딩되었습니다. XML 형식으로 볼륨 테이블이 설명되고 사용자 정의될 수 있다.  
  - template 은 frameworks/av/services/audiopolicy/config/audio_policy_configuration.xml 에 정의 되어 있다.  
 
- ### File format and location
+### File format and location
   
- 새로운 audio policy configuration file은 *audio_policy_configuration.xml*파일이며, /system/etc/에 존재한다.  
- 아래 샘플은 Android12 및 Android12 이하 버전에서 XML 파일 형식의 간단한 audio policy configuration을  보여준다.  
+새로운 audio policy configuration file은 *audio_policy_configuration.xml*파일이며, /system/etc/에 존재한다.  
+아래 샘플은 Android12 및 Android12 이하 버전에서 XML 파일 형식의 간단한 audio policy configuration을  보여준다.  
 
  ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
