@@ -437,7 +437,7 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 }
 ```
 
- - kcontrol이 등록되면 snd_card 구조체의 controls에 다음과 같이 연결된다.
+ - kcontrol이 등록되면 snd_card 구조체의 controls에 다음과 같이 연결된다.(snd_soc_component_driver)
 
 ![](images/ALSA_02.png)
 
