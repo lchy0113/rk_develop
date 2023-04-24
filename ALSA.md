@@ -445,7 +445,7 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 ## 2.5 Kcontrol 운용
 
  - user space application에서는 ALSA Library를 이용하여 Kcontrol들을 access 접근 제한(대부분R/W)에 따라 제어할수 있다.
- - ALSA Library를 이용한 amixer(not alsamixer!)라는 program으로 console command 형식으로 사용 가능하다. 
+ - ALSA Library를 이용한 amixer(not alsamixer!)(e.g Android, tinymix)라는 program으로 console command 형식으로 사용 가능하다. 
  > amixer는 ALSA project(http://www.alsa-project.org)에서 alsa-utils packages를 통해 제공
  - Android platform의 경우는 tinyalsa 패키지를 통해 ALSA Library를 이용한다.
     * 아래와 같이 tinymix 명령을 내려 현재 sound card의 모든 kcontrol을 확인 할 수 있다.
