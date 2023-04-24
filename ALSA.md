@@ -351,7 +351,7 @@ int snd_soc_get_enum_double(struct snd_kcontrol *kcontrol,
 ```
 
 
- - Linux kernel source의 audio codec device drier 의 source code안에 MACRO를 통하여 많은 snd_kcontrol_new가 선언되어 있다.
+ - Linux kernel source의 audio codec device driver 의 source code안에 MACRO를 통하여 많은 snd_kcontrol_new가 선언되어 있다.
 
 ```c
 static const struct snd_kcontrol_new ak7755_snd_controls[] = {
