@@ -838,7 +838,7 @@ typedef enum _AudioRoute {
  *AudioPolicyManager*가 초기화 될 때, *deseralizeAudioPolicyXmlConfig* 함수에서 audio_policy_configuration.xml 분석 및 반환 된다. 
 
  * **module** tag  
-	Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp등과 같이 나눠져 있다.  
+	Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp, submix, bluetooth hearing aid등과 같이 나눠져 있다.  
   
  * **MixPort** label  
 	MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.  
@@ -859,6 +859,26 @@ typedef enum _AudioRoute {
  * **Route** label  
  Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.  
 	- *AudioRoute class*
+
+
+ HAL 제공업체는 HAL에 대한 name 및 여러 configuration 정보를 지닌 config file을 정의한다.  
+ ex. ./device/google/crosshatch/audio_policy_configuration.xml
+```xml
+	<module name="primary" halVersion="2.0">
+	<module name="usb" halVersion="2.0">
+
+	<xi:include href="r_submix_audio_policy_configuration.xml"/>
+	<xi:include href="bluetooth_hearing_aid_audio_policy_configuration.xml"/>
+```
+	총 4 가지 HAL을 loading   
+		primary   
+		usb  
+		submix  
+		bluetooth hearing aid  
+	  
+	제조사는 HAL service를 통해 설정에 있는 name 별로의 HAL을 생성해 줘야함  
+
+  
 
 #### route를 통해 devicePort와 mixPort를 연결하는 방법  
 
