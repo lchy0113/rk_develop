@@ -324,4 +324,5 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
 
  - [ ] hardware/rockchip/audio/tinyalsa_hal/alsa_route.c   
   -> route_pcm_card_open()를 input, output stream이 발생 할때 마다 호출이 됨.  parameter로 전달되는route의 값을 누가 정의하는지 확인 필요함. 
+     ex. normal-output : route(21)   normal-mute : route(0)
 
