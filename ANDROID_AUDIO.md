@@ -941,6 +941,11 @@ struct audio_port_config {
 };
 ```
 
+### Audio Focus
+
+ 한번에 하나의 앱만 Audio Focus를 유지 할수 있도록 하는 기능 입니다.  
+ 앱이 오디오를 출력해야 하는 경우, Audio Focus를 요청해야 합니다. Focus가 있는 앱은 사운드를 재생할 수 있습니다.   
+
 # Note
 
 ## android_automotive
