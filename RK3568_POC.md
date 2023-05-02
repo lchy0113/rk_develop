@@ -4,7 +4,7 @@
 
 ## Device Map
 
-### Uart
+### uart
 
 ```bash
 /* Default UART Map */
