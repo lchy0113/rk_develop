@@ -7,8 +7,6 @@
 ### uart
 
 ```bash
-/* Default UART Map */
-
 +---------------+
 | [RK3568]      |
 |               |
