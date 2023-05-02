@@ -103,8 +103,9 @@
 |     VCCIO1         H17          VCCIO_ACODEC               3.3V                      |
 |                                                                                      |
 |     VCCIO2         H18          VCCIO_FLASH                1.8V                      |
-|                   /* pin "FLASH_VOL_SEL" must be logic high,                         |
-|                     if VCCIO_FLASH=1.8V, FLASH_VOL_SEL must be logic high */         |
+|                   /* pin "FLASH_VOL_SEL" must be logic High,                         |
+|                     if VCCIO_FLASH=3.3V, FLASH_VOL_SEL must be logic low             |
+|                     and VCCIO_FLASH=1.8V, FLASH_VOL_SEL must be logic high */        |
 |                                                                                      |
 |     VCCIO3         L22          VCCIO_SD                   3.3V                      |
 |                                                                                      |
