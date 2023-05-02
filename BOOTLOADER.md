@@ -1035,3 +1035,16 @@ u-boot/
 ```
 ./ddrbin_tool ddrbin_param.txt ../../u-boot/rk356x_spl_loader_v1.13.112.bin
 ```
+
+
+<hr/>
+<br/>
+<br/>
+<br/>
+<hr/>
+
+## to do : rk3568_poc ver rgb-02  
+ - [ ] bootloader 
+ - [ ] boot 
+ -
+
