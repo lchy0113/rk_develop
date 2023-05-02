@@ -88,6 +88,40 @@
 |               |
 +---------------+
 ```
+
+### io power domain
+
+```bash
++--------------------------------------------------------------------------------------+
+| [RK3568]                                                                             |
+|     [io domain]    [pin num]    [supply power net name]    [voltage]                 |
+|                                                                                      |
+|     PMUIO1         Y20          VCC3V3_PMU                 3.3V                      | 
+|                                                                                      |
+|     PMUIO2         W19          VCC3V3_PMU                 3.3V                      |
+|                                                                                      |
+|     VCCIO1         H17          VCCIO_ACODEC               3.3V                      |
+|                                                                                      |
+|     VCCIO2         H18          VCCIO_FLASH                1.8V                      |
+|                   /* pin "FLASH_VOL_SEL" must be logic high,                         |
+|                     if VCCIO_FLASH=1.8V, FLASH_VOL_SEL must be logic high */         |
+|                                                                                      |
+|     VCCIO3         L22          VCCIO_SD                   3.3V                      |
+|                                                                                      |
+|     VCCIO4         J21          VCC_3V3                    3.3V                      |
+|                                                                                      |
+|     VCCIO5         V10 V11      VCC_3V3                    3.3V                      |
+|                                                                                      |
+|     VCCIO6         R9 U9        VCC_3V3                    3.3V                      |
+|                                                                                      |
+|     VCCIO7         V12          VCC_3V3                    3.3V                      |
+|                                                                                      |
++--------------------------------------------------------------------------------------+
+
+
+```
+
+
 ## Android Device
 
 ```bash
