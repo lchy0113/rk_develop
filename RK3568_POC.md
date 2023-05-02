@@ -1,6 +1,78 @@
 # DEVICE 
 > aosp rk3568 device 에 대한 문서 입니다.
 
+
+## Device Map
+
+### Uart
+
+```bash
+/* Default UART Map */
+
++---------------+
+| [RK3568]      |
+|               |
+|    UART0------+ <-----> zigbee
+|               |
+|    UART1-+-M0-+
+|          +-M1-+
+|               |
+|    UART2-+-M0-+ <----> device control
+|          +-M1-+
+|               |
+|    UART3-+-M0-+
+|          +-M1-+
+|               |
+|    UART4-+-M0-+
+|          +-M1-+ <----> debug
+|               |
+|    UART5-+-M0-+
+|          +-M1-+
+|               |
+|    UART6-+-M0-+ <----> sub
+|          +-M1-+
+|               |
+|    UART7-+-M0-+
+|          +-M1-+
+|               |
+|    UART8-+-M0-+
+|          +-M1-+
+|               |
+|    UART9-+-M0-+ <----> mcu(temp)
+|          +-M1-+
+|               |
++---------------+
+```
+
+### i2c
+
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|    I2C0-------+
+|               |
+|    I2C1-------+ <----> hot key
+|               |
+|    I2C2--+-M0-+
+|          +-M1-+ <----> internal cam
+|               |
+|    I2C3--+-M0-+ <----> touch ic
+|          +-M1-+
+|               |
+|    I2C4--+-M0-+ <----> pmic
+|          +-M1-+
+|               |
+|    I2C5--+-M0-+
+|          +-M1-+ <----> audio codec, decoder
+|               |
+|    I2C_HDMI---+
++---------------+
+```
+
+## Android Device
+
 ```bash
 lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12/device$ tree -R company/test/rk3568_poc/
 company/test/rk3568_poc/
