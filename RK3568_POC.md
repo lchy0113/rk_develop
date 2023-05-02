@@ -168,3 +168,61 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 	|	+-> overlay 및 package 지정.
 	+-> product name, device, model, brand, manufacturer 세팅.  
 ```
+
+
+## to do : 
+ - [ ] change userdata partition file system to EXT4  : 기본적으로 data 파티션의 파일시스템은 fsfs으로 구성된다.   배터리를 사용하지 않는 제품은 ext4 파일시스템으로 변경을 추천한다. (data loss 방지를 위해서 f2fs파일시스템을 사용함.)
+```bash
+/dev/block/dm-8 on /data type f2fs (rw,lazytime,seclabel,nosuid,nodev,noatime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,flush_merge,extent_cache,mode=adaptive,active_logs=6,reserve_root=32768,resuid=0,resgid=1065,alloc_mode=reuse,fsync_mode=posix)
+
+// patch-01
+device/rockchip/common$ git diff
+diff --git a/scripts/fstab_tools/fstab.in b/scripts/fstab_tools/fstab.in
+index 6e78b00..a658332 100755
+--- a/scripts/fstab_tools/fstab.in
++++ b/scripts/fstab_tools/fstab.in
+@@ -20,6 +20,6 @@ ${_block_prefix}system_ext /system_ext
+ ext4 ro,barrier=1
+${_flags},first_stage_
+# For sdmmc
+/devices/platform/${_sdmmc_device}/mmc_host*
+ auto
+ auto
+ defaults
+voldmanaged=sdcard1:auto
+#
+ Full disk encryption has less effect on rk3326, so default to enable this.
+-/dev/block/by-name/userdata /data f2fs	noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065 latemount,wait,check,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,quota,formattable,reservedsize=128M,checkpoint=fs
++#/dev/block/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065 latemount,wait,check,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,quota,formattable,reservedsize=128M,checkpoint=fs
+# for ext4
+-#/dev/block/by-name/userdata
+ /data
+ ext4
+discard,noatime,nosuid,nodev,noauto_da_alloc,data=ordered,user_xattr,barrier=1latemount,wait,formattable,check,fileencryption=software,quota,reservedsize=128M,checkpoint=block
++/dev/block/by-name/userdata /data ext4 discard,noatime,nosuid,nodev,noauto_da_alloc,data=ordered,user_xattr,barrier=1 latemount,wait,formattable,check,fileencryption=software,quota,reservedsize=128M,checkpoint=block
+
+// patch-02
+device/rockchip/rk356x$ git diff
+diff --git a/rk3566_r/recovery.fstab b/rk3566_r/recovery.fstab
+index 7532217..cf789ac 100755
+--- a/rk3566_r/recovery.fstab
++++ b/rk3566_r/recovery.fstab
+@@ -7,7 +7,7 @@
+ /dev/block/by-name/odm				/odm	 		ext4	defaults	 defaults
+ /dev/block/by-name/cache			/cache			ext4	defaults	 defaults
+ /dev/block/by-name/metadata		/metadata		ext4	defaults	 defaults
+-/dev/block/by-name/userdata		/data			f2fs	defaults	 defaults
++/dev/block/by-name/userdata		/data			ext4	defaults	 defaults
+ /dev/block/by-name/cust			/cust			ext4	defaults	 defaults
+ /dev/block/by-name/custom			/custom			ext4	defaults	 defaults
+ /dev/block/by-name/radical_update	/radical_update ext4	defaults	 defaults
+```
+ - [ ] app performance mode setting : Configure the file: package_performance.xml in device/rockchip/rk3xxx/. Add the package names which need to use performance mode in the node:(use aapt dump badging (file_path.apk) to acquire the package name)
+```bash
+< app package="package name" mode="whether to enable the acceleration, 1 for enable, 0 for disable"/>
+// take antutu as example as below, 
+
+< app package="com.antutu.ABenchMark"mode="1"/>
+< app package="com.antutu.benchmark.full"mode="1"\/>
+< app package="com.antutu.benchmark.full"mode="1"\/>
+```
