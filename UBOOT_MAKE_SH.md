@@ -2,6 +2,7 @@
 
 - sequence :   
 ```bash
+/** sub script */
 SRCTREE=`pwd`
 SCRIPT_FIT="${SRCTREE}/scripts/fit.sh"
 SCRIPT_ATF="${SRCTREE}/scripts/atf.sh"
@@ -14,6 +15,9 @@ CC_FILE=".cc"
 REP_DIR="./rep"
 ```
   01. **process_args**  
+```bash
+make defconfig
+```
   02. **prepare**  
 ```bash
 RKBIN=
@@ -27,12 +31,12 @@ TOOLCHAIN_ADDR2LINE=
 ```
   04. **select_chip_info**  
 ```bash
-RKCHIP=
-RKCHIP_LABEL=
-RKCHIP_LOADER=
-RKCHIP_TRUST=
-INI_TRUST=
-INI_LOADER=
+RKCHIP=			RK3568
+RKCHIP_LABEL=	RK3568	
+RKCHIP_LOADER=	RK3568
+RKCHIP_TRUST=	RK3568
+INI_TRUST=		rkbin/RKTRUST/RK3568TRUST.ini
+INI_LOADER=		rkbin/RKBOOT/RK3568MINIALL.ini
 ```
   05. **fixup_platform_configure**  
 ```bash
@@ -56,10 +60,9 @@ pack_loader_image()
   12. **finish**  
   13. **echo ${TOOLCHAIN}**  
   14. **date**  
-  
-## process_args
- make defconfig
-
-## prepare
-
-
+ 
+ ```bash
+./make.sh
+./make.sh itb 	 rkbin/RKTRUST/RK3568TRUST.ini
+./make.sh loader rkbin/RKBOOT/RK3568MINIALL.ini
+ ```
