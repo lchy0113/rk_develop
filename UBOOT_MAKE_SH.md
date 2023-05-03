@@ -16,11 +16,12 @@ REP_DIR="./rep"
 ```
   01. **process_args**  
 ```bash
-make defconfig
+// make defconfig
 ```
   02. **prepare**  
 ```bash
 RKBIN=
+PLAY_TYPE="FIT'	// if CONFIG_ROCKCHIP_FIT_IMAGE=y from .config
 ```
   03. **select_toolchain**  
 ```bash
@@ -53,16 +54,15 @@ PLAT_TYPE="RKFW" # default
   10. **make PYTHON=python2 CROSS_COMPILE=${toolchain} all --jobs=${JOB}**  
   11. **pack_images**  
 ```bash
-pack_uboot_image()
-pack_trust_image()
-pack_loader_image()
+pack_fit_image --ini-trust rkbin/RKTRUST/RK3568TRUST.ini --ini-loader rkbin/RKBOOT?RK3568MINIALL.ini 
+	${SCRIPT_FIT} ${ARG_LIST_FIT} --chip RK3568
+		scripts/fit.sh
+			scripts/fit-core.sh
+				function fit_gen_uboot_itb()
+					./make.sh itb 	 rkbin/RKTRUST/RK3568TRUST.ini
+					./make.sh loader rkbin/RKBOOT/RK3568MINIALL.ini
 ```
   12. **finish**  
   13. **echo ${TOOLCHAIN}**  
   14. **date**  
  
- ```bash
-./make.sh
-./make.sh itb 	 rkbin/RKTRUST/RK3568TRUST.ini
-./make.sh loader rkbin/RKBOOT/RK3568MINIALL.ini
- ```
