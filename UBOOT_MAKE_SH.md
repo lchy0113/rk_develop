@@ -61,6 +61,10 @@ pack_fit_image --ini-trust rkbin/RKTRUST/RK3568TRUST.ini --ini-loader rkbin/RKBO
 				function fit_gen_uboot_itb()
 					./make.sh itb 	 rkbin/RKTRUST/RK3568TRUST.ini
 					./make.sh loader rkbin/RKBOOT/RK3568MINIALL.ini
+
+					loader rkbin/RKBOOT/RK3568MINIALL.ini
+					DEF_PATH:rkbin/rk356x_spl_loader_v1.13.112.bin
+					IDB_PATH:rkbin/
 ```
   12. **finish**  
   13. **echo ${TOOLCHAIN}**  
