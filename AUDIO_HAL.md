@@ -326,3 +326,49 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
   -> route_pcm_card_open()를 input, output stream이 발생 할때 마다 호출이 됨.  parameter로 전달되는route의 값을 누가 정의하는지 확인 필요함. 
      ex. normal-output:route(0), normal-input:route(21), normal-output-mute:route(24), normal-input-mute:route(25)
 
+
+
+
+
+
+# 진행 사항 Memo
+ - rk3568 rgb p02 버전 오디오 모듈 개발 시 이어서 진행. 
+ - 오디오 개발 branch : **private/develop_ak7755**
+
+	
+```bash
+lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$ repo status 
+project device/kdiwin/test/rk3568_poc/          branch private/develop_ak7755
+ -m     audio/audio_policy_configuration.xml
+ --     audio/audio_policy_configuration.xml_backup
+ --     audio/codec_offload_audio_policy_configuration.xml
+project device/rockchip/common/                 (*** NO BRANCH ***)
+ -m     audio_policy/ATVAudioPolicyManager.cpp
+project frameworks/av/                          (*** NO BRANCH ***)
+ -m     media/libaudioclient/AudioSystem.cpp
+ -m     services/audioflinger/AudioFlinger.cpp
+ -m     services/audioflinger/PatchPanel.cpp
+project frameworks/base/                        (*** NO BRANCH ***)
+ -m     media/java/android/media/AudioManager.java
+project hardware/rockchip/audio/                branch master
+ -m     tinyalsa_hal/alsa_route.c
+project hardware/rockchip/libhwjpeg/            (*** NO BRANCH ***)
+ -m     src/version.h
+project kernel-4.19/                            branch private/develop_ak7755
+ -m     Makefile
+ -m     sound/soc/codecs/ak7755.c
+project packages/modules/BootPrebuilt/5.10/arm64/ (*** NO BRANCH ***)
+ -t     boot-userdebug.img
+project rkbin/                                  (*** NO BRANCH ***)
+ --     tools/gen_param_rk3568_ddr_1560MHz_v1.13_230222.txt
+ --     tools/rk3568_ddr_1560MHz_v1.13-beta.bin
+project system/media/                           (*** NO BRANCH ***)
+ -m     audio/include/system/audio.h
+ -m     audio_route/audio_route.c
+project u-boot/                                 branch private/develop
+project vendor/kdiwin/packages/Wall/            branch master
+project vendor/kdiwin/packages/WallTest/        branch master
+ --     res/layout/haboard_main.xml
+project vendor/rockchip/common/                 branch private/develop
+lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$
+```
