@@ -94,6 +94,9 @@ rockdev/Image-rk3568_r/
 ├── super.img			//	including the contents of odm, vendor, system partitions
 ├── uboot.img			//	including uboot image
 └── vbmeta.img			//	including avb veriification information, used for AVB verication
+						//	vbmeta 이미지는 Android Verified Boot에서 사용되는 이미지로, 부팅 시스템의 무결성을 검증하는 데 사용됩니다.
+						//	이 이미지는 부트 로더에 의해 검증되며, 부트 로더가 검증에 실패하면 부팅이 중단됩니다.
+						//	이 이미지를 생성하려면 avbtool을 사용할 수 있습니다.
 ```
 
 
