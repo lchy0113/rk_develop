@@ -41,7 +41,7 @@ $ io -4 -w 0x1000				// write the value of the 4-bit register from 0x1000
 ```
 ## gpio iomux 
 
-### 사용 예제
+### 사용 예제(GPIO3_C5)
  -  View the multiplexing of GPIO3_C5 pins  
  -  From the datasheet of the master control, the base address of the register corresponding to GPIO3 is: 0xFDC60000 (SYS_GRF) 
  -  The offset of GRF_GPIO3C_IOMUX_H found from the datasheet of the master control is: 0x0054 
@@ -69,6 +69,49 @@ gpio3c5_sel
 ```
 
 Therefore, it can be determined that the GPIO is multiplexed as 3'h0: GPIO3_C5.
+
+### 사용 예제(GPIO0_B7)
+ - View the multiplexing of GPIO0_B7 pins  
+ - The offset of GRF_GPIO0B_IOMUX_H found from the datasheet of the master control is: 0x000C
+ - The address of the iomux register of GPIO0_B7 is : base address (Operation base) + offset(offset) = 0xFDC60000 + 0x000C = 0xFDC6000C  
+	 > pin multiplxing 설정
+
+![](./images/DEBUG_04.png)
+
+
+```bash
+
+// change to gpio0_b7 
+rk3568_poc:/ # io -4 -w 0xfdc6000c 0x10000111
+
+```
+
+ - The offset of GPIO_SWPORT_DDR_L(Data direction register) found from the datasheet of the master control is : 0x0008
+ - The address of the GPIO0 register of GPIO0_B7 is : base address (Operation base) + offset(offset) = 0xFDD60000 +  0x0008
+	 > in/out 설정
+
+![](./images/DEBUG_05.png)
+
+```bash
+// change to output for gpio0_b7
+rk3568_poc:/sys/class/gpio/gpio15 # io -4 -w 0xfdd60008 0x800080A4
+rk3568_poc:/sys/class/gpio/gpio15 # cat direction
+out
+```
+
+ - The offset of GPIO_SWPORT_DR_L(Low/High Output data) foud from the datasheet of the master control is : 0x0000 
+ - The address of the GPIO0 register of GPIO0_B7 is : base address (Operation base) + offset(offset) = 0xFDD60000 +  0x0000
+
+
+![](./images/DEBUG_06.png)
+```bash
+rk3568_poc:/sys/class/gpio/gpio15 # io -4 -w 0xfdd60000 0x80008000
+1|rk3568_poc:/sys/class/gpio/gpio15 # cat value
+1
+rk3568_poc:/sys/class/gpio/gpio15 #
+
+```
+
 
 ### GRF Address Mapping Table
 ![](./images/DEBUG_01.png)
