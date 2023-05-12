@@ -82,7 +82,7 @@ Therefore, it can be determined that the GPIO is multiplexed as 3'h0: GPIO3_C5.
 ```bash
 
 // change to gpio0_b7 
-rk3568_poc:/ # io -4 -w 0xfdc6000c 0x10000111
+rk3568_poc:/ # io -4 -w 0xfdc6000c 0x80000111
 
 ```
 
