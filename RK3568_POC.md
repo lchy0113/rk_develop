@@ -53,7 +53,7 @@
 ```
 
 ### i2c
-
+> rk3568_rgb_p02 board
 
 ```bash
 +---------------+
@@ -80,6 +80,7 @@
 ```
 
 ### vop
+> rk3568_rgb_p01, rk3568_rgb_p02 board
 
 ```bash
 +---------------+
@@ -98,6 +99,7 @@
 ```
 
 ### io power domain
+> rk3568_rgb_p01, rk3568_rgb_p02 board
 
 ```bash
 +--------------------------------------------------------------------------------------+
@@ -131,6 +133,7 @@
 
 
 ### gpio
+> rk3568_rgb_p02 board
 
 ```bash
 ////door////
@@ -172,6 +175,45 @@
 ```
 
 
+- pio_hal
+```bash
+// input
+	GPIO0_C6	DOOR_CALL_DET
+	GPIO1_A6	ESCAPE_IN
+	GPIO1_A7	EMG_IN
+	GPIO1_B0	SEQ1_IN
+	GPIO1_B1	SEQ2_IN
+	GPIO2_C6	PIR_DET
+
+// output
+	GPIO0_A5	DOOR_OPEN
+	GPIO0_B7	RST_CH710
+	GPIO0_C2	ZIGBee_RST
+	GPIO0_C5	DOOR_PCTL
+	GPIO1_A5	EMER_LEDOUT
+```
+
+
+- audio
+```bash
+	GPIO0_A6	SEL_DC
+	GPIO0_B1	DOOR_MIC_EN
+	GPIO0_B2	SEL_DC_SUB
+	GPIO0_C3	SEL_SUB-
+	GPIO0_C4	SEL_ECHO_SUB+
+	GPIO2_D1	SEL_DTMF
+	GPIO3_A1	SEL_PSTN
+	GPIo3_A2	SEL_SUB_PSTN
+	GPIO3_C1	SEL_ECHO
+	GPIO3_C2	SEL_SUB_VIDEO
+	GPIO3_D0	DTMF_DATA
+	GPIO3_D1	DTMF_EN
+	GPIO3_D2	PSTN_OFF_HOOK
+	GPIO3_D3	RING_DET
+	GPIO3_D4	PSTN_DET
+	GPIO4_C2	DTMF_CLK
+	GPIO4_D2	SPK_AMP_EN
+```
 ## Android Device
 
 ```bash
