@@ -112,6 +112,15 @@ rk3568_poc:/sys/class/gpio/gpio15 #
 
 ```
 
+gpio4_c7, gpio4_d1 체크  
+
+```bash
+// iomux 
+1|rk3568_poc:/ # io -4 -r -l 0x8 0xfdc60074
+fdc60074:  00001000 00000001
+// set hdmitx_scl, hdmitx_hda
+```
+
 
 ### GRF Address Mapping Table
 ![](./images/DEBUG_01.png)
