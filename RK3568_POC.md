@@ -3,31 +3,41 @@
 
 
 ## Device Map
+> rk3568_rgb_p02 board
 
 ### uart
+ - upper layer에는 아래와 같은 uart node로 제공.
+
+| **uart dev node** 	| **connect device**   	|
+|-------------------	|----------------------	|
+| /dev/ttyS0        	| rs485;device control 	|
+| /dev/ttyS1        	| rs485;sub-phone      	|
+| /dev/ttyS2        	| zigbee               	|
+| /dev/ttyS3        	| temp                 	|
+
 
 ```bash
 +---------------+
 | [RK3568]      |
 |               |
-|    UART0------+ <-----> zigbee
+|    UART0------+ <-----> zigbee	(rk3568_rgb_p01: micom)
 |               |
 |    UART1-+-M0-+
 |          +-M1-+
 |               |
-|    UART2-+-M0-+ <----> device control
+|    UART2-+-M0-+ <----> device control;rs485  (rk3568_rgb_p01: debug)
 |          +-M1-+
 |               |
-|    UART3-+-M0-+
+|    UART3-+-M0-+	(rk3558_rgb_p01: pstn modem)
 |          +-M1-+
 |               |
-|    UART4-+-M0-+
+|    UART4-+-M0-+		(rk3568_rgb_p01: device control)
 |          +-M1-+ <----> debug
 |               |
 |    UART5-+-M0-+
 |          +-M1-+
 |               |
-|    UART6-+-M0-+ <----> sub
+|    UART6-+-M0-+ <----> sub;rs485
 |          +-M1-+
 |               |
 |    UART7-+-M0-+
@@ -117,8 +127,48 @@
 |     VCCIO7         V12          VCC_3V3                    3.3V                      |
 |                                                                                      |
 +--------------------------------------------------------------------------------------+
+```
 
 
+### gpio
+
+```bash
+////door////
+//	DOOR_OPEN		(GPIO0_A5)
+//	RST_CH710		(GPIO0_B7)
+//	ZIGBEE_RST		(GPIO0_C2)
+//	DOOR_PCTL		(GPIO0_C5)
+ echo 21 > /sys/class/gpio/export ; echo "out" > /sys/class/gpio/gpio21/direction ; echo 1 > /sys/class/gpio/gpio21/value
+//	DOOR_CALL_DET	(GPIO0_C6)
+//	EMER_LEDOUT		(GPIO1_A5)
+//	ESCAPE_IN		(GPIO1_A6)
+//	EMG_IN			(GPIO1_A7)
+//	SEQ1_IN			(GPIO1_B0)
+//	SEQ2_IN			(GPIO1_B1)
+//	PIR_DET			(GPIO2_C6)
+
+////alsa////
+//	SEL_DC			(GPIO0_A6)
+//	DOOR_MIC_EN		(GPIO0_B1)
+//	SEL_DC_SUB		(GPIO0_B2)
+//	SEL_SUB-		(GPIO0_C3)
+//	SEL_ECHO_SUB+	(GPIO0_C4)
+//	SEL_DC_SUB		(GPIO1_B2)
+//	SEL_SUB_PSTN	(GPIO3_A2)
+//	SEL_ECHO		(GPIO3_C1)
+//	SEL_SUB_VIDEO	(GPIO3_C2)
+//	SPK_AMP_EN		(GPIO4_D2)
+
+////etc////
+//	DEVICE_TXEN		(GPIO0_C7)	w//dev/ttyS2
+//	SUB_TXEN		(GPIO2_A5)	w//dev/ttyS6
+//	SEL_DTMF		(GPIO2_D1)
+//	SEL_PSTN		(GPIO3_A1)
+//	DTMF_DATA		(GPIO3_D0)
+//	DTMF_EN			(GPIO3_D1)
+//	RING_DET		(GPIO3_D3)
+//	PSTN_DET		(GPIO3_D4)
+//	DTMF_CLK		(GPIO4_C2)
 ```
 
 
