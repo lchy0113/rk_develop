@@ -20,8 +20,9 @@ REP_DIR="./rep"
 ```
   02. **prepare**  
 ```bash
-RKBIN=
-PLAY_TYPE="FIT'	// if CONFIG_ROCKCHIP_FIT_IMAGE=y from .config
+RKBIN=rkbin
+
+PLAT_TYPE="FIT'	// if CONFIG_ROCKCHIP_FIT_IMAGE=y from .config
 ```
   03. **select_toolchain**  
 ```bash
@@ -48,6 +49,12 @@ PLAT_TRUST_SIZE=
 PLAT_TYPE="RKFW" # default
 ```
   06. **select_ini_file**  
+```bash
+// to do: target board 별 ini_file 지정해야함.
+// configs/rk3568_poc_defconfig에서 CONFIG_LOADER_INI 에 NAME 지정하도록 추가.
+INI_LOADER=
+```
+ 
   07. **handle,args_late**  
   08. **sub_commands**  
   09. **clean files**  
@@ -70,3 +77,38 @@ pack_fit_image --ini-trust rkbin/RKTRUST/RK3568TRUST.ini --ini-loader rkbin/RKBO
   13. **echo ${TOOLCHAIN}**  
   14. **date**  
  
+-----
+
+# tools
+
+## boot_merger
+ > ini 설정 파일에 따라서 miniloader + ddr + usb plug를 merger하여 loader firmware을 생성.
+
+ - ini file(RK3568MINIALL.ini)
+```bash
+[CHIP_NAME]
+NAME=RK3568		// chip name
+[VERSION]
+MAJOR=1		
+MINOR=1
+[CODE471_OPTION]		// code471, Path1경로의 파일을 ddr bin으로 설정
+NUM=1
+Path1=bin/rk35/rk3568_ddr_1560MHz_v1.13.bin
+Sleep=1
+[CODE472_OPTION]		// code472, Path1경로의 파일을 usbplug bin으로 설정
+NUM=1
+Path1=bin/rk35/rk356x_usbplug_v1.14.bin
+[LOADER_OPTION]			// FlashData; 현재 ddr bin 으로 설정 , FlashBoot; miniLoader bin 으로 설정
+NUM=2
+LOADER1=FlashData
+LOADER2=FlashBoot
+FlashData=bin/rk35/rk3568_ddr_1560MHz_v1.13.bin
+FlashBoot=bin/rk35/rk356x_spl_v1.12.bin
+[OUTPUT]		// 출력되는 파일 이름
+PATH=rk356x_spl_loader_v1.13.112.bin
+[SYSTEM]
+NEWIDB=true
+[FLAG]
+471_RC4_OFF=true
+RC4_OFF=true
+```
