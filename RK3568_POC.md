@@ -174,6 +174,7 @@
 	GPIO4_C2	DTMF_CLK
 	GPIO4_D2	SPK_AMP_EN
 ```
+
 ## Android Device
 
 ```bash
@@ -312,3 +313,7 @@ index 7532217..cf789ac 100755
 < app package="com.antutu.benchmark.full"mode="1"\/>
 < app package="com.antutu.benchmark.full"mode="1"\/>
 ```
+
+
+
+
