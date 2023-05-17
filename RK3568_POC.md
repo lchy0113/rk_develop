@@ -31,7 +31,7 @@
 |    UART3-+-M0-+	(rk3558_rgb_p01: pstn modem)
 |          +-M1-+
 |               |
-|    UART4-+-M0-+		(rk3568_rgb_p01: device control)
+|    UART4-+-M0-+	(rk3568_rgb_p01: device control;rs485)
 |          +-M1-+ <----> debug
 |               |
 |    UART5-+-M0-+
