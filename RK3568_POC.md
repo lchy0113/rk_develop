@@ -3,7 +3,6 @@
 
 
 ## Device Map
-> rk3568_rgb_p02 board
 
 ### uart
  - upper layer에는 아래와 같은 uart node로 제공.
@@ -53,7 +52,7 @@
 ```
 
 ### i2c
-> rk3568_rgb_p02 board
+- rk3568_rgb_p02 board
 
 ```bash
 +---------------+
@@ -80,13 +79,51 @@
 ```
 
 ### vop
-> rk3568_rgb_p01, rk3568_rgb_p02 board
+- rk3568 support vop
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|   Port0------ + <----> dsi0, dsi2, edp, hdmi 
+|               |
+|               |
+|   Port2------ + <----> dsi0, dsi1, edp, hdmi, lvcd
+|               |
+|               |
+|   Port2------ + <----> lvds, rgb 
+|               |
+|               |
++---------------+
+```
+
+
+
+- rk3568_rgb_p01, rk3568_rgb_p02 board
 
 ```bash
 +---------------+
 | [RK3568]      |
 |               |
 |   Port0------ + <----> hdmi
+|               |
+|               |
+|   Port2------ +
+|               |
+|               |
+|   Port2------ + <----> rgb565 
+|               |
+|               |
++---------------+
+```
+
+- rk3568_edp_p01 board
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|   Port0------ + <----> edp
 |               |
 |               |
 |   Port2------ +
