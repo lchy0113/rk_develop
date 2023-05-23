@@ -216,23 +216,23 @@
 
 ```bash
 	/								/								/
-	rk3568-pinctrl.dtsi----------+
-	rk3568.dtsi------------------+	
-	rk3568-poc.dtsi--------------+--rk3568-poc-v00.dtsi----------+--rk3568-poc-v00.dts
-		+-> /**							+-> /**
-			  * backlight                     * set iodomain
-			  * leds						  * panel 
-			  * sound card					  * usb
-			  * iodomain					  * camera
-			  * mmc   						  * gmac
-			  * etc							  * i2c1-5
-			  */							  * uart
-											  */
-									rk3568-android.dtsi----------+
-										+-> /**
-											  * setting bootargs
-								 			  * reserved_memory
-											  */
+    rk3568-pinctrl.dtsi----------+
+    rk3568.dtsi------------------+	
+    rk3568-poc.dtsi--------------+--rk3568-poc-v00.dtsi----------+--rk3568-poc-v00.dts
+        +-> /**                         +-> /**
+              * backlight                     * set iodomain
+              * leds                          * panel 
+              * sound card                    * usb
+              * iodomain                      * camera
+              * mmc                           * gmac
+              * etc                           * i2c1-5
+              */                              * uart
+                                              */
+                                    rk3568-android.dtsi----------+
+                                        +-> /**
+                                              * setting bootargs
+                                              * reserved_memory
+                                              */
 // change
 
     rk3568-pinctrl.dtsi----------+                                                                                     
