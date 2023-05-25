@@ -1,22 +1,30 @@
 #!/bin/bash
-
-if [ ! -f ./kernel/configs/kconfig.config ]; then
-	echo "...link kconfig.config"
-	ln -s ../../../device/kdiwin/test/rk3568_poc/kconfig.config ./kernel/configs/kconfig.config
-fi
-
 export PATH=$ANDROID_BUILD_TOP/prebuilts/clang/host/linux-x86/clang-r416183b/bin:$PATH
 
+source ../build/envsetup.sh >/dev/null
 BUILD_PATH="../build_linux_4.19.232"
 ADDON_ARGS="CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
 KERNEL_ARCH="arm64"
 KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config kconfig.config"
+TARGET_DEVICE=`get_build_var TARGET_PRODUCT`
+KERNEL_DTS=`get_build_var PRODUCT_KERNEL_DTS`
+
+echo -e $TARGET_DEVICE
+echo -e $KERNEL_DTS
+
+if [ ! -f ./kernel/configs/kconfig.config ]; then
+	echo "...link kconfig.config"
+	ln -s ../../../device/kdiwin/test/common/kconfig.config ./kernel/configs/kconfig.config
+fi
+
 # ./kernel-4.19/arch/arm64/configs/rockchip_defconfig 
 # ./kernel/configs/android-11.config -> ../../../mkcombinedroot/configs/android-11.config
 # ./kernel/configs/non_debuggable.config -> ../../../mkcombinedroot/configs/non_debuggable.config 
 # ./kernel/configs/disable_incfs.config -> ../../../mkcombinedroot/configs/disable_incfs.config
 # ./kernel/configs/kconfig.config -> ../../../device/kdiwin/test/rk3568_poc/kconfig.config
-KERNEL_DTS="rk3568-poc-v00"
+#KERNEL_DTS="rk3568-rgb-p01"
+#KERNEL_DTS="rk3568-rgb-p02"
+#KERNEL_DTS="rk3568-poc-v00"
 
 if [ ! -d $BUILD_PATH ]; then
 	mkdir $BUILD_PATH
@@ -46,7 +54,7 @@ if [ "$1" = "modules" ]; then
 	exit
 fi
 
-echo "Start build kernel"
+echo ">>> Start build kernel"
 #make clean ; 
 #make $ADDON_ARGS ARCH=$KERNEL_ARCH $KERNEL_DEFCONFIG
 make $ADDON_ARGS ARCH=$KERNEL_ARCH O=$BUILD_PATH $KERNEL_DTS.img -j32 
@@ -64,7 +72,7 @@ fi
 #cp arch/arm64/boot/dts/rockchip/rk3568-poc-v00.dtb ../out/target/product/rk3568_poc/dtb.img
 
 
-echo "package resource.img with character images"
+echo ">>> package resource.img with character images"
 ## copy to aosp out directory
 #cd ../u-boot && ./scripts/pack_resource.sh ../kernel-4.19/resource.img && cp resource.img ../kernel-4.19/resource.img && cd -
 ## copy to build directory
@@ -74,9 +82,13 @@ cd ../u-boot && ./scripts/pack_resource.sh $BUILD_PATH/resource.img && cp resour
 # repack v2 boot
 BOOT_CMDLINE="console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.console=ttyFIQ0 androidboot.wificountrycode=KR androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug"
 SECURITY_LEVEL="2022-03-05"
-mkbootfs -d ../out/target/product/rk3568_poc/system ../out/target/product/rk3568_poc/ramdisk | minigzip > ../out/target/product/rk3568_poc/ramdisk.img 
+
+mkbootfs -d ../out/target/product/$TARGET_PRODUCT/system ../out/target/product/$TARGET_PRODUCT/ramdisk | minigzip > ../out/target/product/$TARGET_PRODUCT/ramdisk.img 
 
 ## copy to aosp out directory
 #mkbootimg --kernel ../out/target/product/rk3568_poc/kernel --ramdisk ../out/target/product/rk3568_poc/ramdisk.img --dtb ../out/target/product/rk3568_poc/dtb.img --cmdline "$BOOT_CMDLINE" --os_version 12 --os_patch_level $SECURITY_LEVEL --second ./resource.img --header_version 2 --output ../out/target/product/rk3568_poc/boot.img
 ## copy to build directory
-mkbootimg --kernel $BUILD_PATH/arch/arm64/boot/Image --ramdisk ../out/target/product/rk3568_poc/ramdisk.img --dtb $BUILD_PATH/arch/arm64/boot/dts/rockchip/rk3568-poc-v00.dtb --cmdline "$BOOT_CMDLINE" --os_version 12 --os_patch_level $SECURITY_LEVEL --second $BUILD_PATH/resource.img --header_version 2 --output $BUILD_PATH/boot.img
+mkbootimg --kernel $BUILD_PATH/arch/arm64/boot/Image --ramdisk ../out/target/product/$TARGET_DEVICE/ramdisk.img --dtb $BUILD_PATH/arch/arm64/boot/dts/rockchip/$KERNEL_DTS.dtb --cmdline "$BOOT_CMDLINE" --os_version 12 --os_patch_level $SECURITY_LEVEL --second $BUILD_PATH/resource.img --header_version 2 --output $BUILD_PATH/boot.img
+
+
+echo ">>> done."
