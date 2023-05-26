@@ -31,7 +31,7 @@
 	drivers/video/drm/inno_video_combo_phy.c
 	drivers/video/drm/inno_video_phy.c
 
-## DT Bindings
+## DT Bindings (rgb)
 ### Host
 ```dtb
 &rgb {
@@ -125,9 +125,193 @@
 
 ```
 
+
+## DT Bindings (edp)
+### Host
+```dtb
+&edp {
+	hpd-gpios = <&gpio0 RK_PC2 GPIO_ATIVE_HIGH>;
+	status = "okay";
+};
+```
+
+### PHY
+```dtb
+&edp_phy {
+	status = "okay";
+};
+
+
+&edp_in_vp0 {
+	status = "okay";
+};
+
+&edp_in_vp1 {
+	status = "disabled";
+};
+```
+
+### Panel
+```dtb
+	panel {
+		compatible = "simple-panel";
+		bus-format = <MEDIA_BUS_FMT_RGB666_1X24_CPADHI>;
+		backlight = <&backlight>;
+	
+
+
+```
+
 ---
 # baseparameter images 
 > baseparameter 이미지는 rockchip 디스플레이 해상도, 디스플레이 효과 조정 구성 등과 같은 정보를 저장하는데 사용되며, 종료 및 재시작 후에도 이전과 동일한 효과가 유지 될 수 있도록 보장합니다. 
+
+---
+
+# 💻  code review
+
+
+```dtb
+vop: vop@fe040000	{
+	compatible = "rockhcip,rk3568-vop";
+
+	vop_out: ports {
+		vp0: port@0	{
+			vp0_out_dsi0:	{
+				remote-endpoint = <&dsi0_in_vp0>;
+			};
+			vp0_out_dsi1:	{
+				remote-endpoint = <&dsi1_in_vp0>;
+			};
+			vp0_out_edp:	{
+				remote-endpoint = <&edp_in_vp0>;
+			};
+			vp0_out_hdmi:	{
+				remote-endpoint = <&hdmi_in_vp0>;
+			};
+		};
+		vp1: port@1	{
+			vp1_out_dsi0:	{
+				remote-endpoint = <&dsi0_in_vp1>;
+			};
+			vp1_out_dsi1:	{
+				remote-endpoint = <&dsi1_in_vp1>;
+			};
+			vp1_out_edp:	{
+				remote-endpoint = <&edp_in_vp1>;
+			};
+			vp1_out_hdmi:	{
+				remote-endpoint = <&hdmi_in_vp1>;
+			};
+			vp1_out_lvds:	{
+				remote-endpoint = <&lvds_in_vp1>;
+			};
+		};
+		vp2: port@2	{
+			vp2_out_lvds:	{
+				remote-endpoint = <&lvds_in_vp2>;
+			};
+			vp2_out_rgb:	{
+				remote-endpoint = <&rgb_in_vp2>;
+			};
+		}:
+
+	};
+};
+
+grf: syscon@fdc60000	{
+	lvds: lvds	{
+		compatible = "rockchip,rk3568-lvds";
+		ports	{
+			port@0	{
+				lvds_in_vp1:	{
+					remote-endpoint = <&vp1_out_lvds>;
+				};
+				{
+				lvds_in_vp2:	{
+					remote-endpoint = <&vp2_out_lvds>;
+				};
+
+			};
+		};
+	};
+
+	rgb: rgb	{
+		compatible = "rockchip,rk3568-rgb";
+
+		ports {
+			port@0	{
+				rgb_in_vp2: endpoint	{
+					remote-endpoint = <&vp2_out_rgb>;
+				};
+			};
+		};
+	};
+};
+
+dsi0: dsi@fe060000	{
+	compatible = "rockchip,rk3568-mipi-dsi";
+
+	ports {
+		dsi0_in: port@0	{
+			dsi0_in_vp0:	{
+				remote-endpoint = <&vp0_out_dsi0>;
+			};
+			dsi0_in_vp1:	{
+				remote-endpoint = <&vp1_out_dsi0>;
+			};
+		};
+	};
+};
+
+dsi1: dsi@fe070000	{
+	compatible = "rockchip,rk3568-mipi-dsi";
+
+	ports {
+		dsi1_in: port@0	{
+			dsi1_in_vp0:	{
+				remote-endpoint = <&vp0_out_dsi1>;
+			};
+			dsi1_in_vp1:	{
+				remote-endpoint = <&vp1_out_dsi1>;
+			};
+		};
+	};
+};
+
+
+hdmi: hdmi@fe0a0000	{
+	compatible = "rockchip,rk3568-dw-hdmi";
+
+	ports {
+		hdmi_in: port	{
+			hdmi_in_vp0:	{
+				remote-endpoint = <&vp0_out_hdmi>;
+			};
+			hdmi_in_vp1:	{
+				remote-endpoint = <&vp1_out_hdmi>;
+			};
+
+		};
+	};
+};
+
+
+edp: edp@fe0c0000	{
+	compatible = "rockchip,rk3568-edp";
+
+	ports {
+		edp_in: port@0	{
+			edp_in_vp0:	{
+				remote-endpoint = <&vp0_out_edp>;
+			};
+			edp_in_vp1:	{
+				remote-endpoint = <&vp1_out_edp>;
+			};
+		};
+	};
+};
+```
 
 ---
 
