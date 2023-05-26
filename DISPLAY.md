@@ -171,31 +171,64 @@
 # 💻  code review
 
 ```bash
-              +----------------------------+    +---------------------+
-              | vop                        |    | dsi0                | 
-              |                            |    |       dsi0_in_vp0   |
-              + vp0           vp0_out_dsi0 |    |       dsi0_in_vp1   |
-              |               vp0_out_dsi1 |    +---------------------+
-              |               vp0_out_edp  |    | dsi1                |
-              |               vp0_out_hdmi |    |       dsi1_in_vp0   |
-              |                            |    |       dsi1_in_vp1   |
-              + vp1           vp1_out_dsi0 |    +---------------------+
-              |               vp1_out_dsi1 |    | hdmi                |
-              |               vp1_out_edp  |    |       hdmi_in_vp0   |
-              |               vp1_out_hdmi |    |       hdmi_in_vp1   |
-              |               vp1_out_lvds |    +---------------------+
-              |                            |    | edp                 |
-              + vp2           vp2_out_lvds |    |       edp_in_vp0    | 
-              |               vp2_out_rgb  |    |       edp_in_vp1    |
-              +----------------------------+    +---------------------+
-                                                | lvds                |
-                                                |       lvds_in_vp1   |
-                                                |       lvds_in_vp2   |
-                                                +---------------------+
-                                                | rgb                 |
-                                                |       rgb_in_vp2    |
-                                                +---------------------+
++-------------------+    +----------------------------+    +---------------------+
+| display_subsystem |    | vop                        |    | dsi0                | 
+|                   |    |                            |    |       dsi0_in_vp0   |
+|       route_dsi0  |    | vp0           vp0_out_dsi0 |    |       dsi0_in_vp1   |
+|       route_dsi1  |    |               vp0_out_dsi1 |    +---------------------+
+|       route_edp   |    |               vp0_out_edp  |    | dsi1                |
+|       route_hdmi  |    |               vp0_out_hdmi |    |       dsi1_in_vp0   |
+|       route_lvds  |    |                            |    |       dsi1_in_vp1   |
+|       route_rgb   |    | vp1           vp1_out_dsi0 |    +---------------------+
++-------------------+    |               vp1_out_dsi1 |    | hdmi                |
+                         |               vp1_out_edp  |    |       hdmi_in_vp0   |
+                         |               vp1_out_hdmi |    |       hdmi_in_vp1   |
+                         |               vp1_out_lvds |    +---------------------+
+                         |                            |    | edp                 |
+                         | vp2           vp2_out_lvds |    |       edp_in_vp0    | 
+                         |               vp2_out_rgb  |    |       edp_in_vp1    |
+                         +----------------------------+    +---------------------+
+                                                           | lvds                |
+                                                           |       lvds_in_vp1   |
+                                                           |       lvds_in_vp2   |
+                                                           +---------------------+
+                                                           | rgb                 |
+                                                           |       rgb_in_vp2    |
+                                                           +---------------------+
+    [route_dsi0] -> [vp1_out_dsi0] -> [dsi0_in_vp1] 
 ```
+
+- display
+
+```dtb
+display_subsystem: {
+	compatible = "rockchip,display-subsystem";
+
+	route {
+		route_dsi0:	{
+			connect = <&vp0_out_dsi0>;
+		};
+		route_dsi1:	{
+			connect = <&vp0_out_dsi1>;
+		};
+		route_edp:	{
+			connect = <&vp0_out_edp>;
+		};
+		route_hdmi:	{
+			connect = <&vp1_out_hdmi>;
+		};
+		route_lvds:	{
+			connect = <&vp1_out_lvds>;
+		};
+		route_rgb:	{
+			connect = <&vp2_out_rgb>;
+		};
+	};
+};
+
+```
+
+- vop
 
 ```dtb
 vop: vop@fe040000	{
@@ -244,7 +277,11 @@ vop: vop@fe040000	{
 
 	};
 };
+```
 
+- display
+
+```dtb
 grf: syscon@fdc60000	{
 	lvds: lvds	{
 		compatible = "rockchip,rk3568-lvds";
