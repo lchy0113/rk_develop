@@ -170,6 +170,32 @@
 
 # 💻  code review
 
+```bash
+              +----------------------------+    +---------------------+
+              | vop                        |    | dsi0                | 
+              |                            |    |       dsi0_in_vp0   |
+              + vp0           vp0_out_dsi0 |    |       dsi0_in_vp1   |
+              |               vp0_out_dsi1 |    +---------------------+
+              |               vp0_out_edp  |    | dsi1                |
+              |               vp0_out_hdmi |    |       dsi1_in_vp0   |
+              |                            |    |       dsi1_in_vp1   |
+              + vp1           vp1_out_dsi0 |    +---------------------+
+              |               vp1_out_dsi1 |    | hdmi                |
+              |               vp1_out_edp  |    |       hdmi_in_vp0   |
+              |               vp1_out_hdmi |    |       hdmi_in_vp1   |
+              |               vp1_out_lvds |    +---------------------+
+              |                            |    | edp                 |
+              + vp2           vp2_out_lvds |    |       edp_in_vp0    | 
+              |               vp2_out_rgb  |    |       edp_in_vp1    |
+              +----------------------------+    +---------------------+
+                                                | lvds                |
+                                                |       lvds_in_vp1   |
+                                                |       lvds_in_vp2   |
+                                                +---------------------+
+                                                | rgb                 |
+                                                |       rgb_in_vp2    |
+                                                +---------------------+
+```
 
 ```dtb
 vop: vop@fe040000	{
@@ -251,6 +277,7 @@ grf: syscon@fdc60000	{
 
 dsi0: dsi@fe060000	{
 	compatible = "rockchip,rk3568-mipi-dsi";
+	status = "okay";	// dsi0 enabled
 
 	ports {
 		dsi0_in: port@0	{
@@ -259,6 +286,7 @@ dsi0: dsi@fe060000	{
 			};
 			dsi0_in_vp1:	{
 				remote-endpoint = <&vp1_out_dsi0>;
+				status = "okay";	// dsi0_in_vp1 enabled
 			};
 		};
 	};
