@@ -70,6 +70,21 @@ gpio3c5_sel
 
 Therefore, it can be determined that the GPIO is multiplexed as 3'h0: GPIO3_C5.
 
+ - The offset of GPIO_SWPORT_DDR_L(Data direction register) found from the datasheet of the master control is : 0x0008
+ - The address of the GPIO3 register of GPIO3_C5 is : base address (Operation base) + offset(offset) = 0xfe760000 + 0x000c = 0xfe76000c
+
+```bash
+// set directiron to out
+rk3568_edp:/ # io -4 -w 0xfe76000c 0x00202060 
+
+// set value to high
+rk3568_edp:/ # io -4 -w 0xfe760004 0x00202060 
+
+// set value to low
+rk3568_edp:/ # io -4 -w 0xfe760004 0x00200040 
+```
+
+
 ### 사용 예제(GPIO0_B7)
  - View the multiplexing of GPIO0_B7 pins  
  - The offset of GRF_GPIO0B_IOMUX_H found from the datasheet of the master control is: 0x000C
