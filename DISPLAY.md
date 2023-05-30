@@ -196,8 +196,13 @@
                                                            |       rgb_in_vp2    |
                                                            +---------------------+
  evb:    [route_dsi0] -> [vp1_out_dsi0] -> [dsi0_in_vp1] 
- edp:    [route_edp]  -> [vp1_out_edp]  -> [edp_in_vp1]
+
+ edp-1:  [route_edp]  -> [vp0_out_edp]  -> [edp_in_vp0]
+         [route_hdmi] -> [vp1_out_hdmi] -> [hdmi_in_vp1]
+		 
+ edp-2:  [route_edp]  -> [vp1_out_edp]  -> [edp_in_vp1]
          [route_hdmi] -> [vp0_out_hdmi] -> [hdmi_in_vp0]
+
  rgb:    [route_rgb]  -> [vp2_out_rgb]  -> [rgb_in_vp2]
          [route_hdmi] -> [vp0_out_hdmi] -> [hdmi_in_vp0]
 ```
