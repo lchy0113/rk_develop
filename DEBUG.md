@@ -191,6 +191,75 @@ rk3568_poc:/ # io -4 -w 0xfdc6007c 0x3f003f
 
 ---
 
+## u-boot (dm tree)
+> 기능: 모든 device driver 간의 binding 및 probe status를 체크.
+
+```bash
+// example
+[2023-05-30 15:10:38] => dm tree
+[2023-05-30 15:10:39]  Addr        Class      Probed    Driver                   Name
+[2023-05-30 15:10:39] -------------------------------------------------------------------------
+[2023-05-30 15:10:39]  7bd45db0    root       [ + ]   root_driver                root_driver **
+[2023-05-30 15:10:39]  7bd45ec0    rsa_mod_ex [   ]   mod_exp_sw                 |-- mod_exp_sw **
+[2023-05-30 15:10:39]  7bd45fb0    ramdisk    [   ]   ramdisk-ro                 |-- ramdisk-ro **
+[2023-05-30 15:10:39]  7bd460c0    blk        [   ]   ramdisk_blk                |   `-- ramdisk-ro.blk **
+[2023-05-30 15:10:39]  7bd46240    firmware   [   ]   psci                       |-- psci *
+[2023-05-30 15:10:39]  7bd46330    sysreset   [   ]   psci-sysreset              |   `-- psci-sysreset **
+[2023-05-30 15:10:39]  7bd46420    clk        [   ]   fixed_rate_clock           |-- external-gmac0-clock *
+[2023-05-30 15:10:39]  7bd464f0    clk        [   ]   fixed_rate_clock           |-- external-gmac1-clock *
+[2023-05-30 15:10:39]  7bd46600    nop        [   ]   dwc3-generic-wrapper       |-- usbdrd *
+[2023-05-30 15:10:39]  7bd46740    usb        [   ]   dwc3-generic-host          |   `-- dwc3@fcc00000 *
+[2023-05-30 15:10:39]  7bd46810    nop        [   ]   dwc3-generic-wrapper       |-- usbhost **
+[2023-05-30 15:10:39]  7bd468f0    usb        [   ]   dwc3-generic-host          |   `-- dwc3@fd000000 **
+[2023-05-30 15:10:39]  7bd46a00    syscon     [ + ]   rk3568_syscon              |-- syscon@fdc20000 *
+[2023-05-30 15:10:39]  7bd46ab0    syscon     [ + ]   rk3568_syscon              |-- syscon@fdc60000 *
+[2023-05-30 15:10:39]  7bd46b60    syscon     [   ]   syscon                     |-- syscon@fdca0000 *
+[2023-05-30 15:10:39]  7bd46c10    clk        [ + ]   rockchip_rk3568_pmucru     |-- clock-controller@fdd00000 *
+[2023-05-30 15:10:39]  7bd46d00    reset      [   ]   rockchip_reset             |   `-- reset *
+[2023-05-30 15:10:39]  7bd46dd0    clk        [ + ]   rockchip_rk3568_cru        |-- clock-controller@fdd20000 *
+[2023-05-30 15:10:39]  7bd46e80    sysreset   [   ]   rockchip_sysreset          |   |-- sysreset **
+[2023-05-30 15:10:39]  7bd46f50    reset      [   ]   rockchip_reset             |   `-- reset *
+[2023-05-30 15:10:39]  7bd47060    mmc        [ + ]   rockchip_rk3288_dw_mshc    |-- dwmmc@fe2b0000 **
+[2023-05-30 15:10:39]  7bd47250    blk        [   ]   mmc_blk                    |   `-- dwmmc@fe2b0000.blk **
+[2023-05-30 15:10:39]  7bd47390    mmc        [ + ]   rockchip_rk3288_dw_mshc    |-- dwmmc@fe2c0000 **
+[2023-05-30 15:10:39]  7bd47580    blk        [   ]   mmc_blk                    |   `-- dwmmc@fe2c0000.blk **
+[2023-05-30 15:10:39]  7bd47700    spi        [   ]   rockchip_sfc               |-- sfc@fe300000 **
+[2023-05-30 15:10:39]  7bd47850    mtd        [   ]   spi_nand                   |   |-- flash@0 **
+[2023-05-30 15:10:39]  7bd47940    blk        [   ]   mtd_blk                    |   |   `-- flash@0.blk **
+[2023-05-30 15:10:39]  7bd47ac0    spi_flash  [   ]   spi_flash_std              |   `-- flash@1 **
+[2023-05-30 15:10:39]  7bd47bb0    blk        [   ]   mtd_blk                    |       `-- flash@1.blk **
+[2023-05-30 15:10:39]  7bd47cf0    mmc        [ + ]   rockchip_sdhci_5_1         |-- sdhci@fe310000 **
+[2023-05-30 15:10:39]  7bd47ee0    blk        [ + ]   mmc_blk                    |   `-- sdhci@fe310000.blk **
+[2023-05-30 15:10:39]  7bd48020    mtd        [   ]   rk_nandc_v9                |-- nandc@fe330000 **
+[2023-05-30 15:10:39]  7bd480f0    blk        [   ]   mtd_blk                    |   `-- nandc@fe330000.blk **
+[2023-05-30 15:10:39]  7bd48270    crypto     [ + ]   rockchip_crypto_v2         |-- crypto@fe380000 **
+[2023-05-30 15:10:39]  7bd48360    rng        [   ]   rockchip-rng               |-- rng@fe388000 *
+[2023-05-30 15:10:39]  7bd48450    serial     [   ]   ns16550_serial             |-- serial@fe660000 *
+[2023-05-30 15:10:39]  7bd48520    serial     [   ]   ns16550_serial             |-- serial@fe680000 **
+[2023-05-30 15:10:39]  7bd48630    adc        [   ]   rockchip_saradc            |-- saradc@fe720000 *
+[2023-05-30 15:10:39]  7bd48760    phy        [   ]   rockchip_usb2phy           |-- usb2-phy@fe8a0000 *
+[2023-05-30 15:10:39]  7bd48810    phy        [   ]   rockchip_usb2phy_port      |   |-- host-port *
+[2023-05-30 15:10:39]  7bd488c0    phy        [   ]   rockchip_usb2phy_port      |   `-- otg-port *
+[2023-05-30 15:10:40]  7bd489b0    pinctrl    [ + ]   rockchip_rk3568_pinctrl    |-- pinctrl *
+[2023-05-30 15:10:40]  7bd48aa0    gpio       [   ]   gpio_rockchip              |   |-- gpio@fdd60000 *
+[2023-05-30 15:10:40]  7bd48b50    gpio       [   ]   gpio_rockchip              |   |-- gpio@fe740000 *
+[2023-05-30 15:10:40]  7bd48c00    gpio       [   ]   gpio_rockchip              |   |-- gpio@fe750000 *
+[2023-05-30 15:10:40]  7bd48cf0    pinconfig  [   ]   pinconfig                  |   |-- pcfg-pull-up *
+[2023-05-30 15:10:40]  7bd48da0    pinconfig  [   ]   pinconfig                  |   |-- pcfg-pull-none *
+[2023-05-30 15:10:40]  7bd48e50    pinconfig  [   ]   pinconfig                  |   |-- pcfg-pull-none-drv-level-1 *
+[2023-05-30 15:10:40]  7bd48f00    pinconfig  [   ]   pinconfig                  |   |-- pcfg-pull-none-drv-level-2 *
+[2023-05-30 15:10:40]  7bd48fb0    pinconfig  [   ]   pinconfig                  |   |-- pcfg-pull-up-drv-level-1 *
+[2023-05-30 15:10:40]  7bd49060    pinconfig  [   ]   pinconfig                  |   |-- pcfg-pull-up-drv-level-2 *
+[2023-05-30 15:10:40]  7bd49110    pinconfig  [   ]   pinconfig                  |   |-- eth0 **
+```
+
+ - binding된 모든 device driver list.
+ - [+] 의미는 현재 driver가 probe 완료 되었음을 나타냄.
+ - *  의미는 u-boot dtb 에서 참조된것을 나타냄.(그렇지 않은 경우, kernel dtb 에서 참조됨)
+
+
+---
+
 
 ## error
 
