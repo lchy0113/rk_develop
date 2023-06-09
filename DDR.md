@@ -660,3 +660,149 @@ DQ31 ------------------*************|*************-------------------    26     
 DQ eye width min: 49(read), 50(write)
 DQ eye width reference: 25(read), 24(write) in 1560MHz
 ```
+
+
+-----
+
+# CPUFreq
+
+
+1. overview
+-----
+
+ CPUFreq는 지정된 governor에 따라서 cpu frequency 와 voltage를 동적으로 변경하기위해 kernel 개발자가 정의한 프레임워크 모델이다. 
+ cpu의 performance에 따라서 cpu의 소비전력을 낮추는것이 효과적일 수 있다.
+
+ CPUFreq framwork는 governor, core, driver, stats으로 구성된다.
+![](./images/DDR_01.png)
+
+ - CPUFreq governor : :CPU frequency를 언제 변경할지, 어느 frequency로 변경할지를 결정하는데 사용합니다.
+  kernel을 아래 governor를 포함하고 있다.
+  * conservative : cpu 부하에 따라 dynamic으로 frequcncy를 변경하고, 일정 비율로 frequency를 부드럽게 늘리거나 낮춘다.
+  * ondemand : cpu 부하에 따라 dynamic으로 frequency를 변경하고, frequency는 넓은 범위에서 변경될 수 있다. 
+   ex. max frequency or min frequency 에서 변경된다. 
+  * interactive : cpu 부하에 따라 frequency를 dynamic으로 변경하고, ondemand 대비 변경속도가 빠르고 매개변수가 많으며 유연하다.
+  * userspace : user mode application에서 frequency를 변경할 수 있는 user interface를 제공한다.
+  * powersave :  소비전력을 우선시하고 frequency는 항상 min frequcncy으로 설정한다.
+  * performance : performance를 우선시 하고, frequency는 가장 높은 값으로 설정된다. 
+  * schedutil : EAS의 special governor (EAS; Energy Aware Scheduling)는 CPUFreq 및 CPU Idle의 전력과 결합된 차세대  work scheduling 으로 작업을 위해 실행중인 CPU를 선택할때, performance와 power saving을 모두 고려하여 최저 시스템 에너지를 보장하고 성능을 높입니다. 
+ - CPUFreq core : cpufreq 거버너, cpufreq 드라이버를 캡슐화 및 추상화하고 명확한 인터페이스를 정의한다.
+ - CPUFreq driver : cpu frequency 테이블을 초기화하고 cpu frequency를 설정하는데 사용한다. 
+ - CPUFreq stats : cpufreq에 대한 통계를 제공 
+
+
+2. code path
+-----
+
+ - governor related code:
+```bash
+drivers/cpufreq/cpufreq_conservative.c	/* conservative governor */
+drivers/cpufreq/cpufreq_ondemand.c		/* ondemand governor */
+drivers/cpufreq/cpufreq_interactive.c	/* interactive governor */
+drivers/cpufreq/cpufreq_userspace.c		/* userspace governor */
+drivers/cpufreq/cpufreq_performance.c	/* performance governor */
+kernel/sched/cpufreq_schedutil.c		/* schedutil governor */
+```
+
+ - stats related code:
+```bash
+drivers/cpufreq/cpufreq_stats.c
+```
+
+ - core related code:
+```bash
+drivers/cpufreq/cpufreq.c
+```
+
+ - driver related code:
+```bash
+drivers/cpufreq/cpufreq-dt.c				/* platform driver */
+drivers/cpufreq/rockchip-cpufreq.c			/* platform device */
+drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
+```
+
+3. configuration
+-----
+
+ 3.1 menuconfig
+
+```bash
+
+ → CPU Power Management → CPU Frequency scaling ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ┌────────────────────────────────────────────────────────────────────────────────────────── CPU Frequency scaling ───────────────────────────────────────────────────────────────────────────────────────────┐
+  │  Arrow keys navigate the menu.  <Enter> selects submenus ---> (or empty submenus ----).  Highlighted letters are hotkeys.  Pressing <Y> includes, <N> excludes, <M> modularizes features.  Press           │
+  │  <Esc><Esc> to exit, <?> for Help, </> for Search.  Legend: [*] built-in  [ ] excluded  <M> module  < > module capable                                                                                     │
+  │                                                                                                                                                                                                            │
+  │                                                                                                                                                                                                            │
+  │ ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐ │
+  │ │                                                                 [*] CPU Frequency scaling                                                                                                              │ │
+  │ │                                                                 [*]   CPU frequency transition statistics                                                                                              │ │
+  │ │                                                                 [*]   CPU frequency time-in-state statistics                                                                                           │ │
+  │ │                                                                       Default CPUFreq governor (performance)  --->                                                                                     │ │
+  │ │                                                                 -*-   'performance' governor                                                                                                           │ │
+  │ │                                                                 <*>   'powersave' governor                                                                                                             │ │
+  │ │                                                                 <*>   'userspace' governor for userspace frequency scaling                                                                             │ │
+  │ │                                                                 <*>   'ondemand' cpufreq policy governor                                                                                               │ │
+  │ │                                                                 <*>   'conservative' cpufreq governor                                                                                                  │ │
+  │ │                                                                 [*]   'schedutil' cpufreq policy governor                                                                                              │ │
+  │ │                                                                 <*>   'interactive' cpufreq policy governor                                                                                            │ │
+  │ │                                                                       *** CPU frequency scaling drivers ***                                                                                            │ │
+  │ │                                                                 <*>   Generic DT based cpufreq driver                                                                                                  │ │
+  │ │                                                                 < >   Dummy CPU frequency driver                                                                                                       │ │
+  │ │                                                                 < >   Generic ARM big LITTLE CPUfreq driver                                                                                            │ │
+  │ │                                                                 <*>   Rockchip CPUfreq driver                                                                                                          │ │
+  │ │                                                                 < >   SCMI based CPUfreq driver                                                                                                        │ │
+  │ │                                                                 < >   CPU frequency scaling driver for Freescale QorIQ SoCs                                                                            │ │
+(...)
+```
+
+
+ 3.2 clock configuration
+
+
+ 3.3 regulator configuration
+
+ devicetree의 CPU nde에 "cpu-supply" property을 추가합니다.
+ Regulator에 대한 자세한 구성 지침은 아래와 같습니다.
+ 
+   - Regulator, PMIC 관련 개발 문서
+
+	   rk3568을 예로 들어 "cpu-supply" property 을 cpu0 node에 추가한다.(for non-big.LITTLE core platform)
+	    
+   - regulator 를 configured하지 않은 경우라도, cpufreq driver는 loaded된다.  voltage를 변경하지 않고 CPU frequency가 변경되는 것. 
+   - 그러나 cpu freq가 일정 값을 초과하면 low voltage 으로 인해 crash가 발생할 수 있다.
+
+```dts
+
+&cpu0 {
+	cpu-supply = <&vdd_cpu>;
+};
+
+
+
+&i2c0 {
+	status = "okay";
+
+	vdd_cpu: tcs4525@1c {
+		compatible = "tcs,tcs452x";
+		reg = <0x1c>;
+		vin-supply = <&vcc5v0_sys>;
+		regulator-compatible = "fan53555-reg";
+		regulator-name = "vdd_cpu";
+		regulator-min-microvolt = <712500>;
+		regulator-max-microvolt = <1390000>;
+		regulator-init-microvolt = <900000>;
+		regulator-ramp-delay = <2300>;
+		fcs,suspend-voltage-selector = <1>;
+		regulator-boot-on;
+		regulator-always-on;
+		regulator-state-mem {
+			regulator-off-in-suspend;
+		};
+	};
+
+
+```
+
+
+ 3.4 OPP table configuration
