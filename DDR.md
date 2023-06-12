@@ -1177,3 +1177,46 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 
  4. User interface
+
+ - Non-big.Little platforms : 모든 core 는 하나의 clock을 공유하고 동일한 user interface 를 아래 경로를 통해 갖는다.
+	  /sys/devices/system/cpu/cpufreq/policy0/
+```bash
+rk3568_rgbp01:/sys/devices/system/cpu/cpufreq/policy0 # pwd
+/sys/devices/system/cpu/cpufreq/policy0
+rk3568_rgbp01:/sys/devices/system/cpu/cpufreq/policy0 # ls -alh
+total 0
+drwxr-xr-x 4 root   root      0 2023-06-12 11:04 .
+drwxr-xr-x 3 root   root      0 2023-06-12 11:04 ..
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 affected_cpus					/* All online CPUs at the same cluster */
+-r-------- 1 root   root   4.0K 2023-06-12 11:47 cpuinfo_cur_freq				/* the last frequency set by software */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 cpuinfo_max_freq				/* the maximum frequency restricted on software */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 cpuinfo_min_freq				/* the minimum frequency restricted on software */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 cpuinfo_transition_latency		/* the transition time of two frequencies, unit is ns */
+drwxr-xr-x 2 root   root      0 2023-06-12 11:47 interactive					
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 related_cpus					/* All CPUs at the same cluster */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:04 scaling_available_frequencies	/* available frequencies */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 scaling_available_governors	/* current cpufreq governor */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 scaling_cur_freq				/* the last frequency set by software */
+-r--r--r-- 1 root   root   4.0K 2023-06-12 11:47 scaling_driver
+-rw-rw-r-- 1 system system 4.0K 2023-06-12 10:56 scaling_governor				/* current cpufreq governor */
+-rw-rw---- 1 system system 4.0K 2017-08-04 18:04 scaling_max_freq				/* the maximum frequency restricted on software */
+-rw-rw---- 1 system system 4.0K 2023-06-12 10:56 scaling_min_freq				/* the minimum frequency restricted on software */
+-rw-rw-r-- 1 system system 4.0K 2017-08-04 18:04 scaling_setspeed				/* used to change frequency when governor is userspace */
+drwxr-xr-x 2 root   root      0 2023-06-12 11:25 stats							
+rk3568_rgbp01:/sys/devices/system/cpu/cpufreq/policy0 # ls -alh stats/
+total 0
+drwxr-xr-x 2 root root    0 2023-06-12 11:25 .
+drwxr-xr-x 4 root root    0 2023-06-12 11:04 ..
+--w------- 1 root root 4.0K 2023-06-12 11:55 reset
+-r--r--r-- 1 root root 4.0K 2023-06-12 11:25 time_in_state						/* record work time at each frequency, unit is 10ms */
+-r--r--r-- 1 root root 4.0K 2023-06-12 11:55 total_trans						/* record frequency scaling times */
+-r--r--r-- 1 root root 4.0K 2023-06-12 11:55 trans_table						/* record frequency scaling times of each frequency */
+```
+
+ - Big.Little platforms : 2개의 clusters를 갖는다. 각각 독립적으로 clock과 user intaface를 갖는다. 
+ - cluster0 은 little cores, user interface는 아래와 같다.
+     /sys/devices/system/cpu/cpufreq/policy0/
+ - cluster1 은 big cores, user interface는 아래와 같다.
+	 /sys/devices/system/cpu/cpufreq/policy4/
+
+> Note : Big.Little platform 에서 cluster는 고성능 코어와 저전력 코어의 그룹입니다. 고성능 코어는 짧은 시간 동안 많은 작업을 처리하는데 적합하며, 저전력 코어는 장기간 동안 적은 작업을 처리하는데 적절합니다. 클러스터는 2가지 유형의 코어를 결합하여 장치의 전력 효율성과 성능을 향상시킵니다.
