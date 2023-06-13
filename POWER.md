@@ -142,6 +142,93 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
  - [ ] PMIC_SLEEP : 기능 확인
  - [ ] VDD_CPU_COM(ARM core power feedback output) : 기능 확인
 
+### TSADC; Temperature-Sensor ADC(TS-ADC)
+
+ TS-ADDC Controller module은 user-defined 모드와 automatic 모드를 지원한다. 
+ - user-defined mode 는 direct 제어를 위해 software에서 write를 해당 register에 write하여 제어한다.
+ - automati mode는 module에서 자동으로 TSADC 의 출력을 polling 한다.
+
+ 일정 period of time 동안 temperature가 높으면 processor down 인터럽트가 발생합니다.
+ 일정 period of time 동안 temperature가 높으면 TSHUT 에서 CRU 모듈에게 TSHUT 결과를 전달하고, chip 을 reset 하거나 GPIO를 통해 PMIC를 제어 한다.
+
+ - tsadc configuration
+ tsadc (thermal sensor)는 
+ thermal control의 thermal sensor인 tsadc는 temperature 데이터를 얻는데 사용된다. 일반적으로 dtsi와 dts에서 configuration을 해야한다.
+
+```dtb
+	tsadc: tsadc@fe710000 {
+		compatible = "rockchip,rk3568-tsadc";
+		reg = <0x0 0xfe710000 0x0 0x100>;			/* 레지스터의 basic address, length */
+		interrupts = <GIC_SPI 115 IRQ_TYPE_LEVEL_HIGH>;	/* interrupt number , trigger method */
+		rockchip,grf = <&grf>;				/* grp module 호출 */
+		clocks = <&cru CLK_TSADC>, <&cru PCLK_TSADC>;
+		clock-names = "tsadc", "apb_pclk";
+		assigned-clocks = <&cru CLK_TSADC_TSEN>, <&cru CLK_TSADC>;		/* working clock, configuration clock */
+		assigned-clock-rates = <17000000>, <700000>;
+		resets = <&cru SRST_TSADC>, <&cru SRST_P_TSADC>,				/* reset signal */
+			 <&cru SRST_TSADCPHY>;
+		reset-names = "tsadc", "tsadc-apb", "tsadc-phy";
+		/**
+		 * thermal sensor symbol, tsadc 가 thermal sensor가 될수 있음을 의미. 
+		 * tsadc 노드를 호출할 때 필요한 매개변수 수를 지정한다.
+		 * soc 에 tsadc가 한개만 있을 경우, 0으로 세팅해야 하며, 1개 이상인 경우, 1로 세팅한다.
+		 */
+		#thermal-sensor-cells = <1>;
+		rockchip,hw-tshut-temp = <120000>;	/* the threshold temperature of reboot,  120 degree */
+		rockchip,hw-tshut-mode = <0>; /* tshut mode 0:CRU 1:GPIO */
+		rockchip,hw-tshut-polarity = <0>; /* tshut polarity 0:LOW 1:HIGH */
+		pinctrl-names = "gpio", "otpout";
+		pinctrl-0 = <&tsadc_gpio_func>;
+		pinctrl-1 = <&tsadc_shutorg>;
+		status = "disabled";
+	};
+
+
+	/** 
+ 	 * IO port Configuration
+	 */
+	gpio-func {
+		/* configure it to be gpio mode */
+		/omit-if-no-ref/
+		tsadc_gpio_func: tsadc-gpio-func {
+			rockchip,pins =
+				<0 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	tsadc {
+		/omit-if-no-ref/
+		tsadcm0_shut: tsadcm0-shut {
+			rockchip,pins =
+				/* tsadcm0_shut */
+				<0 RK_PA1 1 &pcfg_pull_none>;
+		};
+
+		/omit-if-no-ref/
+		tsadcm1_shut: tsadcm1-shut {
+			rockchip,pins =
+				/* tsadcm1_shut */
+				<0 RK_PA2 2 &pcfg_pull_none>;
+		};
+
+		/* configure it to be over temperature protection mode */
+		/omit-if-no-ref/
+		tsadc_shutorg: tsadc-shutorg {
+			rockchip,pins =
+				/* tsadc_shutorg */
+				<0 RK_PA1 2 &pcfg_pull_none>;
+		};
+	};
+
+```
+ dts configure 는 주로 CRU reset 또는 gpio reset, 저전압 reset , 고전압 reset 을 선택하는데 사용된다. 
+ *pio reset으로 configure하려면 tsadc 출력 핀을 pmic reset 핀에 연결해야 한다. 그렇지 않은면 CRU reset으로만 구성할 수 있다.*
+
+> CRU reset : CPU reset 은 ARM processor가 치명적인 오류를 감지했을때 발생하는 유형의 재설정. 
+
+ - develop document : Documentation/devicetree/bindings/thermal/rockchip-thermal.txt
+
+
 <pr/>
 
 ## register check 
