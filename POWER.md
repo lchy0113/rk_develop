@@ -188,7 +188,7 @@ RK3568 칩은 Datasheet 에 따라서 PMU_GRF_IO_VSEL0 ~ PMU_GRP_IO_VSEL2 레지
 
  - RK3568+RK809에 대한 power supply solution 이미지 
 
-![](./images/POWER_08.png)
-
-    * rk809 는 5개의 BUCK(LOGIC, GPU, DDR_VDDQ, NPU, 1V8)  에 power 를 공급함.
-	* rk809 는 11개의 LDO(IMAGE, 0V9, PMU, ACODEC, SD, PMU, 1V8, PMU, IMAGE, SD, 3V3) 에 power 를 공급함.
+![](./images/POWER_08.png)  
+  
+ - rk809 는 5개의 BUCK(LOGIC, GPU, DDR_VDDQ, NPU, 1V8)  에 power 를 공급함.
+ - rk809 는 11개의 LDO(IMAGE, 0V9, PMU, ACODEC, SD, PMU, 1V8, PMU, IMAGE, SD, 3V3) 에 power 를 공급함.
