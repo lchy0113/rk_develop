@@ -138,8 +138,8 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 
 ## power management 관리
 
- - [ ] TSADC_SHUT_M0 : 기능 확인
- - [ ] PMIC_SLEEP : 기능 확인
+ - [x] TSADC_SHUT_M0 : 기능 확인
+ - [x] PMIC_SLEEP : 기능 확인
  - [ ] VDD_CPU_COM(ARM core power feedback output) : 기능 확인
 
 ### TSADC; Temperature-Sensor ADC(TS-ADC)
@@ -227,6 +227,45 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 > CRU reset : CPU reset 은 ARM processor가 치명적인 오류를 감지했을때 발생하는 유형의 재설정. 
 
  - develop document : Documentation/devicetree/bindings/thermal/rockchip-thermal.txt
+
+-----
+
+### TCS4525 Voltage Regulator
+
+ - driver location
+```bash
+drivers/regolator/fan53555.c
+```
+
+ - dts node
+```dts
+	vdd_cpu: tcs4525@1c {
+		compatible = "tcs,tcs452x";
+		reg = <0x1c>;
+		/* supply parameter ; hardware input voltage. no actual meaning, */
+		vin-supply = <&vcc5v0_sys>;	
+		regulator-compatible = "fan53555-reg";
+		regulator-name = "vdd_cpu";
+		regulator-min-microvolt = <712500>;
+		regulator-max-microvolt = <1390000>;
+		regulator-init-microvolt = <900000>;
+		regulator-ramp-delay = <2300>;
+		/**
+		 * 이것은 IO가 서로 다른 voltage의 두 그룹을 변경하는 데 사용되지만,
+		 * 현재는 스위치를 빠르게 변경하는 데 사용됩니다.
+		 * <1> : VSEL pin is connected to pmic_sleep.
+		 * <0> : VSEL pin이 low일 때 running voltage을 출력하고,
+		 *       high일 때 idle voltage을 출력한다(대기 시 꺼짐으로 설정할 수도 있음).
+		 */
+		fcs,suspend-voltage-selector = <1>;
+		regulator-boot-on;
+		regulator-always-on;
+		regulator-state-mem {
+			regulator-off-in-suspend;
+		};
+	};
+
+```
 
 
 <pr/>
