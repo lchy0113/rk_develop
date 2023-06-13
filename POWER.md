@@ -140,7 +140,7 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 
  - [x] TSADC_SHUT_M0 : 기능 확인
  - [x] PMIC_SLEEP : 기능 확인
- - [ ] VDD_CPU_COM(ARM core power feedback output) : 기능 확인
+ - [x] VDD_CPU_COM(ARM core power feedback output) : 기능 확인
 
 ### TSADC; Temperature-Sensor ADC(TS-ADC)
 
