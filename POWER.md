@@ -185,3 +185,10 @@ RK3568 칩은 Datasheet 에 따라서 PMU_GRF_IO_VSEL0 ~ PMU_GRP_IO_VSEL2 레지
 | 크기                  	| 일반적으로 LDO 컨버터보다 큼                            	| 일반적으로 LDO 컨버터보다 작음          	|
 | 비용                  	| 일반적으로 LDO 컨버터보다 비쌈                          	| 일반적으로 LDO 컨버터보다 저렴함        	|
 | 응용 프로그램         	| 전원을 공급하는 장치의 전압을 높이거나 낮추는 데 사용됨 	| 민감한 장치에 전원을 공급하는 데 사용됨 	|
+
+ - RK3568+RK809에 대한 power supply solution 이미지 
+
+![](./images/POWER_08.png)
+
+    * rk809 는 5개의 BUCK(LOGIC, GPU, DDR_VDDQ, NPU, 1V8)  에 power 를 공급함.
+	* rk809 는 11개의 LDO(IMAGE, 0V9, PMU, ACODEC, SD, PMU, 1V8, PMU, IMAGE, SD, 3V3) 에 power 를 공급함.
