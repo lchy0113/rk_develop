@@ -334,7 +334,8 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 
 -----
 
-## change userdata partition file system to EXT4
+## userdata partition file system 검토
+> change userdata partition file system to EXT4
 
  - diff 파일 참고.
    * [diff file](./attachment/diff_changed_data_partion_to_ext4_from_f2fs.diff)
@@ -343,6 +344,13 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 
 ## Data 영역 read/write performance 최적화
 
+ - 데이터 영역 write performance 최적화.
+   * 배터리가 있는 장치의 경우, 스토리지 읽기/쓰기 속도 및 성능을 향상시키기 위해 fstab의 데이터 파티션 탑재 매개변수에 'fsync_mode=nobarrier'를 추가하는 것이 좋다.
+     + 이 매개변수는 배터리가 없는 장치에서 데이터 손상을 일으킬 수 있다.
+     + 따라서 배터리가 없는 장치에는 이 매개변수를 추가하지 않는 것이 좋다.
+     + fsync_mode = nobarrier는 linux에서 사용하는 Mount 옵션.    
+     + 이 옵션을 사용하면 file system write작업이 완료 되기전에 하드웨어 cache를 flush 하지 않는다. 
+     + 즉, 파일시스템의 쓰기 작업이 더 빨리 완료 된다. 반대로, 시스템에 손실에 발생할 위험이 있다. 
  
 
 -----
