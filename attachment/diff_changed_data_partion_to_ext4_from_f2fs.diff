@@ -1,0 +1,32 @@
+device/rockchip/common$ git diff
+diff --git a/scripts/fstab_tools/fstab.in b/scripts/fstab_tools/fstab.in
+index 6e78b00..a658332 100755
+--- a/scripts/fstab_tools/fstab.in
++++ b/scripts/fstab_tools/fstab.in
+@@ -20,6 +20,6 @@ ${_block_prefix}system_ext /system_ext
+ ext4 ro,barrier=1
+${_flags},first_stage_
+# For sdmmc
+/devices/platform/${_sdmmc_device}/mmc_host* auto auto defaultsvoldmanaged=sdcard1:auto
+# Full disk encryption has less effect on rk3326, so default to enable this.
+-/dev/block/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065 latemount,wait,check,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,quota,formattable,reservedsize=128M,checkpoint=fs
++#/dev/block/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065 latemount,wait,check,fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized,quota,formattable,reservedsize=128M,checkpoint=fs
+# for ext4
+-#/dev/block/by-name/userdata /data ext4 discard,noatime,nosuid,nodev,noauto_da_alloc,data=ordered,user_xattr,barrier=1 latemount,wait,formattable,check,fileencryption=software,quota,reservedsize=128M,checkpoint=block
++/dev/block/by-name/userdata  /data  ext4 discard,noatime,nosuid,nodev,noauto_da_alloc,data=ordered,user_xattr,barrier=1 latemount,wait,formattable,check,fileencryption=software,quota,reservedsize=128M,checkpoint=block
+
+
+device/rockchip/rk356x$ git diff
+diff --git a/rk3566_r/recovery.fstab b/rk3566_r/recovery.fstab
+index 7532217..cf789ac 100755
+--- a/rk3566_r/recovery.fstab
++++ b/rk3566_r/recovery.fstab
+@@ -7,7 +7,7 @@
+/dev/block/by-name/odm              /odm                 ext4    defaults    defaults    
+/dev/block/by-name/cache            /cache               ext4    defaults    defaults
+/dev/block/by-name/metadata         /metadata            ext4    defaults    defaults
+-/dev/block/by-name/userdata        /data                f2fs    defaults    defaults
++/dev/block/by-name/userdata        /data                ext4    defaults    defaults
+/dev/block/by-name/cust             /cust                ext4    defaults    defaults
+/dev/block/by-name/custom           /custom              ext4    defaults    defaults
+/dev/block/by-name/radical_update   /radical_update      ext4    defaults    defaults
