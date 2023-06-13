@@ -136,6 +136,14 @@ arch/arm64/boot/dts/rockchip/rk3568-poc.dtsi
 
 <pr/>
 
+## power management 관리
+
+ - [ ] TSADC_SHUT_M0 : 기능 확인
+ - [ ] PMIC_SLEEP : 기능 확인
+ - [ ] VDD_CPU_COM(ARM core power feedback output) : 기능 확인
+
+<pr/>
+
 ## register check 
 > 부팅 후, 레지스터 값을 체크하여 voltage 디버깅
 
