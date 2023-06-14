@@ -277,6 +277,146 @@ drivers/regolator/fan53555.c
 ```
 
 
+-----
+
+### PMIC ; rk809 
+
+
+ - RK3568+RK809에 대한 power supply solution 이미지 
+
+![](./images/POWER_08.png)  
+  
+ - rk809 는 5개의 BUCK(LOGIC, GPU, DDR_VDDQ, NPU, 1V8)  에 power 를 공급함.
+ - rk809 는 9개의 LDO(IMAGE, 0V9, PMU, ACODEC, SD, PMU, 1V8, PMU, IMAGE, SD, 3V3) 에 power 를 공급함.
+ - rk809 는 2개의 스위치,
+ - rk809 는 1개의 RTC.
+ - rk809 는 1개의 CODEC. 
+
+ user 관점에서 rk809 의 기능은 4가지 부분으로 나눌수 있다.
+ - regulator 기능 : 각 DCDC 및 LDO 전원 상태를 제어.
+ - rtc 기능 : time timing, timing 을 제공.
+ - gpio 기능 : 일반 gpio로 사용될수 있으며 pinctrl기능이 있다.
+ - pwrkey 기능 : AP의 gpio를 저장할 수 있는 전우너 버튼의 누름/해제 를 감지.
+ - clk 기능 : 2개의 32.768 KHz clock 출력이 있음.
+ - codec 기능 : 최대 192KHz sampling rate, 16bit, 32bit, DAC, ADc PDM 제공
+
+```dts
+	rk809: pmic@20 {
+		compatible = "rockchip,rk809";
+		reg = <0x20>;
+		interrupt-parent = <&gpio0>;
+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+
+		pinctrl-names = "default", "pmic-sleep",
+				"pmic-power-off", "pmic-reset";
+		pinctrl-0 = <&pmic_int>;
+		pinctrl-1 = <&soc_slppin_slp>, <&rk817_slppin_slp>;
+		pinctrl-2 = <&soc_slppin_gpio>, <&rk817_slppin_pwrdn>;
+		pinctrl-3 = <&soc_slppin_gpio>, <&rk817_slppin_rst>;
+
+		rockchip,system-power-controller;
+		wakeup-source;
+		#clock-cells = <1>;
+		clock-output-names = "rk808-clkout1", "rk808-clkout2";
+		//fb-inner-reg-idxs = <2>;
+		/* 1: rst regs (default in codes), 0: rst the pmic */
+		pmic-reset-func = <0>;
+		/* not save the PMIC_POWER_EN register in uboot */
+		not-save-power-en = <1>;
+
+		vcc1-supply = <&vcc3v3_sys>;
+		vcc2-supply = <&vcc3v3_sys>;
+		vcc3-supply = <&vcc3v3_sys>;
+		vcc4-supply = <&vcc3v3_sys>;
+		vcc5-supply = <&vcc3v3_sys>;
+		vcc6-supply = <&vcc3v3_sys>;
+		vcc7-supply = <&vcc3v3_sys>;
+		vcc8-supply = <&vcc3v3_sys>;
+		vcc9-supply = <&vcc3v3_sys>;
+
+		pwrkey {
+			status = "disabled";
+		};
+
+		pinctrl_rk8xx: pinctrl_rk8xx {
+			gpio-controller;
+			#gpio-cells = <2>;
+
+			rk817_slppin_null: rk817_slppin_null {
+				pins = "gpio_slp";
+				function = "pin_fun0";
+			};
+
+			rk817_slppin_slp: rk817_slppin_slp {
+				pins = "gpio_slp";
+				function = "pin_fun1";
+			};
+
+			rk817_slppin_pwrdn: rk817_slppin_pwrdn {
+				pins = "gpio_slp";
+				function = "pin_fun2";
+			};
+
+			rk817_slppin_rst: rk817_slppin_rst {
+				pins = "gpio_slp";
+				function = "pin_fun3";
+			};
+		};
+
+		(...)
+
+&pinctrl {
+	pmic {
+		pmic_int: pmic_int {
+			rockchip,pins =
+				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+
+		soc_slppin_gpio: soc_slppin_gpio {
+			rockchip,pins =
+				<0 RK_PA2 RK_FUNC_GPIO &pcfg_output_low_pull_down>;
+		};
+
+		soc_slppin_slp: soc_slppin_slp {
+			rockchip,pins =
+				<0 RK_PA2 1 &pcfg_pull_up>;
+		};
+
+		soc_slppin_rst: soc_slppin_rst {
+			rockchip,pins =
+				<0 RK_PA2 2 &pcfg_pull_none>;
+		};
+	};
+```
+ - PMIC 동작 모드(3가지 동작 모드 지원)
+
+   1. PMIC normal mode
+	system 이 동작중일때는 PMIC는 normal mode이며, 이때 pmic_sleep은 low level. 
+
+   2. PMIC sleep mode
+	system이 suspend될때, standby power consumption(대기 전력 소비)은 가능한 낮아야 한다. 
+	PMIC는 standby power consumption을 낮추기 위해 sleep mode로 전환된다.
+	이 때 일부 채널의 output voltage이 일반적으로 감소하거나 output이 turn off 될 수 있다. (실제 제품 요구 사항에 따라 구성할 수 있다.) 
+   
+   3. PMIC shutdown mode
+    시스템이 shutdown process에 들어가면 PMIC는 power-off  operation 을 완료해야 한다. 
+	AP는 I2C 명령을 통해 pmic_sleep 을 shutdown mode로 구성한 다음, pmic_sleep 을 high로 pull하여, PMIC를 종료 상태로 만든다.
+
+   * pmic_sleep pin
+     normal state에서는 low level.
+	 pulled high 상태인 경우, sleep 또는 shutdown mode가 된다.
+	 rk817_slppin_null, rk8817_slppin_slp, rk817_slppin_pwrdn, rk817_slppin_rst 상태로 multiplexing function을 갖음.
+
+   * pmic_int pin
+     normal state에서는 high level. 
+	 interrupt가 발생되었을 때는 low level.
+
+   * pmic_pwron pin
+     pwrkey 가 power button가 연결되어 있어야 한다.  연결된 경우, key press/release상태를 확인할 수 있다.
+
+
+
+
 <pr/>
 
 ## register check 
@@ -321,9 +461,4 @@ RK3568 칩은 Datasheet 에 따라서 PMU_GRF_IO_VSEL0 ~ PMU_GRP_IO_VSEL2 레지
 | 비용                  	| 일반적으로 LDO 컨버터보다 비쌈                          	| 일반적으로 LDO 컨버터보다 저렴함        	|
 | 응용 프로그램         	| 전원을 공급하는 장치의 전압을 높이거나 낮추는 데 사용됨 	| 민감한 장치에 전원을 공급하는 데 사용됨 	|
 
- - RK3568+RK809에 대한 power supply solution 이미지 
 
-![](./images/POWER_08.png)  
-  
- - rk809 는 5개의 BUCK(LOGIC, GPU, DDR_VDDQ, NPU, 1V8)  에 power 를 공급함.
- - rk809 는 11개의 LDO(IMAGE, 0V9, PMU, ACODEC, SD, PMU, 1V8, PMU, IMAGE, SD, 3V3) 에 power 를 공급함.
