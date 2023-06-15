@@ -825,6 +825,30 @@ static int __init tp2802_module_init(void)
 
 ```
 
+
+##  de-interlaced feature on NTSC
+
+Chapter27. MIPI CSI HOST는 CSI_RX_CTRL1(mipi-csi2@fdfb000)와 mapping.
+Chapter28. MIPI CSI DPHY는 CSI_RX_PHY(csi2-dphy-hw@fe870000)와 mapping.
+
+
+```bash
+// set power control  for cam
+io -4 -w 0xfdc20014 0x00300000; io -4 -w 0xfdd6000c 0x00200020; io -4 -w 0xfdd60004 0x00200020
+// start camera2
+am start -n com.android.camera2/com.android.camera.CameraActivity
+```
+
+ - 해상도 
+   MIPI 출력 해상도가 720x480i, AP에서 even 720x240, odd 720x240 이렇게 capture하여 de-interlaced 해야함. 
+
+ - horizontal half mode 사용.
+   decoding 해상도(mipi출력)를 ntsc의 경우, 960x480i(interlaced)로 출력됨.
+
+ - [ ] WDT를 사용하지 않는 경우, vide page의 0x26=0x05 로 설정.
+ - [ ] ntsc의 경우, reg0x01=0x78 로 read되어야 함.
+	 : Video Input Status(0x01) 
+
 ---
 
 ## Note

@@ -189,6 +189,26 @@ rk3568_poc:/ # io -4 -w 0xfdc6007c 0x3f003f
 
 ```
 
+
+ex)
+GPIO0_C5 
+
+
+```bash
+// change to gpio0_c5 
+rk3568_edpp01:/ # io -4 -r -l 0x4 0xfdc20014
+fdc60014:  00000000
+rk3568_edpp01:/ # io -4 -w 0xfdc20014 0x00300000
+
+// set output
+rk3568_edpp01:/ # io -4 -w 0xfdd6000c 0x00200020
+
+// set high
+rk3568_edpp01:/ # io -4 -w 0xfdd60004 0x00200020
+
+/**
+  *  io -4 -w 0xfdc20014 0x00300000; io -4 -w 0xfdd6000c 0x00200020; io -4 -w 0xfdd60004 0x00200020
+```
 ---
 
 ## u-boot (dm tree)
