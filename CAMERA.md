@@ -848,6 +848,121 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
  - [ ] WDT를 사용하지 않는 경우, vide page의 0x26=0x05 로 설정.
  - [ ] ntsc의 경우, reg0x01=0x78 로 read되어야 함.
 	 : Video Input Status(0x01) 
+ - [ ] width, height 가 맞지 않으면 open 이후 동작되지 않음. 로그 분석.
+```logcat
+06-19 16:04:26.017     0     0 W audit   : audit_lost=1 audit_rate_limit=5 audit_backlog_limit=64
+06-19 16:04:26.017     0     0 E audit   : rate limit exceeded
+06-19 16:04:25.907   364   364 E Camera2-Parameters: Error finding static metadata entry 'android.distortionCorrection.availableModes' (1b0001)
+06-19 16:04:25.908   364   364 I Camera2-Parameters: initialize: allowZslMode: 0 slowJpegMode 0
+06-19 16:04:25.914   364   364 W ServiceManager: Permission failure: android.permission.SYSTEM_CAMERA from uid=10080 pid=1864
+06-19 16:04:25.915   364   364 W ServiceManager: Permission failure: android.permission.SYSTEM_CAMERA from uid=10080 pid=1864
+06-19 16:04:25.915   288   288 D AudioHardwareTiny: adev_set_parameters: kvpairs = cameraFacing=back
+06-19 16:04:25.920  1864  1864 D RICHGOLD: mCamera : android.hardware.Camera@e7ee489
+06-19 16:04:25.925  1864  1864 D RICHGOLD: previewSize.width: 1920 previewSize.height: 1080
+06-19 16:04:25.933   303   394 D Camera3HAL: configure_streams: streams list ptr: 0xe96c1e30, num 2
+06-19 16:04:25.933   303  1903 E RkCamera: <HAL> RKISP2GraphConfig: @selectSensorOutputFormat : App stream size(1920x1080) larger than Sensor full size(960x720), Check camera3_profiles.xml
+06-19 16:04:25.933   303  1903 E RkCamera: <HAL> RKISP2GraphConfigManager: Couldn't get mediaCtl config
+06-19 16:04:25.934   303  1903 E RkCamera: <HAL> V4L2Subdev: queryDvTimings, ret:-1, I:0, wxh:0x0
+06-19 16:04:25.934   303  1903 E RkCamera: <HAL> V4L2Subdev: VIDIOC_SUBDEV_QUERY_DV_TIMINGS failed: Inappropriate ioctl for device
+06-19 16:04:25.934   303  1903 E RkCamera: <HAL> PlatformData: Error queryDvTimings ret:-2147483648 (/dev/v4l-subdev3)
+06-19 16:04:25.934   303  1903 E RkCamera: <HAL> PlatformData: Error closing device (/dev/v4l-subdev3)
+06-19 16:04:25.934   303  1903 E RkCamera: <HAL> RKISP2GraphConfig: getMediaDevInfo info.model:rkisp0
+06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RKISP2GraphConfigManager: Couldn't get Imgu mediaCtl config
+06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RKISP2ImguUnit: Processing tasks creation failed (ret = -2147483648)
+06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RKISP2CameraHw: Unable to configure stream for imgunit
+06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RequestThread: Error configuring the streams @handleConfigureStreams:213
+06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RequestThread:     error -2147483648 in handling message: 3
+```
+
+### support odd and even field synthesis
+
+ **rkisp** 드라이버는 odd, event field synthesis 기능을 지원한다.
+ 제한 조건.
+ 1. MIPI interface : 출력 frame count number(frame 시작, frame end on short packets에서) 를 rkisp 드라이버는 사용하여 기능을 지원한다.
+ 2. BT656 interface : 출력 frame 의 표준 SAV/EAV의 bit6 (odd, event field) flag정보를 사용하여 rkisp 드라이버는 기능을 지원한다.  
+> SAV는 비디오 프레임의 시작을 나타내는 비트입니다. EAV는 비디오 프레임의 끝을 나타내는 비트입니다. SAV와 EAV는 비디오 프레임의 시작과 끝을 식별하는 데 사용됩니다.
+ 3. RKISP driver모듈 내 RKISP1_selfpath video device node에서 기능을 제공한다. 다른 video device nodes는 기능을 제공하지 않는다. 
+ 만약, app layer에서 다른 device node를 호출한 경우 아래 에러가 출력된다.
+
+```bash
+Only selfpath support interlaced"
+```
+
+ RKISP_selfpath 정보는 아래 명령어를 통해 볼수 있다.
+```bash
+ # media-ctl -p
+Opening media device /dev/media0
+Enumerating entities
+Found 13 entities
+Enumerating pads and links
+Media controller API version 0.0.255
+
+Media device information
+------------------------
+driver          rkisp-vir0
+model           rkisp0
+serial
+bus info
+hw revision     0x0
+driver version  0.0.255
+
+Device topology
+- entity 1: rkisp-isp-subdev (4 pads, 7 links)
+            type V4L2 subdev subtype Unknown
+            device node name /dev/v4l-subdev0
+        pad0: Sink
+                [fmt:UYVY2X8/1920x1080
+                 crop.bounds:(0,0)/1920x1080
+                 crop:(0,0)/1920x1080]
+                <- "rkisp-csi-subdev":1 [ENABLED]
+                <- "rkisp_rawrd0_m":0 []
+                <- "rkisp_rawrd2_s":0 []
+        pad1: Sink
+                <- "rkisp-input-params":0 [ENABLED]
+        pad2: Source
+                [fmt:YUYV2X8/1920x1080
+                 crop.bounds:(0,0)/1920x1080
+                 crop:(0,0)/1920x1080]
+                -> "rkisp_mainpath":0 [ENABLED]
+                -> "rkisp_selfpath":0 [ENABLED]
+        pad3: Source
+                -> "rkisp-statistics":0 [ENABLED]
+
+- entity 6: rkisp-csi-subdev (6 pads, 5 links)
+            type V4L2 subdev subtype Unknown
+            device node name /dev/v4l-subdev1
+        pad0: Sink
+                [fmt:UYVY2X8/1920x1080]
+                <- "rockchip-csi2-dphy0":1 [ENABLED]
+        pad1: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp-isp-subdev":0 [ENABLED]
+        pad2: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp_rawwr0":0 [ENABLED]
+        pad3: Source
+                [fmt:UYVY2X8/1920x1080]
+        pad4: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp_rawwr2":0 [ENABLED]
+        pad5: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp_rawwr3":0 [ENABLED]
+
+- entity 13: rkisp_mainpath (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video0
+        pad0: Sink
+                <- "rkisp-isp-subdev":2 [ENABLED]
+
+- entity 19: rkisp_selfpath (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video1
+        pad0: Sink
+                <- "rkisp-isp-subdev":2 [ENABLED]
+
+- entity 25: rkisp_rawwr0 (1 pad, 1 link)
+```
 
 ---
 
