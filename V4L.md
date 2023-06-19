@@ -433,6 +433,7 @@ Device topology
 
 
 ```
+![](images/V4L_02.png)
 
  - **v4l2-ctl**
    * /dev/videoX와 같은 비디오 장치를 통해 동작하며, set_fmt, reqbuf, qbuf, dqbuf, stream_on, stream_off와 같은 동작을 수행합니다.
