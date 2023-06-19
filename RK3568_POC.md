@@ -417,5 +417,118 @@ index 7532217..cf789ac 100755
 ```
 
 
+ - [ ] download mode 진입 시, 2번 반복적으로 진입되는 현상.
+   * download mode(fastboot mode) 2번 진입되는 현상. 
+```bash
+# adb reboot bootloader // (host pc side) 명령 시 다운로드 모드 2번 진입됨.
+```
+
+   * log 
+```bash
+
+[2023-06-19 09:56:46.797] [   46.394887] reboot: Restarting system with command 'bootloader'
+[2023-06-19 09:56:46.925] DDR Version V1.13 20220218
+[2023-06-19 09:56:46.925] In
+
+(...)
+
+[2023-06-19 09:56:47.783]
+[2023-06-19 09:56:47.783]
+[2023-06-19 09:56:47.783] U-Boot 2017.09-g9a4fa84aad-220408-dirty #lchy0113 (Jun 13 2023 - 01:49:52 +0000)
+[2023-06-19 09:56:47.824]
+[2023-06-19 09:56:47.824] Model: kdiwin nova platform rk3568 board rk3568-edp-p01.dts
+[2023-06-19 09:56:47.825] PreSerial: 4, raw, 0xfe680000
+[2023-06-19 09:56:47.825] DRAM:  2 GiB
+[2023-06-19 09:56:47.825] Sysmem: init
+[2023-06-19 09:56:47.825] Relocation Offset: 7d346000
+[2023-06-19 09:56:47.825] Relocation fdt: 7b9f9460 - 7b9fece0
+[2023-06-19 09:56:47.856] CR: M/C/I
+[2023-06-19 09:56:47.856] Using default environment
+[2023-06-19 09:56:47.856]
+[2023-06-19 09:56:47.872] dwmmc@fe2b0000: 1, dwmmc@fe2c0000: 2, sdhci@fe310000: 0
+[2023-06-19 09:56:47.948] Bootdev(atags): mmc 0
+[2023-06-19 09:56:47.948] MMC0: HS200, 200Mhz
+[2023-06-19 09:56:47.948] PartType: EFI
+[2023-06-19 09:56:47.948] DM: v1
+[2023-06-19 09:56:47.948] boot mode: bootloader
+[2023-06-19 09:56:47.948] Android 12.0, Build 2022.3, v2
+[2023-06-19 09:56:47.949] Found DTB in boot part
+[2023-06-19 09:56:47.949] DTB: rk-kernel.dtb
+[2023-06-19 09:56:47.949] HASH(c): OK
+[2023-06-19 09:56:47.964] ANDROID: fdt overlay OK
+[2023-06-19 09:56:47.980] I2c4 speed: 100000Hz
+[2023-06-19 09:56:47.996] PMIC:  RK8090 (on=0x40, off=0x00)
+[2023-06-19 09:56:47.996] vdd_logic init 900000 uV
+[2023-06-19 09:56:48.012] vdd_gpu init 900000 uV
+[2023-06-19 09:56:48.012] vdd_npu init 900000 uV
+[2023-06-19 09:56:48.028] io-domain: OK
+[2023-06-19 09:56:48.076] Model: kdiwin nova platform rk3568 edp p01 board
+
+
+(...)
+
+# fastboot reboot  // (host pc side)
+
+(...)
+
+
+
+request 000000007bdb7d00 was not queued to ep1in-bulk
+DDR Version V1.13 20220218
+[2023-06-19 09:57:57.541] In
+[2023-06-19 09:57:57.602] ddrconfig:0
+[2023-06-19 09:57:57.602] LP4 MR14:0x4d
+[2023-06-19 09:57:57.602] LPDDR4, 324MHz
+[2023-06-19 09:57:57.602] BW=32 Col=10 Bk=8 CS0 Row=16 CS=1 Die BW=16 Size=2048MB
+[2023-06-19 09:57:57.603] tdqss: cs0 dqs0: 361ps, dqs1: 289ps, dqs2: 313ps, dqs3: 217ps,
+
+(...)
+
+[2023-06-19 09:57:57.603]
+ [2023-06-19 09:57:58.443] Model: kdiwin nova platform rk3568 board rk3568-edp-p01.dts
+ [2023-06-19 09:57:58.444] PreSerial: 4, raw, 0xfe680000
+ [2023-06-19 09:57:58.444] DRAM:  2 GiB
+ [2023-06-19 09:57:58.444] Sysmem: init
+ [2023-06-19 09:57:58.444] Relocation Offset: 7d346000
+ [2023-06-19 09:57:58.444] Relocation fdt: 7b9f9460 - 7b9fece0
+ [2023-06-19 09:57:58.494] CR: M/C/I
+ [2023-06-19 09:57:58.494] Using default environment
+ [2023-06-19 09:57:58.495]
+ [2023-06-19 09:57:58.495] dwmmc@fe2b0000: 1, dwmmc@fe2c0000: 2, sdhci@fe310000: 0
+ [2023-06-19 09:57:58.574] Bootdev(atags): mmc 0
+ [2023-06-19 09:57:58.574] MMC0: HS200, 200Mhz
+ [2023-06-19 09:57:58.574] PartType: EFI
+ [2023-06-19 09:57:58.574] DM: v1
+ [2023-06-19 09:57:58.574] boot mode: recovery (misc)
+ [2023-06-19 09:57:58.574] boot mode: normal
+ [2023-06-19 09:57:58.574] Android 12.0, Build 2022.3, v2
+ [2023-06-19 09:57:58.575] Found DTB in boot part
+ [2023-06-19 09:57:58.575] DTB: rk-kernel.dtb
+ [2023-06-19 09:57:58.575] HASH(c): OK
+ [2023-06-19 09:57:58.590] ANDROID: fdt overlay OK
+ [2023-06-19 09:57:58.606] I2c4 speed: 100000Hz
+ [2023-06-19 09:57:58.636] PMIC:  RK8090 (on=0x40, off=0x00)
+ [2023-06-19 09:57:58.636] vdd_logic init 900000 uV
+ [2023-06-19 09:57:58.636] vdd_gpu init 900000 uV
+ [2023-06-19 09:57:58.636] vdd_npu init 900000 uV
+ [2023-06-19 09:57:58.652] io-domain: OK
+ [2023-06-19 09:57:58.652] Model: kdiwin nova platform rk3568 edp p01 board
+ [2023-06-19 09:57:58.698] Rockchip UBOOT DRM driver version: v1.0.1
+ [2023-06-19 09:57:58.698] VOP have 2 active VP
+ [2023-06-19 09:57:58.698] vp0 have layer nr:3[0 2 4 ], primary plane: 4
+ [2023-06-19 09:57:58.699] vp1 have layer nr:3[1 3 5 ], primary plane: 5
+ [2023-06-19 09:57:58.699] vp2 have layer nr:0[], primary plane: 0
+ [2023-06-19 09:57:58.699] disp info 2, type:14, id:0
+
+ (...)
+
+
+```
+
+ - debug 
+  first boot : bootloader 
+  second boot : recovery(misc) & normal
+  bootloader 부팅 후, recovery (misc) 로 부팅 됨.
+ 
 
 
