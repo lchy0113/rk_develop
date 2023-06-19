@@ -92,6 +92,17 @@ struct v4l2_subdev_ops  : Subdev operations
 		+-> .set_fmt : callback for VIDIOC_SUBDEV_S_FMT ioctl handler code.
 ```
 
+   * v4l2_subdev_ops 
+     + V4L2(Video for Linux 2) 표준에서 정의된 subdev의 작업을 나타내는 구조체.
+     + callback function 을 기반으로 하여 sensor 드라이버의 logic을 제어.
+	 + v4l2_subdev_ops 구조체에는 여러 개의 함수가 포함되어 있지만, 그중 필수로 구현해야 하는 함수는 아래와 같다.
+	   = v4l2_subdev_call : subdev의 작업을 호출하는 함수.
+       = v4l2_subdev_poll : subdev의 이벤트를 polling 하는 함수.
+	   = v4l2_subdev_g_fmt : subdev의 포맷을 가져오는 함수.
+	   = v4l2_subdev_s_fmt : subdev의 포맷을 설정하는 함수.
+	   = v4l2_subdev_g_parm : subdev의 매개변수를 가져오는 함수.
+	   = v4l2_subdev_s_parm : subdev의 매개변수를 설정하는 함수.
+
  - *v4l2_subdev_internal_ops*
 
 ```c
@@ -288,6 +299,140 @@ static int tp2860_set_ctrl(struct v4l2_ctrl *ctrl)
 	 + mp, sp는 각각 출력되는 data의 format과 size를 처리합니다.
    * tp2860 의 cif, isp topologies에 대해 설명합니다.
    ![](./images/V4L_01.png)	
+ 
+```bash
+130|rk3568_edpp01:/ # media-ctl -p
+Opening media device /dev/media0
+Enumerating entities
+Found 13 entities
+Enumerating pads and links
+Media controller API version 0.0.255
+
+Media device information
+------------------------
+driver          rkisp-vir0
+model           rkisp0
+serial
+bus info
+hw revision     0x0
+driver version  0.0.255
+
+Device topology
+- entity 1: rkisp-isp-subdev (4 pads, 7 links)
+            type V4L2 subdev subtype Unknown
+            device node name /dev/v4l-subdev0
+        pad0: Sink
+                [fmt:UYVY2X8/1920x1080
+                 crop.bounds:(0,0)/1920x1080
+                 crop:(0,0)/1920x1080]
+                <- "rkisp-csi-subdev":1 [ENABLED]
+                <- "rkisp_rawrd0_m":0 []
+                <- "rkisp_rawrd2_s":0 []
+        pad1: Sink
+                <- "rkisp-input-params":0 [ENABLED]
+        pad2: Source
+                [fmt:YUYV2X8/1920x1080
+                 crop.bounds:(0,0)/1920x1080
+                 crop:(0,0)/1920x1080]
+                -> "rkisp_mainpath":0 [ENABLED]
+                -> "rkisp_selfpath":0 [ENABLED]
+        pad3: Source
+                -> "rkisp-statistics":0 [ENABLED]
+
+- entity 6: rkisp-csi-subdev (6 pads, 5 links)
+            type V4L2 subdev subtype Unknown
+            device node name /dev/v4l-subdev1
+        pad0: Sink
+                [fmt:UYVY2X8/1920x1080]
+                <- "rockchip-csi2-dphy0":1 [ENABLED]
+        pad1: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp-isp-subdev":0 [ENABLED]
+        pad2: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp_rawwr0":0 [ENABLED]
+        pad3: Source
+                [fmt:UYVY2X8/1920x1080]
+        pad4: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp_rawwr2":0 [ENABLED]
+        pad5: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp_rawwr3":0 [ENABLED]
+
+- entity 13: rkisp_mainpath (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video0
+        pad0: Sink
+                <- "rkisp-isp-subdev":2 [ENABLED]
+
+- entity 19: rkisp_selfpath (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video1
+        pad0: Sink
+                <- "rkisp-isp-subdev":2 [ENABLED]
+
+- entity 25: rkisp_rawwr0 (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video2
+        pad0: Sink
+                <- "rkisp-csi-subdev":2 [ENABLED]
+
+- entity 31: rkisp_rawwr2 (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video3
+        pad0: Sink
+                <- "rkisp-csi-subdev":4 [ENABLED]
+
+- entity 37: rkisp_rawwr3 (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video4
+        pad0: Sink
+                <- "rkisp-csi-subdev":5 [ENABLED]
+
+- entity 43: rkisp_rawrd0_m (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video5
+        pad0: Source
+                -> "rkisp-isp-subdev":0 []
+
+- entity 49: rkisp_rawrd2_s (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video6
+        pad0: Source
+                -> "rkisp-isp-subdev":0 []
+
+- entity 55: rkisp-statistics (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video7
+        pad0: Sink
+                <- "rkisp-isp-subdev":3 [ENABLED]
+
+- entity 61: rkisp-input-params (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video8
+        pad0: Source
+                -> "rkisp-isp-subdev":1 [ENABLED]
+
+- entity 67: rockchip-csi2-dphy0 (2 pads, 2 links)
+             type V4L2 subdev subtype Unknown
+             device node name /dev/v4l-subdev2
+        pad0: Sink
+                [fmt:UYVY2X8/1920x1080]
+                <- "m00_b_tp2860 5-0044":0 [ENABLED]
+        pad1: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rkisp-csi-subdev":0 [ENABLED]
+
+- entity 70: m00_b_tp2860 5-0044 (1 pad, 1 link)
+             type V4L2 subdev subtype Sensor
+             device node name /dev/v4l-subdev3
+        pad0: Source
+                [fmt:UYVY2X8/1920x1080]
+                -> "rockchip-csi2-dphy0":0 [ENABLED]
+
+
+```
 
  - **v4l2-ctl**
    * /dev/videoX와 같은 비디오 장치를 통해 동작하며, set_fmt, reqbuf, qbuf, dqbuf, stream_on, stream_off와 같은 동작을 수행합니다.
