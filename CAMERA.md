@@ -711,6 +711,7 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 
 38 directories
 ```
+ Camera HAL3 모듈은 AAL 모듈과 PSL 모듈을 포함합니다.
    - AAL : android framework와 통신 하는 모듈이며, camera_module, API 인터페이스 가 정의 되어 있습니다. android framework로 부터 받은 요청을 PSL에게 전달 합니다.
    - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.
 	 
@@ -873,6 +874,7 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
 06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RequestThread: Error configuring the streams @handleConfigureStreams:213
 06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RequestThread:     error -2147483648 in handling message: 3
 ```
+ - [ ] iep : Image Enhancement (IEP moudle) ; 무슨 기능을 하는 모듈인지 확인.
 
 ### support odd and even field synthesis
 
