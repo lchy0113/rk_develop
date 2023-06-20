@@ -848,7 +848,7 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
  - [ ] WDT를 사용하지 않는 경우, vide page의 0x26=0x05 로 설정.
  - [ ] ntsc의 경우, reg0x01=0x78 로 read되어야 함.
 	 : Video Input Status(0x01) 
- - [ ] width, height 가 맞지 않으면 open 이후 동작되지 않음. 로그 분석.
+ - [v] width, height 가 맞지 않으면 open 이후 동작되지 않음. 로그 분석.
 ```logcat
 06-19 16:04:26.017     0     0 W audit   : audit_lost=1 audit_rate_limit=5 audit_backlog_limit=64
 06-19 16:04:26.017     0     0 E audit   : rate limit exceeded
