@@ -436,7 +436,7 @@ index 7532217..cf789ac 100755
 [2023-06-19 09:56:47.783]
 [2023-06-19 09:56:47.783] U-Boot 2017.09-g9a4fa84aad-220408-dirty #lchy0113 (Jun 13 2023 - 01:49:52 +0000)
 [2023-06-19 09:56:47.824]
-[2023-06-19 09:56:47.824] Model: kdiwin nova platform rk3568 board rk3568-edp-p01.dts
+[2023-06-19 09:56:47.824] Model: company nova platform rk3568 board rk3568-edp-p01.dts
 [2023-06-19 09:56:47.825] PreSerial: 4, raw, 0xfe680000
 [2023-06-19 09:56:47.825] DRAM:  2 GiB
 [2023-06-19 09:56:47.825] Sysmem: init
@@ -462,7 +462,7 @@ index 7532217..cf789ac 100755
 [2023-06-19 09:56:48.012] vdd_gpu init 900000 uV
 [2023-06-19 09:56:48.012] vdd_npu init 900000 uV
 [2023-06-19 09:56:48.028] io-domain: OK
-[2023-06-19 09:56:48.076] Model: kdiwin nova platform rk3568 edp p01 board
+[2023-06-19 09:56:48.076] Model: company nova platform rk3568 edp p01 board
 
 
 (...)
@@ -485,7 +485,7 @@ DDR Version V1.13 20220218
 (...)
 
 [2023-06-19 09:57:57.603]
- [2023-06-19 09:57:58.443] Model: kdiwin nova platform rk3568 board rk3568-edp-p01.dts
+ [2023-06-19 09:57:58.443] Model: company nova platform rk3568 board rk3568-edp-p01.dts
  [2023-06-19 09:57:58.444] PreSerial: 4, raw, 0xfe680000
  [2023-06-19 09:57:58.444] DRAM:  2 GiB
  [2023-06-19 09:57:58.444] Sysmem: init
@@ -512,7 +512,7 @@ DDR Version V1.13 20220218
  [2023-06-19 09:57:58.636] vdd_gpu init 900000 uV
  [2023-06-19 09:57:58.636] vdd_npu init 900000 uV
  [2023-06-19 09:57:58.652] io-domain: OK
- [2023-06-19 09:57:58.652] Model: kdiwin nova platform rk3568 edp p01 board
+ [2023-06-19 09:57:58.652] Model: company nova platform rk3568 edp p01 board
  [2023-06-19 09:57:58.698] Rockchip UBOOT DRM driver version: v1.0.1
  [2023-06-19 09:57:58.698] VOP have 2 active VP
  [2023-06-19 09:57:58.698] vp0 have layer nr:3[0 2 4 ], primary plane: 4

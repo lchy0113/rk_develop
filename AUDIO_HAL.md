@@ -338,7 +338,7 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
 	
 ```bash
 lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$ repo status 
-project device/kdiwin/test/rk3568_poc/          branch private/develop_ak7755
+project device/company/test/rk3568_poc/          branch private/develop_ak7755
  -m     audio/audio_policy_configuration.xml
  --     audio/audio_policy_configuration.xml_backup
  --     audio/codec_offload_audio_policy_configuration.xml
@@ -366,8 +366,8 @@ project system/media/                           (*** NO BRANCH ***)
  -m     audio/include/system/audio.h
  -m     audio_route/audio_route.c
 project u-boot/                                 branch private/develop
-project vendor/kdiwin/packages/Wall/            branch master
-project vendor/kdiwin/packages/WallTest/        branch master
+project vendor/company/packages/Wall/            branch master
+project vendor/company/packages/WallTest/        branch master
  --     res/layout/haboard_main.xml
 project vendor/rockchip/common/                 branch private/develop
 lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$

@@ -14,14 +14,14 @@ echo -e $KERNEL_DTS
 
 if [ ! -f ./kernel/configs/kconfig.config ]; then
 	echo "...link kconfig.config"
-	ln -s ../../../device/kdiwin/test/common/kconfig.config ./kernel/configs/kconfig.config
+	ln -s ../../../device/company/test/common/kconfig.config ./kernel/configs/kconfig.config
 fi
 
 # ./kernel-4.19/arch/arm64/configs/rockchip_defconfig 
 # ./kernel/configs/android-11.config -> ../../../mkcombinedroot/configs/android-11.config
 # ./kernel/configs/non_debuggable.config -> ../../../mkcombinedroot/configs/non_debuggable.config 
 # ./kernel/configs/disable_incfs.config -> ../../../mkcombinedroot/configs/disable_incfs.config
-# ./kernel/configs/kconfig.config -> ../../../device/kdiwin/test/rk3568_poc/kconfig.config
+# ./kernel/configs/kconfig.config -> ../../../device/company/test/rk3568_poc/kconfig.config
 #KERNEL_DTS="rk3568-rgb-p01"
 #KERNEL_DTS="rk3568-rgb-p02"
 #KERNEL_DTS="rk3568-poc-v00"
