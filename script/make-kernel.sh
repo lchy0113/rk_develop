@@ -14,7 +14,7 @@ echo -e $KERNEL_DTS
 
 if [ ! -f ./kernel/configs/kconfig.config ]; then
 	echo "...link kconfig.config"
-	ln -s ../../../device/company/test/common/kconfig.config ./kernel/configs/kconfig.config
+	ln -s ../../../device/(company;repace)/test/common/kconfig.config ./kernel/configs/kconfig.config
 fi
 
 # ./kernel-4.19/arch/arm64/configs/rockchip_defconfig 
