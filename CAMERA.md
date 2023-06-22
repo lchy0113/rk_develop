@@ -768,10 +768,29 @@ $ adb shell dumpsys media.camera
 ```
  
 
+---
+
+## 7. rkisp
+ rkisp1 isp 드라이버
+ 7.1 framework에 대한 설명
+
+ rkisp 드라이버는 주로 v4l2/media framework를 기반으로 hardware 구성, 인터럽트 처리, buffer rotation, sub device(예, mipi dphy, 센서) 의 전원 enable/disable을 제어한다.
+ 아래 블록 다이어그랩은 rkisp1 드라이버의 topology를 보여준다.
+
+ ![](./images/CAMERA_06.png)
+ 
+|       **name**      	|       **type**      	|                                                                                                                                                                       **describe**                                                                                                                                                                       	|
+|:-------------------:	|:-------------------:	|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:	|
+| rkisp1_mainpath     	| v4l2_vdev, capture  	| Format: YUV, RAW Bayer; Support: Crop                                                                                                                                                                                                                                                                                                                    	|
+| rkisp1_selfpath     	| v4l2_vdev, capure   	| Format: YUV, RGB; Support: Crop                                                                                                                                                                                                                                                                                                                          	|
+| rkisp1-isp-subdev   	| v4l2_subdev         	| Internal isp blocks; Support: source/sink pad crop  The format on sink pad should be equal to sensor input format, the size should be equal/less than sensor input size.  The format on source pad sould be equal to vdev output format if output format is raw bayer, otherwise it should be YUYV2X8. The size should be equal/less than sink pad size. 	|
+| rockchip-sy-mipi    	| v4l2_subdev         	| MIPI_DPHY Configure.                                                                                                                                                                                                                                                                                                                                     	|
+| rkisp1-statistics   	| v4l2_vdev,  capture 	| Provide Image color Statistics information.                                                                                                                                                                                                                                                                                                              	|
+| rkisp1-input-params 	| v4l2_vdev, output   	| Accept params for AWB, BLC..... Image enhancement blocks.                                                                                                                                                                                                                                                                                                	|
 
 ---
 
-## 7. techpoint tp2825 
+## 8. techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
@@ -813,7 +832,7 @@ static int __init tp2802_module_init(void)
 	+-> i2c_client_init();
 	|	// register i2c device
 	|
-	+-> tp2802_comm_init();
+	+-> tp2802_comm_init();	//	val : 2860
 	|	// tp2860 초기화 코드 동작(write register)
 	|	// TP2825B_reset_default(chip, VIDEO_PAGE)
 	|	// tp2802_set_video_mode(chip, mode, VIDEO_PAGE, STD_TVI)
@@ -846,9 +865,10 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
  - horizontal half mode 사용.
    decoding 해상도(mipi출력)를 ntsc의 경우, 960x480i(interlaced)로 출력됨.
 
- - [ ] WDT를 사용하지 않는 경우, vide page의 0x26=0x05 로 설정.
+ - [v] WDT를 사용하지 않는 경우, video page의 0x26=0x05 로 설정.
  - [ ] ntsc의 경우, reg0x01=0x78 로 read되어야 함.
-	 : Video Input Status(0x01) 
+	 : Video Input Status(addr : 0x01) 
+	 ![](./images/CAMERA_07.png)
  - [v] width, height 가 맞지 않으면 open 이후 동작되지 않음. 로그 분석.
 ```logcat
 06-19 16:04:26.017     0     0 W audit   : audit_lost=1 audit_rate_limit=5 audit_backlog_limit=64
@@ -875,6 +895,16 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
 06-19 16:04:25.935   303  1903 E RkCamera: <HAL> RequestThread:     error -2147483648 in handling message: 3
 ```
  - [ ] iep : Image Enhancement (IEP moudle) ; 무슨 기능을 하는 모듈인지 확인.
+ - [ ] /dev/video1 노드에서  ***v4l2-ctl --list-formats-ext --device /dev/video1*** 명령어가 조회 되지 않는 이유 검토.
+ - [ ] rkisp 분석.
+
+### MIPI interface - Clamgping Control
+
+MIPI 인터페이스에서 클램핑 컨트롤은 센서에서 MIPI 인터페이스로 전송되는 데이터의 레벨을 제한하는 데 사용되는 기능입니다. 클램핑 컨트롤을 사용하면 센서에서 MIPI 인터페이스로 전송되는 데이터의 최대 및 최소 레벨을 설정할 수 있습니다. 이렇게 하면 센서에서 MIPI 인터페이스로 전송되는 데이터가 너무 높거나 너무 낮아서 손상되는 것을 방지할 수 있습니다.
+
+클램핑 컨트롤은 센서와 MIPI 인터페이스 간의 전압 레벨 차이를 보상하는 데에도 사용될 수 있습니다. 센서와 MIPI 인터페이스 간의 전압 레벨 차이가 있는 경우 클램핑 컨트롤을 사용하여 센서에서 MIPI 인터페이스로 전송되는 데이터의 레벨을 조정할 수 있습니다. 이렇게 하면 센서와 MIPI 인터페이스 간의 전압 레벨 차이로 인해 발생하는 오류를 방지할 수 있습니다.
+
+클램핑 컨트롤은 MIPI 인터페이스의 중요한 기능입니다. 클램핑 컨트롤을 사용하면 센서에서 MIPI 인터페이스로 전송되는 데이터의 레벨을 제한하고 전압 레벨 차이를 보상할 수 있습니다. 이렇게 하면 센서와 MIPI 인터페이스 간의 데이터 전송을 안정적으로 유지할 수 있습니다.
 
 ### support odd and even field synthesis
 
