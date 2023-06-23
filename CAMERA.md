@@ -866,7 +866,7 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
    decoding 해상도(mipi출력)를 ntsc의 경우, 960x480i(interlaced)로 출력됨.
 
  - [v] WDT를 사용하지 않는 경우, video page의 0x26=0x05 로 설정.
- - [ ] ntsc의 경우, reg0x01=0x78 로 read되어야 함.
+ - [v] ntsc의 경우, reg0x01=0x78 로 read되어야 함.
 	 : Video Input Status(addr : 0x01) 
 	 ![](./images/CAMERA_07.png)
  - [v] width, height 가 맞지 않으면 open 이후 동작되지 않음. 로그 분석.
