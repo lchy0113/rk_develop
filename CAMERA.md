@@ -610,6 +610,13 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 ```
 
 
+ - *RKCIF* Driver User Manual
+
+ 아래 block diagram은 RKCIF1 드라이버의 토폴로지를 보여준다.
+
+![](./images/CAMERA_08.png)
+
+
 ---
 
 ## 4. VICAP
@@ -790,7 +797,7 @@ $ adb shell dumpsys media.camera
 
 ---
 
-## 8. techpoint tp2825 
+## 8. decoder : techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
@@ -897,6 +904,155 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
  - [ ] iep : Image Enhancement (IEP moudle) ; 무슨 기능을 하는 모듈인지 확인.
  - [ ] /dev/video1 노드에서  ***v4l2-ctl --list-formats-ext --device /dev/video1*** 명령어가 조회 되지 않는 이유 검토.
  - [ ] rkisp 분석.
+
+
+ - media-ctl -p 명령을 통해 확인.
+
+```bash
+
+ [m00_b_tp2860 5-0044] 
+   |
+   +-> [rockchip-csi2-dph0]
+         |
+		 +-> [rkisp-csi-subdev] 
+		       |
+			   +-> [rkisp-isp-subdev] 
+			         |
+					 +-> [rkisp_selfpath]  /* processe de-interlaced */
+```
+
+```bash
+rk3568_edpp01:/ # media-ctl -p
+Opening media device /dev/media0
+Enumerating entities
+Found 13 entities
+Enumerating pads and links
+Media controller API version 0.0.255
+
+Media device information
+------------------------
+driver          rkisp-vir0
+model           rkisp0
+serial
+bus info
+hw revision     0x0
+driver version  0.0.255
+
+Device topology
+- entity 1: rkisp-isp-subdev (4 pads, 7 links)
+            type V4L2 subdev subtype Unknown
+            device node name /dev/v4l-subdev0
+        pad0: Sink
+                [fmt:UYVY2X8/720x480
+                 crop.bounds:(0,0)/720x480
+                 crop:(0,0)/720x480]
+                <- "rkisp-csi-subdev":1 [ENABLED]
+                <- "rkisp_rawrd0_m":0 []
+                <- "rkisp_rawrd2_s":0 []
+        pad1: Sink
+                <- "rkisp-input-params":0 [ENABLED]
+        pad2: Source
+                [fmt:YUYV2X8/720x480
+                 crop.bounds:(0,0)/720x480
+                 crop:(0,0)/720x480]
+                -> "rkisp_mainpath":0 []
+                -> "rkisp_selfpath":0 [ENABLED]
+        pad3: Source
+                -> "rkisp-statistics":0 [ENABLED]
+
+- entity 6: rkisp-csi-subdev (6 pads, 5 links)
+            type V4L2 subdev subtype Unknown
+            device node name /dev/v4l-subdev1
+        pad0: Sink
+                [fmt:UYVY2X8/720x480]
+                <- "rockchip-csi2-dphy0":1 [ENABLED]
+        pad1: Source
+                [fmt:UYVY2X8/720x480]
+                -> "rkisp-isp-subdev":0 [ENABLED]
+        pad2: Source
+                [fmt:UYVY2X8/720x480]
+                -> "rkisp_rawwr0":0 [ENABLED]
+        pad3: Source
+                [fmt:UYVY2X8/720x480]
+        pad4: Source
+                [fmt:UYVY2X8/720x480]
+                -> "rkisp_rawwr2":0 [ENABLED]
+        pad5: Source
+                [fmt:UYVY2X8/720x480]
+                -> "rkisp_rawwr3":0 [ENABLED]
+
+- entity 13: rkisp_mainpath (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video0
+        pad0: Sink
+                <- "rkisp-isp-subdev":2 []
+
+- entity 19: rkisp_selfpath (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video1
+        pad0: Sink
+                <- "rkisp-isp-subdev":2 [ENABLED]
+
+- entity 25: rkisp_rawwr0 (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video2
+        pad0: Sink
+                <- "rkisp-csi-subdev":2 [ENABLED]
+
+- entity 31: rkisp_rawwr2 (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video3
+        pad0: Sink
+                <- "rkisp-csi-subdev":4 [ENABLED]
+
+- entity 37: rkisp_rawwr3 (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video4
+        pad0: Sink
+                <- "rkisp-csi-subdev":5 [ENABLED]
+
+- entity 43: rkisp_rawrd0_m (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video5
+        pad0: Source
+                -> "rkisp-isp-subdev":0 []
+
+- entity 49: rkisp_rawrd2_s (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video6
+        pad0: Source
+                -> "rkisp-isp-subdev":0 []
+
+- entity 55: rkisp-statistics (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video7
+        pad0: Sink
+                <- "rkisp-isp-subdev":3 [ENABLED]
+
+- entity 61: rkisp-input-params (1 pad, 1 link)
+             type Node subtype V4L
+             device node name /dev/video8
+        pad0: Source
+                -> "rkisp-isp-subdev":1 [ENABLED]
+
+- entity 67: rockchip-csi2-dphy0 (2 pads, 2 links)
+             type V4L2 subdev subtype Unknown
+             device node name /dev/v4l-subdev2
+        pad0: Sink
+                [fmt:UYVY2X8/720x480]
+                <- "m00_b_tp2860 5-0044":0 [ENABLED]
+        pad1: Source
+                [fmt:UYVY2X8/720x480]
+                -> "rkisp-csi-subdev":0 [ENABLED]
+
+- entity 70: m00_b_tp2860 5-0044 (1 pad, 1 link)
+             type V4L2 subdev subtype Sensor
+             device node name /dev/v4l-subdev3
+        pad0: Source
+                [fmt:UYVY2X8/720x480]
+                -> "rockchip-csi2-dphy0":0 [ENABLED]
+
+```
 
 ### MIPI interface - Clamgping Control
 
