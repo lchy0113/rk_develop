@@ -908,6 +908,8 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
 
  - media-ctl -p 명령을 통해 확인.
 
+ - tp2860
+
 ```bash
 
  [m00_b_tp2860 5-0044] 
@@ -1051,6 +1053,76 @@ Device topology
         pad0: Source
                 [fmt:UYVY2X8/720x480]
                 -> "rockchip-csi2-dphy0":0 [ENABLED]
+
+```
+
+
+ - gc2145
+ 
+```bash
+
+ [m01_f_gc2145 2-003c] 
+   |
+   +-> [stream_cif_dvp_id0]
+```
+
+```bash
+
+Opening media device /dev/media0
+Enumerating entities
+Found 7 entities
+Enumerating pads and links
+Media controller API version 0.0.255
+
+Media device information
+------------------------
+driver          rkcif
+model           rkcif_dvp
+serial
+bus info
+hw revision     0x0
+driver version  0.0.255
+
+Device topology
+- entity 1: stream_cif_dvp_id0 (1 pad, 1 link)
+            type Node subtype V4L
+            device node name /dev/video0
+        pad0: Sink
+                <- "m01_f_gc2145 2-003c":0 [ENABLED]
+
+- entity 5: stream_cif_dvp_id1 (1 pad, 0 link)
+            type Node subtype V4L
+            device node name /dev/video1
+        pad0: Sink
+
+- entity 9: stream_cif_dvp_id2 (1 pad, 0 link)
+            type Node subtype V4L
+            device node name /dev/video2
+        pad0: Sink
+
+- entity 13: stream_cif_dvp_id3 (1 pad, 0 link)
+             type Node subtype V4L
+             device node name /dev/video3
+        pad0: Sink
+
+- entity 17: rkcif-mipi-luma (0 pad, 0 link)
+             type Node subtype V4L
+             device node name /dev/video4
+
+- entity 20: m01_f_gc2145 2-003c (1 pad, 1 link)
+             type V4L2 subdev subtype Sensor
+             device node name /dev/v4l-subdev0
+        pad0: Source
+                [fmt:UYVY2X8/800x600]
+                -> "stream_cif_dvp_id0":0 [ENABLED]
+
+- entity 22: rkcif-dvp-sof (0 pad, 0 link)
+             type V4L2 subdev subtype Unknown
+             device node name /dev/v4l-subdev1
+
+
+rk3568_edpp01:/ #
+
 
 ```
 
