@@ -853,9 +853,9 @@ static int __init tp2802_module_init(void)
 ```
 
 
-##  de-interlaced feature on NTSC
+##  develop : de-interlaced feature on NTSC
 
-Chapter27. MIPI CSI HOST는 CSI_RX_CTRL1(mipi-csi2@fdfb000)와 mapping.
+Chapter27. MIPI CSI HOST는 CSI_RX_CTRL1(mipi-csi2@fdfb0000)와 mapping.
 Chapter28. MIPI CSI DPHY는 CSI_RX_PHY(csi2-dphy-hw@fe870000)와 mapping.
 
 
@@ -1125,6 +1125,56 @@ rk3568_edpp01:/ #
 
 
 ```
+### MIPI interface - MIPI Error
+
+ mipi 통신 실패 시, 드라이버는 아래 에러를 출력함.
+
+```bash
+develop_2023-06-27__091303.log
+1541:[2023-06-27 09:18:18.485] [   44.317386] rkisp-vir0: MIPI error: packet: 0x00000010
+1555:[2023-06-27 09:18:18.569] [   44.318948] rkisp-vir0: MIPI error: packet: 0x00010000
+3626:[2023-06-27 09:22:35.437] [   72.279252] rkisp-vir0: MIPI error: packet: 0x00000010
+3628:[2023-06-27 09:22:35.438] [   72.284433] rkisp-vir0: MIPI error: packet: 0x00000001
+5674:[2023-06-27 09:28:46.919] [  257.464051] rkisp-vir0: MIPI error: packet: 0x00000010
+5759:[2023-06-27 09:30:39.592] [  370.191583] rkisp-vir0: MIPI error: packet: 0x00000010
+5760:[2023-06-27 09:30:39.592] [  370.193650] rkisp-vir0: MIPI error: packet: 0x01000000
+5764:[2023-06-27 09:30:39.644] [  370.210785] rkisp-vir0: MIPI error: packet: 0x00000100
+```
+
+| **Bits** 	| **Name**       	| **Desc**              	|
+|----------	|----------------	|-----------------------	|
+| 22       	| ECC2           	|                       	|
+| 27:24    	| Checksum error 	| one bit for each lane 	|
+| 11:8     	| SOT Sync Error 	| ont bit for each lane 	|
+| 7:4      	| EOT Sync Error 	| one bit for each lane 	|
+
+ *아래 list 체크 필요*
+ MIPI DPHY 수준
+ ISP PIC_SIZE_ERROR
+ ISP 데이터 손실
+ MIPI CSI-2 동기화 fifo 오버플로
+ MIPI CSI-2 기타 오류
+
+ *MIPI인터페이스는 Data를 수신하지 않으면 메시지를 출력하지 않는다.* 
+
+ - MIPI error 
+
+ - MIPI status
+
+	 CSI2HOST_PHY_STATE : 0xfdfb0014 : General settings for all blocks
+
+### ISP 관련 디버깅
+ 
+ 아래 로그 출력 & 디버깅.
+
+```bash
+[2023-06-29 17:18:52] [ 1690.801166] rkisp-vir0: CIF_ISP_PIC_SIZE_ERROR (0x00000001)
+[2023-06-29 17:18:54] [ 1690.817852] rkisp-vir0: CIF_ISP_PIC_SIZE_ERROR (0x00000001)
+```
+ 1. *CIF_ISP_PIC_SIZE_ERROR* 출력은 ISP_ERR 레지스터, PIC_SIZE_ERROR ISP 에 의해 출력 
+
+ ** rkisp : 0xfdff0000 ** 
+  Chapter 12 Image Signal Processign 
 
 ### MIPI interface - Clamgping Control
 
@@ -1241,4 +1291,70 @@ Device topology
 
  우선 TVI 카메라 확인 방법은 카메라의 비디오 출력을 스코프로 보면 1H(1Line) 파형에서 burst 주파수가 대략 40~45MHz 정도이면 TVI 1080Op이고,
  20~25MHz 정도이면 TVI 720p 이다. 
+
+### Document
+
+```bash
+	camera 
+		├── common
+		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */
+		├── HAL1
+		│   ├── README_CN.txt
+		│   ├── README_EN.txt
+		│   ├── RK312x_Camera_User_Manual_v1.4(3288&3368).pdf
+		│   ├── RK_ISP10_Camera_User_Manual_v2.3.pdf
+		│   ├── RKISPV1_Camera_Module_AVL_v1.7.pdf
+		│   ├── Rockchip_Camera_AVL_v2.0_Package_20180515.7z
+		│   ├── Rockchip_Introduction_RKISPV1_Camera_Driver_Debugging_Method_CN.pdf
+		│   ├── Rockchip_Introduction_RKISPV1_Camera_FAQ_CN.pdf
+		│   ├── Rockchip SOFIA 3G-R_PMB8018(x3_C3230RK)_Camera_Module_AVL_v1.6_20160226.pdf
+		│   └── Rockchip_Trouble_Shooting_Android_CameraHAL1_CN_EN.pdf
+		├── HAL3
+		│   ├── camera_engine_rkisp_user_manual_v2.2.pdf
+		│   ├── camera_hal3_user_manual_v2.3.pdf
+		│   ├── README_CN.txt
+		│   ├── RKCIF_Driver_User_Manual_v1.0.pdf
+		│   ├── RKISP1_IQ_Parameters_User_Guide_v1.2.pdf
+		│   ├── RKISP_Driver_User_Manual_v1.3.pdf
+		│   ├── Rockchip_Color_Optimization_Guide_ISP
+		│   │   ├── ISP21
+		│   │   │   └── CN
+		│   │   │       └── Rockchip_Color_Optimization_Guide_ISP21_CN_v2.0.1.pdf
+		│   │   └── ISP30
+		│   │       └── CN
+		│   │           └── Rockchip_Color_Optimization_Guide_ISP30_CN_v3.0.0.pdf
+		│   ├── Rockchip_Development_Guide_3A_ISP
+		│   │   └── ISP30
+		│   │       └── CN
+		│   │           └── Rockchip_Development_Guide_3A_ISP30_v1.1.0.pdf
+		│   ├── Rockchip_Development_Guide_ISP
+		│   │   ├── ISP21
+		│   │   │   └── CN
+		│   │   │       └── Rockchip_Development_Guide_ISP21_CN_v2.1.0.pdf
+		│   │   └── ISP30
+		│   │       └── CN
+		│   │           └── Rockchip_Development_Guide_ISP30_CN_v1.2.3.pdf
+		│   ├── Rockchip_Driver_Guide_VI
+		│   │   ├── CN
+		│   │   │   └── Rockchip_Driver_Guide_VI_CN_v1.1.1.pdf
+		│   │   └── EN
+		│   │       └── Rockchip_Driver_Guide_VI_EN_v1.0.7.pdf
+		│   ├── Rockchip_IQ_Tools_Guide_ISP
+		│   │   ├── ISP21
+		│   │   │   └── Rockchip_IQ_Tools_Guide_ISP2x_CN_v2.0.3.pdf
+		│   │   └── ISP30
+		│   │       └── Rockchip_IQ_Tools_Guide_ISP21_ISP30_CN_v2.0.4.pdf
+		│   ├── Rockchip_Trouble_Shooting_Camera_FAQ_CN_EN_CameraHAL3.pdf
+		│   ├── Rockchip_Tuning_Guide_ISP
+		│   │   ├── ISP21
+		│   │   │   └── CN
+		│   │   │       └── Rockchip_Tuning_Guide_ISP21_CN_v2.1.0.pdf
+		│   │   └── ISP30
+		│   │       └── CN
+		│   │           └── Rockchip_Tuning_Guide_ISP30_CN_v1.1.0.pdf
+		│   └── USB_UVC_Integrated_Cameras.pdf
+		└── README.txt
+
+		27 directories, 31 files
+```
 
