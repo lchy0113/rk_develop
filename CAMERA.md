@@ -1178,6 +1178,60 @@ develop_2023-06-27__091303.log
  ** rkisp : 0xfdff0000 ** 
   Chapter 12 Image Signal Processign 
 
+```bash
+io -4 -l 0x1000 0xfdff0000
+```
+
+```bash
+rk3568_edpp01:/sys/devices/platform # cat /proc/rkisp-vir0 
+rkisp-vir0 Version:v01.08.00
+clk_isp    297000000
+aclk_isp   396000000
+hclk_isp   198000000
+Interrupt  Cnt:34361 ErrCnt:0
+Input      rockchip-csi2-dphy0 Format:UYVY8_2X8 Size:720x480@60fps Offset(0,0)
+Isp online frame:17179 working time:30ms v-blank:2856us
+Output     rkisp_selfpath Format:NV12 Size:720x480 (frame:17179 rate:33ms delay:30ms frameloss:4)
+DPCC0      OFF(0x4)
+DPCC1      OFF(0x4)
+BLS        OFF(0x0)
+SDG        OFF(0x6115)
+LSC        OFF(0x0)
+AWBGAIN    OFF(0x6115) (gain: 0x01000100, 0x01000100)
+DEBAYER    OFF(0x7000110)
+CCM        OFF(0x0)
+GAMMA_OUT  OFF(0x0)
+CPROC      OFF(0x0)
+IE         OFF(0x0) (effect: BLACKWHITE)
+HDRDRC     OFF(0x0)
+HDRMGE     OFF(0x0)
+BAYNR      OFF(0x100)
+BAY3D      OFF(0x10)
+YNR        OFF(0x801000)
+CNR        OFF(0x0)
+SHARP      OFF(0x0)
+GIC        OFF(0x0)
+DHAZ       OFF(0x110)
+3DLUT      OFF(0x0)
+LDCH       OFF(0x0)
+CSM        FULL(0x6115)
+SIAF       OFF(0x0)
+SIAWB      OFF(0x0)
+YUVAE      OFF(0x0)
+SIHST      OFF(0x0)
+RAWAF      OFF(0x6)
+RAWAWB     OFF(0x0)
+RAWAE0     OFF(0x0)
+RAWAE1     OFF(0x0)
+RAWAE2     OFF(0x0)
+RAWAE3     OFF(0x0)
+RAWHIST0   OFF(0x80000000)
+RAWHIST1   OFF(0xa0000000)
+RAWHIST2   OFF(0x0)
+RAWHIST3   OFF(0xa0000000)
+Monitor    OFF Cnt:0
+```
+
 ### MIPI interface - Clamgping Control
 
 MIPI 인터페이스에서 클램핑 컨트롤은 센서에서 MIPI 인터페이스로 전송되는 데이터의 레벨을 제한하는 데 사용되는 기능입니다. 클램핑 컨트롤을 사용하면 센서에서 MIPI 인터페이스로 전송되는 데이터의 최대 및 최소 레벨을 설정할 수 있습니다. 이렇게 하면 센서에서 MIPI 인터페이스로 전송되는 데이터가 너무 높거나 너무 낮아서 손상되는 것을 방지할 수 있습니다.
@@ -1299,7 +1353,7 @@ Device topology
 ```bash
 	camera 
 		├── common
-		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */ /* 검토 중 */
+		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */
 		├── HAL1
 		│   ├── README_CN.txt
 		│   ├── README_EN.txt
@@ -1312,12 +1366,12 @@ Device topology
 		│   ├── Rockchip SOFIA 3G-R_PMB8018(x3_C3230RK)_Camera_Module_AVL_v1.6_20160226.pdf
 		│   └── Rockchip_Trouble_Shooting_Android_CameraHAL1_CN_EN.pdf
 		├── HAL3
-		│   ├── camera_engine_rkisp_user_manual_v2.2.pdf
-		│   ├── camera_hal3_user_manual_v2.3.pdf
+		│   ├── camera_engine_rkisp_user_manual_v2.2.pdf	/* 카메라 엔진 참조 문서 */
+		│   ├── camera_hal3_user_manual_v2.3.pdf /* 카메라 HAL3 참조 문서 */ 
 		│   ├── README_CN.txt
-		│   ├── RKCIF_Driver_User_Manual_v1.0.pdf
-		│   ├── RKISP1_IQ_Parameters_User_Guide_v1.2.pdf
-		│   ├── RKISP_Driver_User_Manual_v1.3.pdf
+		│   ├── RKCIF_Driver_User_Manual_v1.0.pdf /* cif 컨트롤러 드라이버에 연결된 카메라 센서 참조 문서 */
+		│   ├── RKISP1_IQ_Parameters_User_Guide_v1.2.pdf /* IQ 효과 파일 매개변수 설명 문서 */
+		│   ├── RKISP_Driver_User_Manual_v1.3.pdf  /* rkisp1, sensor, vcm, 드라이버 관련 문서 */
 		│   ├── Rockchip_Color_Optimization_Guide_ISP
 		│   │   ├── ISP21
 		│   │   │   └── CN
@@ -1336,7 +1390,7 @@ Device topology
 		│   │   └── ISP30
 		│   │       └── CN
 		│   │           └── Rockchip_Development_Guide_ISP30_CN_v1.2.3.pdf
-		│   ├── Rockchip_Driver_Guide_VI
+		│   ├── Rockchip_Driver_Guide_VI	/* VI 드라이버 개발 문서 */
 		│   │   ├── CN
 		│   │   │   └── Rockchip_Driver_Guide_VI_CN_v1.1.1.pdf
 		│   │   └── EN
@@ -1347,7 +1401,7 @@ Device topology
 		│   │   └── ISP30
 		│   │       └── Rockchip_IQ_Tools_Guide_ISP21_ISP30_CN_v2.0.4.pdf
 		│   ├── Rockchip_Trouble_Shooting_Camera_FAQ_CN_EN_CameraHAL3.pdf
-		│   ├── Rockchip_Tuning_Guide_ISP
+		│   ├── Rockchip_Tuning_Guide_ISP	/* ISP debug 문서 */
 		│   │   ├── ISP21
 		│   │   │   └── CN
 		│   │   │       └── Rockchip_Tuning_Guide_ISP21_CN_v2.1.0.pdf
