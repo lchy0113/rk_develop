@@ -1164,14 +1164,16 @@ develop_2023-06-27__091303.log
 	 CSI2HOST_PHY_STATE : 0xfdfb0014 : General settings for all blocks
 
 ### ISP 관련 디버깅
- 
+ > MIPI Camera 의 MIPI DPHY디버깅을 먼저 진행해야 함. 
  아래 로그 출력 & 디버깅.
 
 ```bash
 [2023-06-29 17:18:52] [ 1690.801166] rkisp-vir0: CIF_ISP_PIC_SIZE_ERROR (0x00000001)
 [2023-06-29 17:18:54] [ 1690.817852] rkisp-vir0: CIF_ISP_PIC_SIZE_ERROR (0x00000001)
 ```
- 1. *CIF_ISP_PIC_SIZE_ERROR* 출력은 ISP_ERR 레지스터, PIC_SIZE_ERROR ISP 에 의해 출력 
+ - *CIF_ISP_PIC_SIZE_ERROR* 출력은 ISP_ERR 레지스터, PIC_SIZE_ERROR ISP 에 의해 출력 
+ - ISP Capture 해상도는 sensor 출력 이미지 해상도 보다 작거나 같아야 한다.
+
 
  ** rkisp : 0xfdff0000 ** 
   Chapter 12 Image Signal Processign 
@@ -1297,7 +1299,7 @@ Device topology
 ```bash
 	camera 
 		├── common
-		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */
+		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */ /* 검토 중 */
 		├── HAL1
 		│   ├── README_CN.txt
 		│   ├── README_EN.txt
