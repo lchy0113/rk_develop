@@ -488,6 +488,41 @@ ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
 
 ```
 
+3. check camera parameter
+```bash
+
+1|rk3568_edpp01:/ # v4l2-ctl -d /dev/video6 -l
+
+Image Processing Controls
+
+                 link_frequency 0x009f0901 (intmenu): min=0 max=0 default=0 value=0 flags=read-only
+                     pixel_rate 0x009f0902 (int64)  : min=0 max=18562500 step=1 default=18562500 value=18562500 flags=read-only
+                   test_pattern 0x009f0903 (menu)   : min=0 max=1 default=0 value=0
+rk3568_edpp01:/ # v4l2-ctl -d /dev/video5 -l
+
+Image Processing Controls
+
+                 link_frequency 0x009f0901 (intmenu): min=0 max=0 default=0 value=0 flags=read-only
+                     pixel_rate 0x009f0902 (int64)  : min=0 max=18562500 step=1 default=18562500 value=18562500 flags=read-only
+                   test_pattern 0x009f0903 (menu)   : min=0 max=1 default=0 value=0
+```
+
+4. setting camera parameter
+ - exposure 변경.
+```bash
+v4l2-ctl -d /dev/video6 --set-ctrl exposure=3324
+```
+
+ - 이미지 밝기 변경(analogue_gain)
+```bash
+v4l2_ctl -d /dev/video6 --set-ctrl analogue_gain=240
+```
+
+ - test_pattern 변경
+```bash
+v4l2-ctl -d /dev/video6 --set-ctrl test_pattern=0
+```
+
 
 
 ---- 
