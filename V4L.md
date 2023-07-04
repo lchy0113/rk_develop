@@ -469,6 +469,25 @@ Image Processing Controls
 rk3568_poc:/ # v4l2-ctl -d /dev/video0 --set-ctrl 'test_pattern=1'
 ``` 
 	 
+-----
+
+## Test 
+
+1. frame capture
+```bash
+# v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1
+## or
+# v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
+<<<<<<<<<<
+```
+
+2. check capture data
+
+```bash
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+
+```
+
 
 
 ---- 
