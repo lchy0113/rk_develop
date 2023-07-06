@@ -722,6 +722,45 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
    - AAL : android framework와 통신 하는 모듈이며, camera_module, API 인터페이스 가 정의 되어 있습니다. android framework로 부터 받은 요청을 PSL에게 전달 합니다.
    - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.
 	 
+
+
+ - camera hal3 과 framework 간 Interface
+
+```bash
+
+  +---------------+                                                  +---------------+
+  | framework     |                                                  | hal           |
+  +-------+-------+                                                  +-------+-------+
+          |                                                                  |
+		  +----camera_module_t->common.open()------------------------------->+
+          |                                                                  |
+          +<--------------------------------------------hardware_device_t----+
+          |                                                                  |
+		  +----(camera3_device_t *)hardware_device_t->ops->initialize()----->+
+          |                                                                  |
+		  +----camera3_device_t->ops->configure_stream()-------------------->+
+          |                                                                  |
+		  +----camera3_device_t->ops->construct_default_request_settings()-->+
+          |                                                                  |
+          |  +--------------------------loop------------------------------+  |
+		  +--|-camera3_device_t->ops->process_capture_request()-----------|->+
+          |  |                                                            |  |
+		  +<-|-------------------camera3_callback_ops_t->notify():SHUTTER-|--+
+          |  |                                                            |  |
+		  +<-|-----------camera3_callback_ops_t->process_capture_result()-|--+
+          |  +------------------------------------------------------------+  |
+          |                                                                  |
+		  +----camera3_device_t->common->close()---------------------------->+
+          |                                                                  |
+          |                                                                  |
+          |                                                                  |
+
+ ```
+ camera framework hal API관련 코드는 아래 경로 참조. 
+  <android_root>/hardware/libhardware/include/hardware/camera3.h
+
+ - camera hal3 분석.
+
 ### 6.2 sensor 등록
  센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다.   
  HAL 코드 : hardware/rockchip/camera   
@@ -774,7 +813,6 @@ $ adb shell dumpsys media.camera
 
 ```
  
-
 ---
 
 ## 7. rkisp
@@ -1167,6 +1205,16 @@ develop_2023-06-27__091303.log
  > MIPI Camera 의 MIPI DPHY디버깅을 먼저 진행해야 함. 
  아래 로그 출력 & 디버깅.
 
+
+| CSI_RX_CTRL0 	| 0xFDFA0000 	| 64KB 	|
+|--------------	|------------	|------	|
+| CSI_RX_CTRL1 	| 0xFDFB0000 	| 64KB 	|
+| Reserved     	| 0xFDFC0000 	| 64KB 	|
+| VICAP0       	| 0xFDFD0000 	| 64KB 	|
+| VICAP1       	| 0xFEFE0000 	| 64KB 	|
+| ISP          	| 0xFDFF0000 	| 64KB 	|
+| CSI_RX_PHY   	| 0xFE870000 	| 64KB 	|
+
 ```bash
 [2023-06-29 17:18:52] [ 1690.801166] rkisp-vir0: CIF_ISP_PIC_SIZE_ERROR (0x00000001)
 [2023-06-29 17:18:54] [ 1690.817852] rkisp-vir0: CIF_ISP_PIC_SIZE_ERROR (0x00000001)
@@ -1330,6 +1378,37 @@ Device topology
 - entity 25: rkisp_rawwr0 (1 pad, 1 link)
 ```
 
+#### v4l2_bt_timings for NTSC format interlaced
+
+```bash
+/** struct v4l2_dv_timings_cap - DV timings capabilities
+ * @type:	the type of the timings (same as in struct v4l2_dv_timings)
+ * @pad:	the pad number for which to query capabilities (used with v4l-subdev nodes only)
+ * @bt:		the BT656/1120 timings capabilities
+ */
+struct v4l2_dv_timings_cap {
+	__u32 type; 		// V4L2_DV_BT_656_1120
+	__u32 pad;
+	__u32 reserved[2];	// 0
+	union {
+		struct v4l2_bt_timings_cap bt;          ----->  struct v4l2_bt_timings_cap {
+                                                            __u32	min_width;
+                                                            __u32	max_width;
+                                                            __u32	min_height;
+                                                            __u32	max_height;
+                                                            __u64	min_pixelclock;
+                                                            __u64	max_pixelclock;
+                                                            __u32	standards;
+                                                            __u32	capabilities;
+                                                            __u32	reserved[16];
+                                                        } __attribute__ ((packed));
+		__u32 raw_data[32];
+	};
+};
+
+```
+
+
 ---
 
 ## Note
@@ -1353,7 +1432,7 @@ Device topology
 ```bash
 	camera 
 		├── common
-		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */
+		│   └── Camera_External_FAQ_v1.0 .pdf	/* 카메라 센서, MIPI, DVP, CIF 컨트롤러, ISP, IQ관련 */ /* 검토 */
 		├── HAL1
 		│   ├── README_CN.txt
 		│   ├── README_EN.txt
@@ -1366,10 +1445,10 @@ Device topology
 		│   ├── Rockchip SOFIA 3G-R_PMB8018(x3_C3230RK)_Camera_Module_AVL_v1.6_20160226.pdf
 		│   └── Rockchip_Trouble_Shooting_Android_CameraHAL1_CN_EN.pdf
 		├── HAL3
-		│   ├── camera_engine_rkisp_user_manual_v2.2.pdf	/* 카메라 엔진 참조 문서 */
-		│   ├── camera_hal3_user_manual_v2.3.pdf /* 카메라 HAL3 참조 문서 */ 
+		│   ├── camera_engine_rkisp_user_manual_v2.2.pdf	/* 카메라 엔진 참조 문서 */	/* 검토 */
+		│   ├── camera_hal3_user_manual_v2.3.pdf /* 카메라 HAL3 참조 문서 */ /* 검토 */
 		│   ├── README_CN.txt
-		│   ├── RKCIF_Driver_User_Manual_v1.0.pdf /* cif 컨트롤러 드라이버에 연결된 카메라 센서 참조 문서 */
+		│   ├── RKCIF_Driver_User_Manual_v1.0.pdf /* cif 컨트롤러 드라이버에 연결된 카메라 센서 참조 문서 */	/* 검토 */
 		│   ├── RKISP1_IQ_Parameters_User_Guide_v1.2.pdf /* IQ 효과 파일 매개변수 설명 문서 */
 		│   ├── RKISP_Driver_User_Manual_v1.3.pdf  /* rkisp1, sensor, vcm, 드라이버 관련 문서 */
 		│   ├── Rockchip_Color_Optimization_Guide_ISP
@@ -1383,14 +1462,14 @@ Device topology
 		│   │   └── ISP30
 		│   │       └── CN
 		│   │           └── Rockchip_Development_Guide_3A_ISP30_v1.1.0.pdf
-		│   ├── Rockchip_Development_Guide_ISP
+		│   ├── Rockchip_Development_Guide_ISP	/* ISP API 설명 문서. X */ /* 검토 */
 		│   │   ├── ISP21
 		│   │   │   └── CN
 		│   │   │       └── Rockchip_Development_Guide_ISP21_CN_v2.1.0.pdf
 		│   │   └── ISP30
 		│   │       └── CN
 		│   │           └── Rockchip_Development_Guide_ISP30_CN_v1.2.3.pdf
-		│   ├── Rockchip_Driver_Guide_VI	/* VI 드라이버 개발 문서 */
+		│   ├── Rockchip_Driver_Guide_VI	/* VI 드라이버 개발 문서 */ /* 검토 */
 		│   │   ├── CN
 		│   │   │   └── Rockchip_Driver_Guide_VI_CN_v1.1.1.pdf
 		│   │   └── EN
@@ -1401,7 +1480,7 @@ Device topology
 		│   │   └── ISP30
 		│   │       └── Rockchip_IQ_Tools_Guide_ISP21_ISP30_CN_v2.0.4.pdf
 		│   ├── Rockchip_Trouble_Shooting_Camera_FAQ_CN_EN_CameraHAL3.pdf
-		│   ├── Rockchip_Tuning_Guide_ISP	/* ISP debug 문서 */
+		│   ├── Rockchip_Tuning_Guide_ISP	/* ISP debug 문서 */ /* 검토 */
 		│   │   ├── ISP21
 		│   │   │   └── CN
 		│   │   │       └── Rockchip_Tuning_Guide_ISP21_CN_v2.1.0.pdf
