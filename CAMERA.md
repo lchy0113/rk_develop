@@ -1380,7 +1380,7 @@ Device topology
 
 #### v4l2_bt_timings for NTSC format interlaced
 
-```bash
+```c
 /** struct v4l2_dv_timings_cap - DV timings capabilities
  * @type:	the type of the timings (same as in struct v4l2_dv_timings)
  * @pad:	the pad number for which to query capabilities (used with v4l-subdev nodes only)
@@ -1406,6 +1406,31 @@ struct v4l2_dv_timings_cap {
 	};
 };
 
+```
+
+```c
+struct v4l2_bt_timings {
+	__u32	width;
+	__u32	height;
+	__u32	interlaced;
+	__u32	polarities;
+	__u64	pixelclock;
+	__u32	hfrontporch;
+	__u32	hsync;
+	__u32	hbackporch;
+	__u32	vfrontporch;
+	__u32	vsync;
+	__u32	vbackporch;
+	__u32	il_vfrontporch;
+	__u32	il_vsync;
+	__u32	il_vbackporch;
+	__u32	standards;
+	__u32	flags;
+	struct v4l2_fract picture_aspect;
+	__u8	cea861_vic;
+	__u8	hdmi_vic;
+	__u8	reserved[46];
+}	__atribute__ ((packed));
 ```
 
 
