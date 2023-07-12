@@ -1434,9 +1434,107 @@ struct v4l2_bt_timings {
 ```
 
 
+-----
+
+## check. 
+
+```bash
+
+-ctl --verbose -d /dev/video6 --set-fmt-video=width=720,height=240,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1                                                                                   <
+VIDIOC_QUERYCAP: ok
+VIDIOC_G_FMT: ok
+VIDIOC_S_FMT: ok
+Format Video Capture Multiplanar:
+        Width/Height      : 720/240
+        Pixel Format      : 'NV12'
+        Field             : None
+        Number of planes  : 1
+        Flags             :
+        Colorspace        : Default
+        Transfer Function : Default
+        YCbCr Encoding    : Default
+        Quantization      : Full Range
+        Plane 0           :
+           Bytes per Line : 720
+           Size Image     : 259200
+VIDIOC_REQBUFS: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QBUF: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QBUF: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QBUF: ok
+VIDIOC_STREAMON: ok
+
+
+```
+
+- [v] check ISP interrupt status as below
+
+```bash
+rk3568_edpp01:/ # cat /proc/interrupts | grep isp
+32:          1          0          0          0     GICv3  89 Level     rkisp_hw
+33:       2192          0          0          0     GICv3  90 Level     rkisp_hw
+34:       4387          0          0          0     GICv3  92 Level     rkisp_hw
+```
+
 ---
 
 ## Note
+
+
+### How to support odd and even field synthesis
+
+*RKISP 드라이버는 odd and even field 합성 기능을 지원한다.*
+
+1. MIPI 인터페이스: frame count number 를 통해 지원하며, RKISP 드라이버는 이를 사용하여 현재 필드의 parity를 판단한다.
+
+2. BT656 인터페이스: 표준 SAV/EAV 데이터를 사용하여 지원한다. 즉, bit6은 홀수 및 짝수 필드 플래그 정보이며 RKISP 드라이버는 이를 사용하여 현재 필드의 패리티를 결정한다.
+
+3. RKISP드라이버의 RKISP1_selfpath video device node는 odd and even field synthesis기능을 가지고 있다. (다른 video device node는 기능이 없다.)
+```bash
+"Only selfpath support interlaced"
+```
+
+#### devleop
+ device driver 의 *format.field* 를 *V4L2_FIELD_INTERLACED* 으로 세팅해야한다.   
+ 현재 device의 output format을 의미 하며, 이 foramt은 *xxxx_get_fmt*에 의해 반환 된다. 
+
+
+
+
+### tcs35874x는 rk3399 reference code 버전
+
+### version 
+
+
+ - ISP 드라이버 버전
+ rkisp rkisp-vir0: rkisp driver version: v01.08.00
+
+ - 카메라 HAL버전
+
+	 v2.1.0 
+
+```bash
+rk3568_edpp01:/ # su
+rk3568_edpp01:/ # getprop | grep cam
+[init.svc.cameraserver]: [running]
+[init.svc.vendor.camera-provider-2-4]: [running]
+[init.svc.vendor.camera-provider-2-4-ext]: [running]
+[init.svc_debug_pid.cameraserver]: [366]
+[init.svc_debug_pid.vendor.camera-provider-2-4]: [289]
+[init.svc_debug_pid.vendor.camera-provider-2-4-ext]: [288]
+[persist.vendor.camera.debug.logfile]: [0]
+[ro.boottime.cameraserver]: [8176988035]
+[ro.boottime.vendor.camera-provider-2-4]: [6652136757]
+[ro.boottime.vendor.camera-provider-2-4-ext]: [6637964089]
+[vendor.cam.hal3.ver]: [v2.1.0]
+[vendor.cam.librkaiq.ver]: [AIQ v3.0x8.7]
+[vendor.cam.librkaiqAdapter.ver]: [v1.0.3]
+[vendor.cam.librkaiqCalib.ver]: [Calib v1.4.8,magicCode:1170944]
+rk3568_edpp01:/ #
+```
 
 
 ### video format

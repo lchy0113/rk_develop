@@ -477,7 +477,7 @@ rk3568_poc:/ # v4l2-ctl -d /dev/video0 --set-ctrl 'test_pattern=1'
 ```bash
 # v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1
 ## or
-# v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
+# v4l2-ctl --verbose -d /dev/video6 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
 <<<<<<<<<<
 ```
 
@@ -546,3 +546,7 @@ v4l2-ctl -d /dev/video6 --set-ctrl test_pattern=0
   11. 다시 QBUF를 통해 프레임을 달라고 요청함. 이 작업을 반복해서 데이터를 계쏙적으로 가지고 감.
   12. VIDIOC_STREAMOFF를 통해 스트림을 끔. munmap을 통해 메모리를 해제.
   13. camera device 를 close
+
+  * query_dv_timings에서 dv 는 *digital video*를 의미함.
+    > query_dv_timings는 비디오 카메라의 디지털 비디오 타이밍을 쿼리하는 함수. (비디오 카메라의 이미지 width, height, freq, 등의 정보를 반환함.)
+  * v4l2_bt_timings 구조체에서 bt는 "broadcast television*을 의미.
