@@ -1484,6 +1484,11 @@ rk3568_edpp01:/ # cat /proc/interrupts | grep isp
 ## Note
 
 
+### RKISP1
+
+ RKISP1 driver는 4개의 device를 등록한다. (selfpath, mainpath, statistics, input-params) 
+ selfpath, mainpath는 frame output,  statistics, input-params는 3A parameter setting, statistics를 담당한다.
+
 ### How to support odd and even field synthesis
 
 *RKISP 드라이버는 odd and even field 합성 기능을 지원한다.*
