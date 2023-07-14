@@ -62,6 +62,12 @@
 ----
 ## develop
 
+ - develop project
+```
+$ repo status
+project hardware/rockchip/camera/			branch feature/csi
+project kernel-4.19/						branch feature/csi
+```
    
  - [x] *sensor device driver의 foramt 을 field interlaced으로 세팅*
 
