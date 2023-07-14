@@ -542,7 +542,7 @@ rk3568_poc:/ # grep '' /sys/class/video4linux/video*/name
 
 ## 3. rkcif
 
-rkcif 드라이버는 v4l2/media framework를 기반으로 구성된 하드웨어 장치 subdevices의(mipi dphy, sensor)  인터럽트 처리, 버퍼 관리, power 제어 등을 담당합니다.
+rkcif 드라이버는 v4l2/media framework를 기반으로 구성된 하드웨어 장치 subdevices의(mipi dphy, sensor)  인터럽트 처리, 버퍼 관리, power 제어 등을 담당.
   
  
 ![](./images/CAMERA_02.png)
@@ -1466,8 +1466,6 @@ VIDIOC_QBUF: ok
 VIDIOC_QUERYBUF: ok
 VIDIOC_QBUF: ok
 VIDIOC_STREAMON: ok
-
-
 ```
 
 - [v] check ISP interrupt status as below
