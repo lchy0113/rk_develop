@@ -63,6 +63,7 @@
 ----
 ## develop
 
+   
  [x] sensor device driver의 foramt 을 field interlaced으로 세팅.
 
   device driver 의 *format.field* 를 *V4L2_FIELD_INTERLACED* 으로 세팅해야한다.   
