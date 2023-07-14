@@ -64,12 +64,13 @@
 ## develop
 
  [v] sensor device driver의 foramt 을 field interlaced으로 세팅.
+
   device driver 의 *format.field* 를 *V4L2_FIELD_INTERLACED* 으로 세팅해야한다.   
  현재 device의 output format을 의미 하며, 이 foramt은 *xxxx_get_fmt*에 의해 반환 된다. 
 
  [v] mipi Interface : tp2860 side mipi packet 전송 시, field의 frame count number를 포함한다.
 
-	 ![](./images/CAM_DE-INTERLACED_01.png)
+ ![](./images/CAM_DE-INTERLACED_01.png)
 
 	```bash
 	reg:0x22 val:0x91
@@ -80,6 +81,7 @@
 	```
 
  [v] isp interrupt status 확인.
+
 	```bash
 	# v4l2-ctl --verbose -d /dev/video6 --set-fmt-video=width=720,height=240,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1
 	VIDIOC_QUERYCAP: ok
