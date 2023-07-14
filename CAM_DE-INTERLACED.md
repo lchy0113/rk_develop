@@ -25,39 +25,38 @@
 
 	* rkisp1 드라이버의 topology
 
- 	![](./images/CAMERA_06.png)
+![](./images/CAMERA_06.png)
  
-	| **name**            	| **type**           	|
-	|---------------------	|--------------------	|
-	| rkisp1_mainpath     	| v4l2_vdev, capture 	|
-	| rkisp1_selfpath     	| v4l2_vdev, capure  	|
-	| rkisp1-isp-subdev   	| v4l2_subdev        	|
-	| rockchip-sy-mipi    	| v4l2_subdev        	|
-	| rkisp1-statistics   	| v4l2_vdev, capture 	|
-	| rkisp1-input-params 	| v4l2_vdev, output  	|
+| **name**            	| **type**           	|
+|---------------------	|--------------------	|
+| rkisp1_mainpath     	| v4l2_vdev, capture 	|
+| rkisp1_selfpath     	| v4l2_vdev, capure  	|
+| rkisp1-isp-subdev   	| v4l2_subdev        	|
+| rockchip-sy-mipi    	| v4l2_subdev        	|
+| rkisp1-statistics   	| v4l2_vdev, capture 	|
+| rkisp1-input-params 	| v4l2_vdev, output  	|
 
 
-	* RKISP 드라이버는 odd and even field 합성 기능을 지원한다.
-
+ * RKISP 드라이버는 odd and even field 합성 기능을 지원한다.
 	1. MIPI 인터페이스: frame count number 를 통해 지원하며, RKISP 드라이버는 이를 사용하여 현재 필드의 parity를 판단한다.
 	2. BT656 인터페이스: 표준 SAV/EAV 데이터를 사용하여 지원한다. 즉, bit6은 홀수 및 짝수 필드 플래그 정보이며 RKISP 드라이버는 이를 사용하여 현재 필드의 패리티를 결정한다.
 	3. RKISP드라이버의 RKISP1_selfpath video device node는 odd and even field synthesis기능을 가지고 있다. (다른 video device node는 기능이 없다.)
 
-	```bash
-	"Only selfpath support interlaced"
-	```
+```bash
+"Only selfpath support interlaced"
+```
 
 
-	* isp 드라이버 버전
- 	rkisp rkisp-vir0: rkisp driver version: v01.08.00
+ * isp 드라이버 버전
+  rkisp rkisp-vir0: rkisp driver version: v01.08.00
 
 
 ----
 ## legacy (1080p, 720p) 
 
-	기존 data path : sensor module -> mipi_dphy -> isp -> MP(Main Path) -> Memory  
+ - 기존 data path : sensor module -> mipi_dphy -> isp -> MP(Main Path) -> Memory  
 
-	개발 data path : sensor module -> mipi_dphy -> isp -> SP(Self Path) -> Memory
+ - 개발 data path : sensor module -> mipi_dphy -> isp -> SP(Self Path) -> Memory
 
 
 ----
@@ -159,7 +158,7 @@ status_t V4L2Subdevice::queryDvTimings(struct v4l2_dv_timings &timings)
 		return v4l2_subdev_call(sd, video, s_dv_timings, arg);
 ```
 
-* sensor driver(tp2860) side
+ * sensor driver(tp2860) side
 
 ```c
 static const struct v4l2_subdev_video_ops tp2860_video_ops = {
