@@ -213,4 +213,58 @@ static const struct v4l2_subdev_video_ops tp2860_video_ops = {
 ----
 ## note
 
+ - logcat filter
+```
+ tp2860|camera|cam|isp|RkCamera|CamPrvdr@2.4|interlace|tp2860_get_fmt
+```
 
+ - v4l command for test
+
+```bash
+ v4l2-ctl --verbose -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out_video1.yuv --stream-skip=1 --stream-count=1
+  v4l2-ctl --verbose -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=NV12,field=interlaced --stream-mmap=3 --stream-to=/data/local/tmp/out_video1.yuv --stream-skip=4 --stream-count=1
+ v4l2-ctl --verbose -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out_video0.yuv --stream-skip=1 --stream-count=1
+  v4l2-ctl --verbose -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12,field=interlaced --stream-mmap=3 --stream-to=/data/local/tmp/out_video0.yuv --stream-skip=4 --stream-count=1
+ ffplay tmp/out_video1.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+ ffplay tmp/out_video0.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+ 
+ 
+ v4l2-ctl --verbose -d /dev/video5 --set-fmt-video=width=1920,height=1090,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out_video5.yuv --stream-skip=9 --stream-count=1
+ v4l2-ctl --verbose -d /dev/video6 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out_video6.yuv --stream-skip=9 --stream-count=1
+```
+
+
+ - debug
+
+  check the register information... 
+```bash  
+  # io -4 -r -l 0x4 0xfdff0000
+```
+  
+```bash
+// cif driver
+echo 1 > /sys/module/video_rkcif/parameters/debug_csi2 
+echo 3 > /sys/module/video_rkcif/parameters/debug
+// vb2 (such as VPU/ISP,etc)
+echo 7 >  /sys/module/videobuf2_common/parameters/debug
+// v4l2 related log
+echo 0x1f > /sys/class/video4linux/video1/dev_debug
+```
+
+ - code
+ 
+- code 
+```bash
+$ tree drivers/media/platform/rockchip/isp1/
+drivers/media/platform/rockchip/isp1/
+├── capture.c // Include mp/sp configuration and vb2, frame interrupt processing
+├── dev.c // Contains probe, asynchronous registration, clock, pipeline, iommu and
+media/v4l2 framework
+├── isp_params.c // 3A Related parameters setting
+├── isp_stats.c // 3A Related statistics
+├── regs.c // Registers related read and write operations
+├── rkisp1.c // Corresponding to isp_sd entity node, including receiving data from
+mipi, crop function
+$ ls drivers/phy/rockchip/phy-rockchip-mipi-rx.c
+drivers/phy/rockchip/phy-rockchip-mipi-rx.c # mipi dphy driver
+```
