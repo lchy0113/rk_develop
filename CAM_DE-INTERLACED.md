@@ -72,99 +72,100 @@
 
  ![](./images/CAM_DE-INTERLACED_01.png)
 
-	```bash
-	reg:0x22 val:0x91
-	/**
-	  * bit[7]: test pattern 활성화
-	  * bit[0]: even field에만 start/end frame 을 전송.   // every field로 세팅 시, rk3568 side에서 detect 되지 않음.
-	  */
-	```
+```bash
+reg:0x22 val:0x91
+/**
+  * bit[7]: test pattern 활성화
+  * bit[0]: even field에만 start/end frame 을 전송.   // every field로 세팅 시, rk3568 side에서 detect 되지 않음.
+  */
+```
 
  [v] isp interrupt status 확인.
 
-	```bash
-	# v4l2-ctl --verbose -d /dev/video6 --set-fmt-video=width=720,height=240,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1
-	VIDIOC_QUERYCAP: ok
-	VIDIOC_G_FMT: ok
-	VIDIOC_S_FMT: ok
-	Format Video Capture Multiplanar:
-			Width/Height      : 720/480
-			Pixel Format      : 'NV12'
-			Field             : None
-			Number of planes  : 1
-			Flags             :
-			Colorspace        : Default
-			Transfer Function : Default
-			YCbCr Encoding    : Default
-			Quantization      : Full Range
-			Plane 0           :
-			   Bytes per Line : 720
-			   Size Image     : 259200
-	VIDIOC_REQBUFS: ok
-	VIDIOC_QUERYBUF: ok
-	VIDIOC_QUERYBUF: ok
-	VIDIOC_QBUF: ok
-	VIDIOC_QUERYBUF: ok
-	VIDIOC_QBUF: ok
-	VIDIOC_QUERYBUF: ok
-	VIDIOC_QBUF: ok
-	VIDIOC_STREAMON: ok
+```bash
+# v4l2-ctl --verbose -d /dev/video6 --set-fmt-video=width=720,height=240,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1
+VIDIOC_QUERYCAP: ok
+VIDIOC_G_FMT: ok
+VIDIOC_S_FMT: ok
+Format Video Capture Multiplanar:
+		Width/Height      : 720/480
+		Pixel Format      : 'NV12'
+		Field             : None
+		Number of planes  : 1
+		Flags             :
+		Colorspace        : Default
+		Transfer Function : Default
+		YCbCr Encoding    : Default
+		Quantization      : Full Range
+		Plane 0           :
+		   Bytes per Line : 720
+		   Size Image     : 259200
+VIDIOC_REQBUFS: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QBUF: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QBUF: ok
+VIDIOC_QUERYBUF: ok
+VIDIOC_QBUF: ok
+VIDIOC_STREAMON: ok
 
-	# cat /proc/interrupts | grep isp
-	32:          1          0          0          0     GICv3  89 Level     rkisp_hw
-	33:       2192          0          0          0     GICv3  90 Level     rkisp_hw
-	34:       4387          0          0          0     GICv3  92 Level     rkisp_hw
-	```
+# cat /proc/interrupts | grep isp
+32:          1          0          0          0     GICv3  89 Level     rkisp_hw
+33:       2192          0          0          0     GICv3  90 Level     rkisp_hw
+34:       4387          0          0          0     GICv3  92 Level     rkisp_hw
+```
 
  [v] isp의 selfpath 로 data path 세팅(i.g sensor driver의 interlaced정보를 get하는 과정)
 
-	* camera hal side
-	```c
-	// v4l2dev/v4l2subdevice.cpp
-	status_t V4L2Subdevice::queryDvTimings(struct v4l2_dv_timings &timings)
-	{
-		LOGI("@%s device = %s", __FUNCTION__, mName.c_str());
-		int ret = 0;
+ * camera hal side
+```c
+// v4l2dev/v4l2subdevice.cpp
+status_t V4L2Subdevice::queryDvTimings(struct v4l2_dv_timings &timings)
+{
+	LOGI("@%s device = %s", __FUNCTION__, mName.c_str());
+	int ret = 0;
 
-		if (mState == DEVICE_CLOSED) {
-			LOGE("%s invalid device state %d",__FUNCTION__, mState);
-			return INVALID_OPERATION;
-		}
-
-		ret = pbxioctl(VIDIOC_SUBDEV_QUERY_DV_TIMINGS, &timings);
-		LOGE("%s, ret:%d, I:%d, wxh:%dx%d", __func__, ret,
-				timings.bt.interlaced, timings.bt.width, timings.bt.height);
-		if (ret < 0) {
-			LOGE("VIDIOC_SUBDEV_QUERY_DV_TIMINGS failed: %s", strerror(errno));
-			return UNKNOWN_ERROR;
-		}
-
-		return NO_ERROR;
+	if (mState == DEVICE_CLOSED) {
+		LOGE("%s invalid device state %d",__FUNCTION__, mState);
+		return INVALID_OPERATION;
 	}
-	```
 
-	* v4l2 side
-	```c
-	// drivers/media/v4l2-core/v4l2-subdev.c
+	ret = pbxioctl(VIDIOC_SUBDEV_QUERY_DV_TIMINGS, &timings);
+	LOGE("%s, ret:%d, I:%d, wxh:%dx%d", __func__, ret,
+			timings.bt.interlaced, timings.bt.width, timings.bt.height);
+	if (ret < 0) {
+		LOGE("VIDIOC_SUBDEV_QUERY_DV_TIMINGS failed: %s", strerror(errno));
+		return UNKNOWN_ERROR;
+	}
 
-		case VIDIOC_SUBDEV_QUERY_DV_TIMINGS:
-			return v4l2_subdev_call(sd, video, query_dv_timings, arg);
+	return NO_ERROR;
+}
+```
 
-		case VIDIOC_SUBDEV_G_DV_TIMINGS:
-			return v4l2_subdev_call(sd, video, g_dv_timings, arg);
-			
-		case VIDIOC_SUBDEV_S_DV_TIMINGS:
-			return v4l2_subdev_call(sd, video, s_dv_timings, arg);
-	```
+ * v4l2 side
+	
+```c
+// drivers/media/v4l2-core/v4l2-subdev.c
 
-	* sensor driver(tp2860) side
+	case VIDIOC_SUBDEV_QUERY_DV_TIMINGS:
+		return v4l2_subdev_call(sd, video, query_dv_timings, arg);
 
-	```c
-	static const struct v4l2_subdev_video_ops tp2860_video_ops = {
-		.s_dv_timings = tp2860_s_dv_timings,
-		.g_dv_timings = tp2860_g_dv_timings,
-		.query_dv_timings = tp2860_query_dv_timings,
-	```
+	case VIDIOC_SUBDEV_G_DV_TIMINGS:
+		return v4l2_subdev_call(sd, video, g_dv_timings, arg);
+		
+	case VIDIOC_SUBDEV_S_DV_TIMINGS:
+		return v4l2_subdev_call(sd, video, s_dv_timings, arg);
+```
+
+* sensor driver(tp2860) side
+
+```c
+static const struct v4l2_subdev_video_ops tp2860_video_ops = {
+	.s_dv_timings = tp2860_s_dv_timings,
+	.g_dv_timings = tp2860_g_dv_timings,
+	.query_dv_timings = tp2860_query_dv_timings,
+```
 
 
 ----
