@@ -253,18 +253,34 @@ echo 0x1f > /sys/class/video4linux/video1/dev_debug
 
  - code
  
-- code 
 ```bash
 $ tree drivers/media/platform/rockchip/isp1/
 drivers/media/platform/rockchip/isp1/
 ├── capture.c // Include mp/sp configuration and vb2, frame interrupt processing
-├── dev.c // Contains probe, asynchronous registration, clock, pipeline, iommu and
-media/v4l2 framework
+├── dev.c // Contains probe, asynchronous registration, clock, pipeline, iommu and media/v4l2 framework
 ├── isp_params.c // 3A Related parameters setting
 ├── isp_stats.c // 3A Related statistics
 ├── regs.c // Registers related read and write operations
-├── rkisp1.c // Corresponding to isp_sd entity node, including receiving data from
-mipi, crop function
+├── rkisp1.c // Corresponding to isp_sd entity node, including receiving data from mipi, crop function
 $ ls drivers/phy/rockchip/phy-rockchip-mipi-rx.c
 drivers/phy/rockchip/phy-rockchip-mipi-rx.c # mipi dphy driver
 ```
+
+ - To do
+
+ rkisp 의 isr에서 mipi_dphy 데이터 확인.
+drivers/media/platform/rockchip/isp/rkisp.c
+```bash
+07-13 14:39:10.046     0     0 D rkisp-vir0: rkisp_check_idle irq:0x10 ends:0x13 mask:0x13
+07-13 14:39:10.047     0     0 D rkisp-vir0: isp isr:0x40, 0x0
+07-13 14:39:10.062     0     0 D rkisp-vir0: isp isr:0x22, 0x0
+07-13 14:39:10.062     0     0 D rkisp-vir0: rkisp_check_idle irq:0x2 ends:0x13 mask:0x13
+07-13 14:39:10.062     0     0 D rkisp-vir0: rkisp_check_idle irq:0x1 ends:0x13 mask:0x13
+```
+
+ - fhd 
+   * isp isr: 0x40 
+
+ - ntsc
+   * isp isr: 0x40 : CIF_SIP_V_START 
+   * isp isr: 0x22 : CIF_ISP_FRAME_IN | CIF_ISP_FRAME
