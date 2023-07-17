@@ -125,7 +125,7 @@ device, audio attributes 을 정의 할 수 있다.
  ```
 
  top-level structure 는 각 audio HAL hardware module에 해당하는 module 이 포함되어 있으며,   
- 각 module은 mix port, device port, and route 가 포함되어 있습니다.   
+ 각 module은 **mixPorts**, **devicePort**, **routes** 가 포함되어 있습니다.   
 
  - **mixPorts** :   
    Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다.   
