@@ -290,3 +290,41 @@ drivers/media/platform/rockchip/isp/rkisp.c
  - ntsc
    * isp isr: 0x40 : CIF_SIP_V_START 
    * isp isr: 0x22 : CIF_ISP_FRAME_IN | CIF_ISP_FRAME
+
+
+ - Debug
+
+```log
+/******
+ * rkisp stream start 확인. 
+ */
+07-14 15:32:31.039     0     0 D rkisp-vir0: rkisp_start_streaming 1
+07-14 15:32:31.039     0     0 W [tp2860]	tp2860_g_mbus_config(1635):  
+07-14 15:32:31.039     0     0 W [tp2860]	tp2860_get_fmt(1242): width(720), height(480), code(0x2006), field(4, V4L2_FIELD_INTERLACED)
+07-14 15:32:31.039     0     0 D rkisp-vir0: CSI ch0 vc:0 dt:0x1e 720x480
+07-14 15:32:31.039     0     0 W [tp2860]	tp2860_get_fmt(1242): width(720), height(480), code(0x2006), field(4, V4L2_FIELD_INTERLACED)
+07-14 15:32:31.039     0     0 D rkisp-vir0: CSI ch1 vc:0 dt:0x1e 720x480
+07-14 15:32:31.039     0     0 W [tp2860]	tp2860_get_fmt(1242): width(720), height(480), code(0x2006), field(4, V4L2_FIELD_INTERLACED)
+07-14 15:32:31.040     0     0 D rkisp-vir0: CSI ch2 vc:0 dt:0x1e 720x480
+07-14 15:32:31.040     0     0 W [tp2860]	tp2860_get_fmt(1242): width(720), height(480), code(0x2006), field(4, V4L2_FIELD_INTERLACED)
+07-14 15:32:31.040     0     0 D rkisp-vir0: CSI ch3 vc:0 dt:0x1e 720x480
+07-14 15:32:31.040     0     0 W [tp2860]	tp2860_get_fmt(1242): width(720), height(480), code(0x2006), field(4, V4L2_FIELD_INTERLACED)
+07-14 15:32:31.040     0     0 D rkisp-vir0: CSI ch4 vc:0 dt:0x1e 720x480
+07-14 15:32:31.040     0     0 W [tp2860]	tp2860_g_frame_interval(1615):  
+07-14 15:32:31.040     0     0 D rkisp-vir0: rkisp_alloc_page_dummy_buf buf:0xffd00000 map cnt:1 size:491520
+07-14 15:32:31.040     0     0 W [tp2860]	tp2860_ioctl(1742):  
+07-14 15:32:31.040     0     0 D rkisp-vir0: CSI2RX_IDS 0x1e1e1e1e 0x0000001e
+07-14 15:32:31.040     0     0 D rkisp-vir0: stream 1 rsz/scale: 720x480 -> 720x480
+07-14 15:32:31.040     0     0 D rkisp-vir0: chroma scaling 360x480 -> 360x240
+07-14 15:32:31.040     0     0 W         : richgold rkisp_stream_config_rsz(287)
+07-14 15:32:31.040     0     0 D rkisp-vir0: stream 1 crop disabled
+07-14 15:32:31.040     0     0 W rkisp-vir0: interlaced: width should be 64 aligned
+07-14 15:32:31.040     0     0 D rkisp-vir0: update_mi stream:1 Y:0xffd00000 CB:0xffd00000 CR:0xffd00000 | Y_SHD:0x0
+07-14 15:32:31.040     0     0 D rkisp-vir0: hdr:0 buf index dma0:0 dma1:0 dma2:0
+07-14 15:32:31.040     0     0 D rkisp-vir0: update_dmatx_v2 stream:2 Y:0xffd00000 SHD:0xffd00000
+07-14 15:32:31.040     0     0 D rkisp-vir0: update_dmatx_v2 stream:4 Y:0xffd00000 SHD:0xffd00000
+07-14 15:32:31.040     0     0 D rkisp-vir0: CSI2RX CTRL0:0x20820000 CTRL1:0x1
+07-14 15:32:31.040     0     0 D rkisp-vir0: update_mi stream:1 Y:0xffd00000 CB:0xffd00000 CR:0xffd00000 | Y_SHD:0xffd00000
+07-14 15:32:31.040     0     0 D rkisp-vir0: rkisp_config_cif CIF_ID:0x2012007 SP:1, MP:0
+
+```
