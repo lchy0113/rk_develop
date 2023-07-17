@@ -58,7 +58,7 @@ device, audio attributes 을 정의 할 수 있다.
 
 ### File format and location
   
-새로운 audio policy configuration file은 *audio_policy_configuration.xml*파일이며, /system/etc/에 존재한다.  
+새로운 audio policy configuration file은 *audio_policy_configuration.xml*파일이며, /vendor/etc/에 존재한다.  
 아래 샘플은 Android12 및 Android12 이하 버전에서 XML 파일 형식의 간단한 audio policy configuration을  보여준다.  
 
  ```xml
