@@ -328,3 +328,9 @@ drivers/media/platform/rockchip/isp/rkisp.c
 07-14 15:32:31.040     0     0 D rkisp-vir0: rkisp_config_cif CIF_ID:0x2012007 SP:1, MP:0
 
 ```
+
+
+```bash
+// cam pwr-on command
+# adb wait-for-device ; adb root ; adb remount ;adb wait-for-device ; adb shell "io -4 -w 0xfdc20014 0x00300000"; adb shell  "io -4 -w 0xfdd6000c 0x00200020"; adb shell "io -4 -w 0xfdd60004 0x00200020" ;   adb shell ;
+```
