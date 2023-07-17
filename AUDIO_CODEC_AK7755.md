@@ -417,9 +417,9 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
    - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우, **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다. 다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.
 
  - Note:
- > Master Mode (CKM mode 0, 1: using XTI Input Clock) : input clock를 BITFS[1:0] bits에 세팅된  XTI pin 으로 받는다. XTI에 synchronized된 internal counter는 LRCK(1fs) 및 BICK(64fs, 48fs, 32fs, 256fs)를 생성합니다. BICK frequency 는  BITFS[1:0] bits에 의해 설정된다.   
- > Slave Mode 2 (CKM mode 3: BICK Input Clock) : CKM mode 3에서 필요한 system clock 은 BICK, LRCK이다. 이 모드에서 BICK는 XTI대신에 사용된다.  BICK 와 LRCK 는 동기화되어 제공되어야 함. BITFS[1:0] 비트로 LRCK에 대한 BICK clock을 설정. sampling rate 는 DFS[2:0] 베트로 설정. XTI pin을 open해 놓는다.  
- > BICK fs Select(BITFS[1:0]) : BICK fs Select는 슬래이브 모드와 마스터 모드에서 동작되며, 슬래이브 모드에서는  LRCK에 대한 BICK input sampling frequcncy 를 설정합니다. 마스터모드에서는 LRCK에 대한 BICK output sampling frequency를 설정.  
+ > - Master Mode (CKM mode 0, 1: using XTI Input Clock) : input clock를 BITFS[1:0] bits에 세팅된  XTI pin 으로 받는다. XTI에 synchronized된 internal counter는 LRCK(1fs) 및 BICK(64fs, 48fs, 32fs, 256fs)를 생성합니다. BICK frequency 는  BITFS[1:0] bits에 의해 설정된다.   
+ > - Slave Mode 2 (CKM mode 3: BICK Input Clock) : CKM mode 3에서 필요한 system clock 은 BICK, LRCK이다. 이 모드에서 BICK는 XTI대신에 사용된다.  BICK 와 LRCK 는 동기화되어 제공되어야 함. BITFS[1:0] 비트로 LRCK에 대한 BICK clock을 설정. sampling rate 는 DFS[2:0] 베트로 설정. XTI pin을 open해 놓는다.  
+ > - BICK fs Select(BITFS[1:0]) : BICK fs Select는 슬래이브 모드와 마스터 모드에서 동작되며, 슬래이브 모드에서는  LRCK에 대한 BICK input sampling frequcncy 를 설정합니다. 마스터모드에서는 LRCK에 대한 BICK output sampling frequency를 설정.  
 
 ## Develop
 
