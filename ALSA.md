@@ -38,7 +38,7 @@
 
 	![](images/ALSA_09.png)
 
- - 특정 Audio Codec Block diabram이다.
+ - 특정 Audio Codec Block diagram이다.
  - OUT #1에 연결된 Speaker 를 통해 소리가 출력되고 있다고 가정 시, DAPM을 통해서 꼭 필요한 Power Block(widget)만 Power ON한다.
  - 모든 Power Block(widget)이 모두 ON 될 필요가 없다.
 
