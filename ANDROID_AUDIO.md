@@ -958,3 +958,40 @@ struct audio_port_config {
  
  - [ ] audiopolicymanager_tests :  gtest Framework를 사용하는 테스트 프로그램
  - [ ] libaudiopolicymanagercustom : 
+
+
+
+
+-----
+
+
+# Develop
+
+ - ServiceManager에 의해 실행되는 AudioFlinger, AudioPolicy
+> Context Manager에 등록된 시스템 서비스 확인.
+```bash
+# service list  | grep audio
+32      audio: [android.media.IAudioService]
+105     media.audio_flinger: [android.media.IAudioFlingerService]
+106     media.audio_policy: [android.media.IAudioPolicyService]
+```
+ AudioFlinger의 경우, 서비스 리스트에 105번째로 AudioPolicy는 106번째로 등록되었으며, 
+ 서비스 이름은 각각 media.audio_flinger, media.audio_policy이며, 
+ Interface는 "android.media.IAudioFlingerService", "android.media.IAudioPolicyService" 이다.
+
+ - audio 관련 실행 process
+
+```bash
+
+# ps -e | grep audio
+audioserver    279     1   36256   8940 binder_thread_read  0 S android.hardware.audio.service
+audioserver    315     1 11435992 28864 binder_thread_read  0 S audioserver
+
+```
+
+
+ - interfaces audio
+   * android.hardware.audio@7.0
+
+ - mixer_paths.xml 분석
+ - audio_policy_configuration.xml 분석
