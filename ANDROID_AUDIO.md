@@ -610,6 +610,9 @@ device/rockchip/common/device.mk
 		$(LOCAL_PATH)/rt_audio_config.xml:/system/etc/rt_audio_config.xml
 
 ```
+ > "android.hardware.audio@7.0-impl" 에서 impl은 implementation의 약어.
+ > 즉, Android 7.0 용 오디오 하드웨어 인터페이스의 구현을 의미
+
 device/rockchip/common/BoardConfig.mk
 ```
 	(...)
@@ -993,5 +996,56 @@ audioserver    315     1 11435992 28864 binder_thread_read  0 S audioserver
  - interfaces audio
    * android.hardware.audio@7.0
 
+```bp
+filegroup {
+    name: "android.hardware.audio-impl_srcs",
+    srcs: [
+        "Device.cpp",
+        "DevicesFactory.cpp",
+        "ParametersUtil.cpp",
+        "PrimaryDevice.cpp",
+        "Stream.cpp",
+        "StreamIn.cpp",
+        "StreamOut.cpp",
+    ],
+}
+```
+
+// code
+```bash
+hardware/interfaces/audio$ tree  core/all-versions/default/
+core/all-versions/default/
+├── Android.bp
+├── Device.cpp
+├── DevicesFactory.cpp
+├── include
+│   └── core
+│       └── default
+│           ├── Device.h
+│           ├── DevicesFactory.h
+│           ├── ParametersUtil.h
+│           ├── PrimaryDevice.h
+│           ├── Stream.h
+│           ├── StreamIn.h
+│           ├── StreamOut.h
+│           └── Util.h
+├── ParametersUtil.cpp
+├── PrimaryDevice.cpp
+├── Stream.cpp
+├── StreamIn.cpp
+├── StreamOut.cpp
+├── TEST_MAPPING
+└── util
+    ├── Android.bp
+	    ├── CoreUtils.cpp
+		    ├── include
+			    │   └── util
+				    │       └── CoreUtils.h
+					    └── tests
+						        └── coreutils_tests.cpp
+
+								7 directories, 21 files
+
+```
  - mixer_paths.xml 분석
  - audio_policy_configuration.xml 분석

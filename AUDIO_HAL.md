@@ -6,12 +6,12 @@ AUDIO_HAL
  ![](images/AUDIO_HAL_01.png)
 
 ## HAL layer 
- - audio HAL에는 audio_module과 audio_policy_module이 존재합니다. 
- - HAL layer의 아래의 layer는 tinyalsa를 사용합니다. 
+ - audio HAL에는 audio_module과 audio_policy_module이 존재. 
+ - HAL layer의 lowwer layer는 tinyalsa를 사용. 
 
- - audio.a2dp.default.so(bluetooth a2dp audio 관리), audio.usb.default.so(usb 외부 audio 관리)와 같은 독립적인 lib 파일로 구현됩니다. 
+ - audio.a2dp.default.so(bluetooth a2dp audio 관리), audio.usb.default.so(usb 외부 audio 관리)와 같은 독립적인 lib 파일로 구현. 
  - audio.primary.default.so(장치의 대부분의 audio 관리)
- - 일부 manufacturer 은 audio.primary.rk30board.so 와 같은 lib를 구현해 배포합니다.
+ - 일부 manufacturer 은 audio.primary.rk30board.so 와 같은 lib를 구현해 배포.
 
 
 ## HAL module
@@ -40,17 +40,18 @@ AUDIO_HAL
 -----
 
 ## key class 및 structure
- - HAL은 upper layer에 hardware에 대한 인터페이스를 제공해야 합니다.
-   * **struct audio_hw_device** : struct audio_hw_device 를 통해 인터페이스를 제공합니다.
+ - HAL은 upper layer에 hardware에 대한 인터페이스를 제공해야 한다.
+   * **struct audio_hw_device** : struct audio_hw_device 를 통해 인터페이스를 제공한다.
 
- - AudioFlinger가 library를 호출하는 과정은 아래와 같습니다.
+ - AudioFlinger가 library를 호출하는 과정은 아래와 같다.
 
 ```bash
 	AudioFlinger::loadHwModule
 	->AudioFlinger::loadHwModule_l
-	-->load_audio_interface
-	--->audio_hw_device_open(mod, dev);
-	---->module->methods->open 
+	-->mDevicesFactoryHal->openDevice(name, &dev);
+	--->load_audio_interface
+	---->audio_hw_device_open(mod, dev);
+	----->module->methods->open 
 ```
   
   * AudioFlinger에서 libhardware 함수 hw_get_module(hw_get_module_by_class)을 통해 struct hw_module_t정보를 획득합니다.
@@ -327,10 +328,6 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
      ex. normal-output:route(0), normal-input:route(21), normal-output-mute:route(24), normal-input-mute:route(25)
 
 
-
-
-
-
 # 진행 사항 Memo
  - rk3568 rgb p02 버전 오디오 모듈 개발 시 이어서 진행. 
  - 오디오 개발 branch : **private/develop_ak7755**
@@ -372,3 +369,39 @@ project vendor/company/packages/WallTest/        branch master
 project vendor/rockchip/common/                 branch private/develop
 lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$
 ```
+
+# Develop
+
+ - HAL interface : hardware/libhardware/include/hardware/audio.h
+ - HIDL interface : hardware/interfaces/audio/7.0/ 
+ > HAL interface와 HIDL interface는 모두 하드웨어 소프트웨어 간의 상호 작용을 정의하는데 사용.
+ > HIDL interface는 HAL interface 보다 더 유연하고, 확장 가능하며, 안전하다. Android 8.0 이상에서는 모든 새로운 HAL이 HIDL interface를 사용.
+ > - HAL interface는 C/C++으로 구현 /  메시지 전달하는데 사용 / 동일한 프로세스 내에서 실행되는 하드웨어와 소프트웨어 간의 상호 작용을 정의. / 
+ > - HIDL interface는 Java로 구현 / 인터페이스 상태 변경 noty, 요청 cancel, 예최 처리 등 / 다른 프로세스 내에서 실행되는 하드웨어와 소프트웨어 간의 상호 작용을 정의. /
+
+ - audio hal makefile 
+
+```makefile
+//hardware/rockchip/audio/tinyalsa_hal/Android.mk
+
+(...)
+
+LOCAL_MODULE := audio.primary.$(TARGET_BOARD_HARDWARE)
+LOCAL_PROPRIETARY_MODULE := true
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_SRC_FILES := \
+	bitstream/audio_iec958.c \
+	bitstream/audio_bitstream.c \
+	bitstream/audio_bitstream_manager.c \
+	audio_hw.c \
+	alsa_route.c \
+	alsa_mixer.c \
+	voice_preprocess.c \
+	audio_hw_hdmi.c \
+	denoise/rkdenoise.c
+
+(...)
+```
+
+-----
+
