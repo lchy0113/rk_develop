@@ -412,6 +412,20 @@ const struct config_control ak7755_speaker_normal_controls[] = {
 };
 ```
 
+## audio data path
+
+```bash
+ route_pcm_open()
+    |
+    +-> get_route_config(route)
+        |
+        +-> route_set_controls()
+            |
+            +-> route_pcm_close()
+                |
+                +-> route_set_controls()
+```
+
 # Audio on Android
 
 ## Mixer configuration
