@@ -324,12 +324,12 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
 # Note 
 
  - [ ] hardware/rockchip/audio/tinyalsa_hal/alsa_route.c   
-  -> route_pcm_card_open()를 input, output stream이 발생 할때 마다 호출이 됨.  parameter로 전달되는route의 값을 누가 정의하는지 확인 필요함. 
+  -> route_pcm_card_open()를 input, output stream이 발생 할때 마다 호출이 됨.    parameter로 전달되는route의 값을 누가 정의하는지 확인 필요함.  
+
      ex. normal-output:route(0), normal-input:route(21), normal-output-mute:route(24), normal-input-mute:route(25)
 
 
 # 진행 사항 Memo
- - rk3568 rgb p02 버전 오디오 모듈 개발 시 이어서 진행. 
  - 오디오 개발 branch : **private/develop_ak7755**
 
 	
