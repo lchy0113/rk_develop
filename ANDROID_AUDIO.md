@@ -207,6 +207,211 @@ device, audio attributes 을 정의 할 수 있다.
  오디오 라우팅에 대한 자세한 내용은 AudioRouting을 참조하십시오.  
 
 
+# Android Audio device
+
+ Android 에는 많은 Audio device를 정의.
+```java
+// frameworks/base/media/java/android/media/AudioSystem.java file
+
+ (...)
+	/*
+     * AudioPolicyService methods
+     */
+
+    //
+    // audio device definitions: must be kept in sync with values in system/core/audio.h
+    //
+    /** @hide */
+    public static final int DEVICE_NONE = 0x0;
+    // reserved bits
+    /** @hide */
+    public static final int DEVICE_BIT_IN = 0x80000000;
+    /** @hide */
+    public static final int DEVICE_BIT_DEFAULT = 0x40000000;
+    // output devices, be sure to update AudioManager.java also
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_EARPIECE = 0x1;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_SPEAKER = 0x2;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_WIRED_HEADSET = 0x4;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_WIRED_HEADPHONE = 0x8;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_BLUETOOTH_SCO = 0x10;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_BLUETOOTH_SCO_HEADSET = 0x20;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_BLUETOOTH_SCO_CARKIT = 0x40;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_BLUETOOTH_A2DP = 0x80;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES = 0x100;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_BLUETOOTH_A2DP_SPEAKER = 0x200;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_AUX_DIGITAL = 0x400;
+    /** @hide */
+    public static final int DEVICE_OUT_HDMI = DEVICE_OUT_AUX_DIGITAL;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_ANLG_DOCK_HEADSET = 0x800;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_DGTL_DOCK_HEADSET = 0x1000;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_USB_ACCESSORY = 0x2000;
+    /** @hide */
+    @UnsupportedAppUsage
+    public static final int DEVICE_OUT_USB_DEVICE = 0x4000;
+ (...)
+```
+
+hardware/rockchip/audio/tinyalsa_hal/alsa_route.c 에서 위의 정의된 값을 route_set_control(route)의 get_route_config(int route)를 통해서 codec_config의 xxx.h 구성파일로 변환 한다.
+
+```c
+// hardware/rockchip/audio/tinyalsa_hal/alsa_route.c
+const struct config_route *get_route_config(unsigned route)
+{
+    ALOGV("get_route_config() route %d", route);
+
+    if (!route_table) {
+        ALOGE("get_route_config() route_table is NULL!");
+        return NULL;
+    }
+    switch (route) {
+    case SPEAKER_NORMAL_ROUTE:
+        return &(route_table->speaker_normal);
+    case SPEAKER_INCALL_ROUTE:
+        return &(route_table->speaker_incall);
+    case SPEAKER_RINGTONE_ROUTE:
+        return &(route_table->speaker_ringtone);
+    case SPEAKER_VOIP_ROUTE:
+        return &(route_table->speaker_voip);
+```
+
+HAL 레이어는 sound card의 이름에 따라서 사용할 테이블을 선택한다. 
+일치하는 항목이 없으면 default_config.h가 기본적으로 사용됨.
+
+```cpp
+int route_init(void)
+{
+    char soundCardID[20] = "";
+    static FILE * fp;
+    unsigned i, config_count = sizeof(sound_card_config_list) / sizeof(struct alsa_sound_card_config);
+    size_t read_size;
+
+    ALOGV("route_init()");
+
+    fp = fopen("/proc/asound/card0/id", "rt");
+    if (!fp) {
+        ALOGE("Open sound card0 id error!");
+    } else {
+        read_size = fread(soundCardID, sizeof(char), sizeof(soundCardID), fp);
+        fclose(fp);
+
+        if (soundCardID[read_size - 1] == '\n') {
+            read_size--;
+            soundCardID[read_size] = '\0';
+        }
+```
+
+HAL layer 사운드 카드 이름과 구성 테이블 목록 테이블의 사운드카드의 이름은 선언은 tinyalsa_hal/codec_config/config_list.h 파일에 있다. 
+오디오는 config_route_table을 가져오고 사운드 카드0 및 sound_card_name의 이름을 기반으로 경로를 설정한다.
+
+```bash
+cat /proc/asound/card0/id
+rockchipak7755
+```
+
+```cpp
+#include "ak7755_config.h"
+
+ (...)
+ 
+struct alsa_sound_card_config sound_card_config_list[] = {
+ (...)
+    {
+        .sound_card_name = "rockchipak7755",
+        .route_table = &ak7755_config_table,
+    },
+```
+
+.route_table의 참조는 ak7755_config.h 파일에 정의되어 있다. 
+예를 들어 .route_table = &ak7755_config_table은 ak7755_config.h에 정의.
+
+```c
+const struct config_route_table ak7755_config_table = {
+    //speaker
+    .speaker_normal = {
+        .sound_card = 0,
+        .devices = DEVICES_0,
+        .controls = ak7755_speaker_normal_controls,
+        .controls_count = sizeof(ak7755_speaker_normal_controls) / sizeof(struct config_control),
+    },
+    .speaker_incall = {
+        .sound_card = 0,
+        .devices = DEVICES_0,
+        .controls = ak7755_speaker_incall_controls,
+        .controls_count = sizeof(ak7755_speaker_incall_controls) / sizeof(struct config_control),
+    },
+    .speaker_ringtone = {
+        .sound_card = 0,
+        .devices = DEVICES_0,
+        .controls = ak7755_speaker_ringtone_controls,
+        .controls_count = sizeof(ak7755_speaker_ringtone_controls) / sizeof(struct config_control),
+    },
+    .speaker_voip = {
+        .sound_card = 0,
+        .devices = DEVICES_0,
+        .controls = ak7755_speaker_voip_controls,
+        .controls_count = sizeof(ak7755_speaker_voip_controls) / sizeof(struct config_control),
+    },
+```
+
+그런 다음 ak7755_speaker_normal_controls 설정과 같이 .controls에서 ctl_name 및 .str_val, .int_val을 구성하여 kernel layer 과 통신한다.
+
+```c
+const struct config_control ak7755_speaker_normal_controls[] = {
+    {
+        .ctl_name = "DSP Firmware PRAM",
+        .str_val = "basic",
+    },
+    {
+        .ctl_name = "DSP Firmware CRAM",
+        .str_val = "basic",
+    },
+    {
+        .ctl_name = "DAC MUX",
+        .str_val = "DSP",
+    },
+    {
+        .ctl_name = "Line Out Volume 1",
+        .int_val = {10},
+    },
+    {
+        .ctl_name = "LineOut Amp1",
+        .int_val = {on},
+    },
+    {
+        .ctl_name = "DAC Mute",
+        .int_val = {off},
+    },
+};
+```
+
 # Audio on Android
 
 ## Mixer configuration
