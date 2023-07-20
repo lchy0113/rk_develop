@@ -426,6 +426,25 @@ const struct config_control ak7755_speaker_normal_controls[] = {
                 +-> route_set_controls()
 ```
 
+## audio sequence
+
+```bash
+// output
+adev_open_init
+out_set_parameters, in_set_parameters
+
+```
+
+## audio structure in audio hal
+
+```c
+struct audio_device 
+    |
+	+-> struct stream_in
+    |
+    +-> struct stream_out
+```
+
 # Audio on Android
 
 ## Mixer configuration
@@ -1180,7 +1199,8 @@ struct audio_port_config {
  
  - [ ] audiopolicymanager_tests :  gtest Framework를 사용하는 테스트 프로그램
  - [ ] libaudiopolicymanagercustom : 
-
+ - [x] Android Audio HAL의 stream 구조체에서 standby는 스트림이 현재 사용되지 않고 대기 중임을 나타냄.  스트림이 standby 상태에 있으면 전력을 절약하고 스트림이 재개될때까지 오디오 데이터를 처리하지 않는다.
+ - [x] frames_rd 는 오디오 드라이버가 읽은 오디오 프레임 수를 의미함. 오디오 드라이버는 오디오 스트림에서 오디오 데이터를 읽고 이 데이터를 하드웨어에 전송한다. frames_rd 값은 오디오 드라이버가 읽은 오디오 프레임 수와 오디오 하드웨어에 전송된 오디오 프레임 수를 추적하는데 사용.
 
 
 
@@ -1267,4 +1287,12 @@ core/all-versions/default/
 
 ```
  - mixer_paths.xml 분석
+
  - audio_policy_configuration.xml 분석
+ 
+   * audio-hal-enums.h 
+> /system/media/audio/include/system/audio-hal-enums.h 
+     audio-hal-enums.h 헤더 파일은 system <-> vendor(framework <-> hal) 간 데이터 enum파일이 정의된 헤더파일.
+	 정의된 enum데이터들은 AUDIO HAL 에서 지원하는 *audio format*, *channel masks*, *input flags* 을 나타내는데 사용.
+
+	
