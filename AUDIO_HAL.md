@@ -307,6 +307,7 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
 ```
 
 ## createAudioPatch()
+ : devices의 external-external patches 을 생성
 
  [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.c* ]
 ```c
@@ -315,9 +316,10 @@ adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
 	start_output_stream();
 		|
 		+-> route_pcm_card_open();	// hardware/rockchip/audio/tinyalsa_hal/alsa_route.c
-
-
 ```
+
+## IDevice.setAudioPortConfig() 
+ : 각각 physical stream 의 볼륨을 제공.
 
 -----
 
