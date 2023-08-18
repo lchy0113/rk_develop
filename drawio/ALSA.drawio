@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-08-16T09:25:14.730Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.5 Chrome/114.0.5735.243 Electron/25.3.1 Safari/537.36" etag="_PXAMAfiwQyGQlMW5F0u" version="21.6.5" type="device" pages="6">
+<mxfile host="Electron" modified="2023-08-17T23:16:08.783Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="kDqIcyjipoW_wotnSlBj" version="21.6.8" type="device" pages="6">
   <diagram id="2zkmUAJfDQfXsW1LXNBY" name="ALSA_study">
-    <mxGraphModel dx="4621" dy="3278" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2924" dy="2298" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
