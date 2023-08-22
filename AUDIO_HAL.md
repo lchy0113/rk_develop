@@ -374,6 +374,14 @@ lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$
 
 # Develop
 
+```
+*  private/develop_audio     | in:
+                                   device/kdiwin/test/rk3568_edpp01
+                                   hardware/rockchip/audio
+                                   kernel-4.19
+
+```
+
  - HAL interface : hardware/libhardware/include/hardware/audio.h
  - HIDL interface : hardware/interfaces/audio/7.0/ 
  > HAL interface와 HIDL interface는 모두 하드웨어 소프트웨어 간의 상호 작용을 정의하는데 사용.
