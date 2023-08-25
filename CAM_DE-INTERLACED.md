@@ -2,7 +2,60 @@
 
 > Camera 의 de-interlaced 기능 개발 md. 
 
-
+-----
+/**
+  * ROCKCHIP Camera 
+  * PC : 192.168.27.12
+  * PATH : /home/lchy0113/ssd/Rockchip/ROCKCHIP_ANDROID12 
+  * comment : 
+  *            ROCKCHIP Camera de-interlace기능 개발은 feature/csi branch로 개발 진행 중.
+  *            stc 사 로부터 전달받은 patch가 kernel에 적용되어 있음. 코드 본 기능 검증은 되지 않음. 
+  */
+  
+// repo branch
+```bash
+lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$ repo branch 
+*  feature/csi                         | in:
+                                             device/kdiwin/nova/common
+                                             hardware/rockchip/camera
+                                             kernel-4.19
+   feature/rk3568_edp-p01              | in:
+                                             device/kdiwin/test/common
+                                             kernel-4.19
+                                             u-boot
+                                             rkbin
+   feature/rk3568_rgb-p02              | in kernel-4.19, u-boot, rkbin
+   feature/rk3568_rgb_p02              | in device/kdiwin/nova/rk3568
+   master                              | in:
+                                             device/kdiwin/nova/common
+                                             device/kdiwin/nova/rk3568
+                                             device/kdiwin/test/common
+                                             device/kdiwin/test/rk3568_rgbp01
+                                             device/kdiwin/test/rk3568_rgbp02
+                                             external/camera_engine_rkaiq
+                                             hardware/rockchip/audio
+                                             hardware/rockchip/camera
+                                             kernel-4.19
+                                             u-boot
+                                             vendor/kdiwin/packages/Wall
+                                             vendor/kdiwin/packages/WallTest
+                                             vendor/rockchip/common
+                                             rkbin
+   private/develop                     | in:
+                                             device/kdiwin/nova/rk3568
+                                             external/camera_engine_rkaiq
+                                             hardware/rockchip/audio
+                                             hardware/rockchip/camera
+                                             kernel-4.19
+                                             u-boot
+                                             vendor/rockchip/common
+                                             rkbin
+   private/develop_ak7755              | in:
+                                             hardware/rockchip/audio
+                                             kernel-4.19
+   private/develop_camera_differential | in kernel-4.19
+   rk35/mid/12.0/develop               | in vendor/rockchip/common
+```bash
 
 ----
 ## condition
