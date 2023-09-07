@@ -901,6 +901,8 @@ hardware/rockchip/audio/tinyalsa_hal/cscope.out
 
 system/media/audio_route 경로에 위치하며, tinyalsa_hal에서 libtinyalsa.so파일을 추가하여 따로 정의된 xml파일에 따라 오디오 코덱을 제어하도록 할수 있을 것 같다.
 
+ - 참고 : hardware/qcom/audio/hal/audio_hw.c 의 voice_start_call() -> voice_start_usecase() -> voice_set_sidetone() -> platform_set_sidetone()
+
 
 ### temp
 ```c
