@@ -895,6 +895,12 @@ hardware/rockchip/audio/tinyalsa_hal/cscope.out
 
 ```
 
+# libtinyalsa.so
+
+> system/lib/libtinyalsa.so : Android 시스템의 오디오 하드웨어와 상호 작용하는데 사용되는 오픈 소스 라이브러리. 
+
+system/media/audio_route 경로에 위치하며, tinyalsa_hal에서 libtinyalsa.so파일을 추가하여 따로 정의된 xml파일에 따라 오디오 코덱을 제어하도록 할수 있을 것 같다.
+
 
 ### temp
 ```c
