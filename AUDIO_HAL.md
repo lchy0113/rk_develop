@@ -1,11 +1,39 @@
 AUDIO_HAL
 =====
+> Android의 Audio HAL에 대한 문서
 
-# Audio HAL blockdiagram
+
+Index
+
+```
+# Audio HAL 구조
+    ## Audio HAL Layer interface 
+    ## Audio HAL modules
+    ## keyclass 및 structure
+        ### Audio HAL의 연결 포인터 3그룹.
+        #### 1. module open시 일어나는 audio_hw_device 관련 연결 작업
+        #### 2. openOutput에서 일어나는 audio_hw_output 관련 연결 작업
+        #### 3. openInput에서 일어나는 audio_hw_input 관련 연결 작업
+
+# 분석
+    ## 분석 : device directory
+    ## 분석 : audio_route
+
+# 참고
+    ## rk817
+
+# Note
+    ## android_automotive
+```
+
+
+# Audio HAL 구조 
+
+- blockdiagram
 
  ![](images/AUDIO_HAL_01.png)
 
-## HAL layer 
+## Audio HAL layer interface
  - audio HAL에는 audio_module과 audio_policy_module이 존재. 
  - HAL layer의 lowwer layer는 tinyalsa를 사용. 
 
@@ -13,8 +41,9 @@ AUDIO_HAL
  - audio.primary.default.so(장치의 대부분의 audio 관리)
  - 일부 manufacturer 은 audio.primary.rk30board.so 와 같은 lib를 구현해 배포.
 
+-----
 
-## HAL module
+## Audio HAL modules
 
  [-> */system/media/audio/include/system/audio.h* ]
 ```c
@@ -35,7 +64,6 @@ AUDIO_HAL
 #define AUDIO_HARDWARE_MODULE_ID_HEARING_AID "hearing_aid"
 #define AUDIO_HARDWARE_MODULE_ID_MSD "msd"
 ```
-
 
 -----
 
@@ -107,9 +135,11 @@ AUDIO_HAL
  * AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
  * open_output_stream 함수를 호출하면 struct audio_stream를 하나 생성하여 각 포인터를 연결합니다.
 
+-----
+
 ### Audio HAL의 연결 포인터 3그룹.
 
-#### 1. module open시 일어나는 audio hw device 관련 연결 작업.
+#### 1. module open시 일어나는 audio_hw_device 관련 연결 작업.
 
 ```c
    static int adev_open(....)
@@ -134,7 +164,7 @@ AUDIO_HAL
    }
 ```
 
-#### 2. openOutput에서 일어나는 audio hw output 관련 연결 작업
+#### 2. openOutput에서 일어나는 audio_hw_output 관련 연결 작업
  
 ```c
  static int adev_open_output_stream(.... ) 
@@ -160,7 +190,7 @@ AUDIO_HAL
    }
 ```
 
-#### 3. openInput에서 일어나는 audio hw input 관련 연결 작업
+#### 3. openInput에서 일어나는 audio_hw_input 관련 연결 작업
  
 ```c
    static int adev_open_input_stream(....)
@@ -185,233 +215,244 @@ AUDIO_HAL
 ```
 
 
+-----
+
+<br />
+<br />
+<br />
+<br />
+<br />
 
 -----
 
-## AudioFlinger 와 Audio HW HAL 간 relations
-
- - AuioFlinger와 Audio HW HAL 에서 일어나는 연결 작업은 크게 3가지 그룹으로 나눌수 있습니다.
-
-
-
-# Code Analyse
-
-
- [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.c* ]
-```c
-static struct hw_module_methods_t hal_module_methods = {
-    .open = adev_open,
-};
-
-struct audio_module HAL_MODULE_INFO_SYM = {
-    .common = {
-        .tag = HARDWARE_MODULE_TAG,
-        .module_api_version = AUDIO_MODULE_API_VERSION_0_1,
-        .hal_api_version = HARDWARE_HAL_API_VERSION,
-        .id = AUDIO_HARDWARE_MODULE_ID,
-        .name = "Manta audio HW HAL",
-        .author = "The Android Open Source Project",
-        .methods = &hal_module_methods,
-    },
-};
-
-static int adev_open(const hw_module_t* module, const char* name,
-                     hw_device_t** device)
-{
-    struct audio_device *adev;
-    int ret;
-	
-	// log : ALSA Audio Version: V1.1.0
-    ALOGD(AUDIO_HAL_VERSION);
-
-    if (strcmp(name, AUDIO_HARDWARE_INTERFACE) != 0)
-        return -EINVAL;
-
-    adev = calloc(1, sizeof(struct audio_device));
-    if (!adev)
-        return -ENOMEM;
-
-    adev->hw_device.common.tag = HARDWARE_DEVICE_TAG;
-    adev->hw_device.common.version = AUDIO_DEVICE_API_VERSION_2_0;
-    adev->hw_device.common.module = (struct hw_module_t *) module;
-    adev->hw_device.common.close = adev_close;
-
-    adev->hw_device.init_check = adev_init_check;
-    adev->hw_device.set_voice_volume = adev_set_voice_volume;
-    adev->hw_device.set_master_volume = adev_set_master_volume;
-    adev->hw_device.set_mode = adev_set_mode;
-    adev->hw_device.set_mic_mute = adev_set_mic_mute;
-    adev->hw_device.get_mic_mute = adev_get_mic_mute;
-    adev->hw_device.set_parameters = adev_set_parameters;
-    adev->hw_device.get_parameters = adev_get_parameters;
-    adev->hw_device.get_input_buffer_size = adev_get_input_buffer_size;
-    adev->hw_device.open_output_stream = adev_open_output_stream;
-    adev->hw_device.close_output_stream = adev_close_output_stream;
-    adev->hw_device.open_input_stream = adev_open_input_stream;
-    adev->hw_device.close_input_stream = adev_close_input_stream;
-    adev->hw_device.dump = adev_dump;
-    adev->hw_device.get_microphones = adev_get_microphones;
-    //adev->ar = audio_route_init(MIXER_CARD, NULL);
-    //route_init();
-    /* adev->cur_route_id initial value is 0 and such that first device
-     * selection is always applied by select_devices() */
-    *device = &adev->hw_device.common;
-
-    adev_open_init(adev);
-    return 0;
-}
-```
-
- [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.h* ]
-```c
-struct audio_device {
-    struct audio_hw_device hw_device;
-
-    pthread_mutex_t lock; /* see note below on mutex acquisition order */
-    audio_devices_t out_device; /* "or" of stream_out.device for all active output streams */
-    audio_devices_t in_device;
-    bool mic_mute;
-    struct audio_route *ar;
-    audio_source_t input_source;
-    audio_channel_mask_t in_channel_mask;
-
-    struct stream_out *outputs[OUTPUT_TOTAL];
-    pthread_mutex_t lock_outputs; /* see note below on mutex acquisition order */
-    unsigned int mode;
-    bool   screenOff;
-#ifdef AUDIO_3A
-    rk_process_api* voice_api;
-#endif
-
-    /*
-     * hh@rock-chips.com
-     * this is for HDMI/SPDIF bitstream
-     * when HDMI/SPDIF bistream AC3/EAC3/DTS/TRUEHD/DTS-HD, some key tone or other pcm
-     * datas may come(play a Ac3 audio and seek the file to play). It is not allow to open sound card
-     * as pcm format and not allow to write pcm datas to HDMI/SPDIF sound cards when open it
-     * with config.flag = 1.
-     */
-    int*  owner[2];
-
-    struct dev_info dev_out[SND_OUT_SOUND_CARD_MAX];
-    struct dev_info dev_in[SND_IN_SOUND_CARD_MAX];
-};
-```
-
-```c
-adev_open(const hw_module_t* module, const char* name, hw_device_t** device)
-	|
-	+->	adev_open_init(struct audio_device *adev)
-				
-
-```
-
-## createAudioPatch()
- : devices의 external-external patches 을 생성
-
- [-> *hardware/rockchip/audio/tinyalsa_hal/audio_hw.c* ]
-```c
-	in_set_parameters();
-	out_set_parameters();
-	start_output_stream();
-		|
-		+-> route_pcm_card_open();	// hardware/rockchip/audio/tinyalsa_hal/alsa_route.c
-```
-
-## IDevice.setAudioPortConfig() 
- : 각각 physical stream 의 볼륨을 제공.
+# 분석
 
 -----
 
-# Note 
+## 분석 : device directory
 
- - [ ] hardware/rockchip/audio/tinyalsa_hal/alsa_route.c   
-  -> route_pcm_card_open()를 input, output stream이 발생 할때 마다 호출이 됨.    parameter로 전달되는route의 값을 누가 정의하는지 확인 필요함.  
+device/company/test/rk3568_poc/rk3568_poc.mk
+device/company/nova/rk3568/device.mk
+device/rockchip/common/BoardConfig.mk
+```
+TARGET_BOARD_HARDWARE ?= rk30board
+```
+device/rockchip/common/device.mk
+```
+	PRODUCT_COPY_FILES += \
+		$(LOCAL_PATH)/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+		$(LOCAL_PATH)/audio_policy_volumes_drc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes_drc.xml \
+		frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+		frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration_7_0.xml \
+		frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+		frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
+		frameworks/av/media/libeffects/data/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
 
-     ex. normal-output:route(0), normal-input:route(21), normal-output-mute:route(24), normal-input-mute:route(25)
+	(...)
+
+	$(call inherit-product-if-exists, hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk)
+
+	(...)
+
+	# audio lib
+	PRODUCT_PACKAGES += \
+		audio_policy.$(TARGET_BOARD_HARDWARE) \
+		audio.primary.$(TARGET_BOARD_HARDWARE) \
+		audio.alsa_usb.$(TARGET_BOARD_HARDWARE) \
+		audio.a2dp.default\
+		audio.r_submix.default\
+		libaudioroute\
+		audio.usb.default\
+		libanr
+
+	PRODUCT_PACKAGES += \
+		android.hardware.audio@2.0-service \
+		android.hardware.audio@7.0-impl \
+		android.hardware.audio.effect@7.0-impl
+
+	(...)
+		
+	# audio lib
+	PRODUCT_PACKAGES += \
+		libasound \
+		alsa.default \
+		acoustics.default \
+		libtinyalsa \
+		tinymix \
+		tinyplay \
+		tinycap \
+		tinypcminfo
+
+	PRODUCT_PACKAGES += \
+		alsa.audio.primary.$(TARGET_BOARD_HARDWARE)\
+		alsa.audio_policy.$(TARGET_BOARD_HARDWARE)
+
+	(...)
+
+	USE_XML_AUDIO_POLICY_CONF := 1
+
+	(...)
+
+	# add AudioSetting
+	PRODUCT_PACKAGES += \
+		rockchip.hardware.rkaudiosetting@1.0-service \
+		rockchip.hardware.rkaudiosetting@1.0-impl \
+		rockchip.hardware.rkaudiosetting@1.0
+
+	PRODUCT_COPY_FILES += \
+		$(LOCAL_PATH)/rt_audio_config.xml:/system/etc/rt_audio_config.xml
+
+```
+ > "android.hardware.audio@7.0-impl" 에서 impl은 implementation의 약어.
+ > 즉, Android 7.0 용 오디오 하드웨어 인터페이스의 구현을 의미
+
+device/rockchip/common/BoardConfig.mk
+```
+	(...)
+	# Audio
+	BOARD_USES_GENERIC_AUDIO ?= true
+
+```
+hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk
+```
+PRODUCT_COPY_FILES += \
+    hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
+```
 
 
-# 진행 사항 Memo
- - 오디오 개발 branch : **private/develop_ak7755**
+## 분석 : audio_route
+ audio_route.c 는 /system/media/audio_route 디렉토리에 있는 android에서 제공하는 audio path library(libaudioroute.so) 이다.
+ 1. /system/etc/mixer_paths.xml 구성 파일을 파싱한다.
+ 2. audio ctl access 방법을 capsulate 하여, audio_hw(hal) 호출을 편리하게 한다.
 
-	
+ 안드로이드 시스템에서는 mixer_paths.xml에 정의된 ctl nodes 를 사용하여 코덱을 제어한다.
 ```bash
-lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$ repo status 
-project device/company/test/rk3568_poc/          branch private/develop_ak7755
- -m     audio/audio_policy_configuration.xml
- --     audio/audio_policy_configuration.xml_backup
- --     audio/codec_offload_audio_policy_configuration.xml
-project device/rockchip/common/                 (*** NO BRANCH ***)
- -m     audio_policy/ATVAudioPolicyManager.cpp
-project frameworks/av/                          (*** NO BRANCH ***)
- -m     media/libaudioclient/AudioSystem.cpp
- -m     services/audioflinger/AudioFlinger.cpp
- -m     services/audioflinger/PatchPanel.cpp
-project frameworks/base/                        (*** NO BRANCH ***)
- -m     media/java/android/media/AudioManager.java
-project hardware/rockchip/audio/                branch master
- -m     tinyalsa_hal/alsa_route.c
-project hardware/rockchip/libhwjpeg/            (*** NO BRANCH ***)
- -m     src/version.h
-project kernel-4.19/                            branch private/develop_ak7755
- -m     Makefile
- -m     sound/soc/codecs/ak7755.c
-project packages/modules/BootPrebuilt/5.10/arm64/ (*** NO BRANCH ***)
- -t     boot-userdebug.img
-project rkbin/                                  (*** NO BRANCH ***)
- --     tools/gen_param_rk3568_ddr_1560MHz_v1.13_230222.txt
- --     tools/rk3568_ddr_1560MHz_v1.13-beta.bin
-project system/media/                           (*** NO BRANCH ***)
- -m     audio/include/system/audio.h
- -m     audio_route/audio_route.c
-project u-boot/                                 branch private/develop
-project vendor/company/packages/Wall/            branch master
-project vendor/company/packages/WallTest/        branch master
- --     res/layout/haboard_main.xml
-project vendor/rockchip/common/                 branch private/develop
-lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$
-```
+ROCKCHIP_ANDROID12$ rg mixer_paths
+system/media/audio_route/audio_route.c
+32:#define MIXER_XML_PATH "/system/etc/mixer_paths.xml"
 
-# Develop
+hardware/qcom/audio/hal/msm8916/platform.c
+38:#define MIXER_XML_PATH "mixer_paths.xml"
 
-```
-*  private/develop_audio     | in:
-                                   device/kdiwin/test/rk3568_edpp01
-                                   hardware/rockchip/audio
-                                   kernel-4.19
+hardware/qcom/audio/hal/msm8974/platform.c
+41:#define MIXER_XML_DEFAULT_PATH "mixer_paths.xml"
+1762:     * <iii> mixer_paths.xml
+
+hardware/qcom/audio/hal/msm8960/platform.c
+41:#define MIXER_XML_PATH "/system/etc/mixer_paths.xml"
+
+hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk
+2:    hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
+
+hardware/rockchip/audio/tinyalsa_hal/cscope.out
+45998:/mixer_paths.xml
 
 ```
 
- - HAL interface : hardware/libhardware/include/hardware/audio.h
- - HIDL interface : hardware/interfaces/audio/7.0/ 
- > HAL interface와 HIDL interface는 모두 하드웨어 소프트웨어 간의 상호 작용을 정의하는데 사용.
- > HIDL interface는 HAL interface 보다 더 유연하고, 확장 가능하며, 안전하다. Android 8.0 이상에서는 모든 새로운 HAL이 HIDL interface를 사용.
- > - HAL interface는 C/C++으로 구현 /  메시지 전달하는데 사용 / 동일한 프로세스 내에서 실행되는 하드웨어와 소프트웨어 간의 상호 작용을 정의. / 
- > - HIDL interface는 Java로 구현 / 인터페이스 상태 변경 noty, 요청 cancel, 예최 처리 등 / 다른 프로세스 내에서 실행되는 하드웨어와 소프트웨어 간의 상호 작용을 정의. /
+- libtinyalsa.so
 
- - audio hal makefile 
+> system/lib/libtinyalsa.so : Android 시스템의 오디오 하드웨어와 상호 작용하는데 사용되는 오픈 소스 라이브러리. 
 
-```makefile
-//hardware/rockchip/audio/tinyalsa_hal/Android.mk
+system/media/audio_route 경로에 위치하며, tinyalsa_hal에서 libtinyalsa.so파일을 추가하여 따로 정의된 xml파일에 따라 오디오 코덱을 제어하도록 할수 있을 것 같다.
 
-(...)
+ - 참고 : hardware/qcom/audio/hal/audio_hw.c 의 voice_start_call() -> voice_start_usecase() -> voice_set_sidetone() -> platform_set_sidetone()
 
-LOCAL_MODULE := audio.primary.$(TARGET_BOARD_HARDWARE)
-LOCAL_PROPRIETARY_MODULE := true
-LOCAL_MODULE_RELATIVE_PATH := hw
-LOCAL_SRC_FILES := \
-	bitstream/audio_iec958.c \
-	bitstream/audio_bitstream.c \
-	bitstream/audio_bitstream_manager.c \
-	audio_hw.c \
-	alsa_route.c \
-	alsa_mixer.c \
-	voice_preprocess.c \
-	audio_hw_hdmi.c \
-	denoise/rkdenoise.c
 
-(...)
+
+
+# 참고
+
+## 참고 : rk817 mixer info
+```
+rk3568_evb:/ # tinymix
+Mixer name: 'rockchip,rk809-codec'
+Number of controls: 2
+ctl     type    num     name                                     value
+
+0       ENUM    1       Playback Path                            OFF
+1       ENUM    1       Capture MIC Path                         MIC OFF
+rk3568_evb:/ # tinymix  'Playback Path'
+Playback Path: >OFF RCV SPK HP HP_NO_MIC BT SPK_HP RING_SPK RING_HP RING_HP_NO_MIC RING_SPK_HP
+rk3568_evb:/ #
+rk3568_evb:/ # tinymix  'Capture MIC Path'
+Capture MIC Path: >MIC OFF Main Mic Hands Free Mic BT Sco Mic
 ```
 
------
+ - Android의 오디오 모듈에 대한 config file 정리.
+   * /system/etc/mixer_paths.xml : route list (system audio stream)
+   * /vendor/etc/audio_policy_configuration.xml  
+      : xml 내의 <modules>는 각 audio HAL 의 so 파일에 해당하며 모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 나타낸다.
+     + module name : primary(for in-vehicle usage), A2DP, remote_submix, USB 를 지원하며, module 이름과 해당 오디오 드라이버는 audio.primary.$(variant).so 으로 컴파일 되어야 한다.  
+
+
+ - AudioRoute index
+```
+typedef enum _AudioRoute {
+    SPEAKER_NORMAL_ROUTE = 0,
+    SPEAKER_INCALL_ROUTE, // 1
+    SPEAKER_RINGTONE_ROUTE,
+    SPEAKER_VOIP_ROUTE,
+
+    EARPIECE_NORMAL_ROUTE, // 4
+    EARPIECE_INCALL_ROUTE,
+    EARPIECE_RINGTONE_ROUTE,
+    EARPIECE_VOIP_ROUTE,
+
+    HEADPHONE_NORMAL_ROUTE, // 8
+    HEADPHONE_INCALL_ROUTE,
+    HEADPHONE_RINGTONE_ROUTE,
+    SPEAKER_HEADPHONE_NORMAL_ROUTE,
+    SPEAKER_HEADPHONE_RINGTONE_ROUTE,
+    HEADPHONE_VOIP_ROUTE,
+
+    HEADSET_NORMAL_ROUTE, // 14
+    HEADSET_INCALL_ROUTE,
+    HEADSET_RINGTONE_ROUTE,
+    HEADSET_VOIP_ROUTE,
+
+    BLUETOOTH_NORMAL_ROUTE, // 18
+    BLUETOOTH_INCALL_ROUTE,
+    BLUETOOTH_VOIP_ROUTE,
+
+    MAIN_MIC_CAPTURE_ROUTE, // 21
+    HANDS_FREE_MIC_CAPTURE_ROUTE,
+    BLUETOOTH_SOC_MIC_CAPTURE_ROUTE,
+
+    PLAYBACK_OFF_ROUTE, // 24
+    CAPTURE_OFF_ROUTE,
+    INCALL_OFF_ROUTE,
+    VOIP_OFF_ROUTE,
+
+    HDMI_NORMAL_ROUTE, // 28
+
+    SPDIF_NORMAL_ROUTE,
+
+    USB_NORMAL_ROUTE, // 30
+    USB_CAPTURE_ROUTE,
+
+    HDMI_IN_NORMAL_ROUTE,
+    HDMI_IN_OFF_ROUTE,
+    HDMI_IN_CAPTURE_ROUTE,
+    HDMI_IN_CAPTURE_OFF_ROUTE,
+
+    MAX_ROUTE, //36
+} AudioRoute;
+```
+
+
+# Note
+
+## android_automotive
+ - [ ] Car audio policy의 경우, alarm, notification, system sound는 cpu board에서 출력되고, 그외 sound는 extend audio board 에서 출력  
+ - [ ] *android_policy_configuration.xml*에서 **role** 의 속성으로 *sink(output)*, *source(input)* 을 세팅하는데, door와 같은 시나리오에 어떻게 적용해야 하나 ?
+ - [ ] prebuilts/vndk/v31/x86_x64/include/hardware/libhardware/include/hardware/audio.h : 뭐하는 곳?
+ - [ ] to enable the audio patch feature, the audio HAL should set the major HAL version 3.0 or higher? : https://source.android.com/docs/core/audio/device-type-limit
+	 ref : audio HAL for Cuttlefish 
+ - [ ] 자동차 오디오 HAL 구현 :  https://source.android.com/docs/devices/automotive/audio/audio-hal?hl=ko
+ 
+ - [ ] audiopolicymanager_tests :  gtest Framework를 사용하는 테스트 프로그램
+ - [ ] libaudiopolicymanagercustom : 
+ - [x] Android Audio HAL의 stream 구조체에서 standby는 스트림이 현재 사용되지 않고 대기 중임을 나타냄.  스트림이 standby 상태에 있으면 전력을 절약하고 스트림이 재개될때까지 오디오 데이터를 처리하지 않는다.
+ - [x] frames_rd 는 오디오 드라이버가 읽은 오디오 프레임 수를 의미함. 오디오 드라이버는 오디오 스트림에서 오디오 데이터를 읽고 이 데이터를 하드웨어에 전송한다. frames_rd 값은 오디오 드라이버가 읽은 오디오 프레임 수와 오디오 하드웨어에 전송된 오디오 프레임 수를 추적하는데 사용.
+
 
