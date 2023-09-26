@@ -439,6 +439,35 @@ typedef enum _AudioRoute {
 } AudioRoute;
 ```
 
+-----
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
+
+# 개발
+
+## develop command
+
+```bash
+adb root ; adb remount ; adb push  device/kdiwin/test/rk3568_edpp01/audio/audio_policy_configuration.xml  /vendor/etc/
+adb root ; adb remount ; adb push  out/target/product/rk3568_edpp01/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/
+scrcpy -m1024 --always-on-top
+```
+
+-----
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
 
 # Note
 
