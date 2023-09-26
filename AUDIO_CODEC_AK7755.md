@@ -1,5 +1,7 @@
 # AUDIO_CODEC
 
+>  오디오 코덱 모듈(AK7755)을 개발하며 작성하는 문서
+
  - Linux Sound Subsystem Documentation : https://www.kernel.org/doc/html/latest/sound/index.html
 
 > AUDIO_CODEC 드라이버에 대한 문서.
@@ -27,7 +29,69 @@
 
 -----
 
-	
+# AK7755
+
+## Analysis
+
+> datasheet 분석 
+
+ - Control Register 설정.
+   * power down(PDN pin = "L" -> "H") 이 release 되었을 때, Control Register 는 초기화 됨.
+   * CONT00 ~ CONT01은 clock generation과 관련이있음. 
+     + clock reset 시, (CKRESETN bit (CONT01:D0) = "0")으로 변경해야 함.
+   * CONT12 ~ CONT19는 동작중에 write가능함. 
+   * 그외 다른 register는 error 및 noise를 방지하기 위해 clock reset 또는 system reset(CRESETN bit(CONT0F:D3) 및 DSPRESETN bit(CONT0F:D2)="0") 중에 하나를 변경해야 함. 
+
+   * 시스템 reset중에는 CONT0D:D6, CONT1A:D4, CONT26:D0, CONT2A:D7 bit 를 "1"로 설정해야 함.
+     + 한번 "1"로 설정된 경우, power down이 발생되기 전까지, 값을 유지함. 
+   * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는 write 하면 안됨.
+
+
+![](./images/AUDIO_CODEC_07.png)
+
+
+| Addr 	| Name                                                                  	| Value 	| Func                                                                                                                                                             	|
+|------	|-----------------------------------------------------------------------	|-------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| C0h  	| clock setting1, analog input setting                                  	| 0x3D  	| Slave, Main Clock(BICK), Analog Input Setting                                                                                                                    	|
+| C1h  	| clock setting2, JX2 setting                                           	| 0x0E  	| JX2 is disabled, LRCK sampling frequency set by DFS[2:0] bits, BITFS mode(0) BICK(64fs), CLKO output clock select(XTI or BICk)                                   	|
+| C2h  	| serial data format, JX1, JX0 setting                                  	| 0x10  	| TDM interface(no), BICK Edge(falling), LRCK I/F Format(I2S), DSPDIN3&DSPDIN4 Input Source Select(no), JX1(no), JX)(no)                                           	|
+| C3h  	| delay ram, dsp input / output setting                                 	| 0x05  	| DSP DIN2 Input Format Select(MSB 24bit), DSP DOUT2 Output Format Select(MSB (24bit), DLRAM mode setting(5120words,3072words)                                     	|
+| C4h  	| data ram, cram setting                                                	| 0x61  	| Data RAM Size Setting(1024:1024), Data RAM Addressing mode Setting(Ring:Linear), DLRAM Pointer(OFREG), CRAM Memory Assignment(65word)                            	|
+| C5h  	| accelerator setting, JX3 setting                                      	| 0x03  	| Accelator Memory Select(1024:1024)                                                                                                                               	|
+| C6h  	| DAC De-emphasis, DAC and DSP Input Format Settings                    	| 0x00  	| DAC De-emphasis Setting(OFF), DAC Input Format Select(MSB Justified(24-bit)), MSB (24-bit)                                                                       	|
+| C7h  	| DSP output format setting                                             	| 0x00  	| DSP DOUT4 Output Format Select(MSB justified (24-bit)), DSP DOUT3 Format Select(MSB justified (24-bit)), DSP DOUT1 Output Format Select(MSB(24-bit))             	|
+| C8h  	| DAC input, SDOUT2 Output, SDOUT3 Output, Digital Mixer Input Settings 	| 0xC4  	| DAC Input Select(SDIN1), SDOUT3 pin Output Select(DSP DOUT3), SDOUT2 pint Output Select(GP1), Digital Mixer Input Select(SDOUTAD Rch)                            	|
+| C9h  	| analog input / output setting                                         	| 0x02  	| INL ADC Lch Analog Input(IN1), OUT3 Mixing Select 3(LIN off), OUT3 Mixing Select 2(DAC Rch on), OUT3 Mixing Select 1(DAC Lch off), Digital Mixer Input Select(0) 	|
+| CAh  	| CLK and SDOUT output setting                                          	| 0x00  	| CLKO(Low), BICK(Low), LRCK(Low), OUT3E(Low), OUT2E(Low), OUT1E(Low)                                                                                              	|
+| CEh  	| ADC, DAC Lineout Power Management                                     	| 0x05  	| Lineout1 Power(normal), DAC Lch(normal) when CODEC Reset (CRESETN bit = "1")                                                                                     	|
+| CFh  	| Reset Settings Lineout and Digital MIC2 Rch Power Management          	| 0x00  	| CODEC Reset N(CODEC Reset)                                                                                                                                       	|
+
+   - C1h_D0 (CKRESETN Clock Reset) : 0 인경우, Clock Reset 을 진행합니다. 1 인경우, Clock Reset 을 release 합니다.
+   - CFh_D3 (CRESETN; CODEC Reset N) : CODEC 의미는 ADC, DAC입니다.
+   - CFh_D2 (DSPRESETN; DSP Reset N) : CRESETN bit = "0"이고 DSPRESETN bit = "0" 인경우, system reset 상태가 됩니다.
+   - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우, **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다. 다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.
+
+ - Note:
+ > - Master Mode (CKM mode 0, 1: using XTI Input Clock) : input clock를 BITFS[1:0] bits에 세팅된  XTI pin 으로 받는다.
+ >   * XTI에 synchronized된 internal counter는 LRCK(1fs) 및 BICK(64fs, 48fs, 32fs, 256fs)를 생성합니다. BICK frequency 는  BITFS[1:0] bits에 의해 설정된다.   
+ > - Slave Mode 2 (CKM mode 3: BICK Input Clock) : CKM mode 3에서 필요한 system clock 은 BICK, LRCK이다. 
+ >   * 이 모드에서 BICK는 XTI대신에 사용된다.  
+ >   * BICK 와 LRCK 는 동기화되어 제공되어야 함. 
+ >   * BITFS[1:0] 비트로 LRCK에 대한 BICK clock을 설정. 
+ >   * sampling rate 는 DFS[2:0] 베트로 설정. XTI pin을 open해 놓는다.  
+ > - BICK fs Select(BITFS[1:0]) : BICK fs Select는 슬래이브 모드와 마스터 모드에서 동작되며,
+ >   * 슬래이브 모드에서는  LRCK에 대한 BICK input sampling frequcncy 를 설정합니다. 
+ >   * 마스터모드에서는 LRCK에 대한 BICK output sampling frequency를 설정.  
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
+
 # Develop
 
 
@@ -53,7 +117,7 @@
 
 ## Machine driver  
 
- - simple card는 ASoC용 공통으로 사용되는 Machine driver로 대부분의 표준 사운드 카드 추가를 지원합니다. 
+ - simple card는 ASoC용 공통으로 사용되는 Machine driver로 대부분의 표준 사운드 카드 추가를 지원한다.   
  
 ### dts
 
@@ -78,20 +142,21 @@ ak7755_sound: ak7755-sound {
 ```
 
 ## regmap
- regmap 메커니즘은 Linux 3.1 에 추가 된 새로운 기능입니다.
- 주요 목적은 I/O 드라이버에서 반복적인 논리 코드를 줄이고 기본 하드웨어에서 레지스터를 작동 할 수 있는 범용 인터페이스를 제공하는 것 입니다.
+ regmap 메커니즘은 Linux 3.1 에 추가 된 새로운 기능.
+ 주요 목적은 I/O 드라이버에서 반복적인 논리 코드를 줄이고 기본 하드웨어에서 레지스터를 작동 할 수 있는 범용 인터페이스를 제공하는 것.
  
- 에를 들어 이전에 i2c 장치의 레지스터를 조작하려면 i2c_transfer 인터페이스를 호출해야 합니다. 
- spi 장치 인터페이스를 조작하려면 spi_write / spi_read 와 같은 인터페이스를 호출해야 합니다.
+ 에를 들어 이전에 i2c 장치의 레지스터를 조작하려면 i2c_transfer 인터페이스를 호출해야 한다. 
+ spi 장치 인터페이스를 조작하려면 spi_write / spi_read 와 같은 인터페이스를 호출해야 한다.
 
  kernel 3.8 버전으로 오면서 regmap을 사용하도록 되어 있다.
 
- regmap 구조체의 regmap_read / regmap_write 를 호출해 대신 사용가능합니다.
+ regmap 구조체의 regmap_read / regmap_write 를 호출해 대신 사용 가능.
  아래 함수를 통해 addr_bits, data_bits 를 정해준다.
 
  snd_soc_codec_set_cache_io의 3번째 매개변수를 통하여 다음과 같이 구분하여 regmap_init을 한다.
  (SND_SOC_REGMAP을 처음부터 하였다면 그전에 이미 register set이 REGMAP으로 등록되어 있어야 한다.
  ex. snd_soc_codec_set_cache_io(codec, 8, 16, SND_SOC_I2S))
+
 ```c
 enum snd_soc_control_type {
 	SND_SOC_I2C = 1,
@@ -123,7 +188,7 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
 ```
 
 ### Implementing regmap
- regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap**에 구현되어있다.  
+ regmap 은 Linux API로 **include/linux/regmap.h**을 통해 제공되며, **drivers/base/regmap**에 구현 되어 있다.  
  struct **regmap_config**와 struct **regmap** 이 중요함.
  
  - struct regmap_config  
@@ -148,6 +213,7 @@ static unsigned int hw_read(struct snd_soc_codec *codec, unsigned int reg)
    * write_flag_mask : This mask is also set in the higher byte of the register value.
 
  **struct regmap_config** 구조는 초기화 중에 구성해야 하는 장치의 레지스터 구성 정보를 나타냅니다.
+
 ```c
 struct regmap_config {
 	const char *name;				/* regmap name, 장치에 여러 레지스터 영역이 있을 때 사용 */
@@ -222,18 +288,18 @@ struct regmap_config {
 };
 ```
 
-## regmap api 
- 디바이스 드라이버 초기화 시, device의 register 정보, bit length, address bit length, register bus 등을 정의합니다. 
- regmap을 초기화 하고 다른 bus에  해당하는 초기화 함수를 호출합니다.
- 초기화가 완료된 후 regmap API를 호출하여 정상적으로 read  write 를 할수 있습니다.
+### regmap api 
+ 디바이스 드라이버 초기화 시, device의 register 정보, bit length, address bit length, register bus 등을 정의한다. 
+ regmap을 초기화 하고 다른 bus에  해당하는 초기화 함수를 호출한다.
+ 초기화가 완료된 후 regmap API를 호출하여 정상적으로 read  write 를 할수 있다.
  
  * interface 초기화
  	regmap API 는 **include/linux/regmap.h**에 정의되어 있음.
 	regmap 초기화 루틴에서 regmap_config 구성이 사용된다. 
 	그런 다음 regmap structure가 할당되고 configuration이 복사된다.
 
-	각 bus의 read/write function도 regmap structure에 복사됩니다.
-  	예를 들어 SPI bus의 경우 regmap read 및 write function pointer는 SPI read 및 write function을 가리킵니다.
+	각 bus의 read/write function도 regmap structure에 복사된다.
+  	예를 들어 SPI bus의 경우 regmap read 및 write function pointer는 SPI read 및 write function을 가리킨다.
 
 	regmap 초기화 후 드라이버는 다음 루틴을 사용하여 device와 통신할 수 있다.
 
@@ -329,43 +395,6 @@ index 330ab9c85d1b..5f73c7605b61 100644
  * ref
  https://www.opensourceforu.com/2017/01/regmap-reducing-redundancy-linux-code/
 
-##
-
- * mixer control
-
-```bash
-tinymix 72 0 ; tinymix 73 1 ; tinymix 61 1
-
-tinymix 72 0 ; tinymix 61 1 ; tinymix 71 5
-
-
-> tinymix  24 5 ; tinymix 25 1 ; tinymix 26 1 ; tinymix 27 1 ; tinymix 28 1 ; tinymix 33 3 ; tinymix 36 0 ; tinymix  72 3 ;  
-```
-
- * play
-
-```bash
-tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0; 
-
-[2022-12-13 11:47:48]   [ak7755]        ak7755_reg_read(1375) :
-[2022-12-13 11:47:48] [  230.351505]            [ak7755]        ak7755_i2c_read(1316) :
-[2022-12-13 11:47:48] [  230.351698]            [ak7755]        ak7755_hw_params_set(2460) : receive nfs value(44100)
-[2022-12-13 11:47:48] [  230.351718]            [ak7755]        ak7755_hw_params_set(2461) : addr 0xc0 read value(0x3d)
-[2022-12-13 11:47:48] [ [  230.739491]          [ak7755]        ak7755_trigger(2643) :
-[2022-12-13 11:47:48] [  230.739703]            [ak7755]        ak7755_set_dai_mute(2671) :
-
-
-```
------
-
-## AUDIO HAL
-
- * alsa_route.c
-	 ```c
-	 route_card_init
-	 ```
-   - config_list.h : default_config.h cx2072_config.h
-
 <br />
 <br />
 <br />
@@ -374,118 +403,8 @@ tinyplay /sdcard/Download/file_example_WAV_10MG.wav -D 0 -d 0;
 
 -----
 
-# AK7755
 
-## Analysis
-
-> datasheet 분석 
-
- - Control Register 설정.
-   * power down(PDN pin = "L" -> "H") 이 release 되었을 때, Control Register 는 초기화 됨.
-   * CONT00 ~ CONT01은 clock generation과 관련이있음. 
-     + clock reset 시, (CKRESETN bit (CONT01:D0) = "0")으로 변경해야 함.
-   * CONT12 ~ CONT19는 동작중에 write가능함. 
-   * 그외 다른 register는 error 및 noise를 방지하기 위해 clock reset 또는 system reset(CRESETN bit(CONT0F:D3) 및 DSPRESETN bit(CONT0F:D2)="0") 중에 하나를 변경해야 함. 
-
-   * 시스템 reset중에는 CONT0D:D6, CONT1A:D4, CONT26:D0, CONT2A:D7 bit 를 "1"로 설정해야 함.
-     + 한번 "1"로 설정된 경우, power down이 발생되기 전까지, 값을 유지함. 
-   * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는 write 하면 안됨.
-
-
-![](./images/AUDIO_CODEC_07.png)
-
-
-| Addr 	| Name                                                                  	| Value 	| Func                                                                                                                                                             	|
-|------	|-----------------------------------------------------------------------	|-------	|------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| C0h  	| clock setting1, analog input setting                                  	| 0x3D  	| Slave, Main Clock(BICK), Analog Input Setting                                                                                                                    	|
-| C1h  	| clock setting2, JX2 setting                                           	| 0x0E  	| JX2 is disabled, LRCK sampling frequency set by DFS[2:0] bits, BITFS mode(0) BICK(64fs), CLKO output clock select(XTI or BICk)                                   	|
-| C2h  	| serial data format, JX1, JX0 setting                                  	| 0x10  	| TDM interface(no), BICK Edge(falling), LRCK I/F Format(I2S), DSPDIN3&DSPDIN4 Input Source Select(no), JX1(no), JX)(no)                                           	|
-| C3h  	| delay ram, dsp input / output setting                                 	| 0x05  	| DSP DIN2 Input Format Select(MSB 24bit), DSP DOUT2 Output Format Select(MSB (24bit), DLRAM mode setting(5120words,3072words)                                     	|
-| C4h  	| data ram, cram setting                                                	| 0x61  	| Data RAM Size Setting(1024:1024), Data RAM Addressing mode Setting(Ring:Linear), DLRAM Pointer(OFREG), CRAM Memory Assignment(65word)                            	|
-| C5h  	| accelerator setting, JX3 setting                                      	| 0x03  	| Accelator Memory Select(1024:1024)                                                                                                                               	|
-| C6h  	| DAC De-emphasis, DAC and DSP Input Format Settings                    	| 0x00  	| DAC De-emphasis Setting(OFF), DAC Input Format Select(MSB Justified(24-bit)), MSB (24-bit)                                                                       	|
-| C7h  	| DSP output format setting                                             	| 0x00  	| DSP DOUT4 Output Format Select(MSB justified (24-bit)), DSP DOUT3 Format Select(MSB justified (24-bit)), DSP DOUT1 Output Format Select(MSB(24-bit))             	|
-| C8h  	| DAC input, SDOUT2 Output, SDOUT3 Output, Digital Mixer Input Settings 	| 0xC4  	| DAC Input Select(SDIN1), SDOUT3 pin Output Select(DSP DOUT3), SDOUT2 pint Output Select(GP1), Digital Mixer Input Select(SDOUTAD Rch)                            	|
-| C9h  	| analog input / output setting                                         	| 0x02  	| INL ADC Lch Analog Input(IN1), OUT3 Mixing Select 3(LIN off), OUT3 Mixing Select 2(DAC Rch on), OUT3 Mixing Select 1(DAC Lch off), Digital Mixer Input Select(0) 	|
-| CAh  	| CLK and SDOUT output setting                                          	| 0x00  	| CLKO(Low), BICK(Low), LRCK(Low), OUT3E(Low), OUT2E(Low), OUT1E(Low)                                                                                              	|
-| CEh  	| ADC, DAC Lineout Power Management                                     	| 0x05  	| Lineout1 Power(normal), DAC Lch(normal) when CODEC Reset (CRESETN bit = "1")                                                                                     	|
-| CFh  	| Reset Settings Lineout and Digital MIC2 Rch Power Management          	| 0x00  	| CODEC Reset N(CODEC Reset)                                                                                                                                       	|
-
-   - C1h_D0 (CKRESETN Clock Reset) : 0 인경우, Clock Reset 을 진행합니다. 1 인경우, Clock Reset 을 release 합니다.
-   - CFh_D3 (CRESETN; CODEC Reset N) : CODEC 의미는 ADC, DAC입니다.
-   - CFh_D2 (DSPRESETN; DSP Reset N) : CRESETN bit = "0"이고 DSPRESETN bit = "0" 인경우, system reset 상태가 됩니다.
-   - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우, **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다. 다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.
-
- - Note:
- > - Master Mode (CKM mode 0, 1: using XTI Input Clock) : input clock를 BITFS[1:0] bits에 세팅된  XTI pin 으로 받는다.
- >   * XTI에 synchronized된 internal counter는 LRCK(1fs) 및 BICK(64fs, 48fs, 32fs, 256fs)를 생성합니다. BICK frequency 는  BITFS[1:0] bits에 의해 설정된다.   
- > - Slave Mode 2 (CKM mode 3: BICK Input Clock) : CKM mode 3에서 필요한 system clock 은 BICK, LRCK이다. 
- >   * 이 모드에서 BICK는 XTI대신에 사용된다.  
- >   * BICK 와 LRCK 는 동기화되어 제공되어야 함. 
- >   * BITFS[1:0] 비트로 LRCK에 대한 BICK clock을 설정. 
- >   * sampling rate 는 DFS[2:0] 베트로 설정. XTI pin을 open해 놓는다.  
- > - BICK fs Select(BITFS[1:0]) : BICK fs Select는 슬래이브 모드와 마스터 모드에서 동작되며,
- >   * 슬래이브 모드에서는  LRCK에 대한 BICK input sampling frequcncy 를 설정합니다. 
- >   * 마스터모드에서는 LRCK에 대한 BICK output sampling frequency를 설정.  
-
-## Develop
-
-> note : ak7755 MUTE pin Low 상태에서 소리 출력
-
-```c
-set_DSP_write_pram()
-set_DSP_write_cram()
-set_DSP_write_ofreg()
-set_DSP_write_acram()
-	|
-	+-> ak7755_firmware_write_ram()
-
-
-```
- * legacy code 
-
-```c
-	/**
-	  * register write (0xC0 ~ 0xEA)
-	  */
-	next = ak7755_normal_register;
-	ak7755_reg_write(component, next->reg, next->def);
-
-	/**
-	  * 
-	  */
-	  apply_register(component, COMPANY_AUDIO_PATH_NORMAL, 1);
-	  	|
-		+-> reg_control(component, AK7755_C1_CLOCK_SETTING2, 0x01, BIT_SET)
-		|	|
-		|	+-> /* C1h 레지스터의 값을 읽은 후, C1h_D0 (CKRESETN Clock Reset) 을 세팅 하여 clock reset 을 reset 한다. */
-		+-> fw_download(component, pram_default, sizeof(pram_default));
-		+-> fw_download(component, cram_door_default, sizeof(cram_door_default));
-		|	|
-		|	+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x01, BIT_SET); 
-		|		/*
-		|		 * 1. DSP download ready 상태 : CFh_D0 (DLRDY; DSP Download Ready field) 를 세팅. 
-		|		 * 2. write firmware
-		|		 * 3. DSP download ready 상태 해제 : CFh_D0 (DLRDY; DSP Download Ready field) 를 해제 
-		|		 */
-		+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x08, BIT_SET);
-		|	/* CFh_CRESETN; CODEC Reset N : CODEC Reset Release */
-		+-> reg_control(component, AK7755_CF_RESET_POWER_SETTING, 0x04, BIT_SET);
-		|	/* CFh_DSPRESETN; DSP Reset N : DSP Reset Release */
-
-
-```
-
-
-<br />
-<br />
-<br />
-<br />
-<br />
-
------
-
-# RK817
+## Reference code : RK817
 
 > rockchip evboard codec
 
@@ -559,21 +478,35 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
 -----
 
-## Audio path control by micom
-> micom 에 의해 제어되는  audio path 에 대해 정리.
 
- - ak7755모듈의 입/출력 인터페이스로 (**IN3** <- **ECHO_LINE_IN**, **OUT3** -> **ECHO_LINE_OUT**) 통신되는 audio path가 정의됨.
 
-<br />
-<br />
-<br />
-<br />
-<br />
+# Memo
 
 -----
 
 
-## Memo
+ - ak7755 MUTE pin Low 상태에서 소리 출력  
+ > MUTE pin 제어   
+```bash
+# pdn
+# set high value to gpio0_a6
+rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C040
+
+# set low value to gpio0_a6
+rk3568_poc:/ # io -4 -w 0xfdd60000 0x40C000
+```
+
+```bash
+# mute
+# set high value to gpio4_d1
+rk3568_poc:/ # io -4 -w 0xfe770004 0x2000200
+
+# set low value to gpio4_d1
+rk3568_poc:/ # io -4 -w 0xfe770004 0x2000000
+```
+
+-----
+
 
  - audio codec 드라이버 개발 업무 순서(절차).
   1. 디바이스 드라이버 소스를 제공하는지 부터 확인(중요)
@@ -598,8 +531,11 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
   요즘은 디바이스 드라이버 단독으로 동작하는 경우는 거의 없고, ALSA나 OSS같은 프레임워크에 연동되도록 디바이스 드라이버를 작성하고 잇다.
   하지만  그렇다 하더라도 '네가 알아서 ALSA, OSS 프레임워크에 맞게 Application을 작성해라' 라고 하는 것은 능력 없는 플랫폼 개발자나 하는 행동이고 뛰어난 플랫폼 개발자는 Application 개발자가 API만 호출해서 쓸수 있도록 준비해 줘야 합니다.
 
- - regmap read 시, 0x24 ~ 0x7C 까지read됨. 
+
+-----
+ 
  - tinymix command 
+
  ```bash
  tinymix 'DSP Firmware PRAM' 'basic' ; tinymix 'DSP Firmware CRAM' 'basic' ;  tinymix 'LIN MUX' 'IN1' ; tinymix 'DSPIN SDOUTAD' On ; tinymix 'SDOUT1 MUX' DSP ; tinymix 'SDOUT1 Enable Switch'  1 ; tinymix 'DAC MUX' 'DSP' ; tinymix 'LineOut Amp1' On ; tinymix 'DAC Mute' 0 ; tinymix 'Line Out Volume 1' 15 ; tinymix 'Line Out Volume 2' 15; tinymix 'Line Out Volume 3' 15
  ```
@@ -669,18 +605,48 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 		|                  	| Three bytes of data may be written continuosly for each address 	|
 
 
+-----
+ 
+ - firmware file 경로 :
 
 ```
-
     * locate firmware file : 
 	 /vendor/etc/firmware/
 
-
-	* test
 ```
+
+
+-----
+
 
  - Digital Mixer
     ADC output (SDOUTAD) ADC2 output (SDOUTAD2), DSP-DOUT4 의 데이터는 single serial data 으로 mixer circuit에 의해 mixed 될 수 있다. 
 	SELMIX[2:0] bit를 통해 제어 됨.
 
 	![](./images/AUDIO_CODEC_08.png);
+
+
+-----
+
+ - 하드웨어 핀 connected table
+
+| **pin**             	| **name**             	| **AK7755**                 	| **connected** 	|
+|---------------------	|----------------------	|----------------------------	|---------------	|
+| GPIO4_C3 (I2S3)     	| I2S_BCLK             	| BICK(8)(I/O)               	| -             	|
+| GPIO4_C4 (I2S3)     	| I2S_LRCK             	| LRCK(7)(I/O)               	| -             	|
+| GPIO4_C5 (I2S3)     	| I2S_DAO              	| SDIN1/JX0(5)(Input)        	|               	|
+| GPIO4_C6 (I2S3)     	| I2S_DAI              	| SDOUT1/EEST(16)(Output)    	| -             	|
+| GPIO4_B2 (I2C4_SDA) 	| I2C_SDA_EC_DE        	| SO/SDA(17)(I/O)            	| -             	|
+| GPIO4_B3 (I2C4_SCL) 	| I2C_SCL_EC_DE        	| SCLK/SCL(18)(I/O)          	| -             	|
+| GPIO0_A6            	| I2S_RESET            	| PDN(22)(Input)             	| -             	|
+| GPIO4_D1            	| NMUTE_SPK (0_unmute) 	| -                          	| -             	|
+| -                   	| -                    	| CLKO(9)(Output)            	|               	|
+| -                   	| -                    	| OUT2(26)(Output)           	| BACK_CALL_OUT 	|
+| -                   	| -                    	| OUT3(27)(Output)           	| ECHO_LINE_OUT 	|
+| -                   	| -                    	| OUT1(28)(Output)           	| SPK           	|
+| -                   	| -                    	| IN4/INN2/DMCLK2(31)(I/O)   	| -             	|
+| -                   	| -                    	| IN3/INP2/DMDAT2(32)(Input) 	| ECHO_LINE_IN  	|
+| -                   	| -                    	| IN2/INN1/DMCLK1(33)(I/O)   	| -             	|
+| -                   	| -                    	| IN1/INP1/DMDAT1(34)(Input) 	| MIC           	|
+
+
