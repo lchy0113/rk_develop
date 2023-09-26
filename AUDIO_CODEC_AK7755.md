@@ -2,6 +2,27 @@
 
 >  오디오 코덱 모듈(AK7755)을 개발하며 작성하는 문서
 
+
+Index
+
+```
+ # AK7755
+    ## Analysis
+ 
+ # Develop
+    ## sound card
+    ## I2S
+        ### master / slave
+    ## Machine driver
+        ### dts
+    ## regmap
+        ### Implementing regmap
+        ### regmap api
+    ## Reference code : RK817 
+	
+# Memo
+```
+
  - Linux Sound Subsystem Documentation : https://www.kernel.org/doc/html/latest/sound/index.html
 
 > AUDIO_CODEC 드라이버에 대한 문서.
