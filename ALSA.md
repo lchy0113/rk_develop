@@ -1,8 +1,53 @@
  ALSA
 =====
 
-> ALSA 모듈에 대한 문서
+> ALSA framework에 대한 page
+> kernel layer에서 ALSA framework를 어떻게 사용하는지 분석 및 정리 page
 
+Index
+
+ALSA
+
+=====
+
+> ALSA framework에 대한 page
+> kernel layer에서 ALSA framework를 어떻게 사용하는지 분석 및 정리 page
+
+Index
+
+```
+# 1. DAPM
+    ## 1.1 DAPM 이란?
+	## 1.2 DAPM Power domain
+	## 1.3 DAPM 간단 정리
+	
+# 2. Kcontrol
+    ## 2.1 Kcontrol 이란?
+	## 2.2 Kcontrol 구조체
+	## 2.3 Kcontrol 선언
+	## 2.4 Kcontrol 등록
+	## 2.5 Kcontrol 운용
+	## 2.6 Kcontrol 정리
+	
+# 3. Widget
+    ## 3.1 Widget 이란?
+	## 3.2 Widget 구조체
+	## 3.3 Widget 선언
+	## 3.4 WIdget 등록
+	
+# 4. Route(path)
+    ## 4.1 Route(path) 란?
+	## 4.2 Route(path) 구조체
+	## 4.3 Route(path) 선언
+	## 4.4 Route(path) 등록
+	
+# 5. DAPM Operation
+    ## 5.1 dapm_power_widgets 함수
+	## 5.2 widget's power check function
+	## 5.3 dapm_generic_check_power(is_connected_input_ep)
+	## 5.4 dapm_power_widgets 함수
+	## 5.5 정리
+```
 
 # 1. DAPM 
 
