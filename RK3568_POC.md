@@ -5,6 +5,7 @@
 ## Device Map
 
 ### uart
+ - rk3568_rgb_p02 board
  - upper layer에는 아래와 같은 uart node로 제공.
 
 | **uart dev node** 	| **connect device**   	|
@@ -15,6 +16,8 @@
 | /dev/ttyS3        	| temp                 	|
 
 
+ - rk3568_rgb_p02 board
+	  
 ```bash
 +---------------+
 | [RK3568]      |
@@ -51,6 +54,44 @@
 +---------------+
 ```
 
+ - rk3568_edp_p02 board
+	  
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|    UART0------+ <----> device control;rs485(/w GPIO0_C4)
+|               |
+|    UART1-+-M0-+
+|          +-M1-+
+|               |
+|    UART2-+-M0-+ <----> zigbee(to be)
+|          +-M1-+
+|               |
+|    UART3-+-M0-+
+|          +-M1-+
+|               |
+|    UART4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5)
+|          +-M1-+
+|               |
+|    UART5-+-M0-+
+|          +-M1-+
+|               |
+|    UART6-+-M0-+ <----> ladar
+|          +-M1-+
+|               |
+|    UART7-+-M0-+
+|          +-M1-+
+|               |
+|    UART8-+-M0-+
+|          +-M1-+
+|               |
+|    UART9-+-M0-+ <----> debug
+|          +-M1-+
+|               |
++---------------+
+```
+
 ### i2c
 - rk3568_rgb_p02 board
 
@@ -64,6 +105,32 @@
 |               |
 |    I2C2--+-M0-+
 |          +-M1-+ <----> internal cam
+|               |
+|    I2C3--+-M0-+ <----> touch ic
+|          +-M1-+
+|               |
+|    I2C4--+-M0-+ <----> pmic
+|          +-M1-+
+|               |
+|    I2C5--+-M0-+
+|          +-M1-+ <----> audio codec, decoder
+|               |
+|    I2C_HDMI---+
++---------------+
+```
+
+- rk3568_edp_p02 board
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|    I2C0-------+
+|               |
+|    I2C1-------+ <----> hot key
+|               |
+|    I2C2--+-M0-+
+|          +-M1-+ <----> internal cam(option)
 |               |
 |    I2C3--+-M0-+ <----> touch ic
 |          +-M1-+
