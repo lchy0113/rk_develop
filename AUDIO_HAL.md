@@ -4,26 +4,30 @@ AUDIO_HAL
 
 
 Index
+=====
 
 ```
-# Audio HAL 구조
-    ## Audio HAL Layer interface 
-    ## Audio HAL modules
-    ## keyclass 및 structure
-        ### Audio HAL의 연결 포인터 3그룹.
-        #### 1. module open시 일어나는 audio_hw_device 관련 연결 작업
-        #### 2. openOutput에서 일어나는 audio_hw_output 관련 연결 작업
-        #### 3. openInput에서 일어나는 audio_hw_input 관련 연결 작업
+▼ Audio HAL 구조 : section
+    Audio HAL layer interface : section
+    Audio HAL modules : section
+  ▼ key class 및 structure : section
+    ▼ Audio HAL의 연결 포인터 3그룹. : section
+        1. module open시 일어나는 audio_hw_device 관련 연결 작업. : section
+        2. openOutput에서 일어나는 audio_hw_output 관련 연결 작업 : section
+        3. openInput에서 일어나는 audio_hw_input 관련 연결 작업 : section
 
-# 분석
-    ## 분석 : device directory
-    ## 분석 : audio_route
+▼ 분석 : section
+    분석 : device directory : section
+    분석 : audio_route : section
 
-# 참고
-    ## rk817
+▼ 참고 : section
+    참고 : rk817 mixer info : section
 
-# Note
-    ## android_automotive
+▼ 개발 : section
+    develop command : section
+
+▼ Note : section
+    android_automotive : section
 ```
 
 
@@ -454,7 +458,7 @@ typedef enum _AudioRoute {
 ## develop command
 
 ```bash
-adb root ; adb remount ; adb push  device/kdiwin/test/rk3568_edpp01/audio/audio_policy_configuration.xml  /vendor/etc/
+adb root ; adb remount ; adb push  device/COMPANY/test/rk3568_edpp01/audio/audio_policy_configuration.xml  /vendor/etc/
 adb root ; adb remount ; adb push  out/target/product/rk3568_edpp01/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/
 scrcpy -m1024 --always-on-top
 ```
