@@ -8,37 +8,37 @@ Index
 =====
 
 ```
-# 1. DAPM
-    ## 1.1 DAPM 이란?
-	## 1.2 DAPM Power domain
-	## 1.3 DAPM 간단 정리
-	
-# 2. Kcontrol
-    ## 2.1 Kcontrol 이란?
-	## 2.2 Kcontrol 구조체
-	## 2.3 Kcontrol 선언
-	## 2.4 Kcontrol 등록
-	## 2.5 Kcontrol 운용
-	## 2.6 Kcontrol 정리
-	
-# 3. Widget
-    ## 3.1 Widget 이란?
-	## 3.2 Widget 구조체
-	## 3.3 Widget 선언
-	## 3.4 WIdget 등록
-	
-# 4. Route(path)
-    ## 4.1 Route(path) 란?
-	## 4.2 Route(path) 구조체
-	## 4.3 Route(path) 선언
-	## 4.4 Route(path) 등록
-	
-# 5. DAPM Operation
-    ## 5.1 dapm_power_widgets 함수
-	## 5.2 widget's power check function
-	## 5.3 dapm_generic_check_power(is_connected_input_ep)
-	## 5.4 dapm_power_widgets 함수
-	## 5.5 정리
+▼ 1. DAPM : section
+    1.1 DAPM 이란? : section
+    1.2 DAPM Power domain : section
+    1.3 DAPM 간단 정리 : section
+
+▼ 2. Kcontrol : section
+    2.1 Kcontrol 이란? : section
+    2.2 Kcontrol 구조체 : section
+    2.3 Kcontrol 선언 : section
+    2.4 Kcontrol 등록 : section
+    2.5 Kcontrol 운용 : section
+    2.6 Kcontrol 정리 : section
+
+▼ 3. Widget : section
+    3.1 Widget 이란? : section
+    3.2 Widget 구조체 : section
+    3.3 Widget 선언 : section
+    3.4 Widget 등록 : section
+
+▼ 4. Route(path) : section
+    4.1 Route(path)란 ? : section
+    4.2 Route(path) 구조체 : section
+    4.3 Route(path) 선언 : section
+    4.4 Route(path) 등록 : section
+
+▼ 5. DAPM Operation : section
+    5.1 dapm_power_widgets 함수 : section
+    5.2 widget's power check function : section
+    5.3 dapm_generic_check_power(is_connected_input_ep) : section
+    5.4 dapm_power_widgets 함수 내용 : section
+    5.5 정리 : section
 ```
 
 # 1. DAPM 
