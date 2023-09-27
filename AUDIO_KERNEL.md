@@ -5,15 +5,7 @@
 > kernel layer에서 ALSA framework를 어떻게 사용하는지 분석 및 정리 page
 
 Index
-
-ALSA
-
 =====
-
-> ALSA framework에 대한 page
-> kernel layer에서 ALSA framework를 어떻게 사용하는지 분석 및 정리 page
-
-Index
 
 ```
 # 1. DAPM
