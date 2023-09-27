@@ -4,25 +4,36 @@ ANDROID AUDIO
 
 
 Index
+=====
 
 ```
-# Implementation
-## Policy Configuration
-### Advantage of the XML format
-### File format and Location
-### File inclusions
-### Audio policy code organization
+▼ Implementation : section
+  ▼ Policy Configuration : section
+      Advantages of the XML format : section
+      File format and location : section
 
-# Audio HAL 코드
-    ## 1. Analysis of important interface files
-	## 2. HAL Initialization
-	## 3. Audio Framework
-	    ### 3.1 Audio Policy Configuration
-		    #### route를 통해 devicePort와 mixPort 를 연결하는 방법
-		### 3.2 Audio Patch
-		### 3.3 Audio Focus
-		
-# Develop
+▼ Android Audio device : section
+    audio data path : section
+    audio sequence : section
+    audio structure in audio hal : section
+
+▼ Audio on Android : section
+    Mixer configuration : section
+    Format of mixer_paths.xml : section
+
+▼ Audio HAL 코드 : section
+    1. Analysis of important interface files : section
+    2. HAL Initialization : section
+
+▼ reference : section
+  ▼ 3. Audio Framework : section
+    ▼ 3.1 Audio Policy Configuration : section
+        route를 통해 devicePort와 mixPort를 연결하는 방법 : section
+        MixPort의 플래그 : section
+      3.2 Audio Patch : section
+      3.3 Audio Focus : section
+
+  Develop : section
 ```
 
 
