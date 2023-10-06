@@ -84,3 +84,57 @@ devfreq 프레임워크는 governer, core, driver, event 로 구성되며 softwa
  DMC(Dynamic Memory Controller) DVFS, 즉 DDR Frequency 변환.
 
 # BUS DVFS 
+
+
+
+-----
+
+# cpu frequeycy 변경
+
+## rk3568 CPU의 max frequency 변경 
+
+ rk3568 cpu의 기본 max frequency는 1992 MHz 이며, 2016 MHz 로 변경하려면 수정이 필요하다.
+ 
+ [] 실제 1992 MHz 동작 확인 필요.
+
+```c
+diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+index d8e85d5de8b6..f316fc0080a0 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
+@@ -212,8 +212,8 @@
+                        clock-latency-ns = <40000>;
+                        status = "disabled";
+                };
+-               opp-1992000000 {
+-                       opp-hz = /bits/ 64 <1992000000>;
++               opp-2016000000 {
++                       opp-hz = /bits/ 64 <2016000000>;
+                        opp-microvolt = <1150000 1150000 1150000>;
+                        opp-microvolt-L0 = <1150000 1150000 1150000>;
+                        opp-microvolt-L1 = <1100000 1100000 1150000>;
+diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+index 7da2c01c4444..a129cf95e4c1 100644
+--- a/drivers/clk/clk-scmi.c
++++ b/drivers/clk/clk-scmi.c
+@@ -69,6 +69,9 @@ static int scmi_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ {
+        struct scmi_clk *clk = to_scmi_clk(hw);
+ 
++       if ((clk->id == 0) && (rate == 2016000000))
++               rate = 1992000000;
++
+        return clk->handle->clk_ops->rate_set(clk->handle, clk->id, rate);
+ }
+ 
+@@ -129,6 +132,8 @@ static int scmi_clk_ops_init(struct device *dev, struct scmi_clk *sclk)
+                min_rate = sclk->info->range.min_rate;
+                max_rate = sclk->info->range.max_rate;
+        }
++       if (sclk->id == 0)
++               max_rate = 2016000000;
+ 
+        clk_hw_set_rate_range(&sclk->hw, min_rate, max_rate);
+        return ret;
+
+```
