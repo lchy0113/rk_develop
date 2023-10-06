@@ -149,28 +149,29 @@ index 7da2c01c4444..a129cf95e4c1 100644
  > RK3568J는 RK3568의 산업용 코어 보드 버전?
 
 ![](./images/DEVFREQ_02.png) 
+  
+  
+ - normal mode  
+    datasheet에 따르면 rk3568 chip은 normal mode에서 수명이 더 길다.   
+	시뮬레이션 결과에 따르면 1.4GHz@0.9V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 10년을 초과할 수 있다.  
+  
+ - over drive mode  
+    datasheet에 따르면 over driver mode에서는 processor frequency를 더 높이 설정할 수 있지만, chip의 서비스 수명이 단축된다.  
+	시뮬레이션 결과에 따르면 1.8GHz@1.05V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 3년 미만으로 단축된다.  
+  
 
+	높은 주 주파수에서 실행해야하는 경우, 전력 소비를 줄이고 chip의 서비스 수명을 늘리려면 frequency와 voltage를 동적으로 조정하고,   
+	우수한 열 방출 조건을 보장해야 한다.  
 
- - normal mode
-    datasheet에 따르면 rk3568 chip은 normal mode에서 수명이 더 길다. 
-	시뮬레이션 결과에 따르면 1.4GHz@0.9V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 10년을 초과할 수 있다.
-
- - over drive mode
-    datasheet에 따르면 over driver mode에서는 processor frequency를 더 높이 설정할 수 있지만, chip의 서비스 수명이 단축된다.
-	시뮬레이션 결과에 따르면 1.8GHz@1.05V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 3년 미만으로 단축된다.
-
-	높은 주 주파수에서 실행해야하는 경우, 전력 소비를 줄이고 chip의 서비스 수명을 늘리려면 frequency와 voltage를 동적으로 조정하고, 
-	우수한 열 방출 조건을 보장해야 한다.
-
- avaliable frequency setting : 시스템은 6개의 frequency mode를 지원한다. 전력 소비를 줄이고 chip의 서비스 수명을 보장하기 위해 performance frequency mode로 설정된다. 
- frequency setting :1.4(1.416) GHz. 
- > frequency mode는 **kernel config**, **cmd line**을 통해 수정할 수 있다.
- 
- 참고 : 설정 가능한 주파수는 아래와 같다. 
- 408000 KHz, 600000 KHz, 816000 KHz, 1104000 KHz, 1416000 KHz, 1608000 KHz, 1800000 KHz, 1992000 KHz 를 지원한다.
-
-
- 문서에 따르면 전력소모를 줄이고 chip의 수명을 보장하기 위해 RK3568J의 frequency setting은 1.4(1.416) GHz를 초과 하지 않는 것이 좋다.
+ avaliable frequency setting : 시스템은 6개의 frequency mode를 지원한다. 전력 소비를 줄이고 chip의 서비스 수명을 보장하기 위해 performance frequency mode로 설정된다.   
+ frequency setting :1.4(1.416) GHz.   
+ > frequency mode는 **kernel config**, **cmd line**을 통해 수정할 수 있다.  
+   
+ 참고 : 설정 가능한 주파수는 아래와 같다.   
+ 408000 KHz, 600000 KHz, 816000 KHz, 1104000 KHz, 1416000 KHz, 1608000 KHz, 1800000 KHz, 1992000 KHz 를 지원한다.  
+  
+  
+ 문서에 따르면 전력소모를 줄이고 chip의 수명을 보장하기 위해 RK3568J의 frequency setting은 1.4(1.416) GHz를 초과 하지 않는 것이 좋다.  
 
 
 
