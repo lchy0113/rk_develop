@@ -3,7 +3,8 @@ RK3568_EVB
 
 # Code compiling
 
-- One key compiling command
+## One key compiling command
+
 ```bash
 
 ./build.sh -UKAup
@@ -29,25 +30,25 @@ lunch rk3568_s-userdebug
 ============================================================
 ```
 
-- Android
+## Android
 ```bash
 build/envsetup.sh
 lunch rk3568_s-userdebug
 ```
 
-- one key compiling
+## one key compiling
 ```bash
 ./build.sh -AUCKu
 ```
 
 
-- kernel compiling
+## kernel compiling
 ```bash
 make ARCH=arm64 rockchip_defconfig rk356x_evb.config android-11.config; 
 make ARCH=arm64 rk3568-evb7-ddr4-v10.img -j24
 ```
 
-- u-boot compiling
+## u-boot compiling
 ```bash
 ./make.sh rk3568
 ```
