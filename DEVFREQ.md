@@ -213,8 +213,7 @@ cat /sys/kernel/debug/regulator/vdd_core/voltage
 # CPUFreq
 
 
-1. overview
------
+## 1. overview
 
  CPUFreq는 지정된 governor에 따라서 cpu frequency 와 voltage를 동적으로 변경하기위해 kernel 개발자가 정의한 프레임워크 모델이다. 
  cpu의 performance에 따라서 cpu의 소비전력을 낮추는것이 효과적일 수 있다.
@@ -237,8 +236,9 @@ cat /sys/kernel/debug/regulator/vdd_core/voltage
  - CPUFreq stats : cpufreq에 대한 통계를 제공 
 
 
-2. code path
 -----
+
+## 2. code path
 
  - governor related code:
 ```bash
@@ -267,10 +267,11 @@ drivers/cpufreq/rockchip-cpufreq.c			/* platform device */
 drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
 ```
 
-3. configuration
 -----
 
- 3.1 menuconfig
+## 3. configuration
+
+### 3.1 menuconfig
 
 ```bash
 
@@ -302,11 +303,13 @@ drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
 (...)
 ```
 
+----
 
- 3.2 clock configuration
+### 3.2 clock configuration
 
+----
 
- 3.3 regulator configuration
+### 3.3 regulator configuration
 
  devicetree의 CPU nde에 "cpu-supply" property을 추가합니다.
  Regulator에 대한 자세한 구성 지침은 아래와 같습니다.
@@ -350,8 +353,9 @@ drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
 
 ```
 
+----
 
- 3.4 OPP table configuration
+### 3.4 OPP table configuration
 
   Operating Performance Points(OPP) 는 linux kernel의 기능으로 CPU의 performance와 power saving을 조절하는데 사용된다.
   OPP는 CPU의 frequency와 voltage를 조합하여 나타내며, CPU의 perforfance와 power saving 은 OPP의 조합에 따라 달라진다. 
@@ -527,14 +531,15 @@ cpu cpu0: OPP-v2 not supported
 cpu cpu0: couldn't find opp table for cpu:0, -19
 ```
 
+----
 
- 3.5 Modify OPP Table According to Leakage
+### 3.5 Modify OPP Table According to Leakage
   IDDQ(Integrated Circuit Quiescent Current), leakage(누설)이라고도 한다.
   CPU의 leakage은 특정 전압을 제공할 때 CPU의 대기 전류(quiescent current)를 의미한다.
 
  - note : 칩 생산 시 leakage 값이 eFuse 또는 OTP에 기록된다.
 
- 3.5.1 Modify Voltage According to Leakage
+#### 3.5.1 Modify Voltage According to Leakage
 
  - 기능 설명 : eFuse 또는 OTP에서 CPU leakage value을 가져오고 particular table에서 leakage에 해당하는 voltage을 가져와 적용시킨다
  - 적용 방법 : 
@@ -598,7 +603,9 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 	};
 ```
 
- 3.6 Modify OPP Table According to PVTM
+----
+
+### 3.6 Modify OPP Table According to PVTM
 
   CPU PVTM(Process-Voltage-Temperature Monitor)는 CPU 가까이에 위치 한 모듈이며, 칩 간의 성능차이를 반영될 수 있으며, voltage, temperature의 영향을 받는다.
 
@@ -658,7 +665,9 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 		>;
 ```
 
- 3.7 Wide Temperature Configuration
+----
+
+### 3.7 Wide Temperature Configuration
  
  일반적으로 주변 온도가 − 40°C ~ + 85°C임을 의미한다.
 
@@ -721,8 +730,9 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ```
 
+----
 
- 4. User interface
+## 4. User interface
 
  - Non-big.Little platforms : 모든 core 는 하나의 clock을 공유하고 동일한 user interface 를 아래 경로를 통해 갖는다.
 	  /sys/devices/system/cpu/cpufreq/policy0/
@@ -766,3 +776,41 @@ drwxr-xr-x 4 root root    0 2023-06-12 11:04 ..
 	 /sys/devices/system/cpu/cpufreq/policy4/
 
 > Note : Big.Little platform 에서 cluster는 고성능 코어와 저전력 코어의 그룹입니다. 고성능 코어는 짧은 시간 동안 많은 작업을 처리하는데 적합하며, 저전력 코어는 장기간 동안 적은 작업을 처리하는데 적절합니다. 클러스터는 2가지 유형의 코어를 결합하여 장치의 전력 효율성과 성능을 향상시킵니다.
+
+-----
+
+# issue
+
+ ## tcs4525 부재
+ > tcs4525 모듈은3.3v low voltage management IC이다. 
+ 
+ - rk3568 evb vs rk3568 poc
+   * rk3568 evb : tcs4525 모듈을 제어하여 가변적인 voltage 를 vdd_cpu을 통해 cpu0로 공급. 
+
+```dts
+    vdd_cpu: tcs4525@1c {
+        compatible = "tcs,tcs452x";
+        reg = <0x1c>;
+        vin-supply = <&vcc5v0_sys>;
+        regulator-compatible = "fan53555-reg";
+        regulator-name = "vdd_cpu";
+        regulator-min-microvolt = <712500>;
+        regulator-max-microvolt = <1390000>;
+        regulator-init-microvolt = <900000>;
+        regulator-ramp-delay = <2300>;
+        fcs,suspend-voltage-selector = <1>;
+        regulator-boot-on;
+        regulator-always-on;
+        regulator-state-mem {
+            regulator-off-in-suspend;
+        };
+    };
+
+```
+   * rk3568 poc : mt3196 모듈을 통해 0.93V@3000mA의 고정적인 값을 vdd_cpu을 통해 cpu0로 공급.
+
+    regulator 이 설정되지 않더라도 cpufreq driver는 성공적으로 load될수 있다. 
+	voltage를 고정으로 사용하고 CPU frequency 를 가변적으로 사용하는 경우. 
+	**그러나 frequency가 일정 값 이상으로 증가되면 low voltage로 인해 crash가 발생될 수 있다.**
+ 
+
