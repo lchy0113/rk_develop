@@ -1,6 +1,12 @@
 # DEVICE 
 > aosp rk3568 device 에 대한 문서 입니다.
 
+----
+
+<br/>
+<br/>
+<br/>
+<br/>
 
 ## Device Map
 
@@ -92,7 +98,10 @@
 +---------------+
 ```
 
+----
+
 ### i2c
+
 - rk3568_rgb_p02 board
 
 ```bash
@@ -145,7 +154,10 @@
 +---------------+
 ```
 
+----
+
 ### vop
+
 - rk3568 support vop
 
 ```bash
@@ -202,7 +214,10 @@
 +---------------+
 ```
 
+----
+
 ### io power domain
+
 > rk3568_rgb_p01, rk3568_rgb_p02 board
 
 ```bash
@@ -235,11 +250,14 @@
 +--------------------------------------------------------------------------------------+
 ```
 
+----
 
 ### gpio
+
 > rk3568_rgb_p02 board
 
 - pio_hal
+
 ```bash
 // input
 	GPIO0_C6	DOOR_CALL_DET
@@ -279,13 +297,15 @@
 	GPIO4_D2	SPK_AMP_EN
 ```
 
+---- 
+
 <br/>
 <br/>
 <br/>
 <br/>
+
 
 ## source code
-
 
 ### kernel DTB
 
@@ -408,11 +428,14 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 	+-> product name, device, model, brand, manufacturer 세팅.  
 ```
 
------
+----
+
+<br/>
+<br/>
+<br/>
+<br/>
 
 ## issue
-
------
 
 ### issue: userdata partition file system 검토
 > change userdata partition file system to EXT4
@@ -439,7 +462,13 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 
 -----
 
+<br/>
+<br/>
+<br/>
+<br/>
+
 ## to do : 
+
  - [x] change userdata partition file system to EXT4  : 기본적으로 data 파티션의 파일시스템은 fsfs으로 구성된다.   배터리를 사용하지 않는 제품은 ext4 파일시스템으로 변경을 추천한다. (data loss 방지를 위해서 f2fs파일시스템을 사용함.)
 ```bash
 /dev/block/dm-8 on /data type f2fs (rw,lazytime,seclabel,nosuid,nodev,noatime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,flush_merge,extent_cache,mode=adaptive,active_logs=6,reserve_root=32768,resuid=0,resgid=1065,alloc_mode=reuse,fsync_mode=posix)
@@ -486,6 +515,9 @@ index 7532217..cf789ac 100755
  /dev/block/by-name/custom			/custom			ext4	defaults	 defaults
  /dev/block/by-name/radical_update	/radical_update ext4	defaults	 defaults
 ```
+
+-----
+
  - [ ] app performance mode setting : Configure the file: package_performance.xml in device/rockchip/rk3xxx/. Add the package names which need to use performance mode in the node:(use aapt dump badging (file_path.apk) to acquire the package name)
 ```bash
 < app package="package name" mode="whether to enable the acceleration, 1 for enable, 0 for disable"/>
@@ -496,6 +528,7 @@ index 7532217..cf789ac 100755
 < app package="com.antutu.benchmark.full"mode="1"\/>
 ```
 
+-----
 
  - [ ] download mode 진입 시, 2번 반복적으로 진입되는 현상.
    * download mode(fastboot mode) 2번 진입되는 현상. 
@@ -605,10 +638,11 @@ DDR Version V1.13 20220218
 
 ```
 
+-----
+
  - debug 
   first boot : bootloader 
   second boot : recovery(misc) & normal
   bootloader 부팅 후, recovery (misc) 로 부팅 됨.
  
-
-
+-----
