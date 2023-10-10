@@ -279,7 +279,9 @@
 	GPIO4_D2	SPK_AMP_EN
 ```
 
-## Kernel DTB
+## source code
+
+### kernel DTB
 
 ```bash
     /                               /                               /
@@ -317,7 +319,7 @@
 
 
 
-## Android Device
+### android Device
 
 ```bash
 lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12/device$ tree -R company/test/rk3568_poc/
@@ -332,7 +334,8 @@ company/test/rk3568_poc/
 0 directories, 6 files:w
 
 ```
----
+
+
 ```bash
 device/company/test/rk3568_poc/AndroidBoard.mk
 	|
@@ -352,14 +355,15 @@ device/company/test/rk3568_poc/AndroidBoard.mk
 		|
 		+-> rockchip images
 ```
----
+
+
 ```bash
 device/company/test/rk3568_poc/AndroidProducts.mk
 	|
 	+-> Makefile 지정(rk3568_poc.mk) 
 	+-> lunch choice 등록
 ```
----
+
 ```bash
 device/company/test/rk3568_poc/BoardConfig.mk
 	|
@@ -370,7 +374,7 @@ device/company/test/rk3568_poc/BoardConfig.mk
 	|	|	+-> build default config 지정
 	|	+-> bootloader, kernel, dtb, hal  build시 default config 재지정 
 ```
----
+
 ```bash
 device/company/test/rk3568_poc/rk3568_poc.mk
 	|
@@ -398,10 +402,13 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 	+-> product name, device, model, brand, manufacturer 세팅.  
 ```
 
+-----
+
+## issue
 
 -----
 
-## userdata partition file system 검토
+### issue: userdata partition file system 검토
 > change userdata partition file system to EXT4
 
  - diff 파일 참고.
@@ -409,7 +416,7 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 
 -----
 
-## Data 영역 read/write performance 최적화
+### issue: Data 영역 read/write performance 최적화
 
  - 데이터 영역 write performance 최적화.
    * 배터리가 있는 장치의 경우, 스토리지 읽기/쓰기 속도 및 성능을 향상시키기 위해 fstab의 데이터 파티션 탑재 매개변수에 'fsync_mode=nobarrier'를 추가하는 것이 좋다.
@@ -422,7 +429,7 @@ device/company/test/rk3568_poc/rk3568_poc.mk
 
 -----
 
-## OTP and efuse instruction
+### issue: OTP and efuse instruction
 
 -----
 
