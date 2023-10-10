@@ -534,10 +534,17 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 ----
 
 ### 3.5 Modify OPP Table According to Leakage
-  IDDQ(Integrated Circuit Quiescent Current), leakage(누설)이라고도 한다.
-  CPU의 leakage은 특정 전압을 제공할 때 CPU의 대기 전류(quiescent current)를 의미한다.
+  IDDQ(Integrated Circuit Quiescent Current)는 정지 상태에서의 누설 전류(leakage) 를 측정하는 반도체 디바이스의 테스팅을 의미.
+  > 정지상태란 디바이스의 입력이 모두 고정되어 있고, 출력이 변하지 않는 상태를 의미한다. 누설 전류는 디바이스가 작동하지 않더라도 흐르는 전류를 의미
 
- - note : 칩 생산 시 leakage 값이 eFuse 또는 OTP에 기록된다.
+  - IDDQ 테스트 방법 : 
+    1. 디바이스를 정지 상태로 만든다.
+	2. 디바이스의 전원 공급 장치의 전류를 측정.
+	3. 측정된 전류가 디바이스의 누설 전류.
+
+ - CPU의 leakage은 특정 전압을 제공할 때 CPU의 대기 전류(quiescent current)를 의미.
+
+ - note : 칩 생산 시 leakage 값을 eFuse 또는 OTP에 저장 시켜 관리.
 
 #### 3.5.1 Modify Voltage According to Leakage
 
@@ -554,7 +561,8 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 		opp-shared;
 
 		mbist-vmin = <825000 900000 950000>;
-		nvmem-cells = <&cpu_leakage>, <&core_pvtm>, <&mbist_vmin>;		/* get cpu leakage from eFuse or OTP */
+		/* Get CPU leakage from eFuse or OTP */
+		nvmem-cells = <&cpu_leakage>, <&core_pvtm>, <&mbist_vmin>;
 		nvmem-cell-names = "leakage", "pvtm", "mbist-vmin";
 		rockchip,pvtm-voltage-sel = <
 			0        84000   0
@@ -581,6 +589,7 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 		/**
 		  *  leakage이 1mA ~ 80mA 인경우, OPP는 voltage specified by opp-microvolt-L0 값을 사용한다.
 		  *  leakage이 81mA ~ 254mA 인경우, OPP는 voltage specified by opp-microvolt-L1 값을 사용한다.
+		  *
 		  *  "rockchip,leakage-voltage-sel" 이 제거되었거나, leakage 가 위 range 에 초과한 경우, OPP 는 "opp-microvolt" 값을 사용한다. 
 		  */
 
@@ -607,10 +616,13 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ### 3.6 Modify OPP Table According to PVTM
 
-  CPU PVTM(Process-Voltage-Temperature Monitor)는 CPU 가까이에 위치 한 모듈이며, 칩 간의 성능차이를 반영될 수 있으며, voltage, temperature의 영향을 받는다.
+  CPU PVTM(Process-Voltage-Temperature Monitor)는 CPU 가까이에 위치 한 모듈이며, CPU의 전압, 온도를 모니터링 하고 제어하는 기능. 
+  PVTM 은 CPU의 성능과 전력 소비를 최적화 하는데 사용.
 
  - 기능 설명 : 정해진 voltage 및 frequency에서 PVTM value 을 얻은 후, 기준 온도에서 PVTM value을 변환하여 PVTM table 에서  해당하는 voltage 의 값을 얻어 적용한다.
- - 적용 방법 : PVTM 관련 코드를 추가한다.   "rockchip,pvtm-voltage-sel", "rockchip,thermal-zone", "rockchip,pvtm-<name>" property을 OPP table node에 추가한다. 
+ - 적용 방법 : PVTM 관련 코드를 추가한다.   
+      "rockchip,pvtm-voltage-sel", "rockchip,thermal-zone", "rockchip,pvtm-<name>" property을 OPP table node에 추가한다. 
+	  "nvmem-cells" 및 "nvmem-cell-names" 속성을 추가하고 실제 조건에 따라 OPP 노드에 "opp-microvolt-<name>" 속성을 추가한다.
  - example
 
 ```dtb
