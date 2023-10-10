@@ -173,7 +173,39 @@ index 7da2c01c4444..a129cf95e4c1 100644
   
  문서에 따르면 전력소모를 줄이고 chip의 수명을 보장하기 위해 RK3568J의 frequency setting은 1.4(1.416) GHz를 초과 하지 않는 것이 좋다.  
 
+## check current frequency 
 
+ - for non big.LITTLE core chipset 
+
+```bash
+/* Method 1 : cpufreq userspace interface */
+cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq
+
+/* Method 2 : clock debug interface */
+cat /sys/kernel/debug/clk/armclk/clk_rate
+```
+	 
+ - for big.LITTLE core chipset 
+
+```bash
+/* Method 1 : cpufreq userspace interface */
+cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq /* LITTLE core frequency */
+cat /sys/devices/system/cpu/cpufreq/policy4/scaling_cur_freq /* big core frequency */
+
+/* Method 2: clock debug interface*/
+cat /sys/kernel/debug/clk/armclkl/clk_rate /* LITTLE core frequency*/
+cat /sys/kernel/debug/clk/armclkb/clk_rate /* big core frequency */
+```
+
+> ARM big.LITTLE core chipset은 ARM에서 개발한 이기종 다중 처리(HMP) 컴퓨팅 아키텍처이다. 
+> 전력 소모가 적은 저성능 코어(LITTLE)들과 전력 소모가 많은 고성능 프로세서 코어(big) 들을 함께 탑재하는 구조를 말한다.
+
+## check current voltage
+
+```bash
+/* here vdd_core is not the fixing name, please modify */
+cat /sys/kernel/debug/regulator/vdd_core/voltage
+```
 
 
 -----
