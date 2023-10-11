@@ -95,7 +95,7 @@ devfreq 프레임워크는 governer, core, driver, event 로 구성되며 softwa
 
  rk3568 cpu의 기본 max frequency는 1992 MHz 이며, 2016 MHz 로 변경하려면 수정이 필요하다.
  
- - [ ] 실제 1992 MHz 동작 확인 필요.
+ - [x] 실제 1992 MHz 동작 확인 필요.
 
 ```c
 diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
