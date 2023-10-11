@@ -826,3 +826,10 @@ drwxr-xr-x 4 root root    0 2023-06-12 11:04 ..
 	**그러나 frequency가 일정 값 이상으로 증가되면 low voltage로 인해 crash가 발생될 수 있다.**
  
 
+ [x] rk3568 poc 에서 cpu frequency 가 동적으로 동작되도록 한다.
+   0.93V@3000mA의 고정적인 voltage 입력으로 동작되도록 수정. 
+   
+   - 1992 MHz@1150000uV 는 CPU의 clock frequency 가 1.992 GHz 이고 전압이 1.15V 라는 것을 의미.
+   - 1992 MHz@1000000uV 는 CPU의 clock frequency 가 1.992 GHz 이고 전압이 1V 라는 것을 의미. 
+   clock frequency 가 높을수록 cpu는 더 많은 전력을 소비한다.
+   즉, 세팅한 1992 MHz@1000000uV 는 1992 MHz@1150000uV 보다 더 높은 성능을 제공하진 못하지만 더 낮은 전력소비로 동작한다.
