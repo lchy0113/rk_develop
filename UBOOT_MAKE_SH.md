@@ -1,6 +1,8 @@
-# uboot make.sh 
+# uboot 빌드 스크립트(for rockchip)
+> make.sh 
 
-- sequence :   
+## sub script   
+
 ```bash
 /** sub script */
 SRCTREE=`pwd`
@@ -14,24 +16,46 @@ SCRIPT_DECOMP="${SRCTREE}/scripts/decomp.sh"
 CC_FILE=".cc"
 REP_DIR="./rep"
 ```
-  01. **process_args**  
+
+<br/> 
+<br/> 
+<br/> 
+<br/> 
+-----
+
+## script flow
+
+> script는 아래 flow 로 동작
+
+###  01. **process_args**  
+
+> script 실행 시, argument 세팅.
+
 ```bash
 // make defconfig
 ```
-  02. **prepare**  
+
+###  02. **prepare**  
+
+> rkbin tools path 설정 및 build config를 파싱
+
 ```bash
 RKBIN=rkbin
 
 PLAT_TYPE="FIT'	// if CONFIG_ROCKCHIP_FIT_IMAGE=y from .config
 ```
-  03. **select_toolchain**  
+
+###  03. **select_toolchain**  
+
 ```bash
 TOOLCHAIN=
 TOOLCHAIN_NM=
 TOOLCHAIN_OBJDUMP=
 TOOLCHAIN_ADDR2LINE=
 ```
-  04. **select_chip_info**  
+
+###  04. **select_chip_info**  
+
 ```bash
 RKCHIP=			RK3568
 RKCHIP_LABEL=	RK3568	
@@ -40,7 +64,9 @@ RKCHIP_TRUST=	RK3568
 INI_TRUST=		rkbin/RKTRUST/RK3568TRUST.ini
 INI_LOADER=		rkbin/RKBOOT/RK3568MINIALL.ini
 ```
-  05. **fixup_platform_configure**  
+
+###  05. **fixup_platform_configure**  
+
 ```bash
 PLAT_RSA=
 PLAT_SHA=
@@ -48,18 +74,23 @@ PLAT_UBOOT_SIZE=
 PLAT_TRUST_SIZE=
 PLAT_TYPE="RKFW" # default
 ```
-  06. **select_ini_file**  
+
+###  06. **select_ini_file**  
+
+> 타겟 장치의 정보를 선택
+
 ```bash
 // to do: target board 별 ini_file 지정해야함.
 // configs/rk3568_poc_defconfig에서 CONFIG_LOADER_INI 에 NAME 지정하도록 추가.
 INI_LOADER=
 ```
  
-  07. **handle,args_late**  
-  08. **sub_commands**  
-  09. **clean files**  
-  10. **make PYTHON=python2 CROSS_COMPILE=${toolchain} all --jobs=${JOB}**  
-  11. **pack_images**  
+###  07. **handle,args_late**  
+###  08. **sub_commands**  
+###  09. **clean files**  
+###  10. **make PYTHON=python2 CROSS_COMPILE=${toolchain} all --jobs=${JOB}**  
+###  11. **pack_images**  
+
 ```bash
 pack_fit_image --ini-trust rkbin/RKTRUST/RK3568TRUST.ini --ini-loader rkbin/RKBOOT?RK3568MINIALL.ini 
 	${SCRIPT_FIT} ${ARG_LIST_FIT} --chip RK3568
@@ -73,9 +104,9 @@ pack_fit_image --ini-trust rkbin/RKTRUST/RK3568TRUST.ini --ini-loader rkbin/RKBO
 					DEF_PATH:rkbin/rk356x_spl_loader_v1.13.112.bin
 					IDB_PATH:rkbin/
 ```
-  12. **finish**  
-  13. **echo ${TOOLCHAIN}**  
-  14. **date**  
+###  12. **finish**  
+###  13. **echo ${TOOLCHAIN}**  
+###  14. **date**  
  
 -----
 
