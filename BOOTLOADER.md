@@ -353,7 +353,7 @@ Example:
  * rkbin
     - RK에서 제공하는 bin, scripts, packaging tool 저장소 입니다. (open source X) u-boot 컴파일 시, warehouse에서 관련 파일을 index하고, loader, trust, uboot firmware를 패키징 및 생성합니다.
     - https://github.com/rockchip-linux/rkbin
-	> (rk3568_android11)/rkbin 경로에 존재
+	> (rk3568_android11 or rk3568_android12)/rkbin 경로에 존재
  * GCC
     - 32bit : prebuilts/gcc/linux-x86/arm/gcc-linaro-6.3.1-2017.05-x86_64_arm-linux-gnueabihf/
 	- 64bit : prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/ 
@@ -1029,6 +1029,23 @@ u-boot/
 <br/>
 <br/>
 <hr/>
+
+## Rockchip loader binaries naming rule
+
+ - naming rule : 아래 네이밍 규칙을 사용합니다.
+ [chip]_[module]_[feature]_[version].[postfix]
+   * chip : chip 또는 chip 시리즈 이름 사용, 필수, 소문자, uboot,kernel에서 사용
+   * module : 모듈 이름,(예, loader, ddr, miniloader, usbplug, bl3x, tee, tee_ta), 소문자
+   * version : 버전 정보, 형식은 [v1.00], 정식 출시 이전에는 [v0.xx], 소문자
+   * postfix : 접미사를 나타냄. 컴파일된 코드의 기본값은 .bin, .elf일 수도 있음. 병합후에는 소문자 .img를 사용
+ 연결 기호는 "_"를 사용
+
+  - special rule : 
+   1. merged loader naming : 
+     * loader : ddrbin, usbplug, miniloader에서 merge되고 upgrade_tool에서 사용하는 loader
+	 * ubootloader : ddrbin, usbplug, u-boot에서 merge되고 upgrade_tool에서 사용하는 loader
+	 * idbloader : IDB 포멧에 따라 ddrbin과 miniloader 또는 uboot와 merge되어 IDB 영역에 binary를 programming하는데 사용
+   2. version definition of the merged loader : 
 
 ## ddrbin_tool 사용 가이드
 
