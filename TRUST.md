@@ -268,64 +268,64 @@ psci: psci {
 (2) cpu node 내, enable-method = "psci" 추가
 
 ```dts
- cpus {                                                                                                                                                                             
-  #address-cells = <2>;                                                                                                                                                             
-  #size-cells = <0>;                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu0: cpu@0 {                                                                                                                                                                     
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x0>;                                                                                                                                                                 
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-   #cooling-cells = <2>;                                                                                                                                                            
-   dynamic-power-coefficient = <187>;                                                                                                                                               
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu1: cpu@100 {                                                                                                                                                                   
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x100>;                                                                                                                                                               
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu2: cpu@200 {                                                                                                                                                                   
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x200>;                                                                                                                                                               
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu3: cpu@300 {                                                                                                                                                                   
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x300>;                                                                                                                                                               
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  idle-states {                                                                                                                                                                     
-   entry-method = "psci";                                                                                                                                                           
-   CPU_SLEEP: cpu-sleep {                                                                                                                                                           
-    compatible = "arm,idle-state";                                                                                                                                                  
-    local-timer-stop;                                                                                                                                                               
-    arm,psci-suspend-param = <0x0010000>;                                                                                                                                           
-    entry-latency-us = <100>;                                                                                                                                                       
-    exit-latency-us = <120>;                                                                                                                                                        
-    min-residency-us = <1000>;                                                                                                                                                      
-   };                                                                                                                                                                               
-  };                                                                                                                                                                                
- };                                                                                                                                                                                 
+ cpus {                
+  #address-cells = <2>;
+  #size-cells = <0>;
+
+  cpu0: cpu@0 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x0>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+   #cooling-cells = <2>;
+   dynamic-power-coefficient = <187>;
+  };
+
+  cpu1: cpu@100 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x100>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+  };
+
+  cpu2: cpu@200 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x200>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+  };
+
+  cpu3: cpu@300 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x300>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+  };
+
+  idle-states {
+   entry-method = "psci";
+   CPU_SLEEP: cpu-sleep {
+    compatible = "arm,idle-state";
+    local-timer-stop;
+    arm,psci-suspend-param = <0x0010000>;
+    entry-latency-us = <100>;
+    exit-latency-us = <120>;
+    min-residency-us = <1000>;
+   };
+  };
+ };
 ```
 
 ## 2.4.2 Kernel 4.4 +
@@ -346,67 +346,67 @@ psci {
  psci node 추가  
 
 ```dts
- cpus {                                                                                                                                                                             
-  #address-cells = <2>;                                                                                                                                                             
-  #size-cells = <0>;                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu0: cpu@0 {                                                                                                                                                                     
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x0>;                                                                                                                                                                 
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-   #cooling-cells = <2>;                                                                                                                                                            
-   dynamic-power-coefficient = <187>;                                                                                                                                               
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu1: cpu@100 {                                                                                                                                                                   
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x100>;                                                                                                                                                               
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu2: cpu@200 {                                                                                                                                                                   
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x200>;                                                                                                                                                               
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  cpu3: cpu@300 {                                                                                                                                                                   
-   device_type = "cpu";                                                                                                                                                             
-   compatible = "arm,cortex-a55";                                                                                                                                                   
-   reg = <0x0 0x300>;                                                                                                                                                               
-   enable-method = "psci";                                                                                                                                                          
-   clocks = <&scmi_clk 0>;                                                                                                                                                          
-   operating-points-v2 = <&cpu0_opp_table>;                                                                                                                                         
-   cpu-idle-states = <&CPU_SLEEP>;                                                                                                                                                  
-  };                                                                                                                                                                                
-                                                                                                                                                                                    
-  idle-states {                                                                                                                                                                     
-   entry-method = "psci";                                                                                                                                                           
-   CPU_SLEEP: cpu-sleep {                                                                                                                                                           
-    compatible = "arm,idle-state";                                                                                                                                                  
-    local-timer-stop;                                                                                                                                                               
-    arm,psci-suspend-param = <0x0010000>;                                                                                                                                           
-    entry-latency-us = <100>;                                                                                                                                                       
-    exit-latency-us = <120>;                                                                                                                                                        
-    min-residency-us = <1000>;                                                                                                                                                      
-   };                                                                                                                                                                               
-  };                                                                                                                                                                                
- };                                                                                                                                                                                 
+ cpus {                
+  #address-cells = <2>;
+  #size-cells = <0>;
+
+  cpu0: cpu@0 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x0>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+   #cooling-cells = <2>;
+   dynamic-power-coefficient = <187>;
+  };
+
+  cpu1: cpu@100 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x100>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+  };
+
+  cpu2: cpu@200 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x200>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+  };
+
+  cpu3: cpu@300 {
+   device_type = "cpu";
+   compatible = "arm,cortex-a55";
+   reg = <0x0 0x300>;
+   enable-method = "psci";
+   clocks = <&scmi_clk 0>;
+   operating-points-v2 = <&cpu0_opp_table>;
+   cpu-idle-states = <&CPU_SLEEP>;
+  };
+
+  idle-states {
+   entry-method = "psci";
+   CPU_SLEEP: cpu-sleep {
+    compatible = "arm,idle-state";
+    local-timer-stop;
+    arm,psci-suspend-param = <0x0010000>;
+    entry-latency-us = <100>;
+    exit-latency-us = <120>;
+    min-residency-us = <1000>;
+   };
+  };
+ };
 ```
 
-## Kernel Document
+## 2.4.3 Kernel Document
 
 ```bash
 ./Documentation/devicetree/bindings/arm/psci.txt
@@ -419,5 +419,106 @@ psci {
 <br/>
 <br/>
 
+## 2.5 Running memory and life cycle
+
+### 2.5.1 Running memory
+
+ The ARM Trusted Firmware는 DRAM start offset 0M~2M 이고, 프로그램 entry address 0x10000 (64KB) 이 사용되는 공간에서 실행된다.
+
+ OP-TEE OS 는 132M에서 148M의 DRAM start offset(최종 주소는 플랫폼에 따라 다름) 사이에서 entry address 0x08400000 (132M)을 사용하여 실행된다.
+
+### 2.5.2 Life cycle
+
+ Trust 는 초기화 이후로 부터 memory에 상주되어 동작한다.
 
 
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+## 2.6 Security
+
+ ARM TrustZone이 활성화 된 후, 시스템이 secure 영역과 non-secure 영역으로 나누어져 동작합니다.
+
+ Rockchip platform에서 CPU가 secure 영역에서 실행하는 펌웨어와 non-secure 영역에서 실행되는 펌웨어를 구별하는 방법은 아래와 같다.
+
+ **loader**와 **trust**는 secure 영역에서 실행된다. 
+ **u-boot**, **kernel**, **Android**는 non-secure 영역에서 실행된다.
+
+	(보안 드라이버 및 앱 제외)
+
+
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+## 2.7 Functions
+
+### 2.7.1 PSCI (Power State Coordination Interface)
+
+ 일반적으로 다양한 SoC 공급업체의 칩은 IC 설계, 특히 CPU의 전원 상태 관리 부분에서 상당한 차이를 보인다.  
+ 각 SoC 공급업체에는 CPU 전원 상태를 관리하는 자체 소프트웨어 프로세스 세트가 있으므로 커널의 이 코드 부분은 단편화되어 높은 수준의 균일성을 달성하기 어렵다.  
+ 분명히 커널은 이와 관련하여 조각화 상태를 유지하는 것을 매우 꺼립니다.  
+  
+ 더욱이 개발자는 일반적으로 이 구현 부분에 대해 그다지 관심을 두지 않는다.  
+ 소프트웨어 구현의 이 부분은 CPU 아키텍처 및 IC 설계와 밀접하게 관련되어 있기 때문에 완전히 이해하거나 구현하기 어렵다.  
+  
+ 위와 같은 이유로 커널은 CPU의 전원 관리를 각 SoC 공급업체의 펌웨어에 맡기는 경향이 더 크다.  
+ 커널은 커널 코드를 더욱 고도로 통합하기 위해 CPU 제어 전략에만 집중하면 된다.  
+
+ 따라서 커널 프레임워크에서는 이러한 목표를 달성하기 위해 PSCI(Power State Coordination Interface)[3] 인터페이스를 추가했다.  
+  
+ PSCI는 CPU 코어 전원 관리 관련 인터페이스 세트로, 기본적으로 ARM SMC 명령을 통해 Trust로 들어가 위의 관련 작업(CPU 켜기, CPU 끄기, 시스템 일시 중지, 시스템 재설정, 시스템 끄기 등)을 완료한다.  
+  
+### 2.7.2 Secure Monitor
+
+ Secure Monitor는 secure 영역과 non-secure 영역 사이의 상태 전환을 위한 CPU 간의 bridge 이다.  
+ Secure Monitor 코드는 TRUST 에서 구현되며, 이 코드 부분이 없으면 CPU는 secure 상태와 non-secure 상태 사이를 전환할 수 없다. 
+ 즉, ARM TrustZone 기술을 잃게 된다.
+
+
+ - Security Monitor 모드로 들어가는 방법은?
+  SMC instructions로 구현해야 함.(ARM technical manual 참고)
+
+
+### 2.7.3 Secure information configuration
+
+ Cortex-A 프로세서 자체의 긴밀한 통합 외에도 ARM TrustZone 기술은 AMBA AXI 버스 및 특정 TrustZone 시스템 IP 블록을 통해 시스템에서 확장되어야 한다.  
+ 따라서 일련의 관련 IP 모듈 보안 정보를 구성해야 하며 이는 Trust에서 완료된다.  
+  
+### 2.7.4 Security data protection
+
+ Security dataprotection.   
+ 예를들어, security 결재, Digital Rights Management(DRM), enterprise service, web-based serviced등 관련 보안 정보에 대한 storage 보호.  
+
+
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+# 3. Trust troubleshooting on the Rockchip platform
+
+## 3.1 boot log example
+
+## 3.2 print information indetification
+
+## 3.3 firmware version identification
+
+## 3.4 PANIC information identification
+
+### 3.4.1 ARM Trusted Firmware panic
+
+### 3.4.2 OP-TEE OS panic
+
+ > OP-TEE OS 란, ARM Trust 기능에서 OP-TEE OS는 TrustZone 보안 환경에서 실행되는 운영체제.
+ > feature : 부팅 프로세스 제어, 하드웨어 암호화키 보호, 저장장치 보안 강화.
