@@ -2,12 +2,13 @@ TRUST
 =====
 
  > ARM아키텍처의 TRUST 이미지는 ARM 아키텍처(Cortex-A class processor) 기반 디바이스의 보안을 강화하기 위해 사용되는 기술(ARM architecture security extension).
+
 # 1. ARM TrustZone
 
 
- TRUST 이미지는 다음과 같은 기능을 제공.
-
- - 부팅 프로세서의 보안 강화 : TRUST 이미지는 부팅 프로세스를 보호하여 악성 코드의 침입을 방지.
+ TRUST 이미지는 다음과 같은 기능을 제공.  
+  
+ - 부팅 프로세서의 보안 강화 : TRUST 이미지는 부팅 프로세스를 보호하여 악성 코드의 침입을 방지.  
  - 하드웨어 암호화 키의 보호 : TRUST 이미지는 하드웨어 암호화 키를 보호하여 데이터의 안전을 보장.
  - 저장 장치의 보안 강화 : TRUST 이미지는 저장 장치를 보호하여 데이터의 유출을 방지.
  
