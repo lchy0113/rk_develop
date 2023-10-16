@@ -1060,8 +1060,4 @@ u-boot/
 <br/>
 <hr/>
 
-## to do : rk3568_poc ver rgb-02  
- - [ ] bootloader 
- - [ ] boot 
- -
 
