@@ -254,7 +254,7 @@
 
 ### gpio
 
-> rk3568_rgb_p02 board
+#### rk3568_rgb_p02 board
 
 - pio_hal
 
@@ -297,7 +297,87 @@
 	GPIO4_D2	SPK_AMP_EN
 ```
 
----- 
+#### rk3568_edp_p02 board
+
+- pio_hal
+
+```bash
+// input
+	GPIO1_B1	DOOR_CALL_DET	(detect door call)
+	GPIO1_B3	PIR_DET	(detect pio sensor)
+	GPIO3_C7	SEQ1_IN	(detect seq1 sensor)
+	GPIO3_D0	SEQ2_IN	(detect seq2 sensor)
+	GPIO3_D2	EMG_IN	(detect emergency sensor)
+	GPIO3_D3	ESCAPE_IN_1	(detect escape1 sensor)
+	GPIO3_D4	ESCAPE_IN_2	(detect escape2 sensor)
+
+
+// output
+	GPIO0_B7	RST_CH710	(control ch710 module)
+	GPIO1_A7	DOOR_OPEN	(control door)
+	GPIO1_B0	DOOR_PCTL	(control door power)
+	GPIO2_A6	SEL_SUB_VIDEO	(control video data from tv_out)
+	GPIO3_C6	EMER_OUT	(control emergency sensor)
+
+```
+
+- audio
+
+```bash
+
+// input
+
+// output
+	GPIO0_A6	SEL_DC	(control door audio path)
+	GPIO0_B1	DOOR_MIC_EN	(control door mic enable)
+	GPIO0_B2	SEL_DC_SUB	(control subphone device audio path)
+	GPIO0_C2	SEL_ECHO_SUB	(control subphone device audio path)
+	GPIO0_C3	SEL_SUB	(control subphone device autio path)
+	GPIO4_D2	SPK_AMP_EN	(control speaker amp)
+
+```
+
+- device
+
+```bash
+
+// output
+	GPIO0_C4	UART0_RSTN	(control txen on device-control interface)
+	GPIO4_B0	(control work led)
+	GPIO1_A5	UART4_SUB_TXEN	(control txen on sub decie interace)
+	GPIO3_C4	LCD_BL_PWM
+	GPIO3_C5	LCD_BL_EN
+
+```
+
+- etc
+
+```bash
+	GPIO0_A4/SDMMC0_DET_L (N/A)
+	GPIO0_A5	(N/A)
+	GPIO0_B5	(to be connect hot key interrupt interface)
+	GPIO0_B6	(to be connect hot key reset interface)
+	GPIO0_C5	(to be connect ladar motion detect)
+	GPIO0_C6	(to be connect ladar reset)
+	GPIO1_B2	(N/A)
+	GPIO1_D5	(N/A)
+	GPIO1_D6	(N/A)
+	GPIO1_D7	(N/A)
+	GPIO2_A0	(N/A)
+	GPIO2_A1	(N/A)
+	GPIO2_A2	(N/A)
+	GPIO2_A5	(N/A)
+	GPIO2_C6	(N/A)
+	GPIO2_D1	(N/A)
+	GPIO3_A2	(N/A)
+	GPIO3_C1	(N/A)
+	GPIO3_C2	(N/A)
+	GPIO3_D1	(N/A)
+	GPIO4_B1	(N/A)
+
+```
+
+----- 
 
 <br/>
 <br/>
