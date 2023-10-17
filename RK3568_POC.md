@@ -303,7 +303,7 @@
 
 ```bash
 // input
-	GPIO1_B1	DOOR_CALL_DET	(detect door call)
+	GPIO1_B1	DOOR_DET	(detect door call)
 	GPIO1_B3	PIR_DET	(detect pio sensor)
 	GPIO3_C7	SEQ1_IN	(detect seq1 sensor)
 	GPIO3_D0	SEQ2_IN	(detect seq2 sensor)
@@ -316,7 +316,6 @@
 	GPIO0_B7	RST_CH710	(control ch710 module)
 	GPIO1_A7	DOOR_OPEN	(control door)
 	GPIO1_B0	DOOR_PCTL	(control door power)
-	GPIO2_A6	SEL_SUB_VIDEO	(control video data from tv_out)
 	GPIO3_C6	EMER_OUT	(control emergency sensor)
 
 ```
@@ -367,6 +366,7 @@
 	GPIO2_A1	(N/A)
 	GPIO2_A2	(N/A)
 	GPIO2_A5	(N/A)
+	GPIO2_A6	SEL_SUB_VIDEO	(control video data from tv_out)
 	GPIO2_C6	(N/A)
 	GPIO2_D1	(N/A)
 	GPIO3_A2	(N/A)
