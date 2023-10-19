@@ -66,24 +66,24 @@
 +---------------+
 | [RK3568]      |
 |               |
-|    UART0------+ <----> device control;rs485(/w GPIO0_C4)
+|    UART0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
 |               |
 |    UART1-+-M0-+
 |          +-M1-+
 |               |
-|    UART2-+-M0-+ <----> zigbee(to be)
+|    UART2-+-M0-+ <----> zigbee(to be) aliases:serial2
 |          +-M1-+
 |               |
 |    UART3-+-M0-+
 |          +-M1-+
 |               |
-|    UART4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5)
+|    UART4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) aliases:serial1
 |          +-M1-+
 |               |
 |    UART5-+-M0-+
 |          +-M1-+
 |               |
-|    UART6-+-M0-+ <----> ladar
+|    UART6-+-M0-+ <----> ladar aliases:serial3
 |          +-M1-+
 |               |
 |    UART7-+-M0-+
