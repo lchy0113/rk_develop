@@ -39,6 +39,14 @@ Note access size (-1|2|4) does not apply to file based accesses.
 $ io -4 -r 0x1000				// read the value of 4-bit register starting from 0x1000
 $ io -4 -w 0x1000				// write the value of the 4-bit register from 0x1000
 ```
+
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
 ## gpio iomux 
 
 ### 사용 예제(GPIO3_C5)
@@ -140,7 +148,12 @@ fdc60074:  00001000 00000001
 ### GRF Address Mapping Table
 ![](./images/DEBUG_01.png)
 
+-----
 
+<br/>
+<br/>
+<br/>
+<br/>
 
 ## gpio control
 > Rockchip_RK3568_TRM_Part1_V1.1-20210301.pdf 652 page
@@ -209,7 +222,15 @@ rk3568_edpp01:/ # io -4 -w 0xfdd60004 0x00200020
 /**
   *  io -4 -w 0xfdc20014 0x00300000; io -4 -w 0xfdd6000c 0x00200020; io -4 -w 0xfdd60004 0x00200020
 ```
----
+
+
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
 
 ## u-boot (dm tree)
 > 기능: 모든 device driver 간의 binding 및 probe status를 체크.
@@ -277,22 +298,10 @@ rk3568_edpp01:/ # io -4 -w 0xfdd60004 0x00200020
  - [+] 의미는 현재 driver가 probe 완료 되었음을 나타냄.
  - *  의미는 u-boot dtb 에서 참조된것을 나타냄.(그렇지 않은 경우, kernel dtb 에서 참조됨)
 
+-----
 
----
+<br/>
+<br/>
+<br/>
+<br/>
 
-
-## error
-
-```bash
-rk3368H_64:/ # io -4 -r 0xFF770028                                                                                                      
-open /dev/mem: No such file or directory
-1|rk3368H_64:/ #
-```
-커널에서 아래 옵션을 활성화 해야 합니다.
-
-```
-CONFIG_DEVMEM=y
-CONFIG_DEVKMEM=y
-```
-
----
