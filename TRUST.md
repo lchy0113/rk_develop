@@ -522,3 +522,47 @@ psci {
 
  > OP-TEE OS 란, ARM Trust 기능에서 OP-TEE OS는 TrustZone 보안 환경에서 실행되는 운영체제.
  > feature : 부팅 프로세스 제어, 하드웨어 암호화키 보호, 저장장치 보안 강화.
+
+
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+# 4. TEE 
+
+ Rockchip 플랫롬에서 Android 7.1 이상의 SDK는 기본적으로 TEE 환경을 지원.
+ OP-TEE 라는 TEE 솔루션을 사용하며 TEE API는 GlobalPlatform 표준을 준수.
+
+> rk3568 은 OP-TEE V2 
+
+## 4.1 parameter.txt 파일 설명
+
+ parameter.txt 파일은 각 이미지와 파티션의 위치 및 크기 정보를 기록.
+ parameter.txt 파일에 보안 관련 파일 시스템이 정의되어 있지 않으면, 사용할 수 없다. 
+ 보안 파티션을 정의하려면, 
+ 0x00002000@0x000xxxxx(security)를 parameter.txt 파일에 추가하면 된다.
+
+### 4.1.1 parameter.txt 파일 생성
+
+```bash
+//device/rockchip/common/build/rockchip/RebuildParameter.mk
+
+(...)
+partition_list := security:4M,uboot:4M,trust:4M,misc:4M
+(...)
+partition_list := $(partition_list),dtbo:$(BOARD_DTBOIMG_PARTITION_SIZE),vbmeta:1M,boot:$(BOARD_BOOTIMAGE_PARTITION_SIZE),recovery:$(BOARD_RECOVERYIMAGE_PARTITION_SIZE)
+(...)
+partition_list := $(partition_list),backup:384M,cache:$(BOARD_CACHEIMAGE_PARTITION_SIZE),metadata:16M
+(...)
+partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
+
+(...)
+```
+
+## 4.2 TEE firmware
+
+ TEE Secure OS의 소스코드는 오픈소스가 아니며, 바이너리는  u-boot/tools/rk_tools/bin 또는 rkbin/bin 경로를 통해 배포
