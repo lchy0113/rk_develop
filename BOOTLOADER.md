@@ -522,6 +522,9 @@ Write LBA from file (100%)
 # FIT 
 FIT format 과 FIT format 기반의 security / non security 부팅 scheme 에 대해 설명합니다.
 
+ u-boot 빌드 시, FIT는 Flattened Image Tree의 약어로, 여러 개의 이미지를 하나의 이미지로 결합한 이미지이다. 
+ u-boot 는 일반적으로 커널, 펌웨어, 디바이스 트리 등을 포함하는 여러 개의 이미지로 구성된다. 
+ FIT 이미지는 이러한 이미지를 하나로 결합하여 부팅 프로세스를 간소화 하고, 부팅 시간을 단축하는데 도움된다.
 
 FIT(Flattened Image Tree)는 U-boot에서 지원하는 새로운 firmware type의 부팅 방식으로, 여러 이미지 패키징을 지원합니다.
 FIT은 its(image source file)파일을 사용하여 image 정보를 기술하고, itb(flattened image tree blob)이미지를 mkimage tool을 통해 생성합니다.  
