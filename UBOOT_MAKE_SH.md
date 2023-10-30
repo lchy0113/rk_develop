@@ -95,17 +95,26 @@ INI_TRUST=
 ###  11. **pack_images**  
 
 ```bash
+// pack_images() -> pack_fit_image() -> u-boot/scrips/fit.sh 호출
 pack_fit_image --ini-trust rkbin/RKTRUST/RK3568TRUST.ini --ini-loader rkbin/RKBOOT?RK3568MINIALL.ini 
-	${SCRIPT_FIT} ${ARG_LIST_FIT} --chip RK3568
-		scripts/fit.sh
-			scripts/fit-core.sh
-				function fit_gen_uboot_itb()
-					./make.sh itb 	 rkbin/RKTRUST/RK3568TRUST.ini
-					./make.sh loader rkbin/RKBOOT/RK3568MINIALL.ini
-
-					loader rkbin/RKBOOT/RK3568MINIALL.ini
-					DEF_PATH:rkbin/rk356x_spl_loader_v1.13.112.bin
-					IDB_PATH:rkbin/
+	|   /**
+	|    * SCRIPT_FIT="u-boot/scripts/fit.sh"
+	|    * ARG_LIST_FIT: --ini-trust /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKTRUST/RK3568TRUST.ini
+	|    * --ini-loader /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKBOOT/RK3568MINIALL_POCEDPP02.ini
+	|    */
+	+-> 
+		scripts/fit-core.sh
+		|
+		+->	function fit_gen_uboot_itb()
+		|	/**
+		|	 * generate u-boot.its file
+		|	 */
+		|	./make.sh itb 	 rkbin/RKTRUST/RK3568TRUST.ini
+		|	./make.sh loader rkbin/RKBOOT/RK3568MINIALL.ini
+		|
+		|		loader rkbin/RKBOOT/RK3568MINIALL.ini
+		|		DEF_PATH:rkbin/rk356x_spl_loader_v1.13.112.bin
+		|		IDB_PATH:rkbin/
 ```
 ###  12. **finish**  
 ###  13. **echo ${TOOLCHAIN}**  
