@@ -83,6 +83,9 @@ PLAT_TYPE="RKFW" # default
 // to do: target board 별 ini_file 지정해야함.
 // configs/rk3568_poc_defconfig에서 CONFIG_LOADER_INI 에 NAME 지정하도록 추가.
 INI_LOADER=
+
+// CONFIG_TRUST_INI config로 지정하지 않으면 default TRUST.ini가 사용됨.
+INI_TRUST=
 ```
  
 ###  07. **handle,args_late**  
