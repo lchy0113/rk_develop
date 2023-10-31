@@ -565,4 +565,104 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
 
 ## 4.2 TEE firmware
 
- TEE Secure OS의 소스코드는 오픈소스가 아니며, 바이너리는  u-boot/tools/rk_tools/bin 또는 rkbin/bin 경로를 통해 배포
+ TEE Secure OS의 소스코드는 오픈소스가 아니며, 바이너리는 rkbin/bin 경로를 통해 배포
+
+ - ARMv8 플랫폼의 TEE 바이너리는 u-boot/tools/loaderimage 도구를 통해 펌웨어 trust.img로 패키징.
+
+ - rkbin/RKTRUST/(TARGET).ini 의 [BL32_OPTION] 에서 SEC 필드의 값을 1으로 설정해야 trust.img에 보안 OS가 포함.
+  즉, TEE 관련 서비스 이용 불가.
+
+
+## 4.3 u-boot의 TEE 드라이버
+
+ u-boot 에서 TRUST zone의 데이터를 제어하려면 OP-TEE을 사용해야한다.
+ OP-TEE 클라이언트 코드는 u-boot 에서 구현되어있으며, 인터페이스를 통해 OP-TEE와 통신 가능.
+ "lib/optee_clientApi/" 디렉토리에 드라이버는 위치.
+
+ > TEE : Trusted Execution Environment
+ > OP-TEE : Open Portable Trusted Execution Environment
+
+### 4.3.1 관련 config
+
+ - CONFIG_OPTEE_CLIENT
+ - CONFIG_OPTEE_V2
+ - CONFIG_OPTEE_ALWAYS_USE_SECURITY_PARTITION : 활성화 시, emmc의  rpmb에 보안 데이터를 저장. 그렇지 않은 경우,  하드웨어에 따라 보안 저장 영역을 선택해야함.
+
+### 4.3.2 test
+
+```bash
+[2023-10-30 14:08:35.047] => mmc testsecurestorage
+[2023-10-30 14:08:48.922] optee api revision: 2.0
+[2023-10-30 14:08:48.922] Authentication key not yet programmed
+[2023-10-30 14:08:48.943] E/TC:? 0 tee_rpmb_verify_key_sync_counter:1019 Verify key returning 0xffff0008
+[2023-10-30 14:08:49.038] test_secure_storage_default success! 1/100
+[2023-10-30 14:08:49.070] test_secure_storage_security_partition success! 1/100
+[2023-10-30 14:08:49.150] test_secure_storage_default success! 2/100
+[2023-10-30 14:08:49.182] test_secure_storage_security_partition success! 2/100
+[2023-10-30 14:08:49.262] test_secure_storage_default success! 3/100
+(..)
+```
+
+
+## 4.4 kernel의 TEE 드라이버
+
+ TEE config
+
+```bash
+CONFIG_TEE
+CONFIG_OPTEE
+```
+
+ TEE devicetree
+
+```dtb
+firmware {
+	optee: optee {
+		compatible = "linaro,optee-tz";
+		method = "smc";
+	};
+};
+```
+
+ driver node
+```bash
+console:/ $ ls -alh /dev/opteearmtz00                     
+[2023-10-30 16:37:43.729] crw-rw-rw- 1 root root 10,  62 2023-10-30 16:15 /dev/opteearmtz00
+
+```
+
+
+## 4.5 TEE 라이브러리 파일
+
+### 4.5.1 안드로이드 플랫폼
+
+ hardware/rockchip/optee 경로에 위치함
+
+```bash
+ls -alh hardware/rockchip/optee/
+total 24K
+drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 .
+drwxrwxr-x 38 lchy0113 lchy0113 4.0K  7월 19 18:44 ..
+-rwxrwxr-x  1 lchy0113 lchy0113  413  7월 19 18:44 Android.bp
+lrwxrwxrwx  1 lchy0113 lchy0113   51  7월 19 18:44 .git -> ../../../.repo/projects/hardware/rockchip/optee.git
+-rw-rw-r--  1 lchy0113 lchy0113  142  7월 19 18:44 init.tee-supplicant.rc
+drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v1
+drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v2
+```
+
+ - lib : 32bit 및 64bit 플랫폼용으로 컴파일된 tee-supplicant, libteec.so, keymaster/gatekeep 관련 라이브러리 파일을 포함.
+ - ta : 컴파일된 keymaster/gatekeeper 및 기타 관련 ta 파일을 저장.
+
+
+## 4.6 CA / TA 
+ Certification Authority, Trusted Applications 
+
+  CA : TEE의 보안 영역을 인증. TEE에서 실행되는 애플리케이션을 인증.
+
+  TA : TEE의 보안 영역에서 실행되는 애플리케이션을 의미.
+
+### 4.6.1 directory (code)
+
+TEE CA/TA 개발환경은 Android 프로젝트 디렉토리 external/rk_tee_user 경로에 존재.
+
+
