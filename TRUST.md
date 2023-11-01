@@ -665,4 +665,20 @@ drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v2
 
 TEE CA/TA 개발환경은 Android 프로젝트 디렉토리 external/rk_tee_user 경로에 존재.
 
+```bash
+$ cd external/rk_tee_user/v2
+$ ./build.sh ta
 
+// pycryptome 에러 발생 시,
+$ pip3 install pycryptodomex  --trusted-host pypi.org --trusted-host pypi.python.org --trusted-host files.pythonhosted.org
+
+$ mm
+// Install: out/target/product/$(NAME)/vendor/bin/xtest
+```
+
+ - 빌드 후, CA(클라이언트 어플리케이션, normal world)와 TA(트러스트 어플리케이션, secure world) 로 구분된다.
+ CA는 컴파일 후, Android 프로젝트의 out 디렉토리에 생성되는 파일이며 xtest.
+ TA는 파일이름이 uuid이고, .ta 파일로, out/ta 경로에 생성됨.
+ ./out/ta/rk_test/1db57234-dacd-462d-9bb1-ae79de44e2a5.ta 파일은 RK에서 작성된 데모 파일
+
+### 4.6.2 TEST 
