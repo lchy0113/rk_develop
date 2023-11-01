@@ -1,4 +1,5 @@
-gpio1-b0
+-----
+gpio GPIO1_B0(DOOR_PCTL)
 
 io -4 -w 0xfdc60008 0x00070000 ; io -4 -w 0xfe740008 0x01000100 ; io -4 -w 0xfe740000 0x01000100 ; 
 
@@ -34,7 +35,6 @@ high : enable (io -r -4 0xfdd60000)
 io -4 -w 0xfdd60000 0x80008000
 
 -----
-
 gpio GPIO2_A6(SEL_SUB_VIDEO)
 io -4 -w 0xfdc60024 0x07000000 ; io -4 -w 0xfe750008 0x00400040 ; io -4 -w 0xfe750000 0x00400000
 
@@ -47,3 +47,8 @@ io -4 -w 0xfe750008 0x00400040
 
 low : (io -r -4 0xfe750000 + 0x00)
 io -4 -w 0xfe750000 0x00400000
+
+-----
+VOP2_CLUSTER_WIN0_AFBCD_MODE 
+addr : 0xfe040000 + 0x54
+io -r -4 -l 20 0xfe040000 
