@@ -1,5 +1,7 @@
 # BUILD
-Rockchip rk3567의 build.sh에 의해 생성된 파일은 아래와 같습니다. 
+
+
+Rockchip rk3568의 build.sh에 의해 생성된 파일은 아래와 같습니다. 
 
 ```bash
 ▾ Image-rk3568_r/
@@ -20,14 +22,16 @@ Rockchip rk3567의 build.sh에 의해 생성된 파일은 아래와 같습니다
     vbmeta.img*
 ```
 
-- dtbo.img
+## dtbo.img
+
 ```bash
 // dtbo image
 BOARD_DTBO_IMG=$OUT/rebuild-dtbo.img
 cp -a $BOARD_DTBO_IMG $IMAGE_PATH/dtbo.img
 ```
 
-	* dtbo.img 생성 과정. 
+### dtbo.img 생성 과정. 
+
 ```bash
 ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (device/rockchip/common/build/rockchip/RebuildDtboImg.mk)
 |
@@ -82,7 +86,8 @@ ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (devi
 		: https://source.android.com/devices/architecture/dto/partitions?hl=ko#mkdtimg 
 
 
-- parameter.txt
+## parameter.txt
+
  README(device/rockchip/common/scripts/parameter_tools/README)에 의하면 parameter_tools에 의해 생성됩니다.
  device/rockchip/common/build/rockchip/RebuildParameter.mk 에 Makefile 정의 되어 있습니다.
 ```bash
@@ -112,7 +117,8 @@ parameter_tools --input device/rockchip/common/scripts/parameter_tools/parameter
  
 
 
-- 기타 이미지
+## 기타 이미지
+
 ```bash
 // resource image
 copy_images $KERNEL_PATH/resource.img $IMAGE_PATH/resource.img
@@ -156,7 +162,7 @@ cp -a $OUT/parameter.txt $IMAGE_PATH/parameter.txt
 cp -a device/rockchip/common/baseparameter/v2.0/baseparameter.img $IMAGE_PATH/baseparameter.img
 ```
 
-- update.img 이미지 생성
+## update.img 이미지 생성
 
 $ make -j32 rockdev
 $ cd RKTools/linux/Linux_Pack_Firmware/rockdev
@@ -170,5 +176,20 @@ $ ./mkupdate.sh rk356x ../../../../rockdev/Image-rk3568_poc/
 		android 이미지 빌드에 필요한 binary 저장 경로.
 	* intermediates := out/target/product/rk3568_r/obj/FAKE/rockchip_dtbo_intermediates
 		dtbo 관련 intermediates 이미지. 
+
+
+# build error 디버깅
+
+## submodule error
+
+아래 에러 발생시, submodule초기화
+
+```bash
+make 
+
+(...)
+
+fatal: Needed a single revision
+```
 
 
