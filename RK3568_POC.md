@@ -254,6 +254,25 @@
 
 ### gpio
 
+ - 사용되는 GPIO 인터페이스 통일
+ > naming rule : feature(대문자)_index(0~)
+
+
+|        | 용도                                                       | standardize_name                       |
+|--------|------------------------------------------------------------|----------------------------------------|
+| input  | 도어장치의 도어 버튼 눌림 입력 신호 감지                   | DOORBUTTON_0 (door Button)             |
+| input  | 도어장치의 모션 센서 입력 신호 감지 (Passive Infrared)     | DOORPIR_0 (door PIR)                   |
+| input  | 방범1 센서의 입력 신호 감지                                | SECURITYSIGNAL_0 (security Signal)     |
+| input  | 방범2 센서의 입력 신호 감지                                | SECURITYSIGNAL_1 (security Signal)     |
+| input  | 비상 센서의 입력 신호 감지                                 | EMERGENCYSIGNAL_0 (emergency Signal)   |
+| input  | 하향식 피난구1 입력 신호 감지                              | ESCAPESIGNAL_0 (escape Signal)         |
+| input  | 하향식 피난구2 입력 신호 감지                              | ESCAPESIGNAL_1 (escape Signal)         |
+| output | HDMI to CVBS 컨버터 초기화 (세컨드 디스플레이 사용시 세팅) | SUBDISPINIT_0 (sub-display Initialize) |
+| output | 도어장치에게 도어 오픈 신호 출력                           | DOOROPEN_0 (door Open)                 |
+| output | 도어장치에게 도어 파워컨트롤 신호 출력 (카메라 활성화)     | DOORPOWERCTL_0 (door Powercontrol)     |
+| output | 비상 경광등 신호 출력                                      | EMERGENCYOUT_0 (emergency Out)         |
+| output | Zigbee 장치 초기화 신호 출력                               | ZIGBEEINIT_0 (zigbee Initialize)       |
+
 #### rk3568_rgb_p02 board
 
 - pio_hal
