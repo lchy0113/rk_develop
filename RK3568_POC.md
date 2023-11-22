@@ -267,7 +267,7 @@
 | input  | 비상 센서의 입력 신호 감지                                 | EMERGENCYSIGNAL_0 (emergency Signal)   |
 | input  | 하향식 피난구1 입력 신호 감지                              | ESCAPESIGNAL_0 (escape Signal)         |
 | input  | 하향식 피난구2 입력 신호 감지                              | ESCAPESIGNAL_1 (escape Signal)         |
-| output | HDMI to CVBS 컨버터 초기화 (세컨드 디스플레이 사용시 세팅) | SUBDISPINIT_0 (sub-display Initialize) |
+| output | HDMI to CVBS 컨버터 초기화 (세컨드 디스플레이 사용시 세팅) | SUBDISPLAYINIT_0 (sub-display Initialize) |
 | output | 도어장치에게 도어 오픈 신호 출력                           | DOOROPEN_0 (door Open)                 |
 | output | 도어장치에게 도어 파워컨트롤 신호 출력 (카메라 활성화)     | DOORPOWERCTL_0 (door Powercontrol)     |
 | output | 비상 경광등 신호 출력                                      | EMERGENCYOUT_0 (emergency Out)         |
