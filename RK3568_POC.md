@@ -254,7 +254,7 @@
 
 ### gpio
 
- - 사용되는 GPIO 인터페이스 통일
+#### 사용되는 GPIO 인터페이스 통일
  > naming rule : feature(대문자)_index(0~)
 
 
