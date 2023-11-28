@@ -487,6 +487,11 @@ NO  LBA       Name
 12  001D9000  super
 13  007ED000  userdata
 
+```
+
+# Flash binary to device
+
+```bash
 // uboot partition영역에 uboot.img 을 flash한다.
 $ ./rkdeveloptool wlx uboot ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboot.img
 Write LBA from file (100%)
