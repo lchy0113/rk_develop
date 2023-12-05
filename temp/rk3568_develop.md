@@ -52,4 +52,40 @@ io -4 -w 0xfe750000 0x00400000
 -----
 VOP2_CLUSTER_WIN0_AFBCD_MODE 
 addr : 0xfe040000 + 0x54
-io -r -4 -l 20 0xfe040000 
+io -r -4 -l 20 0xfe040000
+
+-----
+<br/>
+
+## android13 for rk3568
+=====
+
+# build command
+
+```bash
+#Android
+build/envsetup.sh; lunch rk3568_t-userdebug
+
+#kernel
+cd kernel-5.10
+
+## export clang to the environment
+export PATH=../prebuilts/clang/host/linux-x86/clang-r450784d/bin:$PATH
+alias msk='make CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1'
+
+## build
+msk ARCH=arm64 rockchip_defconfig android-13.config rk356x.config && msk ARCH=arm64 BOOT_IMG=../rockdev/Image-rk3568_t/boot.img rk3568-evb1-ddr4-v10.img
+
+
+make ARCH=arm64 rockchip_defconfig android-13.config rk356x.config;
+make ARCH=arm64 rk3568-evb1-ddr4-v10.img -j24
+
+#uboot
+./make.sh rk3568
+
+#android
+./build.sh A
+
+#pack
+./build.sh u
+```
