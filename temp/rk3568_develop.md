@@ -1,3 +1,4 @@
+# Memo 
 -----
 gpio GPIO1_B0(DOOR_PCTL)
 
