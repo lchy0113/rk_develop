@@ -353,27 +353,32 @@ Linux Kernel-4.19
 |	|-- phy-rockchip-csi2-dphy-common.h
 |	|-- phy-rockchip-csi2-dphy-hw.c
 |	|-- phy-rockchip-csi2-dphy.c
+|
 |-- drivers/media
-|	|-- platform/rockchip/cif 						#RKCIF driver
-|	|-- platform/rockchip/isp 						#RKISP driver
-|	|	|-- dev 									#includes probe, asynchronous register clock, pipeline, iommu and media/v4l2 framework
-|	|	|-- capture									#includes mp/sp/rawwr configuration and vb2, frame interrupt handle
-|	|	|-- dmarx 									#includes rawrd configuration and vb2, frame interrupt handle
-|	|	|-- isp_params 								#3A-related parameters
-|	|	|-- isp_stats 								#3A-related statistics
-|	|	|-- isp_mipi_luma 							#mipi luminance data statistics
-|	|	|-- regs 									#register-related read/write operation
-|	|	|-- rkisp 									#isp subdev and entity register
-|	|	|-- csi	 									#csi subdev and mipi configuration
-|	|	|-- bridge 									#bridge subdev,isp and ispp interaction bridge
+|	|-- platform/rockchip/cif 						#RKCIF driver 
+|   |                                               (probe from "rockchip,rkcif-dvp","rockchip,rkcif-mipi-lvds" node)
+|	|-- platform/rockchip/isp 						#RKISP driver  
+|   |   |                                           (probe from "rockchip,rkisp-vir" node)
+|	|	|-- dev.c	  								#includes probe, asynchronous register clock, pipeline, iommu and media/v4l2 framework
+|	|	|-- capture.c								#includes mp/sp/rawwr configuration and vb2, frame interrupt handle
+|	|	|-- dmarx.c 								#includes rawrd configuration and vb2, frame interrupt handle
+|	|	|-- isp_params.c							#3A-related parameters
+|	|	|-- isp_stats.c								#3A-related statistics
+|	|	|-- isp_mipi_luma.c							#mipi luminance data statistics
+|	|	|-- regs.c 									#register-related read/write operation
+|	|	|-- rkisp.c									#isp subdev and entity register
+|	|	|-- csi.c 									#csi subdev and mipi configuration
+|	|	|-- bridge.c								#bridge subdev,isp and ispp interaction bridge
+|   |
 |	|-- platform/rockchip/ispp 						#rkispp driver
-|	|	|-- dev 									#includes probe, asynchronous register, clock, pipeline, iommu and media/v4l2 framework
-|	|	|-- stream 									#includes 4-channel video output configuration and  vb2, frame interrupt handle
-|	|	|-- rkispp 									#ispp subdev and entity register
-|	|	|-- params	 								#TNR/NR/SHP/FEC/ORB parameters
-|	|	|-- stats 									#ORB statistics
-|-- i2c
-|	|-- os04a10.c									#CIS(cmos image sensor) driver	
+|	|	|-- dev.c 									#includes probe, asynchronous register, clock, pipeline, iommu and media/v4l2 framework
+|	|	|-- stream.c 								#includes 4-channel video output configuration and  vb2, frame interrupt handle
+|	|	|-- rkispp.c 								#ispp subdev and entity register
+|	|	|-- params.c								#TNR/NR/SHP/FEC/ORB parameters
+|	|	|-- stats.c 								#ORB statistics
+|   |   
+|   |-- i2c
+|	|   |-- tp2860.c								#CIS(cmos image sensor) driver	
 ```
 
 
@@ -804,6 +809,9 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 ```bash
 $ adb shell dumpsys media.camera
 ```
+	각 노드의 설명은 Android개발자 웹사이트에서 확인 가능
+	https://developer.android.com/reference/android/hardware/camera2/CameraCharacteristics
+
    - 그외 노드 : rkisp 및 sensor 초기화에 필요한 정보 입니다.   
 	 ex) sensor 의 타입을 정의합니다. raw 또는 soc
 ```xml
