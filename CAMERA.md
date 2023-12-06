@@ -677,7 +677,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 ```bash
 ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 .
-├── AAL						// Android Abstraction Layer
+├── AAL						// Android Abstraction Layer, 프레임워크와 상호작용 
 ├── common					// common file (thread, message processingg, log, etc)
 │   ├── gcss				// xml parsing 
 │   │   ├── cipf_css
@@ -686,14 +686,14 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 │   ├── imageProcess		// image processing, (scale)
 │   ├── jpeg				// jpeg encoding 
 │   ├── mediacontroller		// media pipeline
-│   ├── platformdata		// 
+│   ├── platformdata		// xml 파일에서 얻은 속성을 관리
 │   │   ├── gc
 │   │   └── metadataAutoGen
 │   │       └── 6.0.1
-│   ├── utils				//
+│   ├── utils				// return값 정의(Errors.h)
 │   └── v4l2dev				// v4l2 driver와 상호 작용
-├── etc						// config file
-│   ├── camera
+├── etc
+│   ├── camera				// config files(xml)
 │   │   └── rkisp1
 │   ├── firmware
 │   └── tools
@@ -706,7 +706,7 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 │   ├── rkisp1				// rkisp1 관련 코드
 │   │   ├── tasks
 │   │   ├── tunetool
-│   │   └── workers
+│   │   └── workers			// data 처리와 수집을 처리
 │   └── rkisp2				// rkisp2 관련 코드
 │       ├── eptz
 │       ├── rockx
