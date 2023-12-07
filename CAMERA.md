@@ -622,6 +622,40 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 ![](./images/CAMERA_08.png)
 
 
+#### 3.1.3 sensor & cif & isp link
+
+```bash
+
+    [tp2860]
+    	|
+    	+----[port@0]
+    	         +----[tp2860_out] 
+    	                  |
+                          |
+                          |
+[csi2_dphy_hw@fe870000]   |
+    [csi2_dphy0]          |
+        |	              |
+        +----[port@0]     |
+        |        |        |
+        |        +----[mipi_in_ucam0]
+		|
+		+----[port@1]
+		         |
+		         +----[csidphy_out]
+		                  |
+		                  |
+		                  |
+		                  |
+[rkisp@fdff0000]          |
+        [rkisp_vir0]      |
+    	    |             |
+    	    +--------[isp0_in]
+
+
+```
+
+
 ---
 
 ## 4. VICAP
