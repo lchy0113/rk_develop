@@ -635,7 +635,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
                           |
 [csi2_dphy_hw@fe870000]   |
     [csi2_dphy0]          |
-        |	              |
+        |                 |
         +----[port@0]     |
         |        |        |
         |        +----[mipi_in_ucam0]
@@ -643,10 +643,11 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 		+----[port@1]
 		         |
 		         +----[csidphy_out]
-		                  |
-		                  |
-		                  |
-		                  |
+                          |
+                          |
+                          |
+                          |
+                          |
 [rkisp@fdff0000]          |
         [rkisp_vir0]      |
     	    |             |
