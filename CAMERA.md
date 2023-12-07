@@ -639,10 +639,10 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
         +----[port@0]     |
         |        |        |
         |        +----[mipi_in_ucam0]
-		|
-		+----[port@1]
-		         |
-		         +----[csidphy_out]
+        |
+        +----[port@1]
+                 |
+                 +----[csidphy_out]
                           |
                           |
                           |
