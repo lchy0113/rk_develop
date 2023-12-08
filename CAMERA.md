@@ -714,6 +714,7 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 	 ![](./images/CAMERA_04.png)
 
  * 코드 디렉토리
+
 ```bash
 ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 .
@@ -747,7 +748,7 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 │   │   ├── tasks
 │   │   ├── tunetool
 │   │   └── workers			// data 처리와 수집을 처리
-│   └── rkisp2				// rkisp2 관련 코드
+│   └── rkisp2				// rkisp2 관련 코드(for rk356x)
 │       ├── eptz
 │       ├── rockx
 │       │   ├── modules
@@ -758,10 +759,14 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 
 38 directories
 ```
- Camera HAL3 모듈은 AAL 모듈과 PSL 모듈을 포함합니다.
-   - AAL : android framework와 통신 하는 모듈이며, camera_module, API 인터페이스 가 정의 되어 있습니다. android framework로 부터 받은 요청을 PSL에게 전달 합니다.
-   - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.
+
+ Camera HAL3 모듈은 AAL 모듈과 PSL 모듈을 포함합니다.  
+   - AAL : android framework와 통신 하는 모듈이며, camera_module, API 인터페이스 가 정의 되어 있습니다. android framework로 부터 받은 요청을 PSL에게 전달 합니다.  
+   - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.  
 	 
+
+
+<br/>
 
 
  - camera hal3 과 framework 간 Interface
@@ -801,9 +806,19 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
 
  - camera hal3 분석.
 
+   * debug log
+
+```bash
+"", "persist.vendor.camera.global.debug"     }, /* CAM_NO_MODULE     */
+"<HAL>", "persist.vendor.camera.hal.debug"        }, /* CAM_HAL_MODULE    */
+"<JPEG>", "persist.vendor.camera.mmstill.logs"     }, /* CAM_JPEG_MODULE   */
+```
+  
 ### 6.2 sensor 등록
+  
  센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다.   
  HAL 코드 : hardware/rockchip/camera   
+
  * sensor tuning file.(soc sensor는 skip 해도 됨)
  * camera3_profile.xml 파일
 
