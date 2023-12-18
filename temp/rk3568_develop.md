@@ -1,5 +1,7 @@
 # Memo 
 -----
+## Camera
+
 gpio GPIO1_B0(DOOR_PCTL)
 
 io -4 -w 0xfdc60008 0x00070000 ; io -4 -w 0xfe740008 0x01000100 ; io -4 -w 0xfe740000 0x01000100 ; 
@@ -17,10 +19,22 @@ am start -n com.android.camera2/com.android.camera.CameraActivity
 
 
 v4l2-ctl -d /dev/video5 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=960,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
 
 
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1920x1080
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 960x480
 
+
+
+// v4l2_dbg() log
+echo 1 > /sys/module/video_rkcif/parameters/debug
+
+// vb2 log : reqbuf, qbuf, dqbuf, ring buffer for VPU/ISP
+echo 7 > /sys/module/videobuf2_core/parameters/debug
+
+// v4l2 log : ioctl ....
+echo 0x1f > /sys/class/video4linux/video0/dev_debug
 
 -----
 gpio GPIO0_B7(RST_CH710)
