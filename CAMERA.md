@@ -672,6 +672,17 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
  * 아래 그림은 VICAP에 의해 구동되는 device topology를 설명합니다.
 	![](./images/CAMERA_03.png)	
 
+ * rk3568 poc vicap link path
+
+```bash
+[m00_b_tp2860 5-0044] -> [rockchip-csi2-dphy1] -> [rockchip-mipi-csi2] -> [stream_cif_mipi_id0]
+```
+
+ * rk3568 evb vicap link path
+
+```bash
+[m00_b_ov5695 4-0036] -> [rockchip-csi2-dphy1] -> [rockchip-mipi-csi2]/dev/v4l-subdev0 -> [stream_cif_mipi_id0]/dev/video0
+```
 
 ---
 
