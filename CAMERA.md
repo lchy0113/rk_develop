@@ -776,6 +776,26 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
    - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.  
 	 
 
+### 6.2 디버깅
+
+ - log 활성화
+
+```bash
+setprop persist.vendor.camera.debug.logfile 1
+setprop persist.vendor.camera.debug.assert 1
+
+# ls /data/misc/camera
+cam_dbg_log_hal.txt_286
+
+
+# enable log
+setprop persist.vendor.camera.global.debug 7
+
+setprop persist.vendor.camera.debug
+setprip persist.vendor.camera.perf
+setprop persist.vendor.camera.dump
+
+```
 
 <br/>
 
