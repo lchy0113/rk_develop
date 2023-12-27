@@ -114,4 +114,21 @@ rk3568_edpp02:/vendor # getprop | grep dev.mnt.blk
 | (bootloader) partition-size:odm_dlkm:0x40000     | dm(5)odm_dlkm      | (logical)      | 0x00040000  |      262144 |         0.25 |
 | (bootloader) partition-size:product:0xEED7000    | dm(6)product       | (logical)      | 0x0eed7000  |   250441728 |       238.84 |
 
+<br/>
+-----
+
+
+## overlay partition
+
+
+- security 
+  * disable-verity           
+    disable dm-verity checking on userdebug builds
+	using overlayfs
+
+  * enable-verity
+    re-enable dm-verity checking on userdebug builds
+	using dm partition
+
+
 
