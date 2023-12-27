@@ -122,11 +122,11 @@ rk3568_edpp02:/vendor # getprop | grep dev.mnt.blk
 
 
 - security 
-  * disable-verity           
+  * disable-verity  
     disable dm-verity checking on userdebug builds
 	using overlayfs
 
-  * enable-verity
+  * enable-verity  
     re-enable dm-verity checking on userdebug builds
 	using dm partition
 
