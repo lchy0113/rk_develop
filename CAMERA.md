@@ -21,6 +21,17 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 | _full mode_  	| sensor1 x4lane                  	| MIPI_CSI_RX_D0, MIPI_CSI_RX_D1, MIPI_CSI_RX_D2, MIPI_CSI_RX_D3, MIPI_CSI_RX_CLK0                     	|
 | _split mode_ 	| sensor1 x2lane + sensor2 x2lane 	| MIPI_CSI_RX_D0, MIPI_CSI_RX_D1, MIPI_CSI_RX_CLK0, & MIPI_CSI_RX_D2, MIPI_CSI_RX_D3, MIPI_CSI_RX_CLK1 	|
 
+ Link Freq 와 Pixel Rate 관계
+> Link Freq와 Pixel Rate 는 MIPI CSI-2 인터페이스에서 사용되는 데이터 전송 속도와 이미지 센서에서 생성된 픽셀의 속도를 결정하는 요소.
+ - link frequency
+   * link_freq는 MIPI CSI-2 인터페이스에서 사용되는 Clock 주파수. 
+   * 이 주파수는 MIPI CSI-2 인터페이스에서 사용되는 데이터 전송 속도를 결정.
+ - pixel rate 
+   * pixel rate는 이미지 센서에서 생성된 픽셀의 속도. 
+   * 이 속도는 이미지 센서에서 생성된 픽셀의 수와 초당 전송되는 픽셀 수를 결정. 
+> 이미지 센서에서 픽셀은 이미지를 구성하는 최소 단위. 이미지 센서의 화소수는 흔히 메가픽셀(Megapixels) 단위로 표시.
+> 만약 800만 화소의 카메라로 촬영한 이미지는 800만개의 픽셀로 구성되어 있다고 생각하면 됨. 
+
 
 ### 1.1 Full Mode 설정
 
@@ -790,12 +801,30 @@ cam_dbg_log_hal.txt_286
 
 # enable log
 setprop persist.vendor.camera.global.debug 7
+setprop persist.vendor.camera.hal.debug 7
 
 setprop persist.vendor.camera.debug
 setprip persist.vendor.camera.perf
 setprop persist.vendor.camera.dump
 
+
+# view the driver debug information 
+echo 3 > /sys/module/video_rkisp/parameters/debug (n = 0, 1, 2, 3; 0 is off)
+echo 3 > /sys/module/video_rkispp/parameters/debug 
+echo 8 > /proc/sys/kernel/printk
+
+
+# check the register inforamtion and pull out reg file
+io -4 -l 0x10000 0xfdff0000 > /tmp/isp.reg
 ```
+
+
+ - VICAP(VICAP1) 레지스터 디버깅
+   * VICAP_MIPI_ID0_CTRL0 : ID0 를 사용(dphy0 으로 정의한 경우) ID0, ID1, ID2, ID3의 CTRL0, CTRL1 레지스터를 제공함.
+   * VICAP_MIPI_FRAME0_ADDR_Y_ID0, VICAP_MIPI_FRAME1_ADDR_Y_ID0, VICAP_MIPI_FRAME0_ADDR_UV_ID0, VICAP_MIPI_FRAME1_ADDR_UV_ID0, VICAP_MIPI_FRAME0_VLW_Y_ID0, VICAP_MIPI_FRAME1_VLW_Y_ID0, VIACP_MIPI_FRAME0_VLW_UV_ID0, VICAP_MIPI_FRAME1_VLW_UV_ID0 : frame 데이터가 저장되는 레지스터.
+   * VICAP_MIPI_ID0_CROP_START : start x and y coordinate for id0
+ 
+
 
 <br/>
 
@@ -1300,7 +1329,7 @@ develop_2023-06-27__091303.log
 | CSI_RX_CTRL1 	| 0xFDFB0000 	| 64KB 	|
 | Reserved     	| 0xFDFC0000 	| 64KB 	|
 | VICAP0       	| 0xFDFD0000 	| 64KB 	|
-| VICAP1       	| 0xFEFE0000 	| 64KB 	|
+| VICAP1       	| 0xFDFE0000 	| 64KB 	|
 | ISP          	| 0xFDFF0000 	| 64KB 	|
 | CSI_RX_PHY   	| 0xFE870000 	| 64KB 	|
 
@@ -1707,4 +1736,25 @@ rk3568_edpp01:/ #
 
 		27 directories, 31 files
 ```
+
+---
+
+## 10. Develop
+
+### Camera HAL
+
+```
+// device/rockchip/common/modules/camera.mk
+# Camera HAL
+PRODUCT_PACKAGES += \
+    camera.$(TARGET_BOARD_HARDWARE) \
+    camera.device@1.0-impl \
+    camera.device@3.2-impl \
+    android.hardware.camera.provider@2.4-impl \
+    android.hardware.camera.metadata@3.2 \
+    librkisp_aec \
+    librkisp_af \
+    librkisp_awb
+```
+
 
