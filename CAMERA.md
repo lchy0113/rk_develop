@@ -33,6 +33,23 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 > 만약 800만 화소의 카메라로 촬영한 이미지는 800만개의 픽셀로 구성되어 있다고 생각하면 됨. 
 
 
+- MIPI Protocol
+
+![](./images/CAMERA_09.jpg)
+
+MIPI 는 전체 7Layer 를 전부 사용하며, 
+Physical layer 인 C-PHY, D-PHY, M-PHY, 
+Protocol layer 인 CSI, DSI 으로 크게 구분된다.
+
+ > D-PHY : 카메라, 디스플레이간 인터페이스.
+ > M-PHY : RF모듈, 스토리지, 멀티미디어 데이터 관련 부품 간 인터페이스.
+ > C-PHY : 카메라와 디스플레이간 인터페이스인 D-PHY를 개선한 인터페이스.
+ >   D-PHY는 별도 클럭레인과 데이터 레인이 있고, 각 레인은 핀 2개(라인)가 있는 방식.(tp2860)
+ >   C-PHY는 클럭을 데이터에 임베디드 시킨 구조로 레인당 3개의 핀(라인)이 구성.
+
+ ![](./images/CAMERA_10.jpg)
+
+
 ### 1.1 Full Mode 설정
 
 - link path :
@@ -825,6 +842,8 @@ io -4 -l 0x10000 0xfdff0000 > /tmp/isp.reg
    * VICAP_MIPI_ID0_CROP_START : start x and y coordinate for id0
  
 
+#### 에러 디버깅 :  rkcif_mipi_lvds: ERROR: csi bandwidth lack, intstat:0x80000!!
+ - mipi csi2에서 bandwidth_lack_intst 에러가 발생함. 
 
 <br/>
 
