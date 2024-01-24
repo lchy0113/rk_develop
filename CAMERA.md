@@ -49,6 +49,11 @@ Protocol layer 인 CSI, DSI 으로 크게 구분된다.
 
  ![](./images/CAMERA_10.jpg)
 
+ 
+
+Line 과 Lane 개념.  
+- 라인은 선이라는 개념이고, 레인은 선과 선사이의 길(트랙)을 의미.
+> 즉, 신호가 지나가는 통로(트랙)이 레인(Lane)이라고 생각하면 될듯. 
 
 ### 1.1 Full Mode 설정
 
