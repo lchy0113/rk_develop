@@ -2,6 +2,21 @@
 -----
 ## Camera
 
+
+[rk3568]
+	tp2860_out[tp2860]		-	dphy2_in[csi2_dphy2]	-	csidphy_out[csi2_dphy0]		-	mipi_csi2_input[mipi_csi2]	-	mipi_csi2_output[mipi_csi2]	-	cif_mipi_in[rkcif_mipi_lvds]
+
+[rk3566]
+	ov02k10_out[ov02k10]	-	dphy2_in[csi2_dphy2]		-	mipi_csi2_input[csi2_dphy2]	-	mipi_csi2_input[mipi_csi2]	-	mipi_csi2_output[mipi_csi2]	-	cif_mipi_in[rkcif_mipi_lvds]
+	
+	
+
+[m00_b_tp2860 5-0044] -> [rockchip-csi2-dphy1] -> [rockchip-mipi-csi2] -> [stream_cif_mipi_id0]
+[m00_b_ov5695 4-0036] -> [rockchip-csi2-dphy1] -> [rockchip-mipi-csi2]/dev/v4l-subdev0 -> [stream_cif_mipi_id0]/dev/video0
+
+
+io -4 -w 0xfdc60008 0x00070000 ; io -4 -w 0xfe740008 0x01000100 ; io -4 -w 0xfe740000 0x01000100 ; v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1
+
 gpio GPIO1_B0(DOOR_PCTL)
 
 io -4 -w 0xfdc60008 0x00070000 ; io -4 -w 0xfe740008 0x01000100 ; io -4 -w 0xfe740000 0x01000100 ; 
@@ -17,15 +32,49 @@ io -4 -w 0xfe740000 0x01000100 ;
 
 am start -n com.android.camera2/com.android.camera.CameraActivity
 
+```bash
+/** 
+  * code flow : TP28xx_TP2920_MDIN400 project 
+  *	ManVidRes : TP2802_NTSC
+  * ManVidStd : STD_TVI
+  */
+TP28xx_Init(void)
+    |
+    V
+set (tp2860_1080P30_2lane_dataset)
+    |
+    V
+set Set_VidRes(TP2802_NTSC, ,0)
+	TP2855_SYSCLK_CVBS()
+	index=34 
+	tp28xx_write_byte()
+ 
+```
+/// comment
 
-v4l2-ctl -d /dev/video5 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
-v4l2-ctl -d /dev/video0 --set-fmt-video=width=960,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=9 --stream-count=1 
+[1ed643d] : camera api success
+[5aaecf9] : camera api fail
+[7f7929a] : 
+
+v4l2-ctl  -d /dev/v4l-subdev2  --set-ctrl=test_pattern=1
+v4l2-ctl -d /dev/v4l-subdev3 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
+v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
+v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
+v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-skip=1 --stream-to=/data/local/tmp/out.yuv --stream-count=1 --stream-poll
+[rockchip] 
+echo 0 > /sys/devices/platform/rkcif_mipi_lvds/compact_test
 
 
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1920x1080
-ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 960x480
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 2592x1944
 
-
+// push xml
+adb push hardware/rockchip/camera/etc/camera/camera3_profiles_rk356x.xml /vendor/etc/camera/camera3_profiles.xml
+// push lib
+adb push  out/target/product/rk3568_edpp02/vendor/lib/hw/camera.rk30board.so /vendor/lib/hw/
 
 // v4l2_dbg() log
 echo 1 > /sys/module/video_rkcif/parameters/debug
@@ -62,6 +111,9 @@ io -4 -w 0xfe750008 0x00400040
 
 low : (io -r -4 0xfe750000 + 0x00)
 io -4 -w 0xfe750000 0x00400000
+
+-----
+media-ctl -d /dev/media0 --set-v
 
 -----
 VOP2_CLUSTER_WIN0_AFBCD_MODE 
