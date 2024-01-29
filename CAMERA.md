@@ -440,6 +440,39 @@ Linux Kernel-4.19
 	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  : 외부 크리스탈을 대체 하여 Soc 에서 발진
 
 
+
+#### 1.4.1 video_stream_start sequence
+
+```c
+tp2860_s_stream(...)
+    |
+    +-> on(1)
+    |    |
+    |    +-> __tp2860_start_stream(...)
+    |         |
+    |         +-> tp2860_write_array2(tp2860_1080P30_2lane_dataset)
+    |         |
+    |         +-> set vin diff or single mode and input channel
+    |         |
+    |         +-> resolution()
+    |         |    |
+    |         |    +-> ntsc
+    |         |    |
+    |         |    +-> fhd
+    |         |    +-> hd
+    |         |
+    |         +-> (do not use)detect_thread_start(...)
+    |         |
+    |         +-> in case these controls are set before streaming.
+	|
+	+-> on(0)
+         |
+         +-> __tp2860_stop_stream(...)
+
+```
+
+
+
 ### 1.5 Camera 디버깅
 
  * v4l2-ctl 을 사용하여 카메라 프레임 데이터를 디버깅 합니다.
