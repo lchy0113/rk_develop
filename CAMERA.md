@@ -60,8 +60,12 @@ Line 과 Lane 개념.
  Continuous clock mode에서 LP상태로 전환되지 않으며, 프레임 데이터를 전송하는 동안 clock 이 유지 된다.  
  반면, **Non-Continous Clock mode**에서는 프레임 데이터를 전송하는 동안 클럭이 일시적으로 중단되고 LP 상태로 전환 된다.  
 > 이 모드는 전력 소모를 줄이기 위해 사용된다.  
-
-
+    
+ LP-11, LP-10, LP-00, LP-10, LP-00는 MIPI D-PHY에서 사용되는 Low Power 모드에서 데이터 채널이 전송하는 신호.
+  이 신호는 Differential 신호가 아닌 Single-ended transmission 신호로, 데이터는 “00”, “01”, “10”, **“11”**로 총 4가지의 Data를 가질 수 있다.  
+  
+ LP-11, LP-10, LP-00, LP-10, LP-00의 순서는 MIPI D-PHY에서 고속 모드로 진입하는 순서.  
+ 이때, 데이터 채널은 정지 상태(LP-11)를 수신할 때까지 고속 모드로 진입하지 않는다.  
 
 ### 1.1 Full Mode 설정
 
