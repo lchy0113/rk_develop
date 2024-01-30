@@ -33,7 +33,7 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 > 만약 800만 화소의 카메라로 촬영한 이미지는 800만개의 픽셀로 구성되어 있다고 생각하면 됨. 
 
 
-- MIPI Protocol
+### MIPI Protocol
 
 ![](./images/CAMERA_09.jpg)
 
@@ -54,6 +54,14 @@ Protocol layer 인 CSI, DSI 으로 크게 구분된다.
 Line 과 Lane 개념.  
 - 라인은 선이라는 개념이고, 레인은 선과 선사이의 길(트랙)을 의미.
 > 즉, 신호가 지나가는 통로(트랙)이 레인(Lane)이라고 생각하면 될듯. 
+  
+  
+ **Continuous clock mode**는 MIPI CSI-2에서 사용되는 clock mode 중 하나이다.   
+ Continuous clock mode에서 LP상태로 전환되지 않으며, 프레임 데이터를 전송하는 동안 clock 이 유지 된다.  
+ 반면, **Non-Continous Clock mode**에서는 프레임 데이터를 전송하는 동안 클럭이 일시적으로 중단되고 LP 상태로 전환 된다.  
+> 이 모드는 전력 소모를 줄이기 위해 사용된다.  
+
+
 
 ### 1.1 Full Mode 설정
 
