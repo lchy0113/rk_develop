@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-12-12T05:54:20.761Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="6GUHT3CkO4jw57X3LcjH" version="21.6.8" type="device" pages="2">
+<mxfile host="Electron" modified="2024-02-02T05:24:27.456Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="qjSQoSSVSGvMXTSAkVc8" version="21.6.8" type="device" pages="3">
   <diagram name="analyse" id="p4rraDvrH2ec7ey4ZCoz">
-    <mxGraphModel dx="1784" dy="3609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1644" dy="3398" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -443,110 +443,110 @@
         <mxCell id="AAtuwgzB8faNnZX-cIjk-60" value="fhd" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;labelBackgroundColor=none;labelBorderColor=none;fontStyle=1;fontSize=20;" parent="1" vertex="1">
           <mxGeometry x="1560" y="-1960" width="450" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-1" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=1;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-1" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=1;" parent="1" vertex="1">
           <mxGeometry x="-820" y="-870" width="1270" height="1250" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-2" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-2" value="" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="25" y="-840" width="195" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-8" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-8" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-620" y="-650" width="310" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-9" value="&lt;span&gt;entity (1)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-9" value="&lt;span&gt;entity (1)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-530" y="-660" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-10" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 [ENABLED]&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 []&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 []&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-10" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 [ENABLED]&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 []&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 []&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-585" y="-620" width="250" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-54" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#ffe6cc;strokeColor=#d79b00;dashed=1;opacity=50;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-54" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#ffe6cc;strokeColor=#d79b00;dashed=1;opacity=50;" parent="1" vertex="1">
           <mxGeometry x="53" y="-800" width="50" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-55" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;opacity=50;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-55" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;opacity=50;" parent="1" vertex="1">
           <mxGeometry x="53" y="-775" width="50" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-56" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-56" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="53" y="-820.29" as="sourcePoint" />
             <mxPoint x="93" y="-820.29" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-57" value="Active Link" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-57" value="Active Link" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="115" y="-835" width="85" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-58" value="source pad" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-58" value="source pad" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="117.5" y="-805" width="85" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-59" value="sink pad" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-59" value="sink pad" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="120" y="-780" width="85" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-60" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-60" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-615" y="-460" width="310" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-61" value="&lt;span&gt;entity (5)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-61" value="&lt;span&gt;entity (5)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-525" y="-470" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-62" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 [&lt;b style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;ENABLED&lt;/b&gt;]&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 []&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 []&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-62" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 [&lt;b style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;ENABLED&lt;/b&gt;]&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 []&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 []&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-580" y="-430" width="250" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-65" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-65" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-615" y="-270" width="310" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-66" value="&lt;span&gt;entity (9)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-66" value="&lt;span&gt;entity (9)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-525" y="-280" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-67" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 [&lt;b style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;ENABLED&lt;/b&gt;]&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 []&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-67" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 [&lt;b style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;ENABLED&lt;/b&gt;]&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 []&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-580" y="-240" width="250" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-70" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-70" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-615" y="-80" width="310" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-71" value="&lt;span&gt;entity (13)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-71" value="&lt;span&gt;entity (13)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-525" y="-90" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-72" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 []&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 [&lt;b style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;ENABLED&lt;/b&gt;]&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-72" value="&lt;u&gt;stream_cif_mipi_id0 (1pad, 4sinks)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:1 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); font-style: normal;&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:2 []&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:3 []&lt;/b&gt;&lt;br&gt;&amp;lt;- &quot;rockchip-mipi-csi2&quot;:4 [&lt;b style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;ENABLED&lt;/b&gt;]&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-580" y="-50" width="250" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-75" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-75" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-615" y="170" width="310" height="130" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-76" value="&lt;span&gt;entity (17)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-76" value="&lt;span&gt;entity (17)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-525" y="160" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-78" value="&lt;u&gt;rkcif-mipi-luma (0pad, 0link)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video4&lt;br&gt;--------------------------------------------------&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-78" value="&lt;u&gt;rkcif-mipi-luma (0pad, 0link)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type Node subtype V4L&lt;br&gt;device node name /dev/video4&lt;br&gt;--------------------------------------------------&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-580" y="200" width="250" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-83" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-83" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-105" y="-670" width="310" height="520" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-84" value="&lt;span&gt;entity (20)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-84" value="&lt;span&gt;entity (20)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-12" y="-670" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-85" value="&lt;u&gt;rockchip-mipi-csi2 (5 pads, 17 links)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type V4L2 subdev subtype Unknown&lt;br&gt;device node name /dev/v4l-subdev0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-csi2-dphy2&quot;:1 [ENABLED]&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;pad1: Source &lt;br&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 [ENABLED]&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 []&lt;/b&gt;&lt;br&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 []&lt;/b&gt;&lt;br&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 []&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;pad2: Source&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 []&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 [ENABLED]&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 []&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;pad3: Source&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 []&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 [ENABLED]&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 []&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;pad4: Source&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 []&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 [ENABLED]&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-85" value="&lt;u&gt;rockchip-mipi-csi2 (5 pads, 17 links)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type V4L2 subdev subtype Unknown&lt;br&gt;device node name /dev/v4l-subdev0&lt;br&gt;--------------------------------------------------&lt;br&gt;&lt;b&gt;pad0: Sink &lt;br&gt;&amp;lt;- &quot;rockchip-csi2-dphy2&quot;:1 [ENABLED]&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b&gt;pad1: Source &lt;br&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 [ENABLED]&lt;br&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 []&lt;/b&gt;&lt;br&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 []&lt;/b&gt;&lt;br&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 []&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;pad2: Source&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 []&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 [ENABLED]&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 []&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;pad3: Source&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 []&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 [ENABLED]&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 []&lt;br&gt;&lt;/b&gt;&lt;br&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;pad4: Source&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id0&quot;:0 []&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;&lt;b style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id1&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id2&quot;:0 []&lt;/b&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-&amp;gt; &quot;stream_cif_mipi_id3&quot;:0 [ENABLED]&lt;/b&gt;&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-75" y="-630" width="250" height="490" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-95" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-95" value="" style="rounded=1;whiteSpace=wrap;html=1;fontStyle=1;horizontal=1;verticalAlign=top;" parent="1" vertex="1">
           <mxGeometry x="-477" y="-840" width="310" height="160" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-96" value="&lt;span&gt;entity (26)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-96" value="&lt;span&gt;entity (26)&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
           <mxGeometry x="-387" y="-850" width="140" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-98" value="&lt;u&gt;rockchip-csi2-dphy2 (2pad, 1link)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type V4L subdev subtype Unknown&lt;br&gt;device node name /dev/v4l-subdev1&lt;br&gt;--------------------------------------------------&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;b&gt;pad0: Sink&lt;br&gt;pad0: Source &lt;br&gt;-&amp;gt; &quot;rockchip-mipi-csi2&quot;: 0 [ ENABLED]&lt;/b&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-98" value="&lt;u&gt;rockchip-csi2-dphy2 (2pad, 1link)&lt;br&gt;&lt;/u&gt;&lt;br&gt;type V4L subdev subtype Unknown&lt;br&gt;device node name /dev/v4l-subdev1&lt;br&gt;--------------------------------------------------&lt;span style=&quot;font-style: normal;&quot;&gt;&lt;br&gt;&lt;b&gt;pad0: Sink&lt;br&gt;pad0: Source &lt;br&gt;-&amp;gt; &quot;rockchip-mipi-csi2&quot;: 0 [ ENABLED]&lt;/b&gt;&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontStyle=2" parent="1" vertex="1">
           <mxGeometry x="-442" y="-810" width="250" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-102" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;" edge="1" parent="1" source="kdGQfVKE4ZaCFEnb_GYk-100" target="kdGQfVKE4ZaCFEnb_GYk-101">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-102" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;curved=1;" parent="1" source="kdGQfVKE4ZaCFEnb_GYk-100" target="kdGQfVKE4ZaCFEnb_GYk-101" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-100" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#ffe6cc;strokeColor=#d79b00;dashed=1;opacity=50;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-100" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#ffe6cc;strokeColor=#d79b00;dashed=1;opacity=50;" parent="1" vertex="1">
           <mxGeometry x="-185" y="-710" width="50" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-101" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;opacity=50;" vertex="1" parent="1">
+        <mxCell id="kdGQfVKE4ZaCFEnb_GYk-101" value="pad0" style="rounded=0;whiteSpace=wrap;html=1;horizontal=1;fillColor=#dae8fc;strokeColor=#6c8ebf;dashed=1;opacity=50;" parent="1" vertex="1">
           <mxGeometry x="-132" y="-530" width="50" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="9_BZ0c151PW24dhCU4lt" name="develop">
-    <mxGraphModel dx="2074" dy="98" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="794" dy="98" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -606,6 +606,68 @@
         </mxCell>
         <mxCell id="g5OQStqn8uEKZKYvtfFz-2" value="&lt;div style=&quot;color: rgb(204, 204, 204); background-color: rgb(31, 31, 31); font-family: &amp;quot;Droid Sans Mono&amp;quot;, &amp;quot;monospace&amp;quot;, monospace; font-weight: normal; font-size: 11px; line-height: 15px;&quot;&gt;&lt;div&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;struct&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: #4ec9b0;&quot;&gt;tp2860_mode&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; {&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;    u32 &lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;width&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;    u32 &lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;height&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;struct&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: #4ec9b0;&quot;&gt;v4l2_fract&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;max_fps&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;    u32 &lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;field&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;    u32 &lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;bus_fmt&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;    &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;const&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: #569cd6;&quot;&gt;struct&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: #4ec9b0;&quot;&gt;regval&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: #d4d4d4;&quot;&gt;*&lt;/span&gt;&lt;span style=&quot;color: #9cdcfe;&quot;&gt;reg_list&lt;/span&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;color: #cccccc;&quot;&gt;};&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="1200" y="1370" width="230" height="140" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="mA3t_6tLQDhBkbtDIEJo" name="issue_vinError">
+    <mxGraphModel dx="934" dy="1409" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-1" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;fontColor=#4D4D4D;" vertex="1" parent="1">
+          <mxGeometry x="40" y="90" width="500" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.734;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=classic;startFill=1;strokeColor=#4D4D4D;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250.0000000000001" y="315" as="sourcePoint" />
+            <mxPoint x="289.9999999999999" y="314.8799999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-2" value="(tp2860)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontColor=#4D4D4D;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="110" y="270" width="140" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-3" value="sensor NTSC" style="points=[[0,0.5,0],[0.19,0.02,0],[0.59,0,0],[0.985,0.02,0],[1,0.5,0],[0.985,0.98,0],[0.59,1,0],[0.19,0.98,0]];verticalLabelPosition=bottom;sketch=0;html=1;verticalAlign=top;aspect=fixed;align=center;pointerEvents=1;shape=mxgraph.cisco19.camera;fillColor=#f8cecc;strokeColor=#b85450;fontColor=#4D4D4D;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="73" y="130" width="80" height="44.44" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-5" value="(VIN3)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;fontSize=10;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="150" y="270" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-6" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.59;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;strokeColor=#FF0000;dashed=1;" edge="1" parent="1" source="Bgs3qTuSjNTDne6vUHy3-3" target="Bgs3qTuSjNTDne6vUHy3-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="200" as="sourcePoint" />
+            <mxPoint x="10" y="610" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="120" y="250" />
+              <mxPoint x="180" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-7" value="Video Data Line &lt;br style=&quot;font-size: 13px;&quot;&gt;Switch On/Off" style="edgeLabel;resizable=0;html=1;align=center;verticalAlign=middle;fontStyle=5;fontColor=#FF0000;labelBackgroundColor=#FFFFCC;labelBorderColor=default;fontSize=13;" connectable="0" vertex="1" parent="Bgs3qTuSjNTDne6vUHy3-6">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint y="-30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-8" value="&lt;b&gt;&lt;font color=&quot;#4d4d4d&quot;&gt;(Host)&lt;br&gt;(rk3568)&lt;br&gt;&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#4D4D4D;" vertex="1" parent="1">
+          <mxGeometry x="290" y="120" width="210" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-13" value="i2c&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;" vertex="1" parent="1">
+          <mxGeometry x="240" y="310" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.734;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=none;startFill=0;strokeColor=#4D4D4D;dashed=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="250.0000000000001" y="395" as="sourcePoint" />
+            <mxPoint x="289.9999999999999" y="394.8799999999999" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-16" value="mipi&amp;nbsp;&lt;br&gt;(2lane)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;" vertex="1" parent="1">
+          <mxGeometry x="240" y="400" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-17" value="&lt;b&gt;&lt;u&gt;&lt;font face=&quot;Verdana&quot; style=&quot;font-size: 15px;&quot;&gt;tp2860 decoder test&amp;nbsp;&lt;/font&gt;&lt;/u&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;" vertex="1" parent="1">
+          <mxGeometry x="50" y="90" width="390" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bgs3qTuSjNTDne6vUHy3-18" value="(camera)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#cdeb8b;strokeColor=#36393d;fontColor=#4D4D4D;horizontal=0;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="290" y="290" width="40" height="140" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

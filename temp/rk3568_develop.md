@@ -155,3 +155,8 @@ make ARCH=arm64 rk3568-evb1-ddr4-v10.img -j24
 #pack
 ./build.sh u
 ```
+
+
+
+rk3568_mipi_phy
+ - lane_ck_ttago : 
