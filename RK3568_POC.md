@@ -102,7 +102,7 @@
 
 ### i2c
 
-- rk3568_rgb_p02 board
+- rk3568_rgb_p03 board
 
 ```bash
 +---------------+
@@ -118,11 +118,11 @@
 |    I2C3--+-M0-+ <----> touch ic
 |          +-M1-+
 |               |
-|    I2C4--+-M0-+ <----> pmic
+|    I2C4--+-M0-+ <----> pmic, decoder
 |          +-M1-+
 |               |
 |    I2C5--+-M0-+
-|          +-M1-+ <----> audio codec, decoder
+|          +-M1-+ <----> audio codec, proximity/ambient light sensor
 |               |
 |    I2C_HDMI---+
 +---------------+

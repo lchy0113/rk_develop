@@ -160,3 +160,8 @@ make ARCH=arm64 rk3568-evb1-ddr4-v10.img -j24
 
 rk3568_mipi_phy
  - lane_ck_ttago : 
+
+
+-----
+
+ 0x06 ( Reset Control ) [7] SRESET 을 제어할때 현상 발생. 

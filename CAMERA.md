@@ -1439,6 +1439,7 @@ $ adb shell dumpsys media.camera
 ---
 
 ## 7. rkisp
+
  rkisp1 isp 드라이버
  7.1 framework에 대한 설명
 
@@ -1519,6 +1520,22 @@ static int __init tp2802_module_init(void)
 Chapter27. MIPI CSI HOST는 CSI_RX_CTRL1(mipi-csi2@fdfb0000)와 mapping.
 Chapter28. MIPI CSI DPHY는 CSI_RX_PHY(csi2-dphy-hw@fe870000)와 mapping.
 
+
+## 9. MIPI CSI HOST
+ > 2249 page  
+
+ - Error detection and correction
+   * PHY level
+   * Packet level
+   * Line level
+   * Frame level
+ 
+## 10. MIPI CSI DPHY  
+ > 2259 page  
+  
+### MIPI CSI DPHY
+
+  
 
 ```bash
 // set power control  for cam
