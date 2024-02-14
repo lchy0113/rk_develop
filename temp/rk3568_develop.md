@@ -59,6 +59,7 @@ set Set_VidRes(TP2802_NTSC, ,0)
 v4l2-ctl  -d /dev/v4l-subdev2  --set-ctrl=test_pattern=1
 v4l2-ctl -d /dev/v4l-subdev3 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
@@ -165,3 +166,9 @@ rk3568_mipi_phy
 -----
 
  0x06 ( Reset Control ) [7] SRESET 을 제어할때 현상 발생. 
+
+ - mipi debugging timing
+```bash
+adb shell "io -4 -r -l 0x10 0xfe870140 ; io -4 -r -l 0x10 0xfe8701c0 ; io -4 -r -l 0x10 0xfe870240"
+```
+
