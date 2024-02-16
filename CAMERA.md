@@ -1422,6 +1422,7 @@ io -4 -l 0x10000 0xfdff0000 > /tmp/isp.reg
    - Android_metadata : Node에 포함된 정보는 Sensor 에서 지원하는 기능이며, 각 필드는 camera_module의 get_camrea_info() API를 통해 얻을 수 있습니다.
 
    - section *profiles*  
+  각각의 Camera는 하나의 "profiles" section 에 연결되어 설명됨. 
 
    - section *Android_metadata*  
    - section *Hal_tuning_RKISP1*  
