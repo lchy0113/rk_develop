@@ -207,7 +207,33 @@ select timeout
 
  - rockchip,cif-monitor 구성정보  
 ```dts
- rockchip,cif-monitor = <index0 index1 index2 index3 index4>;  
+&rkcif_mipi_lvds {
+	status = "okay";
+	/**
+	  * rockchip,cif-monitor = <index0 index1 index2 index3 index4>;  
+	  * parameters for do cif reset detecting: 
+	  *
+	  * index0 : monitor mode, 
+	  * 	0 for idle,
+	  * 	1 for continue,
+	  * 	2 for trigger,
+	  * 	3 for hotplug
+	  * index1 : the frame id to start timer,
+	  * 	min is 2
+	  * index2 : frame num of monitoring cycle
+	  * index3 : err time for keep monitoring 
+	  * 	after finding out err (ms)
+	  * index4 : csi2 err reference val for resetting
+	  */
+	rockchip,cif-monitor = <3 2 1 1000 5>;
+
+	port {
+		cif_mipi0_in: endpoint {
+			remote-endpoint = <&mipi0_csi2_output>;
+		};
+	};
+};
+
 ```  
    * **index0** : **timer monitor mode** reset mode 의 값을 갖으며, 4개의 mode가 있음.   
      + 0;No monitoring mode (idle) : default로 동작하는 mode( rockchip,cif-monitor node가 없는경우, 동작되는 mode)이며, vicap는 image anomaly monitoring을 수행하지 않는다.   
