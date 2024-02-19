@@ -78,7 +78,7 @@ ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1920x1080
 
 ## error 종류
 
-### capture 시, *select timeout* 에러 발생
+### error : capture 시, *select timeout* 에러 발생
 
 - 원인 : 이러한 에러가 발생할 수 있는 원인은 MIPI 장치가 제대로 동작하지 않았기 때문이며, 에러는 아래와 같다.
 
@@ -104,7 +104,7 @@ select timeout
 
 - 디버깅 : 드라이버가 정상 동작하는지 확인, MIPI채널 데이터가 통신되는지 확인. 
 
-### frame 에러 발생
+### error : frame 에러 발생
 
 - 원인 : rockchip-mipi-csi2: ERR1: error matching frame start with frame end, reg: 0x10,cnt:2 출력
 
@@ -116,7 +116,7 @@ select timeout
 - 디버깅 : 불안정한 하드웨어에 의해 발생되므로 하드웨어 체크가 필요함.
 
 
-### bandwidth lack
+### error : bandwidth lack
 
 - 원인 : 이미지를 출력할때 또는 캡처할때, rkcif_mipi_lvds: ERROR: csi bandwidth lack, intstat:0x80000!!와 같은 에러가 표시.
 
@@ -135,10 +135,10 @@ select timeout
 - 디버깅 : 이 문제는 대부분 FRAME FORMAT 불일치로 인해 발생됨.  예를 들어 드라이버에서는 MEDIA_BUS_FMT_UYVY8_2X8을 사용하지만, 캡처 시에는 NV12를 사용한다.  
 (NV12를 사용하는 Rockchip 의 이슈 일 수도..)
  NV16 과같은 포맷으로 변경하면 됨.
- FPS이슈도 함께 디버깅 필요. 에러 발생 시, fps 가 낮아짐.
+ **FPS이슈도 함께 디버깅 필요. 에러 발생 시, fps 가 낮아짐.**
+  
 
-
-### 간섭 오류
+### error : 간섭 오류
 
 - 원인 : 데이터 채널이 방해를 받으면 rockchip-mipi-csi2: ERR1: crc errors, reg: 0x1000000, cnt:1 발생.
 
@@ -166,19 +166,19 @@ select timeout
 [2024-02-06 15:58:27.903] [   41.443767] rockchip-mipi-csi2: ERR1: crc errors, reg: 0x10000000, cnt:12
 [2024-02-06 15:58:27.903] [   41.443805] rockchip-mipi-csi2: ERR1: crc errors, reg: 0x10000000, cnt:13
 [2024-02-06 15:58:27.904] [   41.443824] rockchip-mipi-csi2: ERR1: crc errors, reg: 0x10000000, cnt:14
-[2024-02-06 15:58:27.904] [   41.443853] rockchip-mipi-csi2: ERR1: crc errors, reg: 0x10000000, cnt:15              
+[2024-02-06 15:58:27.904] [   41.443853] rockchip-mipi-csi2: ERR1: crc errors, reg: 0x10000000, cnt:15 
 ```
 
 - 디버깅 : 하드웨어가 불안정하여 발생하는 현상이지만, 이러한 현상이 발생하더라도 영상이 정상적으로 출력됨.
 
 
-### ROCKCHIP Micro VI 모듈 사용(vicap)
+### error : ROCKCHIP Micro VI 모듈 사용(vicap)
 
 - 원인 : tp2860 모듈의 MIPI 채널에 연결된 신호는 YUV422 FORMAT이므로 ISP모듈을 거치지 않고 CIF 모듈을 통해서만 데이터를 출력하면 됨. video0 노드로 부터 이미지 출력시 에러가 발생됨.
 - 디버깅 : 에러 원인은 VI 모듈이 기본적으로 DMA에서 데이터를 얻는 반면 CIF는 메모리에서 전송되므로 아래 그림과 같이 메모리에서 데이터를 얻기 위해 VI 모듈의 데이터 소스를 변경해야 한다.
 
 
-### 이미지 분할 화면 문제
+### error : 이미지 분할 화면 문제
 
 - 원인 : MIPI 채널이 간섭을 받으면 화면 분할 문제가 발생함. 재현시키기 위해서는 MIPI채널의 데이터 라인이나 Clock 라인에 간섭을 시키면 발생.
 - 디버깅 : 2가지 디버깅 방법이 있다. 
@@ -192,9 +192,22 @@ select timeout
 		rockchip,cif-monitor = <3 2 10 1000 5>;
 ```
 
- - rockchip,cif-monotor 구성정보
+### error : ISP parameter 업데이트 문제
+
+- 원인 : 카메라 드라이버의 이미지 해상도를 변경한 후에도, 아래와 같이 ISP는 이전 FORAMT 값이 저장되 있는 것을 확인.
+- 디버깅 : 센서가 서로 다른 해상도의 Raw 데이터를 출력하도록 하려면 먼저 카메라 드라이버의 초기화 목록을 변경한 후, ISP가 다른 해상도의 이미지 포맷을 얻을 수 있도록  3A를 재 시작 해야함.  
+
+
+### error : VICAP Abnormal 초기화
+
+- 원인 : Rockchip 플랫폼은 드라이버에 exception reset Function을 추가했다. rk3568의 경우 drivers/media/platform 에 있음. 
+
+
+## cif monitor 
+
+ - rockchip,cif-monitor 구성정보
  rockchip,cif-monitor = <index0 index1 index2 index3 index4>;  
-   * index0 : reset mode 의 값을 갖으며, 4개의 mode가 있음.   
+   * index0 : **timer monitor mode** reset mode 의 값을 갖으며, 4개의 mode가 있음.   
      + 0;No monitoring mode (idle) : default로 동작하는 mode( rockchip,cif-monitor node가 없는경우, 동작되는 mode)이며, vicap는 image anomaly monitoring을 수행하지 않는다.   
      + 1;continue mode : 1 값을 갖으며, mipi error 또는 실시간 에러 발생 등을 모니터링 하는데 사용한다. 에러 발생 시, vicap을 reset한다.  
        + detection 방법은 index1에 설정된 frame count에 도달하면 timer가 frame bit를 초기화 하고, 모니터링을 시작하며, 오류가 발생하면 해당 프레임 수에 도달 한 후 reset한다.
@@ -203,17 +216,30 @@ select timeout
 	 + 3;hot plug mode : car-to-machine chips를 대상으로 하며, device가 plug 및 unplug했을 때, 중단되는 문제를 해결하는데 사용. 이 mode에는 "continuous mode" 의 기능이 있다. 
 
 	+ RKMODULE_SET_VICAP_RST_INFO 명령은 reset 활성화를 한 후, vicap은 RKMODULE_GET_VICAP_RST_INFO를 통해 정보를 얻은 후 Reset 작업을 트리거 한다.
-   * index1 : continue 또는 hotplug mode의 경우, *index1 에 정의된 frame data를 수집한 후*, 모니터링 타이머가 트리거 된다.   
-   * index2 : 모니터링 타이머의 주기는 한 프레임 단위로 index2 프레임.   
-   * index3 : reset 타이머의 매개변수. vicap csi2의 에러가 발생된 후, 정의된 시간 내 모니터링이 계속된다. 감지된 오류는 더이상 증가하지 않으면 재설정이 수행된다.    
-   * index4 : mipi csi 의  오류 발생 횟수를 설정하는데 사용. 이숫자에 도달하면 reset 이 트리거 된다.  
-  
-### ISP parameter 업데이트 문제
+   * index1 : **timer triggered frame numer**  
+              continue 또는 hotplug mode의 경우, *index1 에 정의된 frame data를 수집한 후*, 모니터링 타이머가 트리거 된다.   
+   * index2 : **timer frame number of monitor cycle**
+              모니터링 타이머의 주기는 한 프레임 단위로 index2 프레임.   
+   * index3 : **timer error time for keeping(unit:ms) **
+              reset 타이머의 매개변수. vicap csi2의 에러가 발생된 후, 정의된 시간 내 모니터링이 계속된다. 감지된 오류는 더이상 증가하지 않으면 재설정이 수행된다.    
+   * index4 : **timer csi2 error reference value for resetting**
+              mipi csi 의  오류 발생 횟수를 설정하는데 사용. 이숫자에 도달하면 reset 이 트리거 된다.  
+   
+|     ROCKCHIP_CIF_USE_MONITOR     |                                                             Monitor 매커니즘 활성화 여부는 기본적으로 비활성화 되어 있음.                                                            |
+|:--------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| ROCKCHIP_CIF_MONITOR_MODE        | Monitor 모드                                                                                                                                                                         |
+| ROCKCHIP_CIF_MONITOR_START_FRAME | detect start이 시작되는 Frame을 지정. 0 값을 권장. 기본적으로 데이터 스트림은 켜져있을때 detecting됨.                                                                                |
+| ROCKCHIP_CIF_MONITOR_CYCLE       | detection perio, in Frame.<br>frame rate가 25fps 이고, 구성이 4인 경우 detection period는 40ms*4.<br>프로젝트에 따라 detection interval을 조정.<br>detection period는 약 400ms 권장. |
 
-- 원인 : 카메라 드라이버의 이미지 해상도를 변경한 후에도, 아래와 같이 ISP는 이전 FORAMT 값이 저장되 있는 것을 확인.
-- 디버깅 : 센서가 서로 다른 해상도의 Raw 데이터를 출력하도록 하려면 먼저 카메라 드라이버의 초기화 목록을 변경한 후, ISP가 다른 해상도의 이미지 포맷을 얻을 수 있도록  3A를 재 시작 해야함.  
+
+```c
+//code 
+
+rkcif_reset_watchdog_timer_handler() 
+ // watchdog timer handler 를 initialize
 
 
-### VICAP Abnormal 초기화
+rkcif_detect_reset_event()
+ // detect reset event 
+```
 
-- 원인 : Rockchip 플랫폼은 드라이버에 exception reset Function을 추가했다. rk3568의 경우 drivers/media/platform 에 있음. 
