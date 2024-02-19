@@ -205,9 +205,11 @@ select timeout
 
 ## cif monitor 
 
- - rockchip,cif-monitor 구성정보
+ - rockchip,cif-monitor 구성정보  
+```dts
  rockchip,cif-monitor = <index0 index1 index2 index3 index4>;  
-   * index0 : **timer monitor mode** reset mode 의 값을 갖으며, 4개의 mode가 있음.   
+```  
+   * **index0** : **timer monitor mode** reset mode 의 값을 갖으며, 4개의 mode가 있음.   
      + 0;No monitoring mode (idle) : default로 동작하는 mode( rockchip,cif-monitor node가 없는경우, 동작되는 mode)이며, vicap는 image anomaly monitoring을 수행하지 않는다.   
      + 1;continue mode : 1 값을 갖으며, mipi error 또는 실시간 에러 발생 등을 모니터링 하는데 사용한다. 에러 발생 시, vicap을 reset한다.  
        + detection 방법은 index1에 설정된 frame count에 도달하면 timer가 frame bit를 초기화 하고, 모니터링을 시작하며, 오류가 발생하면 해당 프레임 수에 도달 한 후 reset한다.
@@ -216,15 +218,15 @@ select timeout
 	 + 3;hot plug mode : car-to-machine chips를 대상으로 하며, device가 plug 및 unplug했을 때, 중단되는 문제를 해결하는데 사용. 이 mode에는 "continuous mode" 의 기능이 있다. 
 
 	+ RKMODULE_SET_VICAP_RST_INFO 명령은 reset 활성화를 한 후, vicap은 RKMODULE_GET_VICAP_RST_INFO를 통해 정보를 얻은 후 Reset 작업을 트리거 한다.
-   * index1 : **timer triggered frame numer**  
+   * **index1** : **timer triggered frame numer**  
               continue 또는 hotplug mode의 경우, *index1 에 정의된 frame data를 수집한 후*, 모니터링 타이머가 트리거 된다.   
-   * index2 : **timer frame number of monitor cycle**
+   * **index2** : **timer frame number of monitor cycle**
               모니터링 타이머의 주기는 한 프레임 단위로 index2 프레임.   
-   * index3 : **timer error time for keeping(unit:ms) **
+   * **index3** : **timer error time for keeping(unit:ms) **
               reset 타이머의 매개변수. vicap csi2의 에러가 발생된 후, 정의된 시간 내 모니터링이 계속된다. 감지된 오류는 더이상 증가하지 않으면 재설정이 수행된다.    
-   * index4 : **timer csi2 error reference value for resetting**
+   * **index4** : **timer csi2 error reference value for resetting**
               mipi csi 의  오류 발생 횟수를 설정하는데 사용. 이숫자에 도달하면 reset 이 트리거 된다.  
-   
+     
 |     ROCKCHIP_CIF_USE_MONITOR     |                                                             Monitor 매커니즘 활성화 여부는 기본적으로 비활성화 되어 있음.                                                            |
 |:--------------------------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 | ROCKCHIP_CIF_MONITOR_MODE        | Monitor 모드                                                                                                                                                                         |
