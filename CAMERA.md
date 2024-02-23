@@ -1443,6 +1443,20 @@ $ adb shell dumpsys media.camera
 	</Sensor_info_RKISP1>
 
 ```
+
+
+ > Android Camera Framework 에서 "LEGACY 레벨"과 "LIMITED 레벨"에 대한 설명
+ >  - LEGACY 레벨 : 카메라 API1 과 호환.
+ >  - LIMITED 레벨 : 카메라 API2 를 지원(카메라 HAL v3.2이상 시)
+
+```xml
+<scaler.availableInputOutputFormatsMap value="IMPLEMENTATION_DEFINED,2,YCbCr_420_888,BLOB,YCbCr_420_888,2,YCbCr_420_888,BLOB"/> <!-- SHOULD NOT EDIT -->
+<!--
+	이 값은 카메라 스트림의 입력과 출력 형식을 매핑하는 것을 나타냄. 
+	1. 입력 형식 : YCbCr_420_888 은 YUV 4:2:0 형식의 입력 스트림을 나타냄. 
+	2. 출력 형식 : BLOB(Binary Large OBject) 은 이미지 데이터를 의미함. (일반적으로 JPEG, RAW 형식이 해당)
+-->
+```
  
 ---
 
