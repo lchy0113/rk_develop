@@ -136,6 +136,10 @@ select timeout
 (NV12를 사용하는 Rockchip 의 이슈 일 수도..)
  NV16 과같은 포맷으로 변경하면 됨.
  **FPS이슈도 함께 디버깅 필요. 에러 발생 시, fps 가 낮아짐.**
+
+```bash
+cat /proc/rkcif_mipi_lvds
+```
   
 
 ### error : 간섭 오류
