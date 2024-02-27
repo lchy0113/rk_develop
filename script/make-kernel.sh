@@ -5,17 +5,24 @@ source ../build/envsetup.sh >/dev/null
 BUILD_PATH="../build_linux_4.19.232"
 ADDON_ARGS="CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1"
 KERNEL_ARCH="arm64"
-KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config kconfig.config"
 TARGET_DEVICE=`get_build_var TARGET_PRODUCT`
 KERNEL_DTS=`get_build_var PRODUCT_KERNEL_DTS`
+KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config kconfig.config $TARGET_DEVICE.config"
 
-echo -e $TARGET_DEVICE
-echo -e $KERNEL_DTS
+echo -e "TARGET_DEVICE:"$TARGET_DEVICE
+echo -e "KERNEL_DTS:"$KERNEL_DTS
 
 if [ ! -f ./kernel/configs/kconfig.config ]; then
 	echo "...link kconfig.config"
 	cd ./kernel/configs/
 	ln -s ../../../device/kdiwin/test/common/configs/kconfig.config kconfig.config
+	cd -
+fi
+
+if [ ! -f ./kernel/configs/$TARGET_DEVICE.config ]; then
+	echo "...link $TARGET_DEVICE.config"
+	cd ./kernel/configs/
+	ln -s ../../../device/kdiwin/test/$TARGET_DEVICE/configs/kconfig.config $TARGET_DEVICE.config
 	cd -
 fi
 
