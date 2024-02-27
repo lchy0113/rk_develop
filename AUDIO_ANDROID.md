@@ -807,6 +807,9 @@ service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
  ## site 
  - AOSP : https://source.android.com/docs/core/audio
 
+
+ - ref QUBER company : 
+  ![](./images/AUDIO_ANDROID_03.png)  
   
 
 
