@@ -3,7 +3,7 @@
  Fn-Link 6222B-SRC 
 
  FN-Link 사에서 제공하는 6222B-SRC(WiFi 모듈) 
- Realtek RTL8822CS IC을 기반으로 함.
+ **Realtek RTL8822CS** IC을 기반으로 함.
 
  - wifi표준 : IEEE 802.11 a/b/g/n/ac
  - 데이터전송률 : 최대 867Mbps
