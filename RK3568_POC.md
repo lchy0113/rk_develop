@@ -11,15 +11,16 @@
 ## Device Map
 
 ### serial
- - rk3568_rgb_p02 board
  - upper layer에는 아래와 같은 serial node로 제공.
+ - rgb(p04), edp(p03)
 
-| **serial dev node** 	| **connect device**   	|
-|-------------------	|----------------------	|
-| /dev/ttyS0        	| rs485;device control 	|
-| /dev/ttyS1        	| rs485;sub-phone      	|
-| /dev/ttyS2        	| zigbee               	|
-| /dev/ttyS3        	| temp                 	|
+| **serial dev node** 	| **connect device**    	|
+|-------------------	|---------------------------|
+| /dev/ttyS0        	| rs485;device control  	|
+| /dev/ttyS1        	| rs485;sub-phone,door lock	|
+| /dev/ttyS2        	| rs485;rfid door        	|
+| /dev/ttyS3        	| zigbee                	|
+| /dev/ttyS4        	| bluetooth                	|
 
 
  - rk3568_rgb_p02 board
