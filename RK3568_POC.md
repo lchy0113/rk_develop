@@ -10,11 +10,11 @@
 
 ## Device Map
 
-### uart
+### serial
  - rk3568_rgb_p02 board
- - upper layer에는 아래와 같은 uart node로 제공.
+ - upper layer에는 아래와 같은 serial node로 제공.
 
-| **uart dev node** 	| **connect device**   	|
+| **serial dev node** 	| **connect device**   	|
 |-------------------	|----------------------	|
 | /dev/ttyS0        	| rs485;device control 	|
 | /dev/ttyS1        	| rs485;sub-phone      	|
@@ -28,33 +28,33 @@
 +---------------+
 | [RK3568]      |
 |               |
-|    UART0------+ <-----> zigbee	(rk3568_rgb_p01: micom)
+|  SERIAL0------+ <-----> zigbee	(rk3568_rgb_p01: micom)
 |               |
-|    UART1-+-M0-+
+|  SERIAL1-+-M0-+
 |          +-M1-+
 |               |
-|    UART2-+-M0-+ <----> device control;rs485  (rk3568_rgb_p01: debug)
+|  SERIAL2-+-M0-+ <----> device control;rs485  (rk3568_rgb_p01: debug)
 |          +-M1-+
 |               |
-|    UART3-+-M0-+	(rk3558_rgb_p01: pstn modem)
+|  SERIAL3-+-M0-+	(rk3558_rgb_p01: pstn modem)
 |          +-M1-+
 |               |
-|    UART4-+-M0-+	(rk3568_rgb_p01: device control;rs485)
+|  SERIAL4-+-M0-+	(rk3568_rgb_p01: device control;rs485)
 |          +-M1-+ <----> debug
 |               |
-|    UART5-+-M0-+
+|  SERIAL5-+-M0-+
 |          +-M1-+
 |               |
-|    UART6-+-M0-+ <----> sub;rs485
+|  SERIAL6-+-M0-+ <----> sub;rs485
 |          +-M1-+
 |               |
-|    UART7-+-M0-+
+|  SERIAL7-+-M0-+
 |          +-M1-+
 |               |
-|    UART8-+-M0-+
+|  SERIAL8-+-M0-+
 |          +-M1-+
 |               |
-|    UART9-+-M0-+ <----> mcu(temp)
+|  SERIAL9-+-M0-+ <----> mcu(temp)
 |          +-M1-+
 |               |
 +---------------+
@@ -66,37 +66,116 @@
 +---------------+
 | [RK3568]      |
 |               |
-|    UART0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
 |               |
-|    UART1-+-M0-+
+|  SERIAL1-+-M0-+
 |          +-M1-+
 |               |
-|    UART2-+-M0-+ <----> zigbee(to be) aliases:serial2
+|  SERIAL2-+-M0-+ <----> zigbee(to be) aliases:serial2
 |          +-M1-+
 |               |
-|    UART3-+-M0-+
+|  SERIAL3-+-M0-+
 |          +-M1-+
 |               |
-|    UART4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) aliases:serial1
+|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) aliases:serial1
 |          +-M1-+
 |               |
-|    UART5-+-M0-+
+|  SERIAL5-+-M0-+
 |          +-M1-+
 |               |
-|    UART6-+-M0-+ <----> ladar aliases:serial3
+|  SERIAL6-+-M0-+ <----> ladar aliases:serial3
 |          +-M1-+
 |               |
-|    UART7-+-M0-+
+|  SERIAL7-+-M0-+
 |          +-M1-+
 |               |
-|    UART8-+-M0-+
+|  SERIAL8-+-M0-+
 |          +-M1-+
 |               |
-|    UART9-+-M0-+ <----> debug
+|  SERIAL9-+-M0-+ <----> debug
 |          +-M1-+
 |               |
 +---------------+
 ```
+
+
+ - rk3568_rgb_p04 board
+	  
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|               |
+|  SERIAL1-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL2-+-M0-+ <----> zigbee aliases:serial3
+|          +-M1-+
+|               |
+|  SERIAL3-+-M0-+ <----> rfid door	aliases:serial2
+|          +-M1-+
+|               |
+|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) door lock aliases:serial1
+|          +-M1-+
+|               |
+|  SERIAL5-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL6-+-M0-+ <----> bluetooth
+|          +-M1-+
+|               |
+|  SERIAL7-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL8-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL9-+-M0-+ <----> debug
+|          +-M1-+
+|               |
++---------------+
+```
+
+ - rk3568_edp_p03 board
+	  
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|               |
+|  SERIAL1-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL2-+-M0-+ <----> zigbee aliases:serial3
+|          +-M1-+
+|               |
+|  SERIAL3-+-M0-+ <----> rfid door	aliases:serial2
+|          +-M1-+
+|               |
+|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) door lock aliases:serial1
+|          +-M1-+
+|               |
+|  SERIAL5-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL6-+-M0-+ <----> bluetooth
+|          +-M1-+
+|               |
+|  SERIAL7-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL8-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL9-+-M0-+ <----> debug
+|          +-M1-+
+|               |
++---------------+
+```
+
+
 
 ----
 
@@ -149,6 +228,58 @@
 |               |
 |    I2C5--+-M0-+
 |          +-M1-+ <----> audio codec, decoder
+|               |
+|    I2C_HDMI---+
++---------------+
+```
+
+- rk3568_rgb_p04 board
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|    I2C0-------+
+|               |
+|    I2C1-------+ <----> hot key, touch ic
+|               |
+|    I2C2--+-M0-+
+|          +-M1-+ <----> internal cam
+|               |
+|    I2C3--+-M0-+
+|          +-M1-+
+|               |
+|    I2C4--+-M0-+ <----> pmic, decoder
+|          +-M1-+
+|               |
+|    I2C5--+-M0-+
+|          +-M1-+ <----> audio codec, proximity/ambient light sensor
+|               |
+|    I2C_HDMI---+
++---------------+
+```
+
+- rk3568_edp_p03 board
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|    I2C0-------+
+|               |
+|    I2C1-------+ <----> hot key, touch ic
+|               |
+|    I2C2--+-M0-+
+|          +-M1-+ <----> internal cam(option)
+|               |
+|    I2C3--+-M0-+ 
+|          +-M1-+
+|               |
+|    I2C4--+-M0-+ <----> pmic, decoder
+|          +-M1-+
+|               |
+|    I2C5--+-M0-+
+|          +-M1-+ <----> audio codec
 |               |
 |    I2C_HDMI---+
 +---------------+
