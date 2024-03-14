@@ -1,5 +1,23 @@
 # Memo 
 -----
+## Audio
+
+```bash
+# pctl
+adb shell "echo 40 > sys/class/gpio/export ; echo "out"  > /sys/class/gpio/gpio40/direction ; echo 1 > /sys/class/gpio/gpio40/value"
+
+# push lib audio
+adb root ; adb remount ; adb push .\audio.primary.rk30board.so /vendor/lib/hw
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+-----
+
 ## Camera
 
 
@@ -61,7 +79,7 @@ v4l2-ctl -d /dev/v4l-subdev3 --set-fmt-video=width=720,height=480,pixelformat=NV
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
-v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
 v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-skip=1 --stream-to=/data/local/tmp/out.yuv --stream-count=1 --stream-poll
 [rockchip] 
@@ -71,6 +89,36 @@ echo 0 > /sys/devices/platform/rkcif_mipi_lvds/compact_test
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1920x1080
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 2592x1944
+
+```bash
+// List available formats for ffmpeg
+ffmpeg -pix_fmts
+
+// Convert a 720x480 nv12 (yuv 420 semi-planar) image to png
+ffmpeg -s 720x480 -pix_fmt nv12 -i frame_out.yuv -f image2 -pix_fmt rgb24 frame_out.png
+
+// Convert a 640x480 uyvy422 image to png
+ffmpeg -s 640x480 -pix_fmt uyvy422 -i frame_out.yuv -f image2 -pix_fmt rgb24 frame_out.png
+
+// Display a 640x480 grayscale raw rgb file
+display -size 640x480 -depth 8 captdump-nv12.rgb
+
+// Convert a 640x480 grayscale raw rgb file to png
+convert -size 640x480 -depth 8 captdump-nv12.rgb image.png
+
+// play 
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+```
+
+```bash
+// v4l2 command
+
+// capture raw stream
+v4l2-ctl --device /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap  --stream-to=./output_720x480.yuv --stream-count=1
+
+// recording raw stream
+v4l2-ctl --device /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=nv12 --stream-mmap --stream-to=output_video_720x480.yuv --stream-count=100
+```
 
 // push xml
 adb push hardware/rockchip/camera/etc/camera/camera3_profiles_rk356x.xml /vendor/etc/camera/camera3_profiles.xml
