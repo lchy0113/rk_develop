@@ -81,12 +81,12 @@ v4l2-ctl -d /dev/video0 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 
 v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
-v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-skip=1 --stream-to=/data/local/tmp/out.yuv --stream-count=1 --stream-poll
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=1440,height=480,pixelformat=NV12 --stream-mmap=3 --stream-skip=1 --stream-to=/data/local/tmp/out.yuv --stream-count=1 --stream-poll
 [rockchip] 
 echo 0 > /sys/devices/platform/rkcif_mipi_lvds/compact_test
 
 
-ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1920x1080
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1440x480
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 2592x1944
 
@@ -133,6 +133,13 @@ echo 7 > /sys/module/videobuf2_core/parameters/debug
 
 // v4l2 log : ioctl ....
 echo 0x1f > /sys/class/video4linux/video0/dev_debug
+
+
+// Decoding Control
+tp2860 w 0x02 0x4f
+
+// SRESET ; Reset Control
+tp2860 w 0x06 0xb2 
 
 -----
 gpio GPIO0_B7(RST_CH710)

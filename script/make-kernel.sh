@@ -12,6 +12,16 @@ KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config dis
 echo -e "TARGET_DEVICE:"$TARGET_DEVICE
 echo -e "KERNEL_DTS:"$KERNEL_DTS
 
+if [ -f ./logo.bmp.dev ]; then
+	echo "...change bootlogo to develop"
+	cp logo.bmp.dev logo.bmp
+fi
+
+if [ -f ./logo_kernel.bmp.dev ]; then
+	echo "...change kernellogo to develop"
+	cp logo_kernel.bmp.dev logo_kernel.bmp
+fi
+
 if [ ! -f ./kernel/configs/kconfig.config ]; then
 	echo "...link kconfig.config"
 	cd ./kernel/configs/
