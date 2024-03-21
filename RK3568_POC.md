@@ -98,6 +98,44 @@
 |               |
 +---------------+
 ```
+ - rk3568_edp_p03 board
+	  
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|               |
+|  SERIAL1-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL2-+-M0-+ <----> zigbee(to be) aliases:serial2
+|          +-M1-+
+|               |
+|  SERIAL3-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) aliases:serial1
+|          +-M1-+
+|               |
+|  SERIAL5-+-M0-+ <----> 
+|          +-M1-+
+|               |
+|  SERIAL6-+-M0-+ <----> ladar aliases:serial3
+|          +-M1-+
+|               |
+|  SERIAL7-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL8-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL9-+-M0-+ <----> debug
+|          +-M1-+
+|               |
++---------------+
+```
+
 
 
  - rk3568_rgb_p04 board
