@@ -1,5 +1,12 @@
 # AUDIO_DEV
 
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+
+----
+	
 ## wallpad - door
 
 - SEL_DC : GPIO0_A6
@@ -18,7 +25,12 @@
 # io -4 -w 0xfdd60000 0x00400000 
 ```
 
+<br/>  
+<br/>  
+<br/>  
+<br/>  
 
+----
 	
 
 
@@ -97,6 +109,13 @@ adev_open_output_stream()
 -----
 
 
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+
+----
+	
 
 
 
