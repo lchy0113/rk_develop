@@ -22,7 +22,7 @@
 	
 
 
-## audio hal
+## [analyse]audio_hal
 
 alsa_route.c
 
@@ -76,7 +76,36 @@ route_pcm_open()
 	|    /**
 	|      * route 값을 근거로 mixer 값을 가지고 set_controls를 진행.
 	|      */ 
+```
+
+audio_hw.c
+```c
+adev_open_output_stream()
+	|	/** 
+	|     * adev_open_output_stream() 함수는 출력 장치를 열고, 해당 장치에 대한 출력 스트림을 생성.
+	|     * audio_device_t device : 열고자하는 출력 장치를 지정.
+    |     *                         정수형 상수로, 다양한 출력 장치를 나타냄.(ex. 스피커, 헤드폰, HDMI)
+	|     *                         각 장치는 고유한 ID를 가지며, 이 ID를 사용하여 해당 장치를 선택
+	|     * audio_output_flags_t flags : 출력 스트림에 대한 특정 플래그를 지정.
+	|     *                              audio_output_flags_t는 비트필드로 특성을 조합할 수있다. 
+	|     *                              AUDIO_OUTPUT_FLAG_DIRECT : 직접 출력 모드를 사용. 
+	|     *                              AUDIO_OUTPUT_FLAG_PRIMARY : 기본 출력장치를 사용.
+	|     */
 
 ```
 
 -----
+
+
+
+
+
+## [develop]
+
+ - IO Control Path 를 사용하여 관련 GPO 제어
+```bash
+Card:0
+  id iface dev sub idx num perms     type   name
+     1 MIXER   0   0   0   1 rw        ENUM   IO Control Path: (0 STBY) { STBY=0, DOOR_CALL=1, DOOR_TALK=2, DOOR_SUB_TALK=3, VOIP_SUB_TALK=4 }
+	  
+```
