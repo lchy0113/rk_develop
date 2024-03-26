@@ -80,7 +80,7 @@ v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video1 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1 
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
-v4l2-ctl -d /dev/video0 --set-fmt-video=width=720,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
+v4l2-ctl -d /dev/video0 --set-fmt-video=width=960,height=480,pixelformat=YUYV --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=100 --stream-count=1 --stream-poll
 v4l2-ctl -d /dev/video0 --set-fmt-video=width=1440,height=480,pixelformat=NV12 --stream-mmap=3 --stream-skip=1 --stream-to=/data/local/tmp/out.yuv --stream-count=1 --stream-poll
 [rockchip] 
 echo 0 > /sys/devices/platform/rkcif_mipi_lvds/compact_test

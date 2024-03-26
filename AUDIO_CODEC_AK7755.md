@@ -115,6 +115,29 @@ Index
 
 # Develop
 
+## ASoC : Audio System on Chip
+
+
+```c
+struct snd_soc_component_driver
+ | // devm_snd_soc_register_component() 를 통해 codec 등록
+ |
+ +-> probe
+ |    |
+ |    +-> snd_soc_add_component_controls()
+ |
+ +-> remove
+ |
+ |
+ +-> controls 
+ |
+ +-> dapm_widgets
+ |
+ +-> dapm_routes
+
+(...)
+```
+
 
 ## sound card 
 
