@@ -39,6 +39,42 @@
 ## [analyse]audio_hal
 
 
+### [analyse] audio package related
+
+ device/rockchip/common/device.mk 파일에 packages가 선언됨.
+
+ - audio interface
+
+ 
+```bash
+PRODUCT_PACKAGES += \ 
+	android.hardware.audio@2.0-service \ 
+	android.hardware.audio@7.0-impl \ 
+	android.hardware.audio.effect@7.0-impl
+```
+
+ android.hardware.audio@2.0-service : core HAL, effect HAL API를 포함. 
+ 	- core HAL : AudioFlinger가 오디오를 재생하고 오디오 라우팅을 제어하는데 사용하는 주API.
+	- effect HAL : effect framework가 오디오 effect를 제어하는 데 사용되는 API
+ android.hardware.audio@7.0-impl : common HAL API와 관련 있음.
+ 	- common HAL API : core 및 effect HAL 에서 공통적으로 사용되는 데이터 유형의 라이브러리. 인터페이스는 없으며 데이터 구조만 정의함. 
+
+
+ - audo lib
+
+ 안드로이드 시스템에서 사용되는 오디오 라이브러리. 
+ 오디오 하드웨어와 상호 작용하며, Android 운영체제의 오디오 기능을 제어하는데 사용.
+ 오디오 출력 및 입력을 관리하며, 스피커, 헤드폰, 마이크 등과 상호작용. 
+
+```bash
+PRODUCT_PACKAGES += \
+	audio_policy.$(TARGET_BOARD_HARDWARE) \ 
+	audio.primary.$(TARGET_BOARD_HARDWARE) \
+	...
+```
+
+ hardware/rockchip/audio/tinyalsa_hal/Android.mk 정의
+
 ### [analyse] audio interface
 
 upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
