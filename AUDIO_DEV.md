@@ -9,7 +9,7 @@
 
 ----
 	
-## wallpad - door
+## io contorl - door
 
 - SEL_DC : GPIO0_A6
   * High(Active)  
@@ -37,6 +37,25 @@
 
 
 ## [analyse]audio_hal
+
+
+### [analyse] audio interface
+
+upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
+
+아래 경로에 코드 위치
+ - hardware/libhardware/include/hardware/ 
+
+Audio HAL 관련 2개 interface 제공
+ 1. audio device의 main function을 제공하는 interface
+ hardware/libhardware/include/hardware/audio.h
+
+ 2. effect(echo cancellation, noise suppression, downmixing, etc) interface 제공
+ hardwrae/libhardware/include/hardware/audio_effect.h
+
+
+
+### [analyse] tinyalsa
 
 alsa_route.c
 
@@ -122,6 +141,28 @@ adev_open_output_stream()
 
 
 ## [develop]
+
+ - regmap 
+
+> regmap은 cache mechanism base로 운영된다. 
+> register가 io명령을 통해 직접수행될 때, driver의 regmap cache를 비활성화 하지 않는 경우, 
+> regmap node는 업데이트 된 레지스터를 반영하지 않는다.
+
+```bash
+/sys/kernel/debug/regmap/5-0018-ak7755-codec/register
+
+// disable cache
+
+# echo N > cache_only
+[148833.374641] rockchip-i2s-tdm ff800000.i2s: debugfs cache_only=N forced:
+syncing cache
+
+# echo Y > cache_bypass
+[148834.760274] rockchip-i2s-tdm ff800000.i2s: debugfs cache_bypass=Y forced
+```
+
+
+
 
  - IO Control Path 를 사용하여 관련 GPO 제어
 ```bash
