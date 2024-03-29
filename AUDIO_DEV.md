@@ -70,7 +70,7 @@ PRODUCT_PACKAGES += \
 	- code : hardware/interfaces/audio/core/all-versions/default/
 
 
- - audo lib
+ - audio lib
 
  안드로이드 시스템에서 사용되는 오디오 라이브러리. 
  오디오 하드웨어와 상호 작용하며, Android 운영체제의 오디오 기능을 제어하는데 사용.
@@ -104,6 +104,25 @@ Audio HAL 관련 2개 interface 제공
 
 
 ### [analyse] tinyalsa
+
+#### audio
+
+ - adev_create_audio_path
+```c
+// playback
+adev_create_audio_patch sum_sources:1,num_sinks:1,mix(d)->device(2),handle:0xffaefcf4
+// system/media/audio/include/system/audio-hal-enums.h
+// mix(d) : // audio port 가 sub mix 인 경우, audio port configuration structre 에 대한 확장.
+// device(2) : AUDIO_DEVICE_OUT_SPEAKER // audio port가 hardware device인 경우, audio port configuration structure 에 대한 extension
+
+// record
+adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),handle:0xedabba1c
+// system/media/audio/include/system/audio-hal-enums.h
+// device(80000004) : AUDIO_DEVICE_IN_BUILTIN_MIC // audio port가 hardware device인 경우, audio port configuration structure 에 대한 extension
+// mix(1e) : // audio port 가 sub mix 인 경우, audio port configuration structre 에 대한 확장.
+```
+
+#### route 
 
 alsa_route.c
 
