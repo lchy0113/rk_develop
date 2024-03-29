@@ -53,11 +53,21 @@ PRODUCT_PACKAGES += \
 	android.hardware.audio.effect@7.0-impl
 ```
 
- android.hardware.audio@2.0-service : core HAL, effect HAL API를 포함. 
+> android.hardware.audio@2.0-service, android.hardware.audio@7.0-impl naming rule
+> android : Android System 
+> hardware : hardware interface
+> audio : audio hardware interface 
+> 2.0 or 7.0 : version
+> service : service는 인터페이스를 정의하고 해당 인터페이스를 구현하는 코드를 포함. 
+> impl : service에서 정의한 인터페이스를 실제로 구현하는 클래스. 
+
+ *android.hardware.audio@2.0-service* : core HAL, effect HAL API를 포함. 
  	- core HAL : AudioFlinger가 오디오를 재생하고 오디오 라우팅을 제어하는데 사용하는 주API.
 	- effect HAL : effect framework가 오디오 effect를 제어하는 데 사용되는 API
- android.hardware.audio@7.0-impl : common HAL API와 관련 있음.
+	- code : hardware/interfaces/audio/common/all-versions/default/service/
+ *android.hardware.audio@7.0-impl* : common HAL API와 관련 있음.
  	- common HAL API : core 및 effect HAL 에서 공통적으로 사용되는 데이터 유형의 라이브러리. 인터페이스는 없으며 데이터 구조만 정의함. 
+	- code : hardware/interfaces/audio/core/all-versions/default/
 
 
  - audo lib
@@ -74,6 +84,8 @@ PRODUCT_PACKAGES += \
 ```
 
  hardware/rockchip/audio/tinyalsa_hal/Android.mk 정의
+
+ *audio.primary.rk30board.so*
 
 ### [analyse] audio interface
 
