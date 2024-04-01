@@ -305,3 +305,31 @@ rk3568_edpp01:/ # io -4 -w 0xfdd60004 0x00200020
 <br/>
 <br/>
 
+
+-----
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+## ALOGD 로깅 매크로
+
+```bash
+//1.
+//setprop 명령을 사용하여 임시로 변경.
+//터미널에서 다음 명령 실행
+adb shell setprop log.tag.MyAppTag DEBUG
+
+//ex, AudioHardwareTiny 모듈 DEBUG 레벨 출력
+setprop log.tag.AudioHardwareTiny DEBUG
+
+
+//2. 
+// /data/local.prop 파일에 로그 레벨을 설정하여 재부팅, 
+
+//3. 
+// Code 에서 System.setProperty() method를 사용하여 로그 레벨 변경
+System.setProperty("log.tag.MyAppTag", "DEBUG");
+
+```
