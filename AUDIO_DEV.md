@@ -127,6 +127,7 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 
 	   ![](./images/AUDIO_DEV_01.png)
 
+
 #### route 
 
 alsa_route.c
