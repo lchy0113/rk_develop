@@ -107,7 +107,7 @@ Audio HAL 관련 2개 interface 제공
 
 #### audio
 
- - adev_create_audio_path
+ - adev_create_audio_patch
 ```c
 // playback
 adev_create_audio_patch sum_sources:1,num_sinks:1,mix(d)->device(2),handle:0xffaefcf4
@@ -121,6 +121,11 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 // device(80000004) : AUDIO_DEVICE_IN_BUILTIN_MIC // audio port가 hardware device인 경우, audio port configuration structure 에 대한 extension
 // mix(1e) : // audio port 가 sub mix 인 경우, audio port configuration structre 에 대한 확장.
 ```
+
+ - AudioPatch는 AUDIO_DEVICE_API_VERSION_3_0 버전 이상에서 지원.
+   * 이하버전에서는 AudioPolicy에서 전달한 AudioPatch는 AudioFlinger에서 set_parameters로 변환되어 HAL로 전달. 
+
+	   ![](./images/AUDIO_DEV_01.png)
 
 #### route 
 
