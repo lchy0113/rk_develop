@@ -327,6 +327,8 @@ setprop log.tag.AudioHardwareTiny DEBUG
 
 //2. 
 // /data/local.prop 파일에 로그 레벨을 설정하여 재부팅, 
+log.tag.MyApp=VERBOSE
+// ex, log.tag.AudioHardwareTiny=VERBOSE
 
 //3. 
 // Code 에서 System.setProperty() method를 사용하여 로그 레벨 변경
