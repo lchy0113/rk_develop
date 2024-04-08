@@ -127,7 +127,7 @@ Audio HAL 관련 2개 interface 제공
 ![](./images/AUDIO_DEV_03.png) 
 
 
- - audio patch scenarios 1 : Mix, that is, stream, plays to multiple Devices, that is, hardware
+ - **audio patch scenarios 1** : Mix, that is, stream, plays to multiple Devices, that is, hardware
 
 ![](./images/AUDIO_DEV_04.png)
 
@@ -145,7 +145,7 @@ Audio HAL 관련 2개 interface 제공
  <br/>
  <br/>
 
- - audio patch scenarios 2 : Device to Mix, that is recording from hardware device to an audio track.
+ - **audio patch scenarios 2** : Device to Mix, that is recording from hardware device to an audio track.
 
 ![](./images/AUDIO_DEV_08.png)
 
@@ -161,8 +161,29 @@ Audio HAL 관련 2개 interface 제공
  <br/>
  <br/>
 
- - audio patch scenarios 3 : Device to Device. 
+ - **audio patch scenarios 3** : Device to Device. 
  > encoder 처리 없이 AudioFlinger 
+
+![](./images/AUDIO_DEV_12.png)
+
+ - code flow
+
+![](./images/AUDIO_DEV_13.png)
+
+
+ 두 장치 사이에서 사용되는 버퍼를 사용. 
+
+![](./images/AUDIO_DEV_14.png)
+
+ - code flow
+
+![](./images/AUDIO_DEV_15.png)
+
+<br/>
+<br/>
+<br/>
+<br/>
+
 
  - adev_create_audio_patch
 ```c
