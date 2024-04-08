@@ -126,6 +126,44 @@ Audio HAL 관련 2개 interface 제공
 
 ![](./images/AUDIO_DEV_03.png) 
 
+
+ - audio patch scenarios 1 : Mix, that is, stream, plays to multiple Devices, that is, hardware
+
+![](./images/AUDIO_DEV_04.png)
+
+ - 일반적으로 setParameters method를 대체하여 setOutputDevice에서 사용됨.
+
+![](./images/AUDIO_DEV_05.png)
+
+ - code flow
+
+![](./images/AUDIO_DEV_06.png)
+
+![](./images/AUDIO_DEV_07.png)
+
+ <br/>
+ <br/>
+ <br/>
+
+ - audio patch scenarios 2 : Device to Mix, that is recording from hardware device to an audio track.
+
+![](./images/AUDIO_DEV_08.png)
+
+![](./images/AUDIO_DEV_09.png)
+
+ - code flow
+
+![](./images/AUDIO_DEV_10.png)
+
+![](./images/AUDIO_DEV_11.png)
+
+ <br/>
+ <br/>
+ <br/>
+
+ - audio patch scenarios 3 : Device to Device. 
+ > encoder 처리 없이 AudioFlinger 
+
  - adev_create_audio_patch
 ```c
 // playback
