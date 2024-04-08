@@ -124,9 +124,40 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 
  - *AudioPatch는 AUDIO_DEVICE_API_VERSION_3_0 버전 이상에서 지원.*
    * 이하버전에서는 AudioPolicy에서 전달한 AudioPatch는 AudioFlinger에서 set_parameters로 변환되어 HAL로 전달. 
-   * 
 
 ![](./images/AUDIO_DEV_01.png)
+
+   * kvpairs는 createAudioPatch_l 에서 생성. (supportsAudioPatchs()) 
+
+```c
+status_t AudioFlinger::PlaybackThread::createAudioPatch_l(const struct audio_patch *patch,
+                                                          audio_patch_handle_t *handle)
+{
+(...)
+    if (mOutput->audioHwDev->supportsAudioPatches()) {
+        sp<DeviceHalInterface> hwDevice = mOutput->audioHwDev->hwDevice();
+        status = hwDevice->createAudioPatch(patch->num_sources,
+                                            patch->sources,
+                                            patch->num_sinks,
+                                            patch->sinks,
+                                            handle);
+    } else {
+        char *address;
+        if (strcmp(patch->sinks[0].ext.device.address, "") != 0) {
+            //FIXME: we only support address on first sink with HAL version < 3.0
+            address = audio_device_address_to_parameter(
+                                                        patch->sinks[0].ext.device.type,
+                                                        patch->sinks[0].ext.device.address);
+        } else {
+            address = (char *)calloc(1, 1);
+        }
+        AudioParameter param = AudioParameter(String8(address));
+        free(address);
+        param.addInt(String8(AudioParameter::keyRouting), (int)type);
+        status = mOutput->stream->setParameters(param.toString());
+        *handle = AUDIO_PATCH_HANDLE_NONE;
+    }
+```
 
 ----
 
