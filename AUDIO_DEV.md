@@ -105,7 +105,7 @@ Audio HAL 관련 2개 interface 제공
 
 ### [analyse] tinyalsa
 
-#### audio
+#### audio patch
 
  - adev_create_audio_patch
 ```c
@@ -128,6 +128,7 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 
 ![](./images/AUDIO_DEV_01.png)
 
+----
 
 #### route 
 
