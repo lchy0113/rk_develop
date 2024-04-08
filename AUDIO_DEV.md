@@ -107,6 +107,25 @@ Audio HAL 관련 2개 interface 제공
 
 #### audio patch
 
+ audio patch는 하나 이상의 source 를 하나 이상의 sink에 represent 하기 위해 사용됨. 
+ ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다. 
+ 물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.
+ 실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나, 2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.
+
+ android.permission.MODIFY_AUDIO_ROUTING permission 필요.
+
+ audio_patch 구조에는 2개 배열이 있으며, 각 포트는 audio_port이다.
+ stream, device 등 기본적으로 필요한 몇가지 기본 매개변수가 포함되어 있다.
+
+![](./images/AUDIO_DEV_02.png)
+
+
+ 각 audio_path는 APS에서 지정한 매개변수를 통해 Audioflinger에서 생성되며, Audioflinger 호출을 통해 AudioHAL에서 처리됨. 
+
+ > (빨간색 선 생성과정, 파란색 선 처리 과정)
+
+![](./images/AUDIO_DEV_03.png) 
+
  - adev_create_audio_patch
 ```c
 // playback
@@ -127,36 +146,10 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 
 ![](./images/AUDIO_DEV_01.png)
 
-   * kvpairs는 createAudioPatch_l 에서 생성. (supportsAudioPatchs()) 
+   * kvpairs는 createAudioPatch_l 에서 생성. 
 
 ```c
-status_t AudioFlinger::PlaybackThread::createAudioPatch_l(const struct audio_patch *patch,
-                                                          audio_patch_handle_t *handle)
-{
-(...)
-    if (mOutput->audioHwDev->supportsAudioPatches()) {
-        sp<DeviceHalInterface> hwDevice = mOutput->audioHwDev->hwDevice();
-        status = hwDevice->createAudioPatch(patch->num_sources,
-                                            patch->sources,
-                                            patch->num_sinks,
-                                            patch->sinks,
-                                            handle);
-    } else {
-        char *address;
-        if (strcmp(patch->sinks[0].ext.device.address, "") != 0) {
-            //FIXME: we only support address on first sink with HAL version < 3.0
-            address = audio_device_address_to_parameter(
-                                                        patch->sinks[0].ext.device.type,
-                                                        patch->sinks[0].ext.device.address);
-        } else {
-            address = (char *)calloc(1, 1);
-        }
-        AudioParameter param = AudioParameter(String8(address));
-        free(address);
-        param.addInt(String8(AudioParameter::keyRouting), (int)type);
-        status = mOutput->stream->setParameters(param.toString());
-        *handle = AUDIO_PATCH_HANDLE_NONE;
-    }
+
 ```
 
 ----
