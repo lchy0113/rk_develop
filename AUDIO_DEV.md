@@ -183,6 +183,7 @@ Audio HAL 관련 2개 interface 제공
 <br/>
 <br/>
 <br/>
+
 -----
 
  - adev_create_audio_patch
