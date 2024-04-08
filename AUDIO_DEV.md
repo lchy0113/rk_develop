@@ -105,7 +105,7 @@ Audio HAL 관련 2개 interface 제공
 
 ### [analyse] tinyalsa
 
-#### audio patch
+#### 📗 audio patch
 
  - adev_create_audio_patch
 ```c
