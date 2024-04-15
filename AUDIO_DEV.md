@@ -53,13 +53,15 @@ PRODUCT_PACKAGES += \
 	android.hardware.audio.effect@7.0-impl
 ```
 
-> android.hardware.audio@2.0-service, android.hardware.audio@7.0-impl naming rule
-> android : Android System 
-> hardware : hardware interface
-> audio : audio hardware interface 
-> 2.0 or 7.0 : version
-> service : service는 인터페이스를 정의하고 해당 인터페이스를 구현하는 코드를 포함. 
-> impl : service에서 정의한 인터페이스를 실제로 구현하는 클래스. 
+> android.hardware.audio@2.0-service, android.hardware.audio@7.0-impl naming rule  
+> android : Android System   
+> hardware : hardware interface  
+> audio : audio hardware interface   
+> 2.0 or 7.0 : version  
+> service : service는 인터페이스를 정의하고 해당 인터페이스를 구현하는 코드를 포함.   
+> impl : service에서 정의한 인터페이스를 실제로 구현하는 클래스.   
+
+<br/>
 
  *android.hardware.audio@2.0-service* : core HAL, effect HAL API를 포함. 
  	- core HAL : AudioFlinger가 오디오를 재생하고 오디오 라우팅을 제어하는데 사용하는 주API.
