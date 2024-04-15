@@ -135,6 +135,7 @@ Audio HAL 관련 2개 interface 제공
 
 ![](./images/AUDIO_DEV_03.png) 
 
+----
 
  - **audio patch scenarios 1** : Mix, that is, stream, plays to multiple Devices, that is, hardware
 
@@ -152,7 +153,8 @@ Audio HAL 관련 2개 interface 제공
 
  <br/>
  <br/>
- <br/>
+
+----
 
  - **audio patch scenarios 2** : Device to Mix, that is recording from hardware device to an audio track.
 
@@ -168,7 +170,8 @@ Audio HAL 관련 2개 interface 제공
 
  <br/>
  <br/>
- <br/>
+
+----
 
  - **audio patch scenarios 3** : Device to Device. 
  > encoder 처리 없이 AudioFlinger 
