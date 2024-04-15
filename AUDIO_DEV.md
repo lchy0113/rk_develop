@@ -91,7 +91,7 @@ PRODUCT_PACKAGES += \
 
 ### [analyse] audio interface
 
-upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
+> upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
 
 아래 경로에 코드 위치
  - hardware/libhardware/include/hardware/ 
@@ -102,6 +102,12 @@ Audio HAL 관련 2개 interface 제공
 
  2. effect(echo cancellation, noise suppression, downmixing, etc) interface 제공
  hardwrae/libhardware/include/hardware/audio_effect.h
+
+
+<br/>  
+<br/>  
+
+----
 
 
 
