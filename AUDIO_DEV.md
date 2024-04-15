@@ -36,7 +36,7 @@
 	
 
 
-## [analyse]audio_hal
+## 📗 [analyse]audio_hal
 
 
 ### [analyse] audio package related
@@ -301,7 +301,7 @@ adev_open_output_stream()
 
 
 
-## [develop]
+## ䷴  [develop]
 
  - regmap 
 
