@@ -116,7 +116,8 @@ Audio HAL 관련 2개 interface 제공
 #### audio patch
 
  audio patch는 하나 이상의 source 를 하나 이상의 sink에 represent 하기 위해 사용됨.   
- ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다.   
+
+-  ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다.   
  물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.  
  실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나, 2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.  
   
