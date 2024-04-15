@@ -53,30 +53,30 @@ PRODUCT_PACKAGES += \
 	android.hardware.audio.effect@7.0-impl
 ```
 
-> android.hardware.audio@2.0-service, android.hardware.audio@7.0-impl naming rule  
-> android : Android System   
-> hardware : hardware interface  
-> audio : audio hardware interface   
-> 2.0 or 7.0 : version  
-> service : service는 인터페이스를 정의하고 해당 인터페이스를 구현하는 코드를 포함.   
-> impl : service에서 정의한 인터페이스를 실제로 구현하는 클래스.   
+> *android.hardware.audio@2.0-service, android.hardware.audio@7.0-impl naming rule*  
+>  - android : Android System   
+>  - hardware : hardware interface  
+>  - audio : audio hardware interface   
+>  - 2.0 or 7.0 : version  
+>  - service : service는 인터페이스를 정의하고 해당 인터페이스를 구현하는 코드를 포함.   
+>  - impl : service에서 정의한 인터페이스를 실제로 구현하는 클래스.   
 
 <br/>
 
- *android.hardware.audio@2.0-service* : core HAL, effect HAL API를 포함. 
- 	- core HAL : AudioFlinger가 오디오를 재생하고 오디오 라우팅을 제어하는데 사용하는 주API.
-	- effect HAL : effect framework가 오디오 effect를 제어하는 데 사용되는 API
-	- code : hardware/interfaces/audio/common/all-versions/default/service/
- *android.hardware.audio@7.0-impl* : common HAL API와 관련 있음.
- 	- common HAL API : core 및 effect HAL 에서 공통적으로 사용되는 데이터 유형의 라이브러리. 인터페이스는 없으며 데이터 구조만 정의함. 
-	- code : hardware/interfaces/audio/core/all-versions/default/
-
-
+ *android.hardware.audio@2.0-service* : core HAL, effect HAL API를 포함.   
+ 	- core HAL : AudioFlinger가 오디오를 재생하고 오디오 라우팅을 제어하는데 사용하는 주API.  
+	- effect HAL : effect framework가 오디오 effect를 제어하는 데 사용되는 API  
+	- code : hardware/interfaces/audio/common/all-versions/default/service/  
+ *android.hardware.audio@7.0-impl* : common HAL API와 관련 있음.  
+ 	- common HAL API : core 및 effect HAL 에서 공통적으로 사용되는 데이터 유형의 라이브러리. 인터페이스는 없으며 데이터 구조만 정의함.   
+	- code : hardware/interfaces/audio/core/all-versions/default/  
+  
+  
  - audio lib
 
- 안드로이드 시스템에서 사용되는 오디오 라이브러리. 
- 오디오 하드웨어와 상호 작용하며, Android 운영체제의 오디오 기능을 제어하는데 사용.
- 오디오 출력 및 입력을 관리하며, 스피커, 헤드폰, 마이크 등과 상호작용. 
+ 안드로이드 시스템에서 사용되는 오디오 라이브러리.   
+ 오디오 하드웨어와 상호 작용하며, Android 운영체제의 오디오 기능을 제어하는데 사용.  
+ 오디오 출력 및 입력을 관리하며, 스피커, 헤드폰, 마이크 등과 상호작용.   
 
 ```bash
 PRODUCT_PACKAGES += \
@@ -109,20 +109,20 @@ Audio HAL 관련 2개 interface 제공
 
 #### audio patch
 
- audio patch는 하나 이상의 source 를 하나 이상의 sink에 represent 하기 위해 사용됨. 
- ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다. 
- 물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.
- 실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나, 2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.
+ audio patch는 하나 이상의 source 를 하나 이상의 sink에 represent 하기 위해 사용됨.   
+ ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다.   
+ 물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.  
+ 실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나, 2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.  
+  
+> android.permission.MODIFY_AUDIO_ROUTING permission 필요.  
 
- android.permission.MODIFY_AUDIO_ROUTING permission 필요.
-
- audio_patch 구조에는 2개 배열이 있으며, 각 포트는 audio_port이다.
- stream, device 등 기본적으로 필요한 몇가지 기본 매개변수가 포함되어 있다.
+ audio_patch 구조에는 2개 배열이 있으며, 각 포트는 audio_port이다.  
+ stream, device 등 기본적으로 필요한 몇가지 기본 매개변수가 포함되어 있다.  
 
 ![](./images/AUDIO_DEV_02.png)
 
 
- 각 audio_path는 APS에서 지정한 매개변수를 통해 Audioflinger에서 생성되며, Audioflinger 호출을 통해 AudioHAL에서 처리됨. 
+ 각 audio_path는 APS에서 지정한 매개변수를 통해 Audioflinger에서 생성되며, Audioflinger 호출을 통해 AudioHAL에서 처리됨.   
 
  > (빨간색 선 생성과정, 파란색 선 처리 과정)
 
