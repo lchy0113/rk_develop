@@ -306,6 +306,19 @@ adev_open_output_stream()
 <br/>  
 <br/>  
 
+## 📖 [analyse][reference] Qualcomm Audio HAL audio path settings
+  
+1. **Audio block diagram overview**  
+  
+  
+  
+  
+  
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+
 ----
 	
 
