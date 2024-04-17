@@ -308,12 +308,227 @@ adev_open_output_stream()
 
 ## 📖 [analyse][reference] Qualcomm Audio HAL audio path settings
   
-1. **Audio block diagram overview**  
+### 1. **Audio block diagram overview**  
+  
+```bash
+| Front End PCMs    |  SoC DSP  | Back End DAIs | Audio devices |
+
+                    *************
+PCM0 <------------> *           * <----DAI0-----> Codec Headset
+                    *           *
+PCM1 <------------> *           * <----DAI1-----> Codec Speakers/Earpiece
+                    *   DSP     *
+PCM2 <------------> *           * <----DAI2-----> MODEM
+                    *           *
+PCM3 <------------> *           * <----DAI3-----> BT
+                    *           *
+                    *           * <----DAI4-----> DMIC
+                    *           *
+                    *           * <----DAI5-----> FM
+                    *************
+```
+  
+ - Front End PCMs : Audio front end, 1개의 fornt end 는 1개의 PCM device에 연결됨.  
+ - Back End DAIs : Audio back end, 1개의 back end 는 DAI 인터페이스에 해당하고 FE, PCM 은 하나 이상의 back end DAI에 연결될 수 있다.   
+ - Audio devices : Headset, Speakers, Earpiece, Mic, Bt, Modem, FM 등을 의미.  
+                   서로 다른 장치가 서로 다른 DAI 인터페이스에 연결될 수 이도 있고, 동일한 DAI 인터페이스 연결될 수 있다.   
+ - SoC DSP : routing 기능 구현되는 모듈, front end PCM 및 back end DAI 연결. (예, PCM0 & DAI1 연결)   
+  
+```bash
+                    *************
+PCM0 <============> *<====++    * <----DAI0-----> Codec Headset
+                    *     ||    *
+PCM1 <------------> *     ++===>* <====DAI1=====> Codec Speakers/Earpiece
+                    *           *
+PCM2 <------------> *           * <----DAI2-----> MODEM
+                    *    DSP    *
+PCM3 <------------> *           * <----DAI3-----> BT
+                    *           *
+                    *           * <----DAI4-----> DMIC
+                    *           *
+                    *           * <----DAI5-----> FM
+                    *************
+```
+
+
+ *Qualcomm msm8996 audio block diagram*
+
+> qualcomm msm8996 은 snapdragon 820, snapdragon 821로 알려진 qualcomm soc. 
+> wcd9335 는 qualcomm의 audio codec. 
+
+![](images/AUDIO_DEV_16.png)
+  
+ - FE PCMs  
+   * deep_buffer  
+   * low_latency  
+   * multi_channel  
+   * compress_offload  
+   * audio_record  
+   * usb_audio  
+   * a2dp_audio  
+   * voice_call  
+  
+ - BE DAIs  
+   * SLIM_BUS  
+   * Aux_PCM  
+   * Primary_MI2S  
+   * Secondary_MI2S  
+   * Tertiary_MI2S  
+  
+### 2. **HAL use case(사용 예제) 및 장치**  
+   
+ **use case(사용 예제)**  
+ 사용예제는 일반적으로 다음과 같은 audio front end 에 해당하는 오디오 동작 시나리오를 의미한다. 
+
+ - low_latency : key sound, touch sound, game background sound 등과 같이 지연 시간이 짧은 재생 시나리오.   
+ - deep_buffer : 높은 대기 시간이 필요하지 않는 음악, 비디오 및 기타 재생 시나리오.  
+ - compress_offload : mp3, flac, aac 및 기타 형식의 오디오 소스 재생 시나리오.   
+                      오디오 소스에는 software decoding이 필요하지 않는 경우(hardware decoder 의해 처리)  
+ - recoard : normal record 시나리오.  
+ - record_low_latency : 지연시간이 짧은 녹음 시나리오.  
+ - voice_call : voice 시나리오.  
+ - voip_call : voip 시나리오  
+  
+```c
+enum {
+    USECASE_INVALID = -1,
+    /* Playback usecases */
+    USECASE_AUDIO_PLAYBACK_DEEP_BUFFER = 0,
+    USECASE_AUDIO_PLAYBACK_LOW_LATENCY,
+    USECASE_AUDIO_PLAYBACK_MULTI_CH,
+    USECASE_AUDIO_PLAYBACK_OFFLOAD,
+    USECASE_AUDIO_PLAYBACK_ULL,
+
+    /* FM usecase */
+    USECASE_AUDIO_PLAYBACK_FM,
+
+    /* HFP Use case*/
+    USECASE_AUDIO_HFP_SCO,
+    USECASE_AUDIO_HFP_SCO_WB,
+
+    /* Capture usecases */
+    USECASE_AUDIO_RECORD,
+    USECASE_AUDIO_RECORD_COMPRESS,
+    USECASE_AUDIO_RECORD_LOW_LATENCY,
+    USECASE_AUDIO_RECORD_FM_VIRTUAL,
+
+    /* Voice usecase */
+    USECASE_VOICE_CALL,
+
+    /* Voice extension usecases */
+    USECASE_VOICE2_CALL,
+    USECASE_VOLTE_CALL,
+    USECASE_QCHAT_CALL,
+    USECASE_VOWLAN_CALL,
+    USECASE_VOICEMMODE1_CALL,
+    USECASE_VOICEMMODE2_CALL,
+    USECASE_COMPRESS_VOIP_CALL,
+
+    USECASE_INCALL_REC_UPLINK,
+    USECASE_INCALL_REC_DOWNLINK,
+    USECASE_INCALL_REC_UPLINK_AND_DOWNLINK,
+
+    USECASE_AUDIO_PLAYBACK_AFE_PROXY,
+    USECASE_AUDIO_RECORD_AFE_PROXY,
+
+    USECASE_AUDIO_PLAYBACK_EXT_DISP_SILENCE,
+
+    AUDIO_USECASE_MAX
+};
+```
+  
+ **장치(device)**
+
+ 장치(device)는 데이터 출력 endpoint (예, speaker , headphone,,) 및 데이터 입력 endpoint(예, headset mic, internal mic,,) 을 포함한 audio endpoint 를 나타냄.   
+ qualcomm hal은 audio device를 확장하여 구현했다.   
+ 예를 들어, 스피커는 아래와 같다.  
+  
+  - SND_DEVICE_OUT_SPEAKER : normal external amp device  
+  - SND_DEVICE_OUT_SPEAKER_PROTECTED : protected된 normal amp device  
+  - SND_DEVICE_OUT_VOICE_SPEAKER : 통화용 normal handfree device  
+  - SND_DEVICE_OUT_VOICE_SPEAKER_PROTECTED : protected된 통화용 handfree device  
+      
+```c
+enum {
+    SND_DEVICE_NONE = 0,
+
+    /* Playback devices */
+    SND_DEVICE_MIN,
+    SND_DEVICE_OUT_BEGIN = SND_DEVICE_MIN,
+    SND_DEVICE_OUT_HANDSET = SND_DEVICE_OUT_BEGIN,
+    SND_DEVICE_OUT_SPEAKER,
+    SND_DEVICE_OUT_HEADPHONES,
+    SND_DEVICE_OUT_HEADPHONES_DSD,
+    SND_DEVICE_OUT_SPEAKER_AND_HEADPHONES,
+    SND_DEVICE_OUT_SPEAKER_AND_LINE,
+    SND_DEVICE_OUT_VOICE_HANDSET,
+    SND_DEVICE_OUT_VOICE_SPEAKER,
+    SND_DEVICE_OUT_VOICE_HEADPHONES,
+    SND_DEVICE_OUT_VOICE_LINE,
+    SND_DEVICE_OUT_HDMI,
+    SND_DEVICE_OUT_DISPLAY_PORT,
+    SND_DEVICE_OUT_BT_SCO,
+    SND_DEVICE_OUT_BT_A2DP,
+    SND_DEVICE_OUT_SPEAKER_AND_BT_A2DP,
+    SND_DEVICE_OUT_AFE_PROXY,
+    SND_DEVICE_OUT_USB_HEADSET,
+    SND_DEVICE_OUT_USB_HEADPHONES,
+    SND_DEVICE_OUT_SPEAKER_AND_USB_HEADSET,
+    SND_DEVICE_OUT_SPEAKER_PROTECTED,
+    SND_DEVICE_OUT_VOICE_SPEAKER_PROTECTED,
+    SND_DEVICE_OUT_END,
+
+    /* Capture devices */
+    SND_DEVICE_IN_BEGIN = SND_DEVICE_OUT_END,
+    SND_DEVICE_IN_HANDSET_MIC  = SND_DEVICE_IN_BEGIN, // 58
+    SND_DEVICE_IN_SPEAKER_MIC,
+    SND_DEVICE_IN_HEADSET_MIC,
+    SND_DEVICE_IN_VOICE_SPEAKER_MIC,
+    SND_DEVICE_IN_VOICE_HEADSET_MIC,
+    SND_DEVICE_IN_BT_SCO_MIC,
+    SND_DEVICE_IN_CAMCORDER_MIC,
+    SND_DEVICE_IN_END,
+
+    SND_DEVICE_MAX = SND_DEVICE_IN_END,
+};
+```
+  
+ qualcomm hal에서 defined된 audio device와 android framework에서 define한 것과 일치 하지 않는 경우(새롭게 추가된 경우), android framework에서 전달된 audio device는 audio 동작 시나리오에 따라서 qualcomm hal에서 변환 된다.   
+  
+ - platform_get_output_snd_device()  
+ - platform_get_input_snd_device()  
+  
+### 3. **audio routing**  
+
+> qualcomm hal layer 오디오 채널의 routing에 대해 설명
+ audio block diagram에 정리된것 처럼 audio route는 **FE PCM**, **BE DAI**, **DEVICE** 로 구분.
+ audio routing을 하려면 이 3 블록을 연결해야 한다.  
+  
+ FE_PCM <=> BE_DAI <=> DEVICE  
   
   
+
+#### 3.1 FE_PCM open
+
+ FE_PCM 은 audio stream이 열릴 때 설정된다. (ref : Android Audio System: Audio Track~AudioFliner)  
   
-  
-  
+![](images/AUDIO_DEV_17.png)  
+ Audio Track, AudioFlinger Threads, Audio HAL usecase 및 AudioDriver PCM간의 간계  
+ > primary input mixer 의 경우, AudioTrack (Record) 에 의해 MixerThread가 생성 될때 생성되는 것 같음.  
+
+ - start_output_stream() 코드 분석  
+  upper layer는 audio mode를 AUDIO_MODE_IN_CALL 로 설정. 
+ - out_set_parameters() 코드 분석  
+
+
+#### 3.2 routing 선택
+
+ routing은 실제로 usecase와 device를 routing하는 것을 의미.   
+ 예를들어 deep-buffer-playback speaker는 deep buffer playback FE PCM과 speaker device를 routing.    
+
+
+ 
+
 <br/>  
 <br/>  
 <br/>  
