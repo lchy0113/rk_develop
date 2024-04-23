@@ -435,7 +435,7 @@ driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
 <br/>
 <br/>
 
-# 🐛 디버그 : HDMI interface 제어
+# 🐛 디버그 : HDMI interface 제어(resolution 관련)
 
  - 원인 : HDMI EDID 값을 사용하지 않아 발생. 
  - 해결 : default 값을 지정해줌. 
@@ -461,8 +461,27 @@ index ad2eb99253ad..d8023dc15788 100644
 +                  DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC)},
  #endif
  };
- 
+```
 
+
+# 🐛 디버그 : DRM 
+
+> 에러 메시지는 **Linux 커널의 DRM (Direct Rendering Manager)**에서 발생하는 것으로 보입니다.
+> 이 에러는 **CRTC (Cathode Ray Tube Controller)**와 관련이 있습니다.
+ 
+ - CRTC : CRTC는 디스플레이 컨트롤러로 디스플레이 출력을 관리하고, 타이밍을 조절함.   
+         이 에러는 특정 CRTC(CRTC 71)에서 발생.   
+ - vblank wait timed out : 수직 동기화(V-sync) 기능을 사용하여 화면을 업데이트 하려고 할 때,   
+                          타임아웃이 발생했다는 것을 의미.   
+						  V-sync 는 화면의 수직 리프레시 주기에 맞춰 프레임을 동기화 하는 기술.  
+  
+  예상 되는 원인
+ [ ] 하드웨어 : 
+ [ ] 드라이버 :그래픽 드라이버 또는 커널 모듈 확인.   
+ [ ] 설정 : 디스플레이 설정 확인  
+
+```bash
+"[drm] [CRTC:71:video_port0] state:1, vblank wait timed out"
 ```
 
 ---
