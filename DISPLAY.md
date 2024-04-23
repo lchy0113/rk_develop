@@ -346,6 +346,11 @@ freq: 60.01Hz
 (...)
 
 # modetest -M rockchip -s 350@71:#0 -v
+freq: 57.16Hz
+freq: 60.01Hz
+freq: 60.02Hz
+freq: 60.01Hz
+(...)
 ```
 
 
