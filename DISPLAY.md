@@ -12,6 +12,12 @@
 2) Rockchip 플랫폼의 칩은 HDMI/MIPI-DSI/RGB/LVDS/eDP/DP등을 포함하고 있습니다.
 
 
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+-----  
+
 # Panel 장치
 ## Documentation and source code
 - kernel
@@ -23,6 +29,12 @@
 ## DT binding
 1) simple-panel(lvds/rgb/edp)
 2) simple-panel-dsi(mipi-dsi)
+
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+-----  
 
 # RGB 인터페이스
 ## Documentation and source code
@@ -103,6 +115,12 @@
 	};
 ```
 
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+-----  
+
 # HDMI 인터페이스
 
 ## DT Bindings
@@ -162,11 +180,73 @@
 
 ```
 
----
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+-----  
+
+# DRM (Direct Rendering Manager)
+ 
+ DRM의 전체 이름은 Direct Rendering Manager로 디스플레이 출력, 버퍼 할당, 프레임 버퍼링 관리.  
+  
+ libdrm library는 유저가 쉽게 디스플레이를 제어할 수 있도록 제어 패키지를 제공.  
+ drm은 libdrm library 가 아닌 drm 장치를 ioctl하여 직접 작동하거나 frame buffer interface를 사용하여 
+ 디스플레이 작업을 구현할 수도 있다.  
+  
+  
+ - **DRM framework**
+
+![](./images/DISPLAY_01.png)
+
+ - **Framebuffer**
+
+![](./images/DISPLAY_02.png)
+
+
+ - **CRTC**
+
+![](./images/DISPLAY_03.png)
+
+ - **Plane**
+
+![](./images/DISPLAY_04.png)
+
+ - **Encoder**
+
+![](./images/DISPLAY_05.png);
+
+ - **Connector**
+
+![](./images/DISPLAY_06.png)
+
+## Device Node
+
+ DRM의 Device Node 는  "dev/dri/carX" 이며, X 의 범위는 0~15 값을 갖음.   
+ (기본값은 /dev/dri/card0)   
+
+
+## DRM Mode Setting Sequence Diagram
+  
+![](images/DISPLAY_07.png)
+
+
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+-----  
+
+
 # baseparameter images 
 > baseparameter 이미지는 rockchip 디스플레이 해상도, 디스플레이 효과 조정 구성 등과 같은 정보를 저장하는데 사용되며, 종료 및 재시작 후에도 이전과 동일한 효과가 유지 될 수 있도록 보장합니다. 
 
----
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+
+----
 
 # 💻  code review
 
@@ -387,7 +467,12 @@ edp: edp@fe0c0000	{
 };
 ```
 
----
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+
+----
 
 # 💻  개발 업무
 
@@ -428,12 +513,12 @@ rgb node : rockchip,rk3568-rgb
 
 driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
 
----
 
-<br/>
-<br/>
-<br/>
-<br/>
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+----  
 
 # 🐛 디버그 : HDMI interface 제어(resolution 관련)
 
