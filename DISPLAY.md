@@ -430,6 +430,48 @@ driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
 
 ---
 
+<br/>
+<br/>
+<br/>
+<br/>
+
+# 🐛 디버그 : HDMI interface 제어
+
+ - 원인 : HDMI EDID 값을 사용하지 않아 발생. 
+ - 해결 : default 값을 지정해줌. 
+  
+```c
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+index ad2eb99253ad..d8023dc15788 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi.c
+@@ -238,12 +238,10 @@ static const struct drm_display_mode dw_hdmi_default_modes[] = {
+                   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
+          .vrefresh = 60, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
+ #else
+-       /* 17 - 720x576@50Hz 4:3 */
+-       { DRM_MODE("720x576", DRM_MODE_TYPE_DRIVER, 27000, 720, 732,
+-                  796, 864, 0, 576, 581, 586, 625, 0,
+-                  DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC),
+-         .vrefresh = 50, .picture_aspect_ratio = HDMI_PICTURE_ASPECT_4_3, },
+-
++       /* 640x480@60Hz */
++       { DRM_MODE("640x480", DRM_MODE_TYPE_DRIVER, 25175, 640, 656,
++                  752, 800, 0, 480, 489, 492, 525, 0,
++                  DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC)},
+ #endif
+ };
+ 
+
+```
+
+---
+
+<br/>
+<br/>
+<br/>
+<br/>
+
 # 📌 정리
 
 rk3568 poc 의 디스플레이는 아래와 같이 구성되어 동작되고 있습니다. 
