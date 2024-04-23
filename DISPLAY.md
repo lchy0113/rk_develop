@@ -231,6 +231,126 @@
 ![](images/DISPLAY_07.png)
 
 
+## MODETEST tool
+
+ modetest 는 linux DRM/KMS (Direct Rendering Manager/Kernel Mode Setting) Test 툴.  
+ 이 툴은 디스플레이와 그래픽 하드웨어를 테스트하고 디버깅 하는데 사용.  
+
+ 1. 모든 디스플레이 기능 리스트 업   
+ - modetest 명령어 실행 시, CRTCs, Encoders, Connectors(DSI, eDP, HDMI 등등), Plane, Mode 등과 같은
+   모든 디스플레이 기능을 리스트 업.  
+  
+
+```bash
+ # modetest -M rockchip
+Encoders:
+id      crtc    type    possible crtcs  possible clones
+345     0       Virtual 0x00000003      0x00000000
+347     87      TMDS    0x00000002      0x00000000
+349     71      TMDS    0x00000001      0x00000000
+
+Connectors:
+id      encoder status          name            size (mm)       modes   encoders
+348     347     connected       eDP-1           290x170         2       347
+  modes:
+        index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot
+  #0 1920x1080 60.01 1920 1944 1992 2080 1080 1083 1095 1112 138800 flags: nhsync, nvsync; type: preferred, driver
+  #1 1920x1080 47.99 1920 1944 1992 2080 1080 1083 1095 1112 111000 flags: nhsync, nvsync; type: driver
+  props:
+        1 EDID:
+                flags: immutable blob
+                blobs:
+
+                value:
+                        00ffffffffffff0026cf360500000000
+                        001c
+                        
+(...)
+```  
+  
+ 2. 기본 테스트 수행
+ - Test pattern을 출력하거나 2개의 레이어를 표시하고 Vsync 를 테스트 하는 등 기본 적인 테스트를 수행.  
+
+> display 출력 테스트를 위해서는 현재 시스템의 디스플레이를 종료해야 함.  
+> drm은 하나의 디스플레이 출력 프로그램만 허용   
+
+```bash
+# modetest -h
+usage: modetest [-acDdefMPpsCvrw]
+
+ Query options:
+
+        -c      list connectors
+        -e      list encoders
+        -f      list framebuffers
+        -p      list CRTCs and planes (pipes)
+
+ Test options:
+
+        -P <plane_id>@<crtc_id>:<w>x<h>[+<x>+<y>][*<scale>][@<format>]  set a plane
+        -s <connector_id>[,<connector_id>][@<crtc_id>]:[#<mode index>]<mode>[-<vrefresh>][@<format>]    set a mode
+        -C      test hw cursor
+        -v      test vsynced page flipping
+        -r      set the preferred mode for all connectors
+        -w <obj_id>:<prop_name>:<value> set property
+        -a      use atomic API
+        -F pattern1,pattern2    specify fill patterns
+
+ Generic options:
+
+        -d      drop master after mode set
+        -M module       use the given driver
+        -D device       use the given device
+
+        Default is to dump all info.
+
+
+# modetest -M rockchip -c
+Connectors:
+id      encoder status          name            size (mm)       modes   encoders
+348     347     connected       eDP-1           290x170         2       347
+350     349     connected       HDMI-A-1        0x0             1       349
+
+
+# modetest -M rockchip -p 
+CRTCs:                                                                                                                                                        
+id      fb      pos     size                                                   
+71      0       (0,0)   (640x480)                                                                                                                             
+  #0 640x480 59.94 640 656 752 800 480 489 492 525 25175 flags: nhsync, nvsync; type: preferred    
+  
+(....)  
+  
+87      0       (0,0)   (1920x1080)
+  #0 1920x1080 60.01 1920 1944 1992 2080 1080 1083 1095 1112 138800 flags: nhsync, nvsync; type: preferred, driver
+  props:
+        21 ACTIVE:
+                flags: range
+                values: 0 1
+                value: 1
+        22 MODE_ID:
+
+  modes:                                                                                                                                                      
+        index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot                                                                                         
+  #0 1920x1080 60.01 1920 1944 1992 2080 1080 1083 1095 1112 138800 flags: nhsync, nvsync; type: preferred, driver                                            
+  #1 1920x1080 47.99 1920 1944 1992 2080 1080 1083 1095 1112 111000 flags: nhsync, nvsync; type: driver 
+
+    modes:                                                                                                                                                      
+	        index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot                                                                                         
+			  #0 640x480 59.94 640 656 752 800 480 489 492 525 25175 flags: nhsync, nvsync; type: preferred  
+
+# modetest -M rockchip -s 348@87:1920x1080 -v                                   <
+setting mode 1920x1080-60.01Hz on connectors 348, crtc 87
+freq: 60.77Hz
+freq: 60.01Hz
+freq: 60.01Hz
+(...)
+
+# modetest -M rockchip -s 350@71:#0 -v
+```
+
+
+
+
 <br/>  
 <br/>  
 <br/>  
