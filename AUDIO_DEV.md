@@ -316,6 +316,10 @@ adev_open_output_stream()
   
  - *out->stream.common.standby* : 오디오 스트림이 standby 상태인지 여부를 나타냄.   
 
+```c
+out->stream.common.standby = out_standby
+```
+
 
 -----
 
