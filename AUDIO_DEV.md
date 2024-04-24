@@ -312,7 +312,9 @@ adev_open_output_stream()
   2. 성공 여부 반환 : standby mode로 성공적으로 전환되면 0, 실패하면 음수 값을 반환.  
 
  이러한 동작은 오디오 시스템의 안정성과 성능을 유지 하기 위해 필요함.  
-
+  
+  
+ - *out->stream.common.standby* : 오디오 스트림이 standby 상태인지 여부를 나타냄.   
 
 
 -----
