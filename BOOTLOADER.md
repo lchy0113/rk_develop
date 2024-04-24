@@ -1058,7 +1058,38 @@ u-boot/
 ## ddrbin_tool 사용 가이드
 
 ```
-./ddrbin_tool ddrbin_param.txt ../../u-boot/rk356x_spl_loader_v1.13.112.bin
+// ex. used uart9 to debug console
+diff --git a/tools/ddrbin_param.txt b/tools/ddrbin_param.txt
+index 0dfdd318..4e2b2480 100644
+--- a/tools/ddrbin_param.txt
++++ b/tools/ddrbin_param.txt
+@@ -9,9 +9,9 @@ lp4_freq=
+ lp4x_freq=
+ lp5_freq=
+ 
+-uart id=
+-uart iomux=
+-uart baudrate=
++uart id=9
++uart iomux=0
++uart baudrate=115200
+ 
+ sr_idle=
+ pd_idle=
+
+
+
+rkbin/tools$ ./ddrbin_tool rk3568  ddrbin_param.txt ../bin/rk35/rk3568_edp_p04_ddr_1560MHz_v1.21.bin 
+version v1.19 20240117
+chip rk3568
+version 5
+
+new bin config:
+uart id: 9
+uart iomux: 0
+uart baudrate: 115200
+modify end
+
 ```
 
 
