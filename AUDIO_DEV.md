@@ -8,8 +8,8 @@
 <br/>  
 
 <hr>
-- [AUDIO_DEV](#AUDIO-DEV)
-	- 
+- [AUDIO_DEV](# AUDIO_DEV)
+	- [[analyse]audio_hal](### 📗 [analyse] tinyalsa)
 
 <hr>
 
@@ -118,6 +118,7 @@ Audio HAL 관련 2개 interface 제공
 
 
 ### 📗 [analyse] tinyalsa
+
 
 #### audio patch
 
