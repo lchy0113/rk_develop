@@ -8,8 +8,8 @@
 <br/>  
 
 <hr>
-- [AUDIO_DEV](# AUDIO_DEV)  
-	- [[analyse]audio_hal](### 📗 [analyse] tinyalsa)  
+
+- [ANALYSE audio_hal](#ANALYSE-audio_hal)
 
 <hr>
 
@@ -42,10 +42,10 @@
 	
 
 
-## 📗 [analyse]audio_hal
+## ANALYSE audio_hal
 
 
-### [analyse] audio package related
+### ANALYSE audio package related
 
  device/rockchip/common/device.mk 파일에 packages가 선언됨.
 
@@ -95,7 +95,7 @@ PRODUCT_PACKAGES += \
 
  *audio.primary.rk30board.so*
 
-### [analyse] audio interface
+### ANALYSE_audio interface
 
 > upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
 
@@ -117,7 +117,7 @@ Audio HAL 관련 2개 interface 제공
 
 
 
-### 📗 [analyse] tinyalsa
+### ANALYSE tinyalsa
 
 
 #### audio patch
@@ -335,7 +335,7 @@ out->stream.common.standby = out_standby
 <br/>  
 <br/>  
 
-## 📖 [analyse][reference] Qualcomm Audio HAL audio path settings
+## ANALYSE reference Qualcomm Audio HAL audio path settings
   
 ### 1. **Audio block diagram overview**  
   
