@@ -561,8 +561,9 @@ enum {
  - /vendor/etc/audio_policy_configuration.xml  
   xml 내의 <modules>는 각 audio HAL 의 so 파일에 해당.  
   모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 나타냄.  
-
+  
    * device port 
+	     
 | **index** | **io_control_path (Devices)** | **route mode**           | **data stream**                                |
 |-----------|-------------------------------|--------------------------|------------------------------------------------|
 | 1         | Speaker                       | 내장 SPK 출력(기본 모드) | mixer(android) -> 내장 SPK                     |
@@ -577,7 +578,7 @@ enum {
 | 10        | pstn_talk_dial                | -                        | -                                              |
 | 11        | pstn_sub_talk                 | -                        | -                                              |
 | -         | -                             | -                        | -                                              |
-
+  
 ## AudioPortConfig
 
 > android.media.AudioPortConfig
