@@ -581,6 +581,7 @@ enum {
   
 ## AudioPortConfig
 
+> android.media.AudioPortConfig
 
 ### Create Audio Patch
 
@@ -588,7 +589,6 @@ enum {
 
 ### Volume Control
 
-> android.media.AudioPortConfig
 
 
 
