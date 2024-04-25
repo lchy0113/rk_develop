@@ -10,29 +10,19 @@
 <hr>
 
 - [ANALYSE audio_hal](#ANALYSE-audio_hal)
+	- [ANALYSE tinyalsa](#ANALYSE-tinyalsa)
+		- [ANALYSE tinyalsa](#ANALYSE-tinyalsa)
+	- [ANALYSE reference Quallcomm Audio HAL](#ANALYSE-reference-Qualcomm-Audio-HAL)
+
+- [WIKI control audio interface](#WIKI-control-audio-interface)
+
+- [develop](#develop)
+
 
 <hr>
 
 ----
 	
-## io contorl - door
-
-- SEL_DC : GPIO0_A6
-  * High(Active)  
-```bash
-// set gpio
-# io -4 -w 0xfdc20004 0x07000000
-
-// set directiron to out
-# io -4 -w 0xfdd60008 0x00400040 
-
-// set value to high
-# io -4 -w 0xfdd60000 0x00400040 
-
-// set value to low
-# io -4 -w 0xfdd60000 0x00400000 
-```
-
 <br/>  
 <br/>  
 <br/>  
@@ -557,6 +547,15 @@ enum {
 
 
  
+<br/>  
+<br/>  
+<br/>  
+<br/>  
+
+----
+	
+# WIKI control audio interface 
+
 
 <br/>  
 <br/>  
@@ -568,7 +567,7 @@ enum {
 
 
 
-## ䷴  [develop]
+# develop
 
  - regmap 
 
@@ -599,3 +598,24 @@ Card:0
      1 MIXER   0   0   0   1 rw        ENUM   IO Control Path: (0 STBY) { STBY=0, DOOR_CALL=1, DOOR_TALK=2, DOOR_SUB_TALK=3, VOIP_SUB_TALK=4 }
 	  
 ```
+  
+----
+	
+- io contorl - door
+
+  SEL_DC : GPIO0_A6
+  * High(Active)  
+```bash
+// set gpio
+# io -4 -w 0xfdc20004 0x07000000
+
+// set directiron to out
+# io -4 -w 0xfdd60008 0x00400040 
+
+// set value to high
+# io -4 -w 0xfdd60000 0x00400040 
+
+// set value to low
+# io -4 -w 0xfdd60000 0x00400000 
+```
+
