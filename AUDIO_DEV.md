@@ -556,7 +556,7 @@ enum {
 	
 # WIKI control audio interface 
 
-## audio policy 지정.
+## audio policy 지정
 
  - /vendor/etc/audio_policy_configuration.xml  
   xml 내의 <modules>는 각 audio HAL 의 so 파일에 해당.  
