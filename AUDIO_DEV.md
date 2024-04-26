@@ -558,38 +558,73 @@ enum {
 
 ## audio policy 지정
 
+<hr>
+
  - /vendor/etc/audio_policy_configuration.xml  
   xml 내의 <modules>는 각 audio HAL 의 so 파일에 해당.  
   모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 나타냄.  
   
    * device port 
 	     
-| **index** | **io_control_path (Devices)** | **route mode**           | **data stream**                                |
-|-----------|-------------------------------|--------------------------|------------------------------------------------|
-| 0         | Speaker                       | 내장 SPK 출력(기본 모드) | mixer(android) -> 내장 SPK                     |
-| 0         | Built-In Mic                  | 내장 MIC 입력(기본 모드) | 내장 MIC -> mixer(android)                     |
-| 1         | door_call                     | 도어 호출                | mixer(android) -> 내장 SPK & 도어 SPK          |
-| 2         | door_talk                     | 월패드, 도어 간 통화     | 내장 MIC_SPK <-> 도어 MIC_SPK(without mixer)   |
-| 3         | voip_door_talk                | VOIP, 도어 간 통화       | mixer(android) <-> 도어 MIC_SPK                |
-| 4         | door_sub_talk                 | 도어, 서브폰 간 통화     | 도어 MIC_SPK <-> 서브폰 MIC_SPK(without mixer) |
-| 5         | voip_sub_talk                 | 서브폰 VOIP 간 통화      | mixer(android) <-> 서브 MIC_SPK                |
-| 6         | pstn_ring                     | -                        | -                                              |
-| 7         | pstn_dial                     | -                        | -                                              |
-| 8         | pstn_talk                     | -                        | -                                              |
-| 9         | pstn_talk_dial                | -                        | -                                              |
-| 10        | pstn_sub_talk                 | -                        | -                                              |
-| -         | -                             | -                        | -                                              |
+| **index** | **io_control_path (Devices)** | **route mode**           | **data stream**                                  |
+|-----------|-------------------------------|--------------------------|--------------------------------------------------|
+| 0         | Speaker                       | 내장 SPK 출력(기본 모드) | mixer(android)  -> 내장 SPK                      |
+| 0         | Built-In Mic                  | 내장 MIC 입력(기본 모드) | 내장 MIC        -> mixer(android)                |
+| 1         | door_call                     | 도어 호출                | mixer(android)  -> 내장 SPK & 도어 SPK           |
+| 2         | door_talk                     | 월패드, 도어 간 통화     | 내장 MIC_SPK   <-> 도어 MIC_SPK(without mixer)   |
+| 3         | voip_door_talk                | VOIP, 도어 간 통화       | mixer(android) <-> 도어 MIC_SPK                  |
+| 4         | door_sub_talk                 | 도어, 서브폰 간 통화     | 도어 MIC_SPK   <-> 서브폰 MIC_SPK(without mixer) |
+| 5         | voip_sub_talk                 | 서브폰 VOIP 간 통화      | mixer(android) <-> 서브 MIC_SPK                  |
+| 6         | pstn_ring                     | -                        | -                                                |
+| 7         | pstn_dial                     | -                        | -                                                |
+| 8         | pstn_talk                     | -                        | -                                                |
+| 9         | pstn_talk_dial                | -                        | -                                                |
+| 10        | pstn_sub_talk                 | -                        | -                                                |
+| -         | -                             | -                        | -                                                |
   
+
+<hr>
+
 ## AudioPortConfig
 
-> android.media.AudioPortConfig
+ android.media.AudioPortConfig  
+ Audio Port Config 나타내는 Class, Audio Port와 Config을 정의.   
+ Audio Patch 시, 사용됨.   
+ 
 
 ### Create Audio Patch
 
+ - 도어폰 백콜 출력(DOOR_CALL) 모드 출력. 
+```bash
+04-24 16:05:27.455  3309  3309 D AudioPatchTestFragment: mHandle: 8 mSources: {{mPort:{mHandle: 1, mRole: SOURCE}, mSamplingRate:48000, mChannelMask: 12, mFormat:2, mGain:null}, } mSinks: {{mPort:{{mHandle: 3, mRole: SINK}, mType: bus, mAddress: io_control_path=door_call}, mSamplingRate:0, mChannelMask: 1, mFormat:1, mGain:null}, }
+04-24 16:07:20.937  3309  3309 D AudioPatchTestFragment: play media sample:media/iphone_marinba.wav
+04-24 16:07:28.162  3309  3309 D AudioPatchTestFragment: stop playing
+04-24 16:08:11.809  3309  3309 D AudioPatchTestFragment: release audio patch
+```
+
+
 ### Release Audio Patch
 
-### Volume Control
+<hr>
 
+## Volume Control
+
+ - 안드로이드 볼륨 : AudioManager 를 사용하여 제어.(ex. setStreamVolume) 
+   (PCM데이터가 오디오 인터페이스(mixer)를 통해 통신 되는 경우)
+   * 통화 모드 : 
+     + normal(STBY)
+	 + 도어폰 백콜 출력(DOOR_CALL)
+	 + Voip&서브폰 통화(VOIP_SUB_TALK)   
+	 + Voip&도어폰 통화(VOIP_DOOR_TALK)  
+
+   
+  
+ - 오디오 코덱 볼륨 : audioGain 을 사용하여 제어.  
+  (PCM데이터가 오디오 인터페이스(mixer)를 통해 통신 되지 않는 경우)   
+   * 통화 모드 : 
+     + 월패드&도어폰 통화(DOOR_TALK) 
+
+ - 볼륨 제어를 사용하지 않는 CASE : 도어폰&서브폰 통화, PSTN&서브폰 통화.
 
 
 
