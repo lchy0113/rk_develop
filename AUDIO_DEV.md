@@ -561,8 +561,8 @@ enum {
 <hr>
 
  - /vendor/etc/audio_policy_configuration.xml  
-  xml 내의 <modules>는 각 audio HAL 의 so 파일에 해당.  
-  모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 나타냄.  
+  xml 내의 **modules**는 각 audio HAL 의 so 파일에 해당.  
+  모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 기술.  
   
    * device port 
 	     
