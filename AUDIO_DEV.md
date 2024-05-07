@@ -556,6 +556,22 @@ enum {
 	
 # WIKI control audio interface 
 
+## 개발 project 및 branch
+
+ - 아래 project/branch 에서 개발 작업 진행.  
+
+```bash
+$ repo branch 
+(...)
+
+*  private/audio_io          | in:
+                                   device/kdiwin/test/common
+                                   hardware/rockchip/audio
+                                   kernel-4.19
+
+
+```
+
 ## audio policy 지정
 
 <hr>
@@ -587,6 +603,7 @@ enum {
 
 ## AudioPortConfig
 
+
  android.media.AudioPortConfig  
  Audio Port Config 나타내는 Class, Audio Port와 Config을 정의.   
  Audio Patch 시, 사용됨.   
@@ -594,7 +611,9 @@ enum {
 
 ### Create Audio Patch
 
- - 도어폰 백콜 출력(DOOR_CALL) 모드 출력. 
+ - 목적 : Audio IO Path 변경.  
+ - 예) 도어폰 백콜 출력(DOOR_CALL) 모드 출력.   
+
 ```bash
 04-24 16:05:27.455  3309  3309 D AudioPatchTestFragment: mHandle: 8 mSources: {{mPort:{mHandle: 1, mRole: SOURCE}, mSamplingRate:48000, mChannelMask: 12, mFormat:2, mGain:null}, } mSinks: {{mPort:{{mHandle: 3, mRole: SINK}, mType: bus, mAddress: io_path=door_call}, mSamplingRate:0, mChannelMask: 1, mFormat:1, mGain:null}, }
 04-24 16:07:20.937  3309  3309 D AudioPatchTestFragment: play media sample:media/iphone_marinba.wav
@@ -605,7 +624,11 @@ enum {
 
 ### Release Audio Patch
 
+ - 목적 : Audio IO Path 적용 해제  
+ - 예) 도어폰 백콜 출력후, 노멀 상태로 오디오 장치 변경.  
+
 <hr>
+
 
 ## Volume Control
 
