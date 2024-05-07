@@ -97,7 +97,7 @@ $ ip addr show dev eth0
 ### rockchip ethernet device
 
 
-```bash
+```basg
 /sys/devices/platform/fe2a0000.ethernet
 ```
 

@@ -1099,4 +1099,40 @@ modify end
 <br/>
 <hr/>
 
+# networking in uboot
+
+ - dhcp 
+ dhcp가 dhcp 서버에서 IP 주소를 성공적으로 얻으면 tftp를 통해 hostIPaddr 주소에서 파일을 얻는다다.
+
+```bash
+=> dhcp
+Usage : 
+dhcp [loadAddress] [[hostIpaddr:]bootfilename]
+
+ex.
+=> dhcp 0x20000000 192.168.0.100:kernel.img
+ethernet@ffc40000 Waiting for PHY auto negotiation to complete. done
+BOOTP broadcast 1
+DHCP client bound to address 192.168.0.106 (2 ms)
+Using ethernet@ffc40000 device
+TFTP from server 192.168.0.100; our IP address is 192.168.0.106
+Filename 'kernel.img'.
+Load address: 0x20000000
+
+(...)
+
+done
+
+=> ping 172.16.0.1
+
+
+```
+
+<hr/>
+<br/>
+<br/>
+<br/>
+<hr/>
+
+
 

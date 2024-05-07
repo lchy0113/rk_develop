@@ -566,21 +566,21 @@ enum {
   
    * device port 
 	     
-| **index** | **io_control_path (Devices)** | **route mode**           | **data stream**                                  |
-|-----------|-------------------------------|--------------------------|--------------------------------------------------|
-| 0         | Speaker                       | 내장 SPK 출력(기본 모드) | mixer(android)  -> 내장 SPK                      |
-| 0         | Built-In Mic                  | 내장 MIC 입력(기본 모드) | 내장 MIC        -> mixer(android)                |
-| 1         | door_call                     | 도어 호출                | mixer(android)  -> 내장 SPK & 도어 SPK           |
-| 2         | door_talk                     | 월패드, 도어 간 통화     | 내장 MIC_SPK   <-> 도어 MIC_SPK(without mixer)   |
-| 3         | voip_door_talk                | VOIP, 도어 간 통화       | mixer(android) <-> 도어 MIC_SPK                  |
-| 4         | door_sub_talk                 | 도어, 서브폰 간 통화     | 도어 MIC_SPK   <-> 서브폰 MIC_SPK(without mixer) |
-| 5         | voip_sub_talk                 | 서브폰 VOIP 간 통화      | mixer(android) <-> 서브 MIC_SPK                  |
-| 6         | pstn_ring                     | -                        | -                                                |
-| 7         | pstn_dial                     | -                        | -                                                |
-| 8         | pstn_talk                     | -                        | -                                                |
-| 9         | pstn_talk_dial                | -                        | -                                                |
-| 10        | pstn_sub_talk                 | -                        | -                                                |
-| -         | -                             | -                        | -                                                |
+| **index** | **io_path (Devices)** | **route mode**           | **data stream**                                  |
+|-----------|-----------------------|--------------------------|--------------------------------------------------|
+| 0         | Speaker               | 내장 SPK 출력(기본 모드) | mixer(android)  -> 내장 SPK                      |
+| 0         | Built-In Mic          | 내장 MIC 입력(기본 모드) | 내장 MIC        -> mixer(android)                |
+| 1         | door_call             | 도어 호출                | mixer(android)  -> 내장 SPK & 도어 SPK           |
+| 2         | door_talk             | 월패드, 도어 간 통화     | 내장 MIC_SPK   <-> 도어 MIC_SPK(without mixer)   |
+| 3         | voip_door_talk        | VOIP, 도어 간 통화       | mixer(android) <-> 도어 MIC_SPK                  |
+| 4         | door_sub_talk         | 도어, 서브폰 간 통화     | 도어 MIC_SPK   <-> 서브폰 MIC_SPK(without mixer) |
+| 5         | voip_sub_talk         | 서브폰 VOIP 간 통화      | mixer(android) <-> 서브 MIC_SPK                  |
+| 6         | pstn_ring             | -                        | -                                                |
+| 7         | pstn_dial             | -                        | -                                                |
+| 8         | pstn_talk             | -                        | -                                                |
+| 9         | pstn_talk_dial        | -                        | -                                                |
+| 10        | pstn_sub_talk         | -                        | -                                                |
+| -         | -                     | -                        | -                                                |
   
 
 <hr>
@@ -596,7 +596,7 @@ enum {
 
  - 도어폰 백콜 출력(DOOR_CALL) 모드 출력. 
 ```bash
-04-24 16:05:27.455  3309  3309 D AudioPatchTestFragment: mHandle: 8 mSources: {{mPort:{mHandle: 1, mRole: SOURCE}, mSamplingRate:48000, mChannelMask: 12, mFormat:2, mGain:null}, } mSinks: {{mPort:{{mHandle: 3, mRole: SINK}, mType: bus, mAddress: io_control_path=door_call}, mSamplingRate:0, mChannelMask: 1, mFormat:1, mGain:null}, }
+04-24 16:05:27.455  3309  3309 D AudioPatchTestFragment: mHandle: 8 mSources: {{mPort:{mHandle: 1, mRole: SOURCE}, mSamplingRate:48000, mChannelMask: 12, mFormat:2, mGain:null}, } mSinks: {{mPort:{{mHandle: 3, mRole: SINK}, mType: bus, mAddress: io_path=door_call}, mSamplingRate:0, mChannelMask: 1, mFormat:1, mGain:null}, }
 04-24 16:07:20.937  3309  3309 D AudioPatchTestFragment: play media sample:media/iphone_marinba.wav
 04-24 16:07:28.162  3309  3309 D AudioPatchTestFragment: stop playing
 04-24 16:08:11.809  3309  3309 D AudioPatchTestFragment: release audio patch
