@@ -609,8 +609,8 @@ enum {
 
 ## Volume Control
 
- - 안드로이드 볼륨 : AudioManager 를 사용하여 제어.(ex. setStreamVolume) 
-   (PCM데이터가 오디오 인터페이스(mixer)를 통해 통신 되는 경우)
+ - **안드로이드 볼륨** : AudioManager 를 사용하여 제어.(ex. setStreamVolume)   
+   (PCM데이터가 오디오 인터페이스(mixer)를 통해 통신 되는 경우)  
    * 통화 모드 : 
      + normal(STBY)
 	 + 도어폰 백콜 출력(DOOR_CALL)
@@ -619,7 +619,7 @@ enum {
 
    
   
- - 오디오 코덱 볼륨 : audioGain 을 사용하여 제어.  
+ - **오디오 코덱 볼륨** : -audioGain 을 사용하여 제어.-  
   (PCM데이터가 오디오 인터페이스(mixer)를 통해 통신 되지 않는 경우)   
    * 통화 모드 : 
      + 월패드&도어폰 통화(DOOR_TALK) 
