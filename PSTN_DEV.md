@@ -65,6 +65,10 @@ ECHO_LINE_IN   AUD_RX      +
    
    일반적으로 전화선을 꽂을때 플러그의 TIP이 먼저 연결되고, 그 다음에 RING이 연결.  
    TIP과 RING을 A와 B로 표현하기도 함.  
+  
+  
+## HT9200
 
+ serial mode 동작  
 
 
