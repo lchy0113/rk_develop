@@ -46,11 +46,11 @@ GPIO3_D1       DTMF_DET     +-----------------+
 GPIO2_C6       SEL_PSTN_AUD       (talk:high)
 GPIO0_A5       SEL_ECHO_PSTN_AUD  (talk:high)
 
-(terminal)
+(terminal side)
                TIP
                RING
 
-(audio codec)  
+(codec side)  
 ECHO_LINE_OUT  PSTN_TX     +- PSTN_AUD
 ECHO_LINE_IN   AUD_RX      +
 			  
@@ -58,4 +58,13 @@ ECHO_LINE_IN   AUD_RX      +
 ```
 
  - TIP, RING 은 PSTN에서 사용되는 2개의 전선. 
-   * 전화선 연결과 음성 통화 기능을 담당. 
+   전화선 연결과 음성 통화 기능 담당. 
+
+   * **TIP** : 전화선에서 하나의 전선으로 전화 플러그의 금속 끝 부분에 연결.
+   * **RING** : 전화선에서 하나의 전선으로 TIP 뒤에 있는 금속 링에 연결. 
+   
+   일반적으로 전화선을 꽂을때 플러그의 TIP이 먼저 연결되고, 그 다음에 RING이 연결.  
+   TIP과 RING을 A와 B로 표현하기도 함.  
+
+
+
