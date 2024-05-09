@@ -651,6 +651,14 @@ $ repo branch
    * 통화 모드 : 
      + 월패드&도어폰 통화(DOOR_TALK) 
 
+| **setParameters**  | **key**     | **value**    |
+|--------------------|-------------|--------------|
+| wallpad SPK volume | sink_gain   | integer(0~5) |
+|                    | source_gain | integer(0~5) |
+  
+ **door_talk**  audio io path가  patch 된 조건에서만 허용.  
+ sink_gain key 를 사용 시, 월패드 스피커 볼륨 제어(0~5)  
+
  - 볼륨 제어를 사용하지 않는 CASE : 도어폰&서브폰 통화, PSTN&서브폰 통화.
 
 
