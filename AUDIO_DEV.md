@@ -546,6 +546,16 @@ enum {
  예를들어 deep-buffer-playback speaker는 deep buffer playback FE PCM과 speaker device를 routing.    
 
 
+### 4. **audio framework develop data**
+
+ H/W DSP, S/W DSP 처리에 최적화된 AUDIO HAL을 제공하여, Application 별 오디오 출력 장치를 규정하는 가변적 Audio Policy 를 이용.  
+ 적용 : 기가지니, nugu, kakao mini 등 다양한 솔루션에 적용  
+
+
+  
+![](./images/AUDIO_DEV_20.png)
+  
+
  
 <br/>  
 <br/>  
