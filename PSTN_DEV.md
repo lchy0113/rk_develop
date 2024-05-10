@@ -40,10 +40,10 @@ PSTN module
 ```bash
 (soc)          (base)
 GPIO2_D1       LINE_ON
-GPIO3_C1       DTMF_CLK
+GPIO3_D1       DTMF_DET 
 GPIO3_C2       DTMF_EN      +-----------------+
-GPIO3_A2       DTMF_DATA    | DTMF Generators |
-GPIO3_D1       DTMF_DET     +-----------------+
+GPIO3_C1       DTMF_CLK     | DTMF Generators |
+GPIO3_A2       DTMF_DATA    +-----------------+
 
 GPIO2_C6       SEL_PSTN_AUD       (talk:high)
 GPIO0_A5       SEL_ECHO_PSTN_AUD  (talk:high)
@@ -55,8 +55,42 @@ GPIO0_A5       SEL_ECHO_PSTN_AUD  (talk:high)
 (codec side)  
 ECHO_LINE_OUT  PSTN_TX     +- PSTN_AUD
 ECHO_LINE_IN   AUD_RX      +
-			  
+```
 
+ - GPIO3_C2 : 0xfdc60050
+ - GPIO3_C1 : 0xfdc60050
+ - GPIO3_A2 : 0xfec60040
+
+```bash
+// mux
+$ io -4 -r -l 0x4 0xfdc60050
+$ io -4 -r -l 0x4 0xfdc60040
+$ io -4 -w 0xfdc60050 0x07700000 
+$ io -4 -w 0xfdc60040 0x07000000 
+
+// direction
+$ io -4 -r -l 0x4 0xfe76000c
+fe76000c:  00002020
+//gpio3_c1 is input (1bit) 
+//gpio3_c2 is input (2bit)
+$ io -4 -r -l 0x4 0xfe760008 
+fe760008:  00000002 
+// gpio3_a2 is output (2bit)
+
+$ io -4 -w 0xfe76000c 0x00060006
+$ io -4 -w 0xfe760008 0x00040004
+
+// value
+$ io -4 -r -l 0x4 0xfe760004
+fe760004:  00000020
+//gpio3_c1 is low (1bit) 
+//gpio3_c2 is low (2bit)
+$ io -4 -r -l 0x4 0xfe760000
+fe760000:  00000002
+// gpio3_a2 is high (2bit)
+
+$ io -4 -w 0xfe760004 0x00060006
+$ io -4 -w 0xfe760000 0x00040004
 ```
 
  - TIP, RING 은 PSTN에서 사용되는 2개의 전선. 
