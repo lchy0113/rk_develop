@@ -103,9 +103,34 @@ $ io -4 -w 0xfe760000 0x00040004
    TIP과 RING을 A와 B로 표현하기도 함.  
   
   
-## HT9200
+## HT9200A
 
- serial mode 동작  
+ serial mode 동작(parallel mode 미지원)  
+
+![](./images/PSTN_DEV_01.png)
+
+```bash
+ 
+ |--HT9200A--|        |----SOC----|
+ +VDD      CE+--------+DTMF_EN    | // Chip enable, active low
+ +X2      CLK+--------+DTMF_CLK   | // Data sync clock input for the serial mode
+ +X1     DATA+--------+DTMF_DATA  | // Data input terminal for the serial mode
+ +DTMF    VSS+        |-----------| // DTMF : output terminal of the DTMF signal
+ |-----------|
+
+```
+
+ HT9200A는 data input, 5-bit code 및 sync clock을 사용하여 DTMF signal을 전송.
+ 전송될 전화번호의 모든 숫자는 5-bit data로 구성된 입력에 의해 선택됨.
+
+ - 5-bit data 는 D0(LSB)가 첫번째로 수신받는 bit.
+ - HT9200A는 clock(DTMF_CLK)의 falling edge에서 데이터를 latch 한다.
+ - digital codes 와 tone output frequency 는 아래 표와 같다. (제어 타이밍 참고)
+ - input clock(DTMF_CLK)는 100 kHz
+
+![](./images/PSTN_DEV_02.png)
+
+![](./images/PSTN_DEV_03.png)
 
 
 <br/>  
