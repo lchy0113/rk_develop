@@ -157,6 +157,15 @@ AT+ATH
 //3. 통화응답
 // ATA
 // 통화 응담
+```
+
+```bash
+// develop git project
+*  private/pstn                 | in:
+                                      device/kdiwin/test/rk3568_edpp04
+                                      kernel-4.19
+
+
 
 ```
 
