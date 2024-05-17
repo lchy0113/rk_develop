@@ -133,6 +133,33 @@ $ io -4 -w 0xfe760000 0x00040004
 ![](./images/PSTN_DEV_03.png)
 
 
+```bash
+// note
+adb shell "echo 89 > /sys/class/gpio/export ; echo out > /sys/class/gpio/gpio89/direction ; echo 1 > /sys/class/gpio/gpio89/value"
+
+dtmf enable > 56ms dealay > dtmf clock > 56ms dealy > dtmf clock
+digit 간 간격 170 ms delay
+
+
+///////////////
+// AT Command
+
+//1. 통화
+// ATD <dial string>
+>ATD전화번호 // Hook on 후, 전화번호 전달
+>ATD // Hook on, 
+
+//2. 통화종료
+// ATH
+// 통화중 call release.
+AT+ATH
+
+//3. 통화응답
+// ATA
+// 통화 응담
+
+```
+
 <br/>  
 <br/>  
 <br/>  
