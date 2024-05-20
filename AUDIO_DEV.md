@@ -779,10 +779,10 @@ Card:0
 -----
 
  - STO/RDY 핀 기능
+  
+ STO(Status Output Pin)/RDY(RDY Pin) 으로 정의되어져 있으며, LED 로 출력.   
 
 
-
- STO : Status Output Pin 으로 정의되어져 있으며, LED 로 출력. 
 ```bash
 
 [ VDD_3V3 ]
