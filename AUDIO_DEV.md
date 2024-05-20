@@ -673,6 +673,43 @@ $ repo branch
 
 
 
+<hr>
+
+## wallAudioConfiguration
+
+ Audio Manager 의 Route 별 Audio Patch 설정 및 Stream을 WallAudioConfiguration에서 wrapping 함.
+
+
+| **라우트**                         | **Platform Audio Policy Configuration**        | **volume**        |
+|------------------------------------|------------------------------------------------|-------------------|
+| WAudioManager.ROUTE_DOOR_RING      | wall(mix) -> door(spk) && wall(spk)            | STREAM_RING       |
+| WAudioManager.ROUTE_DOOR_CALL      | door(mic) -> wall(spk), wall(mic) -> door(spk) | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_VOIP_DOOR_CALL | wall(mix) -> door(spk), door(mic) -> wall(mix) | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_DOOR_SUBP_CALL | door(mic) -> subp(spk), subp(mic) -> door(spk) | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_VOIP_SUBP_CALL | wall(mix) -> subp(spk), subp(mic) -> wall(mix) | STREAM_VOICE_CALL |
+
+
+```xml
+<!--
+    @element <wallAudioConfiguration>
+        @attribute 'version': version code of this xml
+        @element <routes>
+            @element <route>
+                @attribute 'name': route name
+                @attribute 'sink' : sink port name or address
+                @attribute 'source' : source port name or address
+-->
+
+<wallAudioConfiguration version="1">
+    <routes>
+        <route name="door_ring" sink="io_path=door_ring" source="primary output" stream="STREAM_RING" />
+        <route name="door_call" sink="io_path=door_call" source="primary output" stream="STREAM_VOICE_CALL" />
+        <route name="voip_door_call" sink="io_path=voip_door_call" source="primary output" stream="STREAM_VOICE_CALL" />
+        <route name="door_subp_call" sink="io_path=door_subp_call" source="primary output" stream="STREAM_VOICE_CALL" />
+        <route name="voip_subp_call" sink="io_path=voip_subp_call" source="primary output" stream="STREAM_VOICE_CALL" />
+    </routes>
+</wallAudioConfiguration>
+```
 
 
 <br/>  
