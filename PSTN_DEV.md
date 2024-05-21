@@ -180,8 +180,8 @@ AT+ATH
      |                           | WAudioManager.ROUTE_SUBP_CALL       |	
      |                           |                                     |
      |                           +-----------------|-------------------+
-     |
-     + 통화 : ATD<dial string> 
+     |                                             |
+     + 통화 : ATD<dial string>                     + by WAudioManager
 	          or ATD + dial character
      + 종료 : ATH
      + 응답 : ATA
