@@ -7,7 +7,8 @@ import subprocess
 import os
 
 # test trigger 
-log_test_string = "10.1.0.0/16 dev eth0 proto kernel scope link src 10.1.7.1"
+log_test_static_string = "10.1.0.0/16 dev eth0 proto kernel scope link src 10.1.7.1"
+log_test_dhcp_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.111"
 log_bootvcc3v3_string = "vcc3v3_pcie: disabling"
 
 # set serial port 
@@ -21,6 +22,9 @@ count_fail = 0
 filename = "serial_test.log"
 
 # for smartthings
+# ref : https://developer.smartthings.com/docs/sdks/cli/introduction
+# if need debug
+#     SMARTTHINGS_DEBUG=true smartthings <command>
 token="61ed264a-248f-4685-86a4-a155d3b469df"
 deviceid="55884626-685e-4090-a05c-8fc223611992"
 
@@ -65,9 +69,9 @@ while True:
 		time.sleep(10)
 		ser.write(b'ip route\r\n')
 
-	if log_test_string in received_data:
+	if log_test_dhcp_string in received_data:
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
-		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_string}'" + Fore.RESET)
+		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_dhcp_string}'" + Fore.RESET)
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
 		time.sleep(3)
 #		poweroff()
