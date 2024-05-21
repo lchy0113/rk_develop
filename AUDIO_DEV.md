@@ -596,16 +596,16 @@ $ repo branch
 |-----------|-----------------------|--------------------------|--------------------------------------------------|
 | 0         | Speaker               | 내장 SPK 출력(기본 모드) | mixer(android)  -> 내장 SPK                      |
 | 0         | Built-In Mic          | 내장 MIC 입력(기본 모드) | 내장 MIC        -> mixer(android)                |
-| 1         | door_call             | 도어 호출                | mixer(android)  -> 내장 SPK & 도어 SPK           |
-| 2         | door_talk             | 월패드, 도어 간 통화     | 내장 MIC_SPK   <-> 도어 MIC_SPK(without mixer)   |
-| 3         | voip_door_talk        | VOIP, 도어 간 통화       | mixer(android) <-> 도어 MIC_SPK                  |
-| 4         | door_sub_talk         | 도어, 서브폰 간 통화     | 도어 MIC_SPK   <-> 서브폰 MIC_SPK(without mixer) |
-| 5         | voip_sub_talk         | 서브폰 VOIP 간 통화      | mixer(android) <-> 서브 MIC_SPK                  |
-| 6         | pstn_ring             | -                        | -                                                |
-| 7         | pstn_dial             | -                        | -                                                |
-| 8         | pstn_talk             | -                        | -                                                |
-| 9         | pstn_talk_dial        | -                        | -                                                |
-| 10        | pstn_sub_talk         | -                        | -                                                |
+| 1         | door_ring             | 도어 호출                | mixer(android)  -> 내장 SPK & 도어 SPK           |
+| 2         | door_call             | 월패드, 도어 간 통화     | 내장 MIC_SPK   <-> 도어 MIC_SPK(without mixer)   |
+| 3         | voip_door_call        | VOIP, 도어 간 통화       | mixer(android) <-> 도어 MIC_SPK                  |
+| 4         | door_subp_call        | 도어, 서브폰 간 통화     | 도어 MIC_SPK   <-> 서브폰 MIC_SPK(without mixer) |
+| 5         | voip_subp_call        | 서브폰 VOIP 간 통화      | mixer(android) <-> 서브 MIC_SPK                  |
+| 6         | pstn_ring             | PSTN RING 출력 경로      | wall(mix) -> wall(spk)                           |
+| 7         | pstn_dial             | PSTN DIAL , 오디오 경로  | pstn -> wall(spk), wall(mic) -> pstn             |
+| 8         | pstn_call             | PSTN 통화 경로           | pstn -> wall(spk), wall(mic) -> pstn             |
+| 9         | pstn_call_dial        | PSTN 통화 중, DIAL 경로  | pstn -> wall(spk), wall(mic) -> pstn             |
+| 10        | pstn_subp_call        | PSTN 서브폰 간 통화 경로 | pstn -> subp(spk), subp(mic) -> pstn             |
 | -         | -                     | -                        | -                                                |
   
 
@@ -687,6 +687,11 @@ $ repo branch
 | WAudioManager.ROUTE_VOIP_DOOR_CALL | wall(mix) -> door(spk), door(mic) -> wall(mix) | STREAM_VOICE_CALL |
 | WAudioManager.ROUTE_DOOR_SUBP_CALL | door(mic) -> subp(spk), subp(mic) -> door(spk) | STREAM_VOICE_CALL |
 | WAudioManager.ROUTE_VOIP_SUBP_CALL | wall(mix) -> subp(spk), subp(mic) -> wall(mix) | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_PSTN_RING    	 | wall(mix) -> wall(spk)	                      | STREAM_RING       |
+| WAudioManager.ROUTE_PSTN_DIAL	     | pstn -> wall(spk), wall(mic) -> pstn	          | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_PSTN_CALL	     | pstn -> wall(spk), wall(mic) -> pstn 	      | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_PSTN_CALL_DIAL | pstn -> wall(spk), wall(mic) -> pstn	          | STREAM_VOICE_CALL | 
+| WAudioManager.ROUTE_SUBP_CALL	     | pstn -> subp(spk), subp(mic) -> pstn	          | STREAM_VOICE_CALL |
 
 
 ```xml
@@ -780,8 +785,24 @@ Card:0
 
  - STO/RDY 핀 기능
   
- STO(Status Output Pin)/RDY(RDY Pin) 으로 정의되어져 있으며, LED 로 출력.   
+ STO(Status Output Pin)/RDY(RDY Pin) 으로 정의되어져 있으며, LED 로 상태 출력.   
 
+ 기본 설정으로는 STO 핀 기능이 선택되어져 있음.   
+ SDOUT2EN bit 가 "0" (default)인 경우, STO 핀 출력이 활성화 됨.  
+ SDOUT2EN bit 가 "1" 인 경우, STO 핀 출력은 비활성화(L)로 출력됨.  
+  
+ AK7755의 전원이 인가된 후, PDN 핀이 "L" 인경우, STO 핀은 "L"로 출력.  
+ 내부 디지털 전원 공급 회로(VREG) 가 전원이 켜진 후(PDN핀 = H), STO 핀은 활성화(H) 됨.  
+  
+ 전원 다운 상태가 해제된 후에는 제어 레지스터 설정에 따라 VREG 다운 상태, PLL 락 신호, WDT1 및 WDT2 DSP 오류, CRC 오류 및 SRC1~2 Lock  신호를 STO 핀에서 출력할수 있다.  
+
+
+```
+AK775 오디오 코덱 모듈의 STO/RDY 핀은 다음과 같은 기능을 수행합니다:
+
+STO (Status Output) 핀: 이 핀은 상태 출력을 담당합니다. 기본 설정에서는 STO 핀 기능이 선택됩니다. SDOUT2EN 비트가 “0” (기본값)인 경우 STO 핀 출력이 활성화됩니다. SDOUT2EN 비트가 "1"인 경우 STO 핀은 "L"로 출력됩니다. 또한 AK775이 전원이 켜지고 PDN 핀이 "L"인 경우 STO 핀은 "L"로 출력됩니다. 내부 디지털 전원 공급 회로 (VREG)가 전원이 켜진 후 (PDN 핀 = “H”)에 STO 핀은 "H"로 출력됩니다. 전원 다운 상태가 해제된 후에는 제어 레지스터 설정에 따라 VREG 다운 상태, PLL 락 신호, WDT1 및 WDT2 (워치독 타이머) DSP 오류, CRC 오류 및 SRC1~2 락 신호를 STO 핀에서 출력할 수 있습니다. PDN 핀 = “H”, DO2SEL [1:0] 비트 = “00”, SDOUT2EN 비트 = “0” 및 STO 핀 = "L"인 경우 AK775는 오류 상태로 구분됩니다. 제어 레지스터 설정이 기본값인 경우 VREG 다운 상태 및 WDT1-2 상태가 STO 핀에서 출력됩니다1.
+
+```
 
 ```bash
 
