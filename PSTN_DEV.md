@@ -160,9 +160,29 @@ AT+ATH
 [ring event] -> 
 ```
 
-```bash
-// develop git project
+### PSTN_DEV TEST
 
+ > CLI 를 통해 시험 :
+
+```bash
+
+ +--------------------(pstn)-----------------------+
+ |                                                 |
+ |                                                 |
+ +-------------------------------------------------+
+
+ +---(dtmf tone generator)---+   +--(audio api)------------------------+
+ |                           |   | WAudioManager.ROUTE_PSTN_RING       |
+ |                           |   | WAudioManager.ROUTE_PSTN_DIAL	   |
+ |      /dev/ttyHT0          |   | WAudioManager.ROUTE_PSTN_CALL	   |
+ +---|-----------------------+   | WAudioManager.ROUTE_PSTN_CALL_DIAL  |
+     |                           | WAudioManager.ROUTE_SUBP_CALL       |	
+     |                           |                                     |
+     |                           +-----------------|-------------------+
+     |
+     + 통화 : ATD<dial string> or ATD + dial character
+	 + 종료 : ATH
+     + 응답 : ATA
 
 
 ```
