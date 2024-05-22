@@ -190,7 +190,8 @@ AT+ATH
 ```
 
 
- - PSTN 서브폰 간 통화 동작 Flow
+ - 서브폰 & PSTN간 통화 동작 Flow
+  
   **LINE_ON** 을 제어해야함. 
  
  서브폰에서 PSTN기능이 있는 경우,
