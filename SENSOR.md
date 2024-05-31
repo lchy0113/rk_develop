@@ -83,18 +83,19 @@ SENSOR
  +-----------------+
 ```
 
- - bug 
- 아래 파일 권한이 없어 초기화 되지 않았음. 
-```
+ - bug   
+ 아래 파일 권한이 없어 초기화 되지 않았음.   
+   
+```   
 chmod 777 /dev/8452_daemon
 ```
-
- - hal code
- /hardware/rockchip/sensor/st/Android.mk
-
- - log 
-  Tag : SensorsHal, SensorService 
-
+  
+ - hal code  
+ /hardware/rockchip/sensor/st/Android.mk  
+  
+ - log   
+  Tag : SensorsHal, SensorService   
+  
 ```Makefile
 # Sensor HAL
 PRODUCT_PACKAGES += \
