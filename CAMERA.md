@@ -14,7 +14,42 @@
 [..Related Directory Kernel](#related-directory-kernel)  
 [..Develop](#develop)  
 [....video_stream_start sequcne](#video-stream-start-sequcne)  
+[..Camera debugging](#camera-debugging)  
   
+[CAMERA dvp](#camera-dvp)  
+[..DVP interface setting](#dvp-interface-setting)  
+[....configure sensor in dvp](#configure-sensor-in-dvp)  
+[....configure logical dvp](#configure-logical-dvp)  
+[..Develop(bt601)](#develop-bt601)  
+[..debug cif & dvp driver](#debug-cif-dvp-driver)  
+  
+[rkcif](#rkcif)  
+[..cif device](#cif-device)  
+[....cif device probe](#cif-device-probe)  
+[....sensor and cif binding](#sensor-and-cif-binding)  
+[....snesor and cif and isp link](#sensor-and-cif-and-isp-link)  
+  
+[VICAP](#vicap)  
+  
+[ISP](#isp)  
+  
+[camera hal rockchip camera hal3](#camera-hal-rockchip-camera-hal3)  
+[..overview rockchip camera hal3](#overview-rockchip-camera-hal3)  
+[..debugging for rockchip camera hal3](#debugging-for-rockchip-camera-hal3)  
+[..Add sensor](#add-sensor)  
+[....sensor tuning file](#sensor-tuning-file)  
+[....camera3_profile.xml](#camera3-profile-xml)  
+  
+[RKISP](#rkisp)  
+  
+[decoder techpoint tp2825](#decoder-techpoint-tp2825)  
+[develop : de-interlaced feature on NTSC](#develop---de-interlaced-feature-on-ntsc)  
+  
+[MIPI CSI HOST](#mipi-csi-host)  
+  
+
+
+
 <br/>
 <br/>
 <br/>
@@ -988,7 +1023,7 @@ Linux Kernel-4.19
 <br/>
 <hr>
 
-### 1.5 Camera 디버깅
+### Camera debugging
 
  * v4l2-ctl 을 사용하여 카메라 프레임 데이터를 디버깅 합니다.
 
@@ -1022,9 +1057,13 @@ __ov5695_stop_stream
 ```
 
 
------
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 2. CAMERA(dvp)
+## CAMERA(dvp)
 
 RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다. 
 
@@ -1032,9 +1071,13 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 	* sensor->rkcif_dvp
 
 
-### 2.1 DVP 인터페이스 설정
+### DVP interface setting
 
-#### 2.1.1 configure sensor
+<br/>
+<br/>
+<br/>
+
+#### configure sensor in dvp
 
 - camera sensor와 통신하는 i2c 버스 세팅. 
 
@@ -1072,7 +1115,11 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 
 ```
 
-#### 2.1.2 configure logical dvp
+<br/>
+<br/>
+<br/>
+
+#### configure logical dvp
 
 - dvp 노드를 활성화 시킵니다.
 
@@ -1091,7 +1138,11 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 };
 ```
 
-### 2.2 Develop(BT601)
+<br/>
+<br/>
+<br/>
+
+### Develop BT601
  - hsync-active, vsync-active 구성 여부에 따라 BT601 인터페이스를 식별합니다. 구성하지 않으면 BT656 으로 식별.
  - v4l g_mbus_config 인터페이스를 통해 valid 한 polarity (hsync, vsync, pclk) 를 전달합니다.
  - pinctrl을 사용하는 인터페이스에 맞도록 구성합니다.
@@ -1110,8 +1161,11 @@ RK3568 플랫폼은 1개의 DVP 인터페이스를 가지고 있습니다.
 	 | GPIO4_C0  	| MCLK      	|
 	 | GPIO4_C1  	| PCLK      	|
 
+<br/>
+<br/>
+<br/>
 
-### 2.3 debug cif & dvp driver
+### debug cif dvp driver
 
  - [dvp_topology](./attachment/CAMERA/dvp_topology)
 
@@ -1124,18 +1178,30 @@ rk3568_poc:/ # grep '' /sys/class/video4linux/video*/name
 /sys/class/video4linux/video4/name:rkcif-mipi-luma
 ```
 
----
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 3. rkcif
+## rkcif
 
 rkcif 드라이버는 v4l2/media framework를 기반으로 구성된 하드웨어 장치 subdevices의(mipi dphy, sensor)  인터럽트 처리, 버퍼 관리, power 제어 등을 담당.
   
  
 ![](./images/CAMERA_02.png)
 
-### 3.1 cif 장치 
+<br/>
+<br/>
+<br/>
 
-#### 3.1.1 cif 장치 probe 확인.
+### cif device
+
+<br/>
+<br/>
+<br/>
+
+#### cif device probe 
 
 cif 장치가 probe 되면 /dev/ 경로에 비디오 및 미디어 장치 노드가 생성됩니다. (ex. /dev/media0)
 system에는 여러 /dev/video 장치가 있을 수 있으며, 해당되는 cif장치 노드는  /sys 노드를 통해서 확인할 수 있습니다.
@@ -1185,7 +1251,11 @@ rk3568_poc:/ # dmesg | grep cif
 [    9.384266] stream_cif_dvp_id3: update sensor info failed -19
 ```
 
-#### 3.1.2 snesor와 cif 바인딩 확인.
+<br/>
+<br/>
+<br/>
+
+#### snesor and cif binding
 
 cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이버가 로드된 후, 바인딩 됩니다.
 
@@ -1202,8 +1272,11 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 
 ![](./images/CAMERA_08.png)
 
+<br/>
+<br/>
+<br/>
 
-#### 3.1.3 sensor & cif & isp link
+#### sensor and cif and isp link
 
 ```bash
 
@@ -1237,10 +1310,13 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 
 ```
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
----
-
-## 4. VICAP
+## VICAP
 
  * VICAP : Video Capture(Video Input Processor) 모듈은 DVP/MIPI 인터페이스의 장치로 부터 받은 데이터를 AXI bus를 사용하여 system main memory로 전달합니다.
  * VICAP 드라이버는 주로 v4l2 또는 media framework를 기반으로 하여 subdevices의 hardware configuration, interrupt processing, control buffer rotation, control power 처리를 제공합니다.
@@ -1265,9 +1341,13 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 [m00_b_ov5695 4-0036] -> [rockchip-csi2-dphy1] -> [rockchip-mipi-csi2]/dev/v4l-subdev0 -> [stream_cif_mipi_id0]/dev/video0
 ```
 
----
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 5. ISP 
+## ISP 
 
  * ISP : Image Signal Processing  
 	- ISP 는 아래 기능을 포함합니다.
@@ -1289,13 +1369,21 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 		  ![](./images/CAMERA_05.png)
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
----
-
-## 6. camera hal(rockchip camera hal3)
+## camera hal rockchip camera hal3
  rockchip camera hal3 는 rkisp와 cif 드라이버를 기반으로 통신하고 있습니다.
 
-### 6.1 구조
+<br/>
+<br/>
+<br/>
+ 
+### overview rockchip camera hal3
+
  * Camera HAL3 구조  
    - android framework 에서 camera hal3의 구조는 아래와 같습니다.   
    - framework API 인터페이스를 제공하여 제어 명령에 응답하고 데이터 및 결과를 반환 합니다.  
@@ -1357,7 +1445,11 @@ ROCKCHIP_ANDROID12/hardware/rockchip/camera$ tree -d
    - PSL : physical layer 기능을 담당하는 모듈이며, isp와 통신, 커널과 v4l2 통신을 담당합니다.  
 	 
 
-### 6.2 디버깅
+<br/>
+<br/>
+<br/>
+
+### debugging for rockchip camera hal3
 
  - log 활성화
 
@@ -1395,8 +1487,8 @@ io -4 -l 0x10000 0xfdff0000 > /tmp/isp.reg
    * VICAP_MIPI_ID0_CROP_START : start x and y coordinate for id0
  
 
-#### 에러 디버깅 :  rkcif_mipi_lvds: ERROR: csi bandwidth lack, intstat:0x80000!!
- - mipi csi2에서 bandwidth_lack_intst 에러가 발생함. 
+ - 에러 디버깅 :  rkcif_mipi_lvds: ERROR: csi bandwidth lack, intstat:0x80000!!  
+ mipi csi2에서 bandwidth_lack_intst 에러가 발생함. 
 
 <br/>
 
@@ -1446,7 +1538,11 @@ io -4 -l 0x10000 0xfdff0000 > /tmp/isp.reg
 "<JPEG>", "persist.vendor.camera.mmstill.logs"     }, /* CAM_JPEG_MODULE   */
 ```
   
-### 6.2 sensor 등록
+<br/>
+<br/>
+<br/>
+
+### Add sensor
   
  센서 드라이버가 변경되거나 새로운 센서를 HAL에서 지원하도록 추가하려면 아래 파일을 수정해야 합니다.   
  HAL 코드 : hardware/rockchip/camera   
@@ -1454,13 +1550,22 @@ io -4 -l 0x10000 0xfdff0000 > /tmp/isp.reg
  * sensor tuning file.(soc sensor는 skip 해도 됨)
  * camera3_profile.xml 파일
 
+<br/>
+<br/>
+<br/>
 
-#### 6.2.1 sensor tuning file
+#### sensor tuning file
+
  sensor의 turning file은 센서로 부터 raw data를 수신할 때 필요합니다.  
  <sensor_name>_<module_name>_<lens_name>.xml 형식으로 파일이름을 지정해주어야 하며, /vendor/etc/camera/rkisp1 디렉토리에 위치해야 합니다. 3a 라이브러리는 위 경로를 참조합니다.  
  ex) tp2860_E-QFN40_DP-VIN3.xml  
 
-#### 6.2.2 camera3_profile.xml
+<br/>
+<br/>
+<br/>
+
+#### camera3_profile.xml
+
  <hal3_camera>/etc/camera 경로에 camera3_profiles_<platform>.xml 파일들이 있습니다.  
  빌드 과정에서 /vendor/etc/camera/camera3_profile.xml 으로 해당 파일이 위치하게 됩니다.  
  camera hal3은 camera3_profile.xml파일을 참조합니다.  
@@ -1525,9 +1630,14 @@ $ adb shell dumpsys media.camera
 -->
 ```
  
----
 
-## 7. rkisp
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+## rkisp
 
  rkisp1 isp 드라이버
  7.1 framework에 대한 설명
@@ -1546,9 +1656,14 @@ $ adb shell dumpsys media.camera
 | rkisp1-statistics   	| v4l2_vdev,  capture 	| Provide Image color Statistics information.                                                                                                                                                                                                                                                                                                              	|
 | rkisp1-input-params 	| v4l2_vdev, output   	| Accept params for AWB, BLC..... Image enhancement blocks.                                                                                                                                                                                                                                                                                                	|
 
----
 
-## 8. decoder : techpoint tp2825 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+## decoder techpoint tp2825 
 
 > techpoint tp2826 코드 분석 자료 
 
@@ -1603,6 +1718,9 @@ static int __init tp2802_module_init(void)
 
 ```
 
+<br/>
+<br/>
+<br/>
 
 ##  develop : de-interlaced feature on NTSC
 
@@ -1610,7 +1728,13 @@ Chapter27. MIPI CSI HOST는 CSI_RX_CTRL1(mipi-csi2@fdfb0000)와 mapping.
 Chapter28. MIPI CSI DPHY는 CSI_RX_PHY(csi2-dphy-hw@fe870000)와 mapping.
 
 
-## 9. MIPI CSI HOST
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+## MIPI CSI HOST
  > 2249 page  
 
  - Error detection and correction
@@ -1619,7 +1743,14 @@ Chapter28. MIPI CSI DPHY는 CSI_RX_PHY(csi2-dphy-hw@fe870000)와 mapping.
    * Line level
    * Frame level
  
-## 10. MIPI CSI DPHY  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+
+## MIPI CSI DPHY  
  > 2259 page  
   
 ### MIPI CSI DPHY
