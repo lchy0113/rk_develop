@@ -67,6 +67,24 @@ SENSOR
 <br/>
 <hr>
 
+# Develop
+
+```bash
+// 240603
+kernel-4.19/drivers/iio/light/vcnl4000.c
+kernel-4.19/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
+kernel-4.19/arch/arm64/boot/dts/rockchip/rk3568-edp-p04.dts
+//device probe 확인.
+
+kernel-4.19/drivers/input/sensors/accel/mxc6655xa.c
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
 # Reference 
 
 ## EVB
