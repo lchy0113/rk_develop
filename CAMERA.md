@@ -1,9 +1,9 @@
 # CAMERA 
 
-[1.CAMERA(mipi)](#1.camera(mipi))
+[1.CAMERA mipi](#1.camera-mipi)
 
 
-## 1.CAMERA(mipi)
+## 1.CAMERA mipi
 
 RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. physical mipi csi2 dphy는 2가지 모드를 선택할 수 있습니다.
  - full mode : 
