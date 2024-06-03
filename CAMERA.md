@@ -1,7 +1,13 @@
 # CAMERA 
 
-[1.CAMERA mipi](#camera-mipi)
+[1. CAMERA mipi](#camera-mipi)
 
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## CAMERA mipi
 
