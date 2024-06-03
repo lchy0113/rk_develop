@@ -1,7 +1,19 @@
 # CAMERA 
 
 [1. CAMERA mipi](#camera-mipi)
-
+[  MIPI Protocol](#mipi-protocol)
+[  Full mode setting](#full-mode-setting)
+[    configure sensor](#cinfigure-sensor)
+[    configure logical dphy](#configure-logical-dphy)
+[    configure isp](#configure-isp)
+[  Split mode stting](#split-mode-setting)
+[    configure sensor in split mode](#configure-sensor-in-split-mode)
+[    configure csi2_dphy0 or csi2_dphy1/csi2_dphy2](#configure-csi2-dphy0-or-csi2-dphy1-csi2-dphy2)
+[    configure isp in split-mode](#configure-isp-in-split-mode)
+[    debug cif & isp driver](#debug-csi---isp-driver)
+[  Related Directory Kernel](#related-directory-kernel)
+[  Develop](#develop)
+[    video_stream_start sequcne](#video-stream-start-sequcne)
 
 <br/>
 <br/>
@@ -40,6 +52,9 @@ RK3568 플랫폼은 1개의 physical mipi csi2 dphy를 가지고 있습니다. p
 > 이미지 센서에서 픽셀은 이미지를 구성하는 최소 단위. 이미지 센서의 화소수는 흔히 메가픽셀(Megapixels) 단위로 표시.
 > 만약 800만 화소의 카메라로 촬영한 이미지는 800만개의 픽셀로 구성되어 있다고 생각하면 됨. 
 
+<br/>
+<br/>
+<br/>
 
 ### MIPI Protocol
 
@@ -75,12 +90,20 @@ Line 과 Lane 개념.
  LP-11, LP-10, LP-00, LP-10, LP-00의 순서는 MIPI D-PHY에서 고속 모드로 진입하는 순서.  
  이때, 데이터 채널은 정지 상태(LP-11)를 수신할 때까지 고속 모드로 진입하지 않는다.  
 
-### 1.1 Full Mode 설정
+<br/>
+<br/>
+<br/>
+ 
+### Full mode setting
 
 - link path :
 	* sensor->csi_dphy0->isp_vir0
 
-#### 1.1.1 configure sensor
+<br/>
+<br/>
+<br/>
+ 
+#### configure sensor
 
 - camera sensor와 통신하는 i2c 버스 세팅. 
 
@@ -112,7 +135,11 @@ Line 과 Lane 개념.
 };
 ```
 
-#### 1.1.2 configure logical dphy
+<br/>
+<br/>
+<br/>
+
+#### configure logical dphy
 
 - csi2_dphy0, csi2_dphy1/csi2_dphy2 은 동시에 사용할 수 없습니다. 
 - csi2_dphy_hw 노드를 활성화 시킵니다.
@@ -172,8 +199,11 @@ Line 과 Lane 개념.
 };
 ```
 
+<br/>
+<br/>
+<br/>
 
-#### 1.1.3 configure isp
+#### configure isp
 
 - The remote-endpoint in rkisp_vir0 node should point to *csidphy_out*
 
@@ -202,8 +232,12 @@ Line 과 Lane 개념.
 
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
-### 1.2 Split Mode 설정
+### Split mode setting
 
 
 - link path:
@@ -212,7 +246,11 @@ Line 과 Lane 개념.
 	* sensor1->csi_dphy1->isp_vir0
 	* sensor2->csi_dphy2->mipi_csi2->vicap->isp_vir1
 
-#### 1.2.1 configure Sensor
+<br/>
+<br/>
+<br/>
+
+#### configure sensor in split mode
 
 ```dtb
 &i2c4 {
@@ -253,7 +291,11 @@ Line 과 Lane 개념.
 
 ```
 
-#### 1.2.2 configure csi2_dphy0 (or csi2_dphy1/csi2_dphy2)
+<br/>
+<br/>
+<br/>
+
+#### configure csi2_dphy0 or csi2_dphy1/csi2_dphy2
 
  - dphy는  isp와 sensor 를 link 합니다. 
    * mipi_in_ucam0 : sensor side의 link
@@ -330,8 +372,11 @@ Line 과 Lane 개념.
 };
 ```
 
+<br/>
+<br/>
+<br/>
 
-#### 1.2.3 configure isp
+#### configure isp in split-mode
 
  - The remote-endpoint in rkisp_vir0 node should point to dphy1_out
 
@@ -367,7 +412,11 @@ Line 과 Lane 개념.
 };
 ```
 
-#### 1.2.4 debug cif & isp driver
+<br/>
+<br/>
+<br/>
+
+#### debug cif & isp driver
 
  - RKISP1 모듈이 성공적으로 probe되면, 다수의 /dev/video* 디바이스가 생성 됩니다. 
  - RKISP1 모듈은 /sys filesystem 에도 video node를 등록하므로 아래 명령어를 통해 정보를 확인 할 수 있습니다.
@@ -394,9 +443,11 @@ rk3568_poc:/ # grep '' /sys/class/video4linux/video*/name
 /sys/class/video4linux/video8/name:rkisp-input-params
 ```
 
+<br/>
+<br/>
+<br/>
 
-
-### 1.3 Related Directory(kernel)
+### Related Directory kernel
 
 ```bash
 Linux Kernel-4.19
@@ -434,8 +485,11 @@ Linux Kernel-4.19
 |	|   |-- tp2860.c								#CIS(cmos image sensor) driver	
 ```
 
+<br/>
+<br/>
+<br/>
 
-### 1.4 Develop 
+### Develop 
 
 * hw Interface
 
@@ -459,9 +513,11 @@ Linux Kernel-4.19
 	- [x] BLOB, YCbCr_420_888, IMPLEMENTATION_DEFINED
 	- [x] rk3568 evb에서 CIF_CLKOUT 핀의 용도. 센서 동작중에 어떤 동작을 취하는지 확인 필요.  : 외부 크리스탈을 대체 하여 Soc 에서 발진
 
+<br/> 
+<br/> 
+<br/> 
 
-
-#### 1.4.1 video_stream_start sequence
+#### video_stream_start sequence
 
 ```bash
 /**
@@ -926,8 +982,11 @@ Linux Kernel-4.19
  0xfe:0x28
 ```
 
-
-
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 1.5 Camera 디버깅
 
