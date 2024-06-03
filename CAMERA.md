@@ -1,20 +1,20 @@
 # CAMERA 
-
-[1. CAMERA mipi](#camera-mipi)
-[  MIPI Protocol](#mipi-protocol)
-[  Full mode setting](#full-mode-setting)
-[    configure sensor](#cinfigure-sensor)
-[    configure logical dphy](#configure-logical-dphy)
-[    configure isp](#configure-isp)
-[  Split mode stting](#split-mode-setting)
-[    configure sensor in split mode](#configure-sensor-in-split-mode)
-[    configure csi2_dphy0 or csi2_dphy1/csi2_dphy2](#configure-csi2-dphy0-or-csi2-dphy1-csi2-dphy2)
-[    configure isp in split-mode](#configure-isp-in-split-mode)
-[    debug cif & isp driver](#debug-csi---isp-driver)
-[  Related Directory Kernel](#related-directory-kernel)
-[  Develop](#develop)
-[    video_stream_start sequcne](#video-stream-start-sequcne)
-
+  
+[1. CAMERA mipi](#camera-mipi)  
+[  MIPI Protocol](#mipi-protocol)  
+[  Full mode setting](#full-mode-setting)  
+[    configure sensor](#cinfigure-sensor)  
+[    configure logical dphy](#configure-logical-dphy)  
+[    configure isp](#configure-isp)  
+[  Split mode stting](#split-mode-setting)  
+[    configure sensor in split mode](#configure-sensor-in-split-mode)  
+[    configure csi2_dphy0 or csi2_dphy1/csi2_dphy2](#configure-csi2-dphy0-or-csi2-dphy1-csi2-dphy2)  
+[    configure isp in split-mode](#configure-isp-in-split-mode)  
+[    debug cif & isp driver](#debug-csi---isp-driver)  
+[  Related Directory Kernel](#related-directory-kernel)  
+[  Develop](#develop)  
+[    video_stream_start sequcne](#video-stream-start-sequcne)  
+  
 <br/>
 <br/>
 <br/>
