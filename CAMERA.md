@@ -2500,3 +2500,125 @@ PRODUCT_PACKAGES += \
 ```
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Camera Framework
+
+ - cameraInstanceFromXmlFile
+```
+/*static*/ MediaProfiles*
+MediaProfiles::createInstanceFromXmlFile(const char *xml)
+{
+    FILE *fp = NULL;
+    CHECK((fp = fopen(xml, "r")));
+
+    XML_Parser parser = ::XML_ParserCreate(NULL);
+    CHECK(parser != NULL);
+
+    MediaProfiles *profiles = new MediaProfiles();
+    ::XML_SetUserData(parser, profiles);
+    ::XML_SetElementHandler(parser, startElementHandler, NULL);
+
+    /* FIXME: expat is not compiled with -DXML_DTD. We don't have DTD parsing support. if (!::XML_SetParamEntityParsing(parser, XML_PARAM_ENTITY_PARSING_ALWAYS)) { ALOGE("failed to enable DTD support in the xml file"); return UNKNOWN_ERROR; } */
+
+    const int BUFF_SIZE = 512;
+    for (;;) {
+        void *buff = ::XML_GetBuffer(parser, BUFF_SIZE);
+        if (buff == NULL) {
+            ALOGE("failed to in call to XML_GetBuffer()");
+            delete profiles;
+            profiles = NULL;
+            goto exit;
+        }
+
+        int bytes_read = ::fread(buff, 1, BUFF_SIZE, fp);
+        if (bytes_read < 0) {
+            ALOGE("failed in call to read");
+            delete profiles;
+            profiles = NULL;
+            goto exit;
+        }
+        CHECK(::XML_ParseBuffer(parser, bytes_read, bytes_read == 0));
+
+        if (bytes_read == 0) break;  // done parsing the xml file
+    }
+
+exit:
+    ::XML_ParserFree(parser);
+    ::fclose(fp);
+    return profiles;
+}
+```
+
+/data/camera/media_profiles.xml 파일에서 관련 항목을 분석한 다음 변수를 생성함.  
+
+ - startElementHandler()
+   
+```
+/*static*/ void
+MediaProfiles::startElementHandler(void *userData, const char *name, const char **atts)
+{
+    MediaProfiles *profiles = (MediaProfiles *) userData;
+    if (strcmp("Video", name) == 0) {
+        createVideoCodec(atts, profiles);
+    } else if (strcmp("Audio", name) == 0) {
+        createAudioCodec(atts, profiles);
+    } else if (strcmp("VideoEncoderCap", name) == 0 &&
+               strcmp("true", atts[3]) == 0) {
+        profiles->mVideoEncoders.add(createVideoEncoderCap(atts));
+    } else if (strcmp("AudioEncoderCap", name) == 0 &&
+               strcmp("true", atts[3]) == 0) {
+        profiles->mAudioEncoders.add(createAudioEncoderCap(atts));
+    } else if (strcmp("VideoDecoderCap", name) == 0 &&
+               strcmp("true", atts[3]) == 0) {
+        profiles->mVideoDecoders.add(createVideoDecoderCap(atts));
+    } else if (strcmp("AudioDecoderCap", name) == 0 &&
+               strcmp("true", atts[3]) == 0) {
+        profiles->mAudioDecoders.add(createAudioDecoderCap(atts));
+    } else if (strcmp("EncoderOutputFileFormat", name) == 0) {
+        profiles->mEncoderOutputFileFormats.add(createEncoderOutputFileFormat(atts));
+    } else if (strcmp("CamcorderProfiles", name) == 0) {
+        profiles->mCurrentCameraId = getCameraId(atts);
+        profiles->addStartTimeOffset(profiles->mCurrentCameraId, atts);
+    } else if (strcmp("EncoderProfile", name) == 0) {
+        profiles->mCamcorderProfiles.add(
+            createCamcorderProfile(profiles->mCurrentCameraId, atts, profiles->mCameraIds));
+    } else if (strcmp("ImageEncoding", name) == 0) {
+        profiles->addImageEncodingQualityLevel(profiles->mCurrentCameraId, atts);
+    }
+}
+```
+
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+
+## Terms
+
+ - Camera BLOB (Binary Large Object) 
+   * 카메라에서 캡처한 이미지를 나타내는 데이터 형식.  
+   * BLOB는 이미지의 픽셀 데이터를 포함.  
+   * JPEG 또는 HEIC와 같은 이미지 형식으로 인코딩 됨.  
+   * 카메라 프레임워크는 BLOB 스트림을 생성하여 이미지를 저장하고, 이를 앱에 전달함.  
+
+ - YCbCr_420_888 :
+   * YCbCr은 색상 정보를 표현하는 방식 중 하나.  
+   * Y는 밝기 정보, Cb 와 Cr 은 색차 정보를 나타냄.  
+   * 420 은 샘플링 방식을 나타냄.  4:2:0 은 밝기 샘플링이 가로 방향으로 4개, 세로 방향으로 2개,  
+     색차 샘플링이 가로 방향으로 1개, 세로 방향으로 1개인것을 의미.  
+   * 이 형식은 비디오 및 이미지에서 효율적으로 색상 정보를 표현하는데 사용.  
+
+ - IMPLEMENTATION_DEFINED : 
+   * 카메라 하드웨어 또는 소프트웨어에서 정의한 구현 방식.  
+   * 예를 들어 이미지 포맷이나 코덱의 세부 사항은 기기마다 다를수 있으며, 이를 IMPLEMENTATION_DEFINED로 표시.  
+
+ 
