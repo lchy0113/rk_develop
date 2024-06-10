@@ -6,7 +6,7 @@
 <br/>
 <hr>
 
-[Fn-Link 6222B-SRC](#fn-link-6222b-src)
+[Fn-Link 6222D-UUC](#fn-link-6222d-uuc)
 
 <br/>
 <br/>
@@ -14,10 +14,10 @@
 <br/>
 <hr>
 
-## Fn-Link 6222B-SRC 
+## Fn-Link 6222D-UUC
 
- FN-Link 사에서 제공하는 6222B-SRC(WiFi 모듈) 
- **Realtek RTL8822CS** IC을 기반으로 함.
+ FN-Link 사에서 제공하는 6222D-UUC(WiFi BT combo module) 
+ **Realtek RTL8822CU** IC을 기반으로 함.
 
  - wifi표준 : IEEE 802.11 a/b/g/n/ac
  - 데이터전송률 : 최대 867Mbps
@@ -45,5 +45,22 @@
 |              GPIO LED+-------------+GPIO8_LED        |
 |                      |             |                 |
 +----------------------+             +-----------------+
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Develop
+
+
+CONFIG_RTL8822CU
+
+ WiFi 드라이버 로딩은 wifi chip type 노드에 의존하지 않으므로, board 수준 dts 를 구성할 필요 없다.
+
+```dts
 
 ```
