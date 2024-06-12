@@ -58,11 +58,63 @@
 
 ## Develop
 
+ >branch feature/wifi
 
 CONFIG_RTL8822CU
 
  WiFi 드라이버 로딩은 wifi chip type 노드에 의존하지 않으므로, board 수준 dts 를 구성할 필요 없다.
 
-```dts
+ usb wifi driver entry는 os_dep/linux/usb_intf.c의 rtw_drv_entry() 
+
+
+```bash
+# usb company/device info
+Bus 001 Device 002: ID 0bda:c82c
+
+# module file  
+/vendor/lib/modules/88x2cu.ko
+```
+
+### wifi chip recognition process
+
+ 1. power up wifi module
+ 2. wifi 장치 초기화 시, System은 /sys/bus/usb file system에서 uevent를 읽는다.
+ 3. load wifi ko driver (check vid pid)
+ 4. load wpa_supplicant parameter 
+
+```bash
+# the key code directory:
+
+android/frameworks/opt/net/wifi
+kernel/net/rfkill/rfkill-wlan.c
+hardware/realtek
+external/wpa_supplicant_8
+```
+
+
+### HAL
+
+```bash
+device/kdiwin/test/rk3568_edpp04/BoardConfig.mk
+  | // BOARD_WIFI_SUPPROT := true
+  |
+  +-> device/rockchip/common/device.mk
+      |
+      +-> vendor/rockchip/common/BoardconfigVendor.mk
+      |   |  // PRODUCT_HAVE_RKWIFI ?= true
+      |   +-> 
+      |
+      | // if (BOARD_WIFI_SUPPORT) xml file copy
+      |    frameworks/native/data/etc/android.hardware.wifi.xml
+      |    frameworks/native/data/etc/android.hardware.wifi.direct.xml
+      |    frameworks/native/data/etc/android.hardware.wifi.passpoint.xml
+      |    frameworks/native/data/etc/android.software.ipsec_tunnels.xml
+
+device/rockchip/common/device.mk
+  | // $(call inherit-product-if-exists, vendor/rockchip/common/device-vendor.mk)
+  |
+  +-> vendor/rockchip/common/device-vendor.mk
+      $(call inherit-product-if-exists, vendor/rockchip/common/wifi/wifi.mk)
+        // copy WIFI_KO_FILES
 
 ```
