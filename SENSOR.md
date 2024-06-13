@@ -43,7 +43,20 @@ SENSOR
 
 ## kernel layer
  
+<br/>
+<br/>
+<hr>
+
+### sendor-dev.c
+
  code : kernel/drivers/input/sensors/sensor-dev.c 는 가속도, 자이로, 등 다양한 유형의 센서를 통합하는 코드.  
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+
 
 ## hal layer
 
@@ -79,16 +92,63 @@ setatic int open_sensors(...) (hardware/rockchip/sensor/st/sensors.c)
 
 # Develop
 
+## vcnl4000.c
+
 branch feature/proximity_sensor
 
 ```bash
-// 240603
-kernel-4.19/drivers/iio/light/vcnl4000.c
-kernel-4.19/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
 kernel-4.19/arch/arm64/boot/dts/rockchip/rk3568-edp-p04.dts
-//device probe 확인.
+kernel-4.19/Documentation/devicetree/bindings/iio/light/vcnl4000.txt
+kernel-4.19/drivers/iio/light/vcnl4000.c
+  |  
+  |  struct vcnl4000_data {
+  |     struct i2c_client *client;
+  |     enum vcnl4000_device_ids id;
+  |     int rev;
+  |     int al_scale;
+  |     const struct vcnl4000_chip_spec *chip_spec;
+  |     struct mutex vcnl4000_lock;
+  |     struct vcnl4200_channel vcnl4200_al;
+  |     struct vcnl4200_channel vcnl4200_ps;
+  |  };
+  |  
+  |    struct vcnl4200_channel {
+  |        u8 reg;
+  |        ktime_t last_measurement;
+  |        ktime_t sampling_rate;
+  |        struct mutex lock;
+  |    };
+  |
+  +-> vcnl4000_probe(...)
+    |  /**
+    |    * iio device 메모리 할당 
+    |    */
+    |  
+    +-> vcnl4200_init(struct vcnl4000_data *data)
+    |     /**
+    |       * read VCNL4200 device id(id : 0x58, rev : 0x10)
+    |       * write 0x00 to VCNL4200 Ambient light configuration(0x00) ; ALS power on
+    |       * write 0x00 to VCNL4200 Proximity configuration(0x03) ; PS power on
+    |       * vcnl4200_al.reg = VCNL4200_AL_DATA(0x09)
+    |       * vcnl4200_ps.reg = VCNL4200_PS_DATA(0x08)
+    |       * vcnl4200_al.sampling_rate = 54ms (54000 * 1000 ns)
+    |       * vcnl4200_ps.sampling_rate = 4.2ms (4200 * 1000 ns)
+    |       * al_scale = 24000;
+    |       * vcnl4200_al.last_measurement = 0ms
+    |       * vcnl4200_ps.last_measurement = 0ms
+    |       * init vcnl4200_al, vcnl4200_ps mutex
+    |       */
+    |   
+    +-> indio_dev->info = vcnl4000_info; // reference include/linux/iio/iio.h
+    +-> indio_dev->channels = vcnl4000_channels; // support IIO_LIGHT, IIO_PROXIMITY
+    +-> indio_dev->modes = INDIO_DIRECT_MODE;
+	+-> // iio device 커널 등록
 
-kernel-4.19/drivers/input/sensors/accel/mxc6655xa.c
+    |   +-> vcnl4200_measure(data, &data->vcnl4200_al, val);
+    +-> vcnl4200_measure_proximity(struct vcnl4000_data *data, int *val)
+        +-> vcnl4200_measure(data, &data->vcnl4200_pl, val);
+
+
 ```
 
  - iio 장치
@@ -138,21 +198,21 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
 ```dtb
 
 &i2c5 {
-	status = "okay";
+    status = "okay";
 
-	mxc6655xa: mxc6655xa@15 {
-		status = "okay";
-		compatible = "gs_mxc6655xa";
-		pinctrl-names = "default";
-		pinctrl-0 = <&mxc6655xa_irq_gpio>;
-		reg = <0x15>;
-		irq-gpio = <&gpio3 RK_PC1 IRQ_TYPE_LEVEL_LOW>;
-		irq_enable = <0>;
-		poll_delay_ms = <30>;
-		type = <SENSOR_TYPE_ACCEL>;
-		power-off-in-suspend = <1>;
-		layout = <1>;
-	};
+    mxc6655xa: mxc6655xa@15 {
+        status = "okay";
+        compatible = "gs_mxc6655xa";
+        pinctrl-names = "default";
+        pinctrl-0 = <&mxc6655xa_irq_gpio>;
+        reg = <0x15>;
+        irq-gpio = <&gpio3 RK_PC1 IRQ_TYPE_LEVEL_LOW>;
+        irq_enable = <0>;
+        poll_delay_ms = <30>;
+        type = <SENSOR_TYPE_ACCEL>;
+        power-off-in-suspend = <1>;
+        layout = <1>;
+    };
 };
 ```
 
@@ -164,19 +224,19 @@ Total 1 h/w sensors, 1 running 0 disabled clients:
 Sensor List:
 0000000000) Accelerometer sensor      | The Android Open Source Project | ver: 1 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000000
         continuous | minRate=5.00Hz | maxRate=142.86Hz | no batching | non-wakeUp | 
-		Fusion States:
-		9-axis fusion disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
-		game fusion(no mag) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
-		geomag fusion (no gyro) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
-		Recent Sensor events:
-		Active sensors:
-		Socket Buffer size = 39 events
-		WakeLock Status: not held 
-		Mode : NORMAL
-		Sensor Privacy: disabled
-		0 active connections
-		0 direct connections
-		Previous Registrations:
+        Fusion States:
+        9-axis fusion disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+        game fusion(no mag) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+        geomag fusion (no gyro) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+        Recent Sensor events:
+        Active sensors:
+        Socket Buffer size = 39 events
+        WakeLock Status: not held 
+        Mode : NORMAL
+        Sensor Privacy: disabled
+        0 active connections
+        0 direct connections
+        Previous Registrations:
 ```
 
  - bug   
@@ -199,3 +259,16 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-impl \
     sensors.$(TARGET_BOARD_HARDWARE)
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## other board
+
+ - ps_stk3410
+ - ps_stk3171
+ - ps_em3071x
+ - ps_ap321xx
+ - proximity_al3006
