@@ -92,8 +92,20 @@ kernel-4.19/drivers/input/sensors/accel/mxc6655xa.c
 ```
 
  - iio 장치
+  
+  code : kernel/drivers/iio/industrialio-core.c
+  __devm_iio_device_register를 통해 등록
 
  iio 장치(industrial i/o) 서브시스템에 장치를 등록해서 Lumar, proximity 값이 올라오는것 확인. 
+
+```bash
+
+sys/bus/iio/devices/iio:device1 # ls
+dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  power  subsystem  uevent
+
+/dev/iio:device1
+
+```
 
  - sensor dev
  
