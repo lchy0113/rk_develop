@@ -142,7 +142,7 @@ kernel-4.19/drivers/iio/light/vcnl4000.c
     +-> indio_dev->info = vcnl4000_info; // reference include/linux/iio/iio.h
     +-> indio_dev->channels = vcnl4000_channels; // support IIO_LIGHT, IIO_PROXIMITY
     +-> indio_dev->modes = INDIO_DIRECT_MODE;
-	+-> // iio device 커널 등록
+    +-> // iio device 커널 등록
 
     |   +-> vcnl4200_measure(data, &data->vcnl4200_al, val);
     +-> vcnl4200_measure_proximity(struct vcnl4000_data *data, int *val)
@@ -178,7 +178,7 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
 
 # Reference 
 
-## EVB
+## rk3568-evb
 
  rk3568 evb 는 Gyroscaope + G-sensor 을 support 함.   
 
@@ -194,9 +194,7 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
 
  Accelerometer sensor   
 
-
 ```dtb
-
 &i2c5 {
     status = "okay";
 
@@ -214,6 +212,20 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
         layout = <1>;
     };
 };
+```
+ 
+ - code
+
+```c
+// drivers/input/sensors/accel/mxc6655xa.c
+gsensor_mxc6655_probe(...)
+    |    sensor_register_device(client, NULL, devid, &gsensor_mxc6655_ops);
+    +-> int sensor_register_device(struct i2c_client *client,
+                    struct sensor_platform_data *slave_pdata,
+                    const struct i2c_device_id *devid,
+                    struct sensor_operate *ops)
+                    
+            // drivers/input/sensors/sensor-dev.c
 ```
 
 ```bash
@@ -238,13 +250,6 @@ Sensor List:
         0 direct connections
         Previous Registrations:
 ```
-
- - bug   
- 아래 파일 권한이 없어 초기화 되지 않았음.   
-   
-```   
-chmod 777 /dev/8452_daemon
-```
   
  - hal code  
  /hardware/rockchip/sensor/st/Android.mk  
@@ -258,6 +263,44 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-service \
     android.hardware.sensors@1.0-impl \
     sensors.$(TARGET_BOARD_HARDWARE)
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+
+## rk3326-evb
+
+```dtb
+    ls_stk3410: light@48 {
+        compatible = "ls_stk3410";
+        status = "okay";
+        reg = <0x48>;
+        type = <SENSOR_TYPE_LIGHT>;
+        irq_enable = <0>;
+        als_threshold_high = <100>;
+        als_threshold_low = <10>;
+        als_ctrl_gain = <2>; /* 0:x1 1:x4 2:x16 3:x64 */
+        poll_delay_ms = <100>;
+    };
+
+    ps_stk3410: proximity@48 {
+        compatible = "ps_stk3410";
+        status = "okay";
+        reg = <0x48>;
+        type = <SENSOR_TYPE_PROXIMITY>;
+        //pinctrl-names = "default";
+        //pinctrl-0 = <&gpio2_c3>;
+        //irq-gpio = <&gpio0 RK_PB7 IRQ_TYPE_LEVEL_LOW>;
+        //irq_enable = <1>;
+        ps_threshold_high = <0x200>;
+        ps_threshold_low = <0x100>;
+        ps_ctrl_gain = <3>; /* 0:x1 1:x4 2:x16 3:x64 */
+        ps_led_current = <3>; /* 0:12.5mA 1:25mA 2:50mA 3:100mA */
+        poll_delay_ms = <100>;
+    };
 ```
 
 <br/>
