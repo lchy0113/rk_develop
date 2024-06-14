@@ -84,6 +84,71 @@ struct sensor_module_t HAL_MODULE_INFO_SYN (hardware/rockchip/sensor/st/sensors.
 setatic int open_sensors(...) (hardware/rockchip/sensor/st/sensors.c)
 ```
 
+ - develop file
+
+```bash
+
+LOCAL_SRC_FILES := \
+    sensors.c \
+    nusensors.cpp \
+    GyroSensor.cpp \
+    InputEventReader.cpp \
+    SensorBase.cpp \
+    AkmSensor.cpp \
+    MmaSensor.cpp \
+    LightSensor.cpp \
+    ProximitySensor.cpp \
+    PressureSensor.cpp \
+    TemperatureSensor.cpp
+```
+
+ - code
+
+```c
+// hardware/rockchip/sensor/st/sensors.c
+static struct hw_module_methods_t sensors_module_methods = {
+    .open = open_sensors
+};
+ struct sensors_module_t HAL_MODULE_INFO_SYM = {
+    .common = {
+        .tag = HARDWARE_MODULE_TAG,
+        .version_major = 1,
+        .version_minor = 0,
+        .id = SENSORS_HARDWARE_MODULE_ID,
+        .name = "Rockchip Sensors Module",
+        .author = "The RKdroid Project",
+        .methods = &sensors_module_methods,
+    },
+    .get_sensors_list = sensors__get_sensors_list
+};
+
+static int open_sensors(...)
+    |
+    +-> init_nusensors(module, device);
+        /**
+          * sensors_poll_context_t() // 센서 모듈 초기화 
+          * light, proximity, mma, akm, gyro, pressure, temperature
+          */
+           |
+           +-> ProximitySensor()
+               /**
+                 * SensorBase(PS_DEVICE_NAME, "proximity") // PS_DEVICE_NAME      "/dev/psensor"
+                 * open_device() // 
+                 * ioctl(PSENSOR_IOCTL_GET_ENABLED, &flags) -> sensor_dev module 
+                 * sensor_dev module feedback status_cur(SENSOR_ON) -> hal
+                 */ 
+            /**
+              * device version : 1.3
+              * device.activate = poll__activate;
+              * device.setDelay = poll__setDelay;
+              * device.poll = poll__poll;
+              * device.batch = poll__batch;
+              * device.flush = poll__flush;
+              */
+
+
+```
+
 <br/>
 <br/>
 <br/>
@@ -301,6 +366,60 @@ PRODUCT_PACKAGES += \
         ps_led_current = <3>; /* 0:12.5mA 1:25mA 2:50mA 3:100mA */
         poll_delay_ms = <100>;
     };
+```
+
+
+code 
+
+```c
+static int proximity_stk3410_probe(struct i2c_client *client, const struct i2c_device_id *devid)
+    |
+    +-> sensor_register_device(client, NULL, devid, &psensor_stk3410_ops);
+        |
+        +-> int sensor_register_device(...)
+            /**
+              * drivers/input/sensors/sensor-dev.c
+              */
+                static int sensor_probe(...)
+                    /**
+                      * parse device tree
+                      * sensor_chip_init(...)
+                      * 입력장치 할당 및 초기화
+                      */
+(...)
+
+struct sensor_operate psens0r_stk3410_ops = {
+    .name            = "ps_stk3410",
+    .type            = SENSOR_TYPE_PROXIMITY,
+    .id_i2c          = PROXIMITY_ID_STK3410,
+    .read_reg        = DATA1_PS,
+    .read_len        = 2,
+    .id_reg          = SENSOR_UNKNOW_DATA,
+    .id_data         = SENSOR_UNKNOW_DATA,
+    .precision       = 16,
+    .ctrl_reg        = STK_STATE,
+    .int_status_reg  = STK_FLAG,
+    .range           = {100, 65535},
+    .brightness      = {10, 255},
+    .trig            = IRQF_TRIGGER_LOW | IRQF_ONESHOT | IRQF_SHARED,
+    .active          = sensor_active,
+    .init            = sensor_init,
+    .report          = sensor_report_value,
+};
+
+
+static int sensor_init(struct i2c_client *client)
+    |
+    +-> sensor->ops->active(client, 0, 0)
+        |
+        +-> static int sensor_active(...)
+            /**
+              * read ctrl_regs
+              */
+
+
+
+
 ```
 
 <br/>
