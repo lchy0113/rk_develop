@@ -432,7 +432,6 @@ index 330ab9c85d1b..5f73c7605b61 100644
  
  static int _regmap_update_bits(struct regmap *map, unsigned int reg,
                                unsigned int mask, unsigned int val,
-
 ```
 
 
@@ -448,7 +447,25 @@ index 330ab9c85d1b..5f73c7605b61 100644
 -----
 
 
+## AK7755 Control Software
+
+ DSP 셋업을 위해 필요한 파일
+
+  - SCRIPT File
+  - PRAM File
+  - CRAM File
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+-----
+
+
 ## Reference code : RK817
+
 
 > rockchip evboard codec
 
