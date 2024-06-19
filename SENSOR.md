@@ -427,6 +427,27 @@ static int sensor_init(struct i2c_client *client)
 <br/>
 <hr>
 
+## micom
+
+```bash
+// addr : 0x00 ALS_CONF
+// val : 0x41; 0100 0001 : ALS_integration time, persistence, interrupt, and function enable / disable
+
+// addr : 0x03 PS_CONF1, PS_CONF2
+// val : 0x6a; 0110 1010 : PS duty ratio(1/320), persistence(3), integration time(9T), and PS enable / disable(enable)
+// val : 0x0b; 0000 1011 : PS_HD(output 16bit), PS interrupt trigger method(trigger by closing)
+
+// addr : 0x04 PS_CONF3, PS_MS
+// val : 0x70; 0111 0000 : PS multi pulse(8 multi pulses), active force mode, enable sunlight cancellation
+// val : 0x07; 0000 0111 : PS mode selection, sunlight capability, sunlight protection mode
+```
+
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## other board
 
  - ps_stk3410
