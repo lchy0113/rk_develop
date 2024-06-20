@@ -78,7 +78,7 @@ TRUST
  - Android system boot-up sequence :  
   
 ```bash
-	Maskrom -> Loader -> Trust -> U-Boot -> kernel -> Android
+    Maskrom -> Loader -> Trust -> U-Boot -> kernel -> Android
 ```
   
 ![](./images/TRUST_04.png)  
@@ -241,8 +241,8 @@ Mon Oct 16 16:02:06 KST 2023
 
 ```dts
 psci: psci {
-	compatible = "arm,psci-1.0"; 
-	method = "smc";
+    compatible = "arm,psci-1.0"; 
+    method = "smc";
 };
 ```
 
@@ -250,7 +250,7 @@ psci: psci {
 
 ```dts
 chosen { 
-	bootargs = "psci=enable vmalloc=496M ... ";
+    bootargs = "psci=enable vmalloc=496M ... ";
 };
 ```
 
@@ -260,8 +260,8 @@ chosen {
 
 ```dts
 psci: psci {
-	compatible = "arm,psci-1.0"; 
-	method = "smc";
+    compatible = "arm,psci-1.0"; 
+    method = "smc";
 };
 ```
 
@@ -336,8 +336,8 @@ psci: psci {
 
 ```dts
 psci {
-	compatible = "arm,psci-1.0";
-	method = "smc";
+    compatible = "arm,psci-1.0";
+    method = "smc";
 };
 ```
 
@@ -448,7 +448,7 @@ psci {
  **loader**와 **trust**는 secure 영역에서 실행된다. 
  **u-boot**, **kernel**, **Android**는 non-secure 영역에서 실행된다.
 
-	(보안 드라이버 및 앱 제외)
+    (보안 드라이버 및 앱 제외)
 
 
 -----
@@ -617,10 +617,10 @@ CONFIG_OPTEE
 
 ```dtb
 firmware {
-	optee: optee {
-		compatible = "linaro,optee-tz";
-		method = "smc";
-	};
+    optee: optee {
+        compatible = "linaro,optee-tz";
+        method = "smc";
+    };
 };
 ```
 
