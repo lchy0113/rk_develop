@@ -9,7 +9,8 @@ TRUST
   
 [2. Trust on Rockchip platform](#2-trust-on-rockchip-platform)  
 [2.1 Implementation Machanism](#21-implementation-mechanism)  
-[2.2 Boot-up process](#22.boot-up-process)  
+[2.2 Boot-up process](#22-boot-up-process)  
+[2.3 firmware obtain](#23-firmware-obtain)  
   
   
 <br/>
@@ -100,10 +101,12 @@ TRUST
 ## 2.2 Boot-up process  
   
  ARM Trusted Firmware architecture 는 전체 system을 EL0, EL1, EL2, EL3의 4 가지 secure level으로 구분한다.  
- secure boot의 프로세스 단계는  BL1, Bl2, BL31, BL32, BL33으로 정의되며, BL1, BL2, BL31는 ARM Trusted Firmware source code를 제공한다.  
- Rockchip platform은 BL31 기능만 사용한다.  
+ secure boot의 프로세스 단계는  BL1, Bl2, BL31, BL32, BL33으로 정의되며,  
+ BL1, BL2, *BL31*는 ARM Trusted Firmware source code를 제공한다.    
+ Rockchip platform은 *BL31* 기능만 사용한다.  
  BL1과 BL2에는 고유한 구현 방법이 있다.   
- Rockchip platform은 일반적으로 ARM Trusted Firmware가 BL31을 참조하고, BL32는 OP-TEE OS를 사용하도록 하는 "default"로 사용 가능하다.  
+ Rockchip platform은 일반적으로 ARM Trusted Firmware가 BL31을 참조하고,   
+ BL32는 OP-TEE OS를 사용하도록 하는 "default"로 사용 가능하다.  
   
  - Android system boot-up sequence :  
   
@@ -136,42 +139,43 @@ bin/
 
 7 directories
 ```
-
- 플랫폼에서  uboot.img 이미지를 컴파일하면 플랫폼의 "trust.img"도 package되어 u-boot의 root directory에 생성된다.  
+  
+ 플랫폼에서  uboot.img 이미지를 컴파일하면 플랫폼의 "trust.img"도 package되어  
+ u-boot의 root directory에 생성된다.  
  binary가 "trust.img"로 패키징되었다면, u-boot project에 있는 ini파일을 통해 인덱싱 된다.
 
 ```bash
-pack u-boot.itb okay! Input: /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKTRUST/RK3568TRUST.ini                                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                                                                                                                                                           
-FIT description: FIT Image with ATF/OP-TEE/U-Boot/MCU                                                                                                                                                                                                                                                                                                                      
-Created:         Mon Oct 16 16:02:06 2023                                                                                                                                                                                                                                                                                                                                  
- Image 0 (uboot)                                                                                                                                                                                                                                                                                                                                                           
-  Description:  U-Boot                                                                                                                                                                                                                                                                                                                                                     
-  Created:      Mon Oct 16 16:02:06 2023                                                                                                                                                                                                                                                                                                                                   
-  Type:         Standalone Program                                                                                                                                                                                                                                                                                                                                         
-  Compression:  uncompressed                                                                                                                                                                                                                                                                                                                                               
-  Data Size:    1253352 Bytes = 1223.98 KiB = 1.20 MiB                                                                                                                                                                                                                                                                                                                     
-  Architecture: AArch64                                                                                                                                                                                                                                                                                                                                                    
-  Load Address: 0x00a00000                                                                                                                                                                                                                                                                                                                                                 
-  Entry Point:  unavailable                                                                                                                                                                                                                                                                                                                                                
-  Hash algo:    sha256                                                                                                                                                                                                                                                                                                                                                     
-  Hash value:   d73fb186f00196d91532b1ddabdd1ca30bdefe794e588f80eeba1fdc2ba3c112                                                                                                                                                                                                                                                                                           
- Image 1 (atf-1)                                                                                                                                                                                                                                                                                                                                                           
-  Description:  ARM Trusted Firmware                                                                                                                                                                                                                                                                                                                                       
-  Created:      Mon Oct 16 16:02:06 2023                                                                                                                                                                                                                                                                                                                                   
-  Type:         Firmware                                                                                                                                                                                                                                                                                                                                                   
-  Compression:  uncompressed                                                                                                                                                                                                                                                                                                                                               
-  Data Size:    167936 Bytes = 164.00 KiB = 0.16 MiB                                                                                                                                                                                                                                                                                                                       
-  Architecture: AArch64                                                                                                                                                                                                                                                                                                                                                    
-  Load Address: 0x00040000                                                                                                                                                                                                                                                                                                                                                 
-  Hash algo:    sha256                                                                                                                                                                                                                                                                                                                                                     
-  Hash value:   0d5225a4ab6b4c75a70b0ae622aeea91f877babe8a1c2f93da89c887ec27d71f                                                                                                                                                                                                                                                                                           
- Image 2 (atf-2)                                                                                                                                                                                                                                                                                                                                                           
-  Description:  ARM Trusted Firmware                                                                                                                                                                                                                                                                                                                                       
+pack u-boot.itb okay! Input: /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKTRUST/RK3568TRUST.ini
+                        
+FIT description: FIT Image with ATF/OP-TEE/U-Boot/MCU                                                                                    
+Created:         Mon Oct 16 16:02:06 2023                                                                                                
+ Image 0 (uboot)        
+  Description:  U-Boot  
+  Created:      Mon Oct 16 16:02:06 2023                                                                                                 
+  Type:         Standalone Program                                                                                                       
+  Compression:  uncompressed                                                                                                             
+  Data Size:    1253352 Bytes = 1223.98 KiB = 1.20 MiB                                                                                   
+  Architecture: AArch64 
+  Load Address: 0x00a00000                                                                                                               
+  Entry Point:  unavailable                                                                                                              
+  Hash algo:    sha256  
+  Hash value:   d73fb186f00196d91532b1ddabdd1ca30bdefe794e588f80eeba1fdc2ba3c112                                                         
+ Image 1 (atf-1)        
+  Description:  ARM Trusted Firmware                                                                                                     
+  Created:      Mon Oct 16 16:02:06 2023                                                                                                 
+  Type:         Firmware
+  Compression:  uncompressed                                                                                                             
+  Data Size:    167936 Bytes = 164.00 KiB = 0.16 MiB                                                                                     
+  Architecture: AArch64 
+  Load Address: 0x00040000                                                                                                               
+  Hash algo:    sha256  
+  Hash value:   0d5225a4ab6b4c75a70b0ae622aeea91f877babe8a1c2f93da89c887ec27d71f                                                         
+ Image 2 (atf-2)        
+  Description:  ARM Trusted Firmware                                                                                                     
   Created:      Mon Oct 16 16:02:06 2023                                                  
   Type:         Firmware                                                                  
   Compression:  uncompressed                                                              
-  Data Size:    40960 Bytes = 40.00 KiB = 0.04 MiB                                                                                                                                   
+  Data Size:    40960 Bytes = 40.00 KiB = 0.04 MiB                  
   Architecture: AArch64                                                                   
   Load Address: 0xfdcc1000                                                                
   Hash algo:    sha256                                                                    
@@ -181,7 +185,7 @@ Created:         Mon Oct 16 16:02:06 2023
   Created:      Mon Oct 16 16:02:06 2023                                                  
   Type:         Firmware                                                                  
   Compression:  uncompressed                                                              
-  Data Size:    20291 Bytes = 19.82 KiB = 0.02 MiB                                                                                                                                   
+  Data Size:    20291 Bytes = 19.82 KiB = 0.02 MiB                  
   Architecture: AArch64                                                                   
   Load Address: 0x0006b000                                                                
   Hash algo:    sha256                                                                    
@@ -191,7 +195,7 @@ Created:         Mon Oct 16 16:02:06 2023
   Created:      Mon Oct 16 16:02:06 2023                                                  
   Type:         Firmware                                                                  
   Compression:  uncompressed                                                              
-  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB                                                                                                                                     
+  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB                    
   Architecture: AArch64                                                                   
   Load Address: 0xfdcd0000                                                                
   Hash algo:    sha256                                                                    
@@ -201,7 +205,7 @@ Created:         Mon Oct 16 16:02:06 2023
   Created:      Mon Oct 16 16:02:06 2023                                                  
   Type:         Firmware                                                                  
   Compression:  uncompressed                                                              
-  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB                                                                                                                                     
+  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB                    
   Architecture: AArch64                                                                   
   Load Address: 0xfdcce000                                                                
   Hash algo:    sha256                                                                    
@@ -211,7 +215,7 @@ Created:         Mon Oct 16 16:02:06 2023
   Created:      Mon Oct 16 16:02:06 2023                                                  
   Type:         Firmware                                                                  
   Compression:  uncompressed                                                              
-  Data Size:    7888 Bytes = 7.70 KiB = 0.01 MiB                                                                                                                                     
+  Data Size:    7888 Bytes = 7.70 KiB = 0.01 MiB                    
   Architecture: AArch64                                                                   
   Load Address: 0x00069000                                                                
   Hash algo:    sha256                                                                    
@@ -221,7 +225,7 @@ Created:         Mon Oct 16 16:02:06 2023
   Created:      Mon Oct 16 16:02:06 2023                                                  
   Type:         Firmware                                                                  
   Compression:  uncompressed                                                              
-  Data Size:    461216 Bytes = 450.41 KiB = 0.44 MiB                                                                                                                                 
+  Data Size:    461216 Bytes = 450.41 KiB = 0.44 MiB                
   Architecture: AArch64                                                                   
   Load Address: 0x08400000                                                                
   Hash algo:    sha256                                                                    
