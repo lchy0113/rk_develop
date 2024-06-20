@@ -11,7 +11,46 @@ TRUST
 [2.1 Implementation Machanism](#21-implementation-mechanism)  
 [2.2 Boot-up process](#22-boot-up-process)  
 [2.3 firmware obtain](#23-firmware-obtain)  
+[2.4 enable dts](#24-enable-dts)  
+[2.4.1 Kernel 3.10](#241-kernel-3-10)  
+[2.4.1.1 32 bit platform](#2411-32-bit-platform)  
+[2.4.1.2 64 bit platform](#2412-64-bit-platform)  
+[2.4.2 Kernel 4.4](#242-kernel-4-4)  
+[2.4.2.1 32 bit platform](#2421-32-bit-platform)   
+[2.4.2.2 64 bit platform](#2422-64-bit-platform)   
+[2.4.3 kernel Document](#243-kernel-document)  
+[2.5 Running memory and life cycle](#25-running-memory-and-life-cycle)  
+[2.5.1 Running memory](#251-running-memory)  
+[2.5.2 Life cycle](#252-life-cycle)  
+[2.6 Security](#26-security)  
+[2.7 Functions](#27-functions)  
+[2.7.1 PSCI (Power State Coordination Interface](#271-psci-power-state-coordination-interface)  
+[2.7.2 Secure Monitor](#272.secure-monitor)  
+[2.7.3 Secure information configuration](#273-secure-information-configuration)  
+[2.7.4 Secure data protection](#274-secure-data-protection)  
   
+[3. Trust troubleshooting on the Rockchip platform](#3-trust-troubleshooting-on-the-rockchip-platofrm)  
+[3.1 boot log example](#31-boot-log-example)  
+[3.2 print information indetification](#32-print-information-indetification)  
+[3.3 firmware version identification](#33-firmware-version-identification)  
+[3.4 PANIC information identification](#34-panic-information-identification)  
+[3.4.1 ARM Trusted Firmware panic](#341-arm-trusted-firmware-panic)  
+[3.4.2 OP-TEE OS panic](#342-op-tee-os-panic)  
+  
+[4. TEE](#4-tee)  
+[4.1 define parameter.txt](#41-define-parameter-txt)   
+[4.1.1 create parameter.txt file](#411-create-parameter-txt-file)  
+[4.2 TEE firmware](#42-tee-firmware)  
+[4.3 TEE Driver on u-boot](#43-tee-driver-on-u-boot)  
+[4.3.1 TEE related config](#431-tee-related-config)  
+[4.3.2 test](#432-test)  
+[4.4 TEE driver on kernel](#44-tee-driver-on-kernel)  
+[4.. TEE library file](#45-tee-library-file)  
+[4.5.1 android platform](#451-android-platform)  
+[4.6 CA / TA](#46-ca-ta) 
+[4.6.1 directory (code)](#461.directory.code)  
+[4.6.2 test](#462-test)  
+
   
 <br/>
 <br/>
@@ -31,9 +70,9 @@ TRUST
  ARM 아키텍처 TRUST 이미지는 다음과 같은 두가지 구성 요소로 구성.  
   
  - TrustZone : TrustZone은 ARM아키텍처에서 제공하는 하드웨어 기반 보안 기능.   
-               TrustZone은 디바이스의 일부메모리와 CPU를 보안영역으로 분리하여 악성 코드의 침입을 방지.  
+   TrustZone은 디바이스의 일부메모리와 CPU를 보안영역으로 분리하여 악성 코드의 침입을 방지.  
  - TrustFirmware-A(TF-A) : TF-A는 TrustZone에서 실행되는 펌웨어.  
-                           TF-A는 부팅 프로세스를 제어하고 하드웨어 암호화 키를 보호하는 등의 역할을 담당.  
+   TF-A는 부팅 프로세스를 제어하고 하드웨어 암호화 키를 보호하는 등의 역할을 담당.  
    
  ARM 아키텍처 TRUST 이미지는 일반적으로 디바이스의 제조업체에서 제공.   
  디바이스를 부팅할 때 TRUST 이미지가 부팅 프로세스를 제어하여 디바이스의 보안을 강화.  
@@ -145,90 +184,90 @@ bin/
  binary가 "trust.img"로 패키징되었다면, u-boot project에 있는 ini파일을 통해 인덱싱 된다.
 
 ```bash
-pack u-boot.itb okay! Input: /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKTRUST/RK3568TRUST.ini
-                        
-FIT description: FIT Image with ATF/OP-TEE/U-Boot/MCU                                                                                    
-Created:         Mon Oct 16 16:02:06 2023                                                                                                
+pack u-boot.itb okay! Input: (...)/rkbin/RKTRUST/RK3568TRUST.ini
+
+FIT description: FIT Image with ATF/OP-TEE/U-Boot/MCU
+Created:         Mon Oct 16 16:02:06 2023
  Image 0 (uboot)        
   Description:  U-Boot  
-  Created:      Mon Oct 16 16:02:06 2023                                                                                                 
-  Type:         Standalone Program                                                                                                       
-  Compression:  uncompressed                                                                                                             
-  Data Size:    1253352 Bytes = 1223.98 KiB = 1.20 MiB                                                                                   
+  Created:      Mon Oct 16 16:02:06 2023 
+  Type:         Standalone Program       
+  Compression:  uncompressed 
+  Data Size:    1253352 Bytes = 1223.98 KiB = 1.20 MiB           
   Architecture: AArch64 
-  Load Address: 0x00a00000                                                                                                               
-  Entry Point:  unavailable                                                                                                              
+  Load Address: 0x00a00000   
+  Entry Point:  unavailable  
   Hash algo:    sha256  
-  Hash value:   d73fb186f00196d91532b1ddabdd1ca30bdefe794e588f80eeba1fdc2ba3c112                                                         
+  Hash value:   d73fb186f00196d91532b1ddabdd1ca30bdefe794e588f80eeba1fdc2ba3c112         
  Image 1 (atf-1)        
-  Description:  ARM Trusted Firmware                                                                                                     
-  Created:      Mon Oct 16 16:02:06 2023                                                                                                 
+  Description:  ARM Trusted Firmware     
+  Created:      Mon Oct 16 16:02:06 2023 
   Type:         Firmware
-  Compression:  uncompressed                                                                                                             
-  Data Size:    167936 Bytes = 164.00 KiB = 0.16 MiB                                                                                     
+  Compression:  uncompressed 
+  Data Size:    167936 Bytes = 164.00 KiB = 0.16 MiB 
   Architecture: AArch64 
-  Load Address: 0x00040000                                                                                                               
+  Load Address: 0x00040000   
   Hash algo:    sha256  
-  Hash value:   0d5225a4ab6b4c75a70b0ae622aeea91f877babe8a1c2f93da89c887ec27d71f                                                         
+  Hash value:   0d5225a4ab6b4c75a70b0ae622aeea91f877babe8a1c2f93da89c887ec27d71f         
  Image 2 (atf-2)        
-  Description:  ARM Trusted Firmware                                                                                                     
-  Created:      Mon Oct 16 16:02:06 2023                                                  
-  Type:         Firmware                                                                  
-  Compression:  uncompressed                                                              
-  Data Size:    40960 Bytes = 40.00 KiB = 0.04 MiB                  
-  Architecture: AArch64                                                                   
-  Load Address: 0xfdcc1000                                                                
-  Hash algo:    sha256                                                                    
-  Hash value:   3e94d16e6ae2494413482e936aadb88d166d80b9c9976bdc4abf19b438711ce1                                                                                                     
- Image 3 (atf-3)                                                                          
-  Description:  ARM Trusted Firmware                                                      
-  Created:      Mon Oct 16 16:02:06 2023                                                  
-  Type:         Firmware                                                                  
-  Compression:  uncompressed                                                              
-  Data Size:    20291 Bytes = 19.82 KiB = 0.02 MiB                  
-  Architecture: AArch64                                                                   
-  Load Address: 0x0006b000                                                                
-  Hash algo:    sha256                                                                    
-  Hash value:   fde0ef262ba317b0883affa12e3dcf182af8d09224a2fd430085f06ab7633808                                                                                                     
- Image 4 (atf-4)                                                                          
-  Description:  ARM Trusted Firmware                                                      
-  Created:      Mon Oct 16 16:02:06 2023                                                  
-  Type:         Firmware                                                                  
-  Compression:  uncompressed                                                              
-  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB                    
-  Architecture: AArch64                                                                   
-  Load Address: 0xfdcd0000                                                                
-  Hash algo:    sha256                                                                    
-  Hash value:   befba422b8d2e992908b4594bfbd4e063cfee595a03ff4ff35dc1101ed78c3ce                                                                                                     
- Image 5 (atf-5)                                                                          
-  Description:  ARM Trusted Firmware                                                      
-  Created:      Mon Oct 16 16:02:06 2023                                                  
-  Type:         Firmware                                                                  
-  Compression:  uncompressed                                                              
-  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB                    
-  Architecture: AArch64                                                                   
-  Load Address: 0xfdcce000                                                                
-  Hash algo:    sha256                                                                    
-  Hash value:   c9eb312bf29fb4e40a31caf6b9ab3b1e6bb2038b41a2746a44de2e631125887e                                                                                                     
- Image 6 (atf-6)                                                                          
-  Description:  ARM Trusted Firmware                                                      
-  Created:      Mon Oct 16 16:02:06 2023                                                  
-  Type:         Firmware                                                                  
-  Compression:  uncompressed                                                              
-  Data Size:    7888 Bytes = 7.70 KiB = 0.01 MiB                    
-  Architecture: AArch64                                                                   
-  Load Address: 0x00069000                                                                
-  Hash algo:    sha256                                                                    
-  Hash value:   6ede7a3b44ebd03ad102122522e6a25305e56bffdf4bb4a7a0da7bf521aacdc8                                                                                                     
- Image 7 (optee)                                                                          
-  Description:  OP-TEE                                                                    
-  Created:      Mon Oct 16 16:02:06 2023                                                  
-  Type:         Firmware                                                                  
-  Compression:  uncompressed                                                              
-  Data Size:    461216 Bytes = 450.41 KiB = 0.44 MiB                
-  Architecture: AArch64                                                                   
-  Load Address: 0x08400000                                                                
-  Hash algo:    sha256                                                                    
+  Description:  ARM Trusted Firmware     
+  Created:      Mon Oct 16 16:02:06 2023  
+  Type:         Firmware      
+  Compression:  uncompressed  
+  Data Size:    40960 Bytes = 40.00 KiB = 0.04 MiB      
+  Architecture: AArch64       
+  Load Address: 0xfdcc1000    
+  Hash algo:    sha256        
+  Hash value:   3e94d16e6ae2494413482e936aadb88d166d80b9c9976bdc4abf19b438711ce1     
+ Image 3 (atf-3)  
+  Description:  ARM Trusted Firmware      
+  Created:      Mon Oct 16 16:02:06 2023  
+  Type:         Firmware      
+  Compression:  uncompressed  
+  Data Size:    20291 Bytes = 19.82 KiB = 0.02 MiB      
+  Architecture: AArch64       
+  Load Address: 0x0006b000    
+  Hash algo:    sha256        
+  Hash value:   fde0ef262ba317b0883affa12e3dcf182af8d09224a2fd430085f06ab7633808     
+ Image 4 (atf-4)  
+  Description:  ARM Trusted Firmware      
+  Created:      Mon Oct 16 16:02:06 2023  
+  Type:         Firmware      
+  Compression:  uncompressed  
+  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB        
+  Architecture: AArch64       
+  Load Address: 0xfdcd0000    
+  Hash algo:    sha256        
+  Hash value:   befba422b8d2e992908b4594bfbd4e063cfee595a03ff4ff35dc1101ed78c3ce     
+ Image 5 (atf-5)  
+  Description:  ARM Trusted Firmware      
+  Created:      Mon Oct 16 16:02:06 2023  
+  Type:         Firmware      
+  Compression:  uncompressed  
+  Data Size:    8192 Bytes = 8.00 KiB = 0.01 MiB        
+  Architecture: AArch64       
+  Load Address: 0xfdcce000    
+  Hash algo:    sha256        
+  Hash value:   c9eb312bf29fb4e40a31caf6b9ab3b1e6bb2038b41a2746a44de2e631125887e     
+ Image 6 (atf-6)  
+  Description:  ARM Trusted Firmware      
+  Created:      Mon Oct 16 16:02:06 2023  
+  Type:         Firmware      
+  Compression:  uncompressed  
+  Data Size:    7888 Bytes = 7.70 KiB = 0.01 MiB        
+  Architecture: AArch64       
+  Load Address: 0x00069000    
+  Hash algo:    sha256        
+  Hash value:   6ede7a3b44ebd03ad102122522e6a25305e56bffdf4bb4a7a0da7bf521aacdc8     
+ Image 7 (optee)  
+  Description:  OP-TEE        
+  Created:      Mon Oct 16 16:02:06 2023  
+  Type:         Firmware      
+  Compression:  uncompressed  
+  Data Size:    461216 Bytes = 450.41 KiB = 0.44 MiB    
+  Architecture: AArch64       
+  Load Address: 0x08400000    
+  Hash algo:    sha256        
   Hash value:   4fcbcd38704b593e961cd90910d9ca38fd72d2fb382819a17c77538776adbd53
    Image 8 (fdt)
   Description:  U-Boot dtb
@@ -246,28 +285,28 @@ Created:         Mon Oct 16 16:02:06 2023
   Firmware:     atf-1
   FDT:          fdt
   Loadables:    uboot
-                atf-2
-                atf-3
-                atf-4
-                atf-5
-                atf-6
-                optee
+    atf-2
+    atf-3
+    atf-4
+    atf-5
+    atf-6
+    optee
 ********boot_merger ver 1.31********
 Info:Pack loader ok.
-pack loader okay! Input: /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKBOOT/RK3568MINIALL_POCEDPP02.ini
-/home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/u-boot
+pack loader okay! Input: (...)/rkbin/RKBOOT/RK3568MINIALL_POCEDPP02.ini
+(...)/u-boot
 
 Image(no-signed, version=0): uboot.img (FIT with uboot, trust...) is ready
 Image(no-signed): rk356x_spl_loader_v1.18.112.bin (with spl, ddr...) is ready
-pack uboot.img okay! Input: /home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/rkbin/RKTRUST/RK3568TRUST.ini
+pack uboot.img okay! Input: (...)/rkbin/RKTRUST/RK3568TRUST.ini
 
 Platform RK3568 is build OK, with new .config(make  rk3568_poc_defconfig rk3568-edp-p02.config -j64)
-/home/lchy0113/develop/Rockchip/ROCKCHIP_ANDROID12_DEV/prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
+(...)/prebuilts/gcc/linux-x86/aarch64/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu/bin/aarch64-linux-gnu-
 Mon Oct 16 16:02:06 KST 2023
 ```
   
-
- Note : uboot project와 함께 배포되지만, rkbin repository를 통해 다운로드 가능하며, rkbin repository을 통해 구현 중.  
+ Note : uboot project와 함께 배포되지만, rkbin repository를 통해 다운로드 가능하며,  
+ rkbin repository을 통해 구현 중.  
 
 <br/>
 <br/>
@@ -317,7 +356,7 @@ psci: psci {
 (2) cpu node 내, enable-method = "psci" 추가
 
 ```dts
- cpus {                
+ cpus {    
   #address-cells = <2>;
   #size-cells = <0>;
 
@@ -405,7 +444,7 @@ psci {
  psci node 추가  
 
 ```dts
- cpus {                
+ cpus {    
   #address-cells = <2>;
   #size-cells = <0>;
 
@@ -486,10 +525,12 @@ psci {
 
 ### 2.5.1 Running memory
 
- The ARM Trusted Firmware는 DRAM start offset 0M~2M 이고, 프로그램 entry address 0x10000 (64KB) 이 사용되는 공간에서 실행된다.
-
- OP-TEE OS 는 132M에서 148M의 DRAM start offset(최종 주소는 플랫폼에 따라 다름) 사이에서 entry address 0x08400000 (132M)을 사용하여 실행된다.
-
+ The ARM Trusted Firmware는 DRAM start offset 0M~2M 이고,  
+ 프로그램 entry address 0x10000 (64KB) 이 사용되는 공간에서 실행된다.  
+  
+ OP-TEE OS 는 132M에서 148M의 DRAM start offset(최종 주소는 플랫폼에 따라 다름) 사이에서  
+ entry address 0x08400000 (132M)을 사용하여 실행된다.  
+  
 <br/>
 <br/>
 <br/>
@@ -527,20 +568,29 @@ psci {
 
 ### 2.7.1 PSCI (Power State Coordination Interface)
 
- 일반적으로 다양한 SoC 공급업체의 칩은 IC 설계, 특히 CPU의 전원 상태 관리 부분에서 상당한 차이를 보인다.  
- 각 SoC 공급업체에는 CPU 전원 상태를 관리하는 자체 소프트웨어 프로세스 세트가 있으므로 커널의 이 코드 부분은 단편화되어 높은 수준의 균일성을 달성하기 어렵다.  
- 분명히 커널은 이와 관련하여 조각화 상태를 유지하는 것을 매우 꺼립니다.  
+ 일반적으로 다양한 SoC 공급업체의 칩은 IC 설계, 특히 CPU의 전원 상태 관리 부분에서 상당한 차이가 있음.    
+
+ 각 SoC 공급업체에는 CPU 전원 상태를 관리하는 자체 소프트웨어 프로세스 세트가 있으며,   
+ 커널의 이 코드 부분은 단편화되어 높은 수준의 균일성을 달성하기 어려움.  
+
+ 분명히 커널은 이와 관련하여 조각화 상태를 유지하는 것을 매우 꺼린다.   
   
  더욱이 개발자는 일반적으로 이 구현 부분에 대해 그다지 관심을 두지 않는다.  
  소프트웨어 구현의 이 부분은 CPU 아키텍처 및 IC 설계와 밀접하게 관련되어 있기 때문에 완전히 이해하거나 구현하기 어렵다.  
   
  위와 같은 이유로 커널은 CPU의 전원 관리를 각 SoC 공급업체의 펌웨어에 맡기는 경향이 더 크다.  
  커널은 커널 코드를 더욱 고도로 통합하기 위해 CPU 제어 전략에만 집중하면 된다.  
-
- 따라서 커널 프레임워크에서는 이러한 목표를 달성하기 위해 PSCI(Power State Coordination Interface)[3] 인터페이스를 추가했다.  
   
- PSCI는 CPU 코어 전원 관리 관련 인터페이스 세트로, 기본적으로 ARM SMC 명령을 통해 Trust로 들어가 위의 관련 작업(CPU 켜기, CPU 끄기, 시스템 일시 중지, 시스템 재설정, 시스템 끄기 등)을 완료한다.  
+ 따라서 커널 프레임워크에서는 이러한 목표를 달성하기 위해 **PSCI(Power State Coordination Interface)** 인터페이스를 추가했다.  
   
+ PSCI는 CPU 코어 전원 관리 관련 인터페이스 세트로,   
+ 기본적으로 **ARM SMC 명령**을 통해 Trust로 들어가 위의 관련 작업(CPU 켜기, CPU 끄기, 시스템 일시 중지, 시스템 재설정, 시스템 끄기 등)을 완료한다.  
+  
+ - SMC(Secure Monitor Call) 은 ARM 아키텍처에서 사용되는 특별한 보안 호출.  
+   * 이 명령은 보안 상태 간의 전환에 사용됨.  
+     예) ARM TrustZone 기술에서는 non-secure 영역에서 secure 영역으로 전환하는 데 사용.  
+	 보통 EL1에서 EL3로 전환.  
+	   
 <br/>
 <br/>
 <br/>
@@ -549,10 +599,11 @@ psci {
 ### 2.7.2 Secure Monitor
 
  Secure Monitor는 secure 영역과 non-secure 영역 사이의 상태 전환을 위한 CPU 간의 bridge 이다.  
- Secure Monitor 코드는 TRUST 에서 구현되며, 이 코드 부분이 없으면 CPU는 secure 상태와 non-secure 상태 사이를 전환할 수 없다. 
+ Secure Monitor 코드는 TRUST 에서 구현되며,   
+ 이 코드 부분이 없으면 CPU는 secure 상태와 non-secure 상태 사이를 전환할 수 없다.   
  즉, ARM TrustZone 기술을 잃게 된다.
-
-
+  
+  
  - Security Monitor 모드로 들어가는 방법은?
   SMC instructions로 구현해야 함.(ARM technical manual 참고)
 
@@ -563,7 +614,8 @@ psci {
 
 ### 2.7.3 Secure information configuration
 
- Cortex-A 프로세서 자체의 긴밀한 통합 외에도 ARM TrustZone 기술은 AMBA AXI 버스 및 특정 TrustZone 시스템 IP 블록을 통해 시스템에서 확장되어야 한다.  
+ Cortex-A 프로세서 자체의 긴밀한 통합 외에도   
+ ARM TrustZone 기술은 AMBA AXI 버스 및 특정 TrustZone 시스템 IP 블록을 통해 시스템에서 확장되어야 한다.  
  따라서 일련의 관련 IP 모듈 보안 정보를 구성해야 하며 이는 Trust에서 완료된다.  
  
 <br/>
@@ -616,7 +668,7 @@ psci {
 
 ### 3.4.2 OP-TEE OS panic
 
- > OP-TEE OS 란, ARM Trust 기능에서 OP-TEE OS는 TrustZone 보안 환경에서 실행되는 운영체제.
+ > OP-TEE OS 란, ARM Trust 기능에서 OP-TEE OS는 TrustZone 보안 환경에서 실행되는 운영체제.  
  > feature : 부팅 프로세스 제어, 하드웨어 암호화키 보호, 저장장치 보안 강화.
 
 <br/>
@@ -627,24 +679,24 @@ psci {
 
 # 4. TEE 
 
- Rockchip 플랫롬에서 Android 7.1 이상의 SDK는 기본적으로 TEE 환경을 지원.
- OP-TEE 라는 TEE 솔루션을 사용하며 TEE API는 GlobalPlatform 표준을 준수.
+ Rockchip 플랫롬에서 Android 7.1 이상의 SDK는 기본적으로 TEE 환경을 지원.  
+ OP-TEE 라는 TEE 솔루션을 사용하며 TEE API는 GlobalPlatform 표준을 준수.  
 
 > rk3568 은 OP-TEE V2 
 
-## 4.1 parameter.txt 파일 설명
-
- parameter.txt 파일은 각 이미지와 파티션의 위치 및 크기 정보를 기록.
- parameter.txt 파일에 보안 관련 파일 시스템이 정의되어 있지 않으면, 사용할 수 없다. 
- 보안 파티션을 정의하려면, 
- 0x00002000@0x000xxxxx(security)를 parameter.txt 파일에 추가하면 된다.
+## 4.1 define parameter.txt 
+  
+ parameter.txt 파일은 각 이미지와 파티션의 위치 및 크기 정보를 기록.  
+ parameter.txt 파일에 보안 관련 파일 시스템이 정의되어 있지 않으면, 사용할 수 없다.   
+ 보안 파티션을 정의하려면,   
+ 0x00002000@0x00002000(security)를 parameter.txt 파일에 추가하면 된다.  
 
 <br/>
 <br/>
 <br/>
 <hr>
 
-### 4.1.1 parameter.txt 파일 생성
+### 4.1.1 create parameter.txt file
 
 ```bash
 //device/rockchip/common/build/rockchip/RebuildParameter.mk
@@ -668,22 +720,41 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
 
 ## 4.2 TEE firmware
 
- TEE Secure OS의 소스코드는 오픈소스가 아니며, 바이너리는 rkbin/bin 경로를 통해 배포
-
+ TEE Secure OS의 소스코드는 오픈소스가 아니며, 바이너리는 rkbin/bin 경로를 통해 배포  
+  
  - ARMv8 플랫폼의 TEE 바이너리는 u-boot/tools/loaderimage 도구를 통해 펌웨어 trust.img로 패키징.
-
- - rkbin/RKTRUST/(TARGET).ini 의 [BL32_OPTION] 에서 SEC 필드의 값을 1으로 설정해야 trust.img에 보안 OS가 포함.
-  즉, TEE 관련 서비스 이용 불가.
-
+ - rkbin/RKTRUST/(TARGET).ini 의 [BL32_OPTION] 에서 SEC 필드의 값을 1으로 설정해야  
+   trust.img에 보안 OS가 포함.   즉, TEE 관련 서비스 이용 불가.
+  
+```
+// RKTRUST/(TARGET).ini
+[VERSION]
+MAJOR=1
+MINOR=0
+[BL30_OPTION]
+SEC=0
+[BL31_OPTION]
+SEC=1
+PATH=bin/rk35/rk3568-bl31_v1.44.elf
+[BL32_OPTION]
+SEC=1
+PATH=bin/rk35/rk3568_bl32_v2.11.bin		// TEE firmware
+ADDR=0x08400000
+[BL33_OPTION]
+SEC=0
+[OUTPUT]
+PATH=trust.img
+```
+  
 <br/>
 <br/>
 <br/>
 <hr>
 
-## 4.3 u-boot의 TEE 드라이버
-
- u-boot 에서 TRUST zone의 데이터를 제어하려면 OP-TEE을 사용해야한다.
- OP-TEE 클라이언트 코드는 u-boot 에서 구현되어있으며, 인터페이스를 통해 OP-TEE와 통신 가능.
+## 4.3 TEE Driver on u-boot
+  
+ u-boot 에서 TRUST zone의 데이터를 제어하려면 OP-TEE을 사용해야한다.  
+ OP-TEE 클라이언트 코드는 u-boot 에서 구현되어있으며, 인터페이스를 통해 OP-TEE와 통신 가능.  
  "lib/optee_clientApi/" 디렉토리에 드라이버는 위치.
 
  > TEE : Trusted Execution Environment
@@ -694,7 +765,7 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
 <br/>
 <hr>
 
-### 4.3.1 관련 config
+### 4.3.1 TEE related config
 
  - CONFIG_OPTEE_CLIENT
  - CONFIG_OPTEE_V2
@@ -725,17 +796,17 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
 <br/>
 <hr>
 
-## 4.4 kernel의 TEE 드라이버
-
- TEE config
+## 4.4 tee driver on kernel
+  
+ - TEE config
 
 ```bash
-CONFIG_TEE
-CONFIG_OPTEE
+CONFIG_TEE // TEE를 지원하는 커널에서 사용. ARM TrustZOne 기술을 활용하여 구현
+CONFIG_OPTEE // ARM 기반 시스템에서 사용되는 오픈소스 TEE, OP-TEE는 Trusted Applications(TAs)와 통신하는데 사용되는 API를 구현. 
 ```
-
- TEE devicetree
-
+  
+ - TEE devicetree
+  
 ```dtb
 firmware {
     optee: optee {
@@ -744,10 +815,10 @@ firmware {
     };
 };
 ```
-
- driver node
+  
+ - driver node
 ```bash
-console:/ $ ls -alh /dev/opteearmtz00                     
+console:/ $ ls -alh /dev/opteearmtz00         
 [2023-10-30 16:37:43.729] crw-rw-rw- 1 root root 10,  62 2023-10-30 16:15 /dev/opteearmtz00
 
 ```
@@ -757,9 +828,9 @@ console:/ $ ls -alh /dev/opteearmtz00
 <br/>
 <hr>
 
-## 4.5 TEE 라이브러리 파일
+## 4.5 TEE library file
 
-### 4.5.1 안드로이드 플랫폼
+### 4.5.1 android platform
 
  hardware/rockchip/optee 경로에 위치함
 
@@ -774,15 +845,15 @@ lrwxrwxrwx  1 lchy0113 lchy0113   51  7월 19 18:44 .git -> ../../../.repo/proje
 drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v1
 drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v2
 ```
-
+  
  - lib : 32bit 및 64bit 플랫폼용으로 컴파일된 tee-supplicant, libteec.so, keymaster/gatekeep 관련 라이브러리 파일을 포함.
  - ta : 컴파일된 keymaster/gatekeeper 및 기타 관련 ta 파일을 저장.
-
+  
 <br/>
 <br/>
 <br/>
 <hr>
-
+  
 ## 4.6 CA / TA 
  Certification Authority, Trusted Applications 
 
