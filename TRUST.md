@@ -31,6 +31,10 @@ TRUST
  ARM아키텍처 TRUST이미지는 ARM아키텍처 기반 디바이스의 보안을 강화하기 위한 중요한 요소.  
  디바이스의 보안을 강화하려는 경우 ARM 아키텍처 TRUST이미지를 사용하는 것이 좋다.  
   
+<br/>
+<br/>
+<br/>
+<hr>
   
 ## 1.1 System architecture  
   
@@ -51,8 +55,11 @@ TRUST
   
 ![](./images/TRUST_02.png)  
   
------
-
+<br/>
+<br/>
+<br/>
+<hr>
+  
 ## 1.2 CPU privilege level  
   
  CPU 관점에서 아래 그림은 ARM TruztZone이 활성화 된 standrd CPU privilege mode level 아키텍처 다이어그램이다.  
@@ -61,12 +68,11 @@ TRUST
   
 ![](./images/TRUST_03.png)  
   
------
-
 <br/>
 <br/>
 <br/>
 <br/>
+<hr>
   
 # 2. Trust on Rockchip platform  
   
@@ -75,6 +81,11 @@ TRUST
  ARM Trusted Firmware + OP-TEE OS의 구성은 Rockchip 플랫폼의 64비트 SoC 플랫폼에서 사용된다.  
  OP-TEE OS는 32비트 SoC 플랫폼에서 사용됩니다.  
   
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 2.2 Boot-up process  
   
  ARM Trusted Firmware architecture 는 전체 system을 EL0, EL1, EL2, EL3의 4 가지 secure level으로 구분한다.  
@@ -90,6 +101,11 @@ TRUST
 ```
   
 ![](./images/TRUST_04.png)  
+  
+<br/>
+<br/>
+<br/>
+<hr>
   
 ## 2.3 firmware obtain   
   
@@ -238,6 +254,11 @@ Mon Oct 16 16:02:06 KST 2023
 
  Note : uboot project와 함께 배포되지만, rkbin repository를 통해 다운로드 가능하며, rkbin repository을 통해 구현 중.  
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 2.4 Enable DTS
 
@@ -261,6 +282,11 @@ chosen {
     bootargs = "psci=enable vmalloc=496M ... ";
 };
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 #### 2.4.1.2 64 bit platform
 
@@ -336,6 +362,11 @@ psci: psci {
  };
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 2.4.2 Kernel 4.4 +
 
 ### 2.4.2.1 32 bit platform
@@ -348,6 +379,11 @@ psci {
     method = "smc";
 };
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 2.4.2.2 64 bit platform
 
@@ -414,18 +450,22 @@ psci {
  };
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 2.4.3 Kernel Document
 
 ```bash
 ./Documentation/devicetree/bindings/arm/psci.txt
 ```
 
------
-
 <br/>
 <br/>
 <br/>
 <br/>
+<hr>
 
 ## 2.5 Running memory and life cycle
 
@@ -435,17 +475,20 @@ psci {
 
  OP-TEE OS 는 132M에서 148M의 DRAM start offset(최종 주소는 플랫폼에 따라 다름) 사이에서 entry address 0x08400000 (132M)을 사용하여 실행된다.
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ### 2.5.2 Life cycle
 
  Trust 는 초기화 이후로 부터 memory에 상주되어 동작한다.
 
-
------
-
 <br/>
 <br/>
 <br/>
 <br/>
+<hr>
 
 ## 2.6 Security
 
@@ -459,12 +502,11 @@ psci {
     (보안 드라이버 및 앱 제외)
 
 
------
-
 <br/>
 <br/>
 <br/>
 <br/>
+<hr>
 
 ## 2.7 Functions
 
@@ -484,6 +526,11 @@ psci {
   
  PSCI는 CPU 코어 전원 관리 관련 인터페이스 세트로, 기본적으로 ARM SMC 명령을 통해 Trust로 들어가 위의 관련 작업(CPU 켜기, CPU 끄기, 시스템 일시 중지, 시스템 재설정, 시스템 끄기 등)을 완료한다.  
   
+<br/>
+<br/>
+<br/>
+<hr>
+
 ### 2.7.2 Secure Monitor
 
  Secure Monitor는 secure 영역과 non-secure 영역 사이의 상태 전환을 위한 CPU 간의 bridge 이다.  
@@ -494,51 +541,74 @@ psci {
  - Security Monitor 모드로 들어가는 방법은?
   SMC instructions로 구현해야 함.(ARM technical manual 참고)
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 2.7.3 Secure information configuration
 
  Cortex-A 프로세서 자체의 긴밀한 통합 외에도 ARM TrustZone 기술은 AMBA AXI 버스 및 특정 TrustZone 시스템 IP 블록을 통해 시스템에서 확장되어야 한다.  
  따라서 일련의 관련 IP 모듈 보안 정보를 구성해야 하며 이는 Trust에서 완료된다.  
-  
+ 
+<br/>
+<br/>
+<br/>
+<hr>
+ 
 ### 2.7.4 Security data protection
 
  Security dataprotection.   
  예를들어, security 결재, Digital Rights Management(DRM), enterprise service, web-based serviced등 관련 보안 정보에 대한 storage 보호.  
 
-
------
-
 <br/>
 <br/>
 <br/>
 <br/>
-
+<hr>
 
 # 3. Trust troubleshooting on the Rockchip platform
 
 ## 3.1 boot log example
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 3.2 print information indetification
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 3.3 firmware version identification
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 3.4 PANIC information identification
 
 ### 3.4.1 ARM Trusted Firmware panic
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 3.4.2 OP-TEE OS panic
 
  > OP-TEE OS 란, ARM Trust 기능에서 OP-TEE OS는 TrustZone 보안 환경에서 실행되는 운영체제.
  > feature : 부팅 프로세스 제어, 하드웨어 암호화키 보호, 저장장치 보안 강화.
 
-
------
-
 <br/>
 <br/>
 <br/>
 <br/>
-
+<hr>
 
 # 4. TEE 
 
@@ -553,6 +623,11 @@ psci {
  parameter.txt 파일에 보안 관련 파일 시스템이 정의되어 있지 않으면, 사용할 수 없다. 
  보안 파티션을 정의하려면, 
  0x00002000@0x000xxxxx(security)를 parameter.txt 파일에 추가하면 된다.
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 4.1.1 parameter.txt 파일 생성
 
@@ -571,6 +646,11 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
 (...)
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 4.2 TEE firmware
 
  TEE Secure OS의 소스코드는 오픈소스가 아니며, 바이너리는 rkbin/bin 경로를 통해 배포
@@ -580,6 +660,10 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
  - rkbin/RKTRUST/(TARGET).ini 의 [BL32_OPTION] 에서 SEC 필드의 값을 1으로 설정해야 trust.img에 보안 OS가 포함.
   즉, TEE 관련 서비스 이용 불가.
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 4.3 u-boot의 TEE 드라이버
 
@@ -590,11 +674,21 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
  > TEE : Trusted Execution Environment
  > OP-TEE : Open Portable Trusted Execution Environment
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ### 4.3.1 관련 config
 
  - CONFIG_OPTEE_CLIENT
  - CONFIG_OPTEE_V2
  - CONFIG_OPTEE_ALWAYS_USE_SECURITY_PARTITION : 활성화 시, emmc의  rpmb에 보안 데이터를 저장. 그렇지 않은 경우,  하드웨어에 따라 보안 저장 영역을 선택해야함.
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 4.3.2 test
 
@@ -611,6 +705,10 @@ partition_list := $(partition_list),super:$(BOARD_SUPER_PARTITION_SIZE)
 (..)
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 4.4 kernel의 TEE 드라이버
 
@@ -639,6 +737,10 @@ console:/ $ ls -alh /dev/opteearmtz00
 
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 4.5 TEE 라이브러리 파일
 
@@ -661,6 +763,10 @@ drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v2
  - lib : 32bit 및 64bit 플랫폼용으로 컴파일된 tee-supplicant, libteec.so, keymaster/gatekeep 관련 라이브러리 파일을 포함.
  - ta : 컴파일된 keymaster/gatekeeper 및 기타 관련 ta 파일을 저장.
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 4.6 CA / TA 
  Certification Authority, Trusted Applications 
@@ -668,6 +774,11 @@ drwxrwxr-x  4 lchy0113 lchy0113 4.0K  7월 19 18:44 v2
   CA : TEE의 보안 영역을 인증. TEE에서 실행되는 애플리케이션을 인증.
 
   TA : TEE의 보안 영역에서 실행되는 애플리케이션을 의미.
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### 4.6.1 directory (code)
 
@@ -690,3 +801,8 @@ $ mm
  ./out/ta/rk_test/1db57234-dacd-462d-9bb1-ae79de44e2a5.ta 파일은 RK에서 작성된 데모 파일
 
 ### 4.6.2 TEST 
+
+<br/>
+<br/>
+<br/>
+<hr>
