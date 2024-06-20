@@ -3,7 +3,7 @@ TRUST
 
  > ARM아키텍처의 TRUST 이미지는 ARM 아키텍처(Cortex-A class processor) 기반 디바이스의 보안을 강화하기 위해 사용되는 기술(ARM architecture security extension).
 
-[1. ARM TrustZone](#1---arm-trustzone)
+[1. ARM TrustZone](#1--arm-trustzone)
 
 <br/>
 <br/>
