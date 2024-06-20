@@ -104,6 +104,40 @@ LOCAL_SRC_FILES := \
 
  - code
 
+```cpp
+//hardware/rockchip/sensor/st/ProximitySensor.cpp
+class ProximitySensor : public SensorBase {
+    ...
+    sensors_event_t mPendingEvent;
+    ...
+}
+
+
+//hardware/libhardware/include/hardware/sensors.h
+/**
+  * sensors_event_t 구조체는 Android 센서프레임워크에서 사용되며,
+  * 센서 이벤트를 저장하고 관리하는데 사용된다. 
+  */
+typedef struct sensors_event_t {
+    int32_t version;
+    int32_t sensor;
+    int32_t type;
+    int32_t reserved0;
+    int32_t timestamp;
+    union {
+        union {
+            float data[16];
+            ...
+            float distance; // distance in centimeters
+        }
+    }
+    ...
+}
+
+//hardware/rockchip/sensor/st/ProximitySensor.h
+
+```
+
 ```c
 // hardware/rockchip/sensor/st/sensors.c
 static struct hw_module_methods_t sensors_module_methods = {
@@ -135,6 +169,16 @@ static int open_sensors(...)
                  * SensorBase(PS_DEVICE_NAME, "proximity") // PS_DEVICE_NAME      "/dev/psensor"
                  * open_device() // 
                  * ioctl(PSENSOR_IOCTL_GET_ENABLED, &flags) -> sensor_dev module 
+				 *     -> setInitialState() ; 초기화 값
+				 *         -> get abs value from input device
+				 *            struct input_absinfo {
+				 *                __s32 value;
+				 *                __s32 minimum;
+				 *                __s32 maximum;
+				 *                __s32 fuzz;
+				 *                __s32 flat;
+				 *                __s32 resolution;
+				 *            };
                  * sensor_dev module feedback status_cur(SENSOR_ON) -> hal
                  */ 
             /**
