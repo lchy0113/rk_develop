@@ -3,9 +3,15 @@ TRUST
 
  > ARM아키텍처의 TRUST 이미지는 ARM 아키텍처(Cortex-A class processor) 기반 디바이스의 보안을 강화하기 위해 사용되는 기술(ARM architecture security extension).
 
-[1. ARM TrustZone](#1-arm-trustzone)
-[1.1 System architecture](#11-system-architecture)
-
+[1. ARM TrustZone](#1-arm-trustzone)  
+[1.1 System architecture](#11-system-architecture)  
+[1.2 CPU privilege level](#12-cpu-privilege-level)  
+  
+[2. Trust on Rockchip platform](#2-trust-on-rockchip-platform)  
+[2.1 Implementation Machanism](#21-implementation-mechanism)  
+[2.2 Boot-up process](#22.boot-up-process)  
+  
+  
 <br/>
 <br/>
 <br/>
@@ -23,14 +29,16 @@ TRUST
    
  ARM 아키텍처 TRUST 이미지는 다음과 같은 두가지 구성 요소로 구성.  
   
- - TrustZone : TrustZone은 ARM아키텍처에서 제공하는 하드웨어 기반 보안 기능. TrustZone은 디바이스의 일부메모리와 CPU를 보안영역으로 분리하여 악성 코드의 침입을 방지.  
- - TrustFirmware-A(TF-A) : TF-A는 TrustZone에서 실행되는 펌웨어. TF-A는 부팅 프로세스를 제어하고 하드웨어 암호화 키를 보호하는 등의 역할을 담당.  
+ - TrustZone : TrustZone은 ARM아키텍처에서 제공하는 하드웨어 기반 보안 기능.   
+               TrustZone은 디바이스의 일부메모리와 CPU를 보안영역으로 분리하여 악성 코드의 침입을 방지.  
+ - TrustFirmware-A(TF-A) : TF-A는 TrustZone에서 실행되는 펌웨어.  
+                           TF-A는 부팅 프로세스를 제어하고 하드웨어 암호화 키를 보호하는 등의 역할을 담당.  
    
  ARM 아키텍처 TRUST 이미지는 일반적으로 디바이스의 제조업체에서 제공.   
  디바이스를 부팅할 때 TRUST 이미지가 부팅 프로세스를 제어하여 디바이스의 보안을 강화.  
   
  ARM아키텍처 TRUST이미지는 ARM아키텍처 기반 디바이스의 보안을 강화하기 위한 중요한 요소.  
- 디바이스의 보안을 강화하려는 경우 ARM 아키텍처 TRUST이미지를 사용하는 것이 좋다.  
+ 디바이스의 보안을 강화하려는 경우 ARM 아키텍처 TRUST이미지를 사용하는 것을 추천.  
   
 <br/>
 <br/>
@@ -63,9 +71,11 @@ TRUST
   
 ## 1.2 CPU privilege level  
   
- CPU 관점에서 아래 그림은 ARM TruztZone이 활성화 된 standrd CPU privilege mode level 아키텍처 다이어그램이다.  
- 64 bit CPU 인 경우, privilege level은 EL0, EL1, EL2, EL3으로 나누어지며, 이는 CPU가 속한 영역에 따라 secure EL0, secure EL1 또는 non-secure EL0, non-secure EL1 으로 구분된다.  
- 32 bit CPU 인 경우, privilege level은 Mon, Hyp, SVC, ABT, IRQ, FIQ, UND, SYS, USER mode로 나뉘며, 그 중 SVC, ABT, IRQ, FIQ, AND, SYS, USER도 64비트와 같으며 secure 모드와 non-secure 모드의 차이가 있다.  
+ CPU 관점에서 아래 그림은 ARM TruztZone이 활성화 된 standrd CPU privilege mode level 아키텍처 다이어그램.   
+ 64 bit CPU 인 경우, privilege level은 EL0, EL1, EL2, EL3으로 나누어지며,   
+ 이는 CPU가 속한 영역에 따라 secure EL0, secure EL1 또는 non-secure EL0, non-secure EL1 으로 구분된다.  
+ 32 bit CPU 인 경우, privilege level은 Mon, Hyp, SVC, ABT, IRQ, FIQ, UND, SYS, USER mode로 나뉘며,  
+ 그 중 SVC, ABT, IRQ, FIQ, AND, SYS, USER도 64비트와 같으며 secure 모드와 non-secure 모드의 차이가 있다.  
   
 ![](./images/TRUST_03.png)  
   
@@ -79,8 +89,8 @@ TRUST
   
 ## 2.1 Implementation Mechanism  
   
- ARM Trusted Firmware + OP-TEE OS의 구성은 Rockchip 플랫폼의 64비트 SoC 플랫폼에서 사용된다.  
- OP-TEE OS는 32비트 SoC 플랫폼에서 사용됩니다.  
+ ARM Trusted Firmware + OP-TEE OS 의 구성은 Rockchip 플랫폼의 64비트 SoC 플랫폼에서 사용된다.    
+ OP-TEE OS는 32비트 SoC 플랫폼에서 사용됩니다.    
   
 <br/>
 <br/>
