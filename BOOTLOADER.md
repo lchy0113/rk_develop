@@ -1135,4 +1135,303 @@ done
 <hr/>
 
 
+## LOADER log from MASKROM mode
 
+ - MASKROM mode 
+
+```bash
+
+Welcome to minicom 2.8
+
+OPTIONS: I18n
+Port /dev/ttyUSB0, 15:51:02
+
+Press Meta-Z for help on special keys
+    // START
+DDR 2d653b3476 typ 24/01/20-15:04:19,fwver: v1.21
+In
+ LP4/4x derate en, other dram:1x trefi
+ ddrconfig:0
+ LPDDR4, 324MHz
+ BW=32 Col=10 Bk=8 CS0 Row=16 CS=1 Die BW=16 Size=2048MB
+ tdqss: cs0 dqs0: -48ps, dqs1: -120ps, dqs2: -72ps, dqs3: -192ps,
+
+ change to: 324MHz
+ PHY drv:clk:38,ca:38,DQ:30,odt:0
+ vrefinner:41%, vrefout:41%
+ dram drv:40,odt:0
+ clk skew:0x64
+ rx vref: 33.9%
+ tx vref: 38.0%
+
+ change to: 528MHz
+ PHY drv:clk:38,ca:38,DQ:30,odt:0
+ vrefinner:41%, vrefout:41%
+ dram drv:40,odt:0
+ clk skew:0x58
+ rx vref: 45.9%
+ tx vref: 38.0%
+
+ change to: 780MHz
+ PHY drv:clk:38,ca:38,DQ:30,odt:60
+ vrefinner:16%, vrefout:41%
+ dram drv:40,odt:0
+ clk skew:0x58
+ rx vref: 17.4%
+ tx vref: 38.0%
+
+ change to: 1560MHz(final freq)
+ PHY drv:clk:38,ca:38,DQ:30,odt:60
+ vrefinner:16%, vrefout:29%
+ dram drv:40,odt:80
+ vref_ca:00000068
+ clk skew:0x2b
+ rx vref: 17.4%
+ tx vref: 31.0%
+ cs 0:
+ the read training result:
+ DQS0:0x33, DQS1:0x34, DQS2:0x38, DQS3:0x32,
+ min  : 0xc  0xd  0xf  0xd  0x0  0x4  0x8  0x5 , 0xb  0x7  0x2  0x4  0xf  0xd  0xb  0x9 ,
+       0x12 0x12  0xb  0xd  0x5  0x3  0x2  0x7 , 0xb  0x9  0x5  0x2  0xf 0x11  0xd 0x12 ,
+ mid  :0x27 0x27 0x2a 0x28 0x1c 0x1f 0x22 0x20 ,0x26 0x22 0x1c 0x1e 0x2a 0x27 0x26 0x25 ,
+       0x2e 0x2e 0x26 0x28 0x21 0x1e 0x1d 0x22 ,0x26 0x23 0x21 0x1d 0x2b 0x2c 0x28 0x2c ,
+ max  :0x42 0x42 0x46 0x43 0x38 0x3b 0x3d 0x3b ,0x41 0x3e 0x37 0x38 0x46 0x42 0x42 0x41 ,
+       0x4a 0x4a 0x41 0x43 0x3d 0x39 0x39 0x3d ,0x42 0x3d 0x3d 0x38 0x48 0x48 0x44 0x46 ,
+ range:0x36 0x35 0x37 0x36 0x38 0x37 0x35 0x36 ,0x36 0x37 0x35 0x34 0x37 0x35 0x37 0x38 ,
+       0x38 0x38 0x36 0x36 0x38 0x36 0x37 0x36 ,0x37 0x34 0x38 0x36 0x39 0x37 0x37 0x34 ,
+ the write training result:
+ DQS0:0x22, DQS1:0x14, DQS2:0x1d, DQS3:0x5,
+ min  :0x6b 0x6d 0x6f 0x6b 0x5e 0x60 0x65 0x65 0x64 ,0x59 0x56 0x51 0x50 0x5e 0x5c 0x5e 0x5a 0x57 ,
+       0x67 0x67 0x60 0x60 0x59 0x59 0x59 0x5d 0x5f ,0x4f 0x4d 0x4a 0x45 0x54 0x58 0x4f 0x58 0x4b ,
+ mid  :0x86 0x88 0x8a 0x86 0x77 0x7a 0x7f 0x7f 0x7d ,0x73 0x71 0x6a 0x69 0x78 0x74 0x77 0x74 0x70 ,
+       0x82 0x83 0x7a 0x79 0x72 0x71 0x71 0x76 0x78 ,0x69 0x67 0x63 0x5e 0x6f 0x70 0x6a 0x72 0x64 ,
+ max  :0xa1 0xa3 0xa5 0xa1 0x91 0x95 0x9a 0x99 0x96 ,0x8d 0x8c 0x83 0x82 0x93 0x8d 0x91 0x8e 0x8a ,
+       0x9d 0x9f 0x95 0x93 0x8c 0x89 0x8a 0x90 0x91 ,0x84 0x81 0x7c 0x77 0x8a 0x89 0x86 0x8c 0x7e ,
+ range:0x36 0x36 0x36 0x36 0x33 0x35 0x35 0x34 0x32 ,0x34 0x36 0x32 0x32 0x35 0x31 0x33 0x34 0x33 ,
+       0x36 0x38 0x35 0x33 0x33 0x30 0x31 0x33 0x32 ,0x35 0x34 0x32 0x32 0x36 0x31 0x37 0x34 0x33 ,
+ CA Training result:
+ cs:0 min  :0x4c 0x4b 0x44 0x3f 0x44 0x3c 0x48 ,0x4b 0x47 0x45 0x3e 0x43 0x3c 0x4b ,
+ cs:0 mid  :0x8a 0x8b 0x82 0x7f 0x81 0x7b 0x75 ,0x8a 0x86 0x83 0x7e 0x80 0x7b 0x78 ,
+ cs:0 max  :0xc9 0xcb 0xc0 0xbf 0xbe 0xbb 0xa3 ,0xc9 0xc6 0xc1 0xbe 0xbd 0xba 0xa5 ,
+ cs:0 range:0x7d 0x80 0x7c 0x80 0x7a 0x7f 0x5b ,0x7e 0x7f 0x7c 0x80 0x7a 0x7e 0x5a ,
+ out
+ Boot1 Release Time: Apr 14 2023 10:04:54, version: 1.17
+ support nand flash type: slc
+ ...nandc_flash_init enter...
+ No.1 FLASH ID:ff ff ff ff ff ff
+ sfc nor id: ff ff ff
+ sfc_nand id: ff ff ff
+ SD IO init 0
+ Set SD Clk: 200, 5
+ Set SD Clk: 200, 5
+  SDC_BusRequest:  CMD=8  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd8,20
+  SDC_BusRequest:  CMD=5  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd5,20
+  SDC_BusRequest:  CMD=55  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd55,20
+  SDC_BusRequest:  CMD=1  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd1,20
+ Set SD Clk: 200, 5
+  SDC_BusRequest:  CMD=8  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd8,20
+  SDC_BusRequest:  CMD=5  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd5,20
+  SDC_BusRequest:  CMD=55  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd55,20
+  SDC_BusRequest:  CMD=1  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd1,20
+ Set SD Clk: 200, 5
+  SDC_BusRequest:  CMD=8  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd8,20
+  SDC_BusRequest:  CMD=5  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd5,20
+  SDC_BusRequest:  CMD=55  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd55,20
+  SDC_BusRequest:  CMD=1  SDC_RESP_TIMEOUT 1736
+  mmc0:cmd1,20
+ SdmmcInit=0 1
+ Emmc IO init.
+ EMMC_DLL_RXCLK = 0
+ Emmc IO init.
+ EMMC_DLL_RXCLK = 0
+ mmc_set_bus_width: 1
+ SetEmmcClk: 375000, 5
+ mmc_switch index:183, value:0x2
+ mmc_switch index:185, value:0x2
+ SetEmmcClk: 375000, 5
+ mmc_set_bus_width: 8
+ SetEmmcClk: 200000000, 1
+ Enable PHY CLK: 200000000
+ SdmmcInit=2 0
+ BootCapSize=100000
+ UserCapSize=14832MB
+ FwPartOffset=2000 , 100000
+ ##############serialno_str = richgold00000004pizza
+ UsbBoot ...155878
+ powerOn 159367
+
+
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+
+## Tool
+
+ u-boot 디렉토리 기준으로 아래 Tool 설명.
+
+```bash
+./scripts/mkbootimg
+./scripts/unpack_bootimg
+./scripts/repack-bootimg
+./scripts/unpack_resource.sh
+./scripts/stacktrace.sh
+./tools/patman/patman
+./tools/buildman/buildman
+
+../rkbin/tools/resource_tool
+../rkbin/tools/loaderimage
+../rkbin/tools/trust_merger
+../rkbin/tools/boot_merger
+```
+
+### trust_merge
+ 
+ ini 설정 파일에 따라서 64bit 플랫폼의 bl30, bl31, bl32 bin 파일을 pack하여, trust.img를 생성.
+
+```bash
+// rkbin/RKTRUST/RK3568TRUST.ini file
+[VERSION]
+MAJOR=1    // major version
+MINOR=0    // minor version
+[BL30_OPTION]    // bl30, set to mcu bin
+SEC=0    // BL30 bin 존재 여부
+[BL31_OPTION]    // bl31, multi core, power management 와 관련된 bin 
+SEC=1    // bl31 존재 여부
+PATH=bin/rk35/rk3568_bl31_v1.44.elf    // bin file path
+ADDR=0x00040000    // ddr에 firmware Load and run 주소.
+[BL32_OPTION]
+SEC=1
+PATH=bin/rk35/rk3568_bl32_v2.11.bin
+ADDR=0x08400000
+[BL33_OPTION]
+SEC=0
+[OUTPUT]
+PATH=trust.img    // firmware 출력 파일 이름
+```
+
+ - trust_merge 명령어
+
+```bash
+
+// sha, rsa 값은 option이며, make.sh 을 통해 제공함.
+// size rkqtdms 출력 파일 사이즈. 기본 2M 
+
+./tools/trust_merger <sha> <rsa> <size> [ini file]
+```
+
+ - unpack 명령어
+
+```bash
+u-boot$ ./tools/trust_merger --unpack ../rkbin/trust.img 
+File Size = 4194304
+Header Tag:BL3X
+Header version:256
+Header flag:35
+SrcFileNum:7
+SignOffset:1136
+Component 0:
+ComponentID:BL31    // BL31
+StorageAddr:0x4
+ImageSize:0x148
+LoadAddr:0x40000
+Component 1:
+ComponentID:BL31
+StorageAddr:0x14c
+ImageSize:0x10
+LoadAddr:0x69000
+Component 2:
+ComponentID:BL31
+StorageAddr:0x15c
+ImageSize:0x28
+LoadAddr:0x6b000
+Component 3:
+ComponentID:BL31
+StorageAddr:0x184
+ImageSize:0x50
+LoadAddr:0xfdcc1000
+Component 4:
+ComponentID:BL31
+StorageAddr:0x1d4
+ImageSize:0x10
+LoadAddr:0xfdcce000
+Component 5:
+ComponentID:BL31
+StorageAddr:0x1e4
+ImageSize:0x10
+LoadAddr:0xfdcd0000
+Component 6:
+ComponentID:BL32    // BL32
+StorageAddr:0x1f4
+ImageSize:0x388
+LoadAddr:0x8400000
+unpack success
+
+```
+ 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+
+## boot_merge
+
+ miniloader + ddr + usb plug 를 pack 하여 loader firmware를 생성.
+
+```
+// RK3568MINIALL_POCEDPP04.ini
+
+[CHIP_NAME]
+NAME=RK3568		// CHIP Name
+[VERSION]
+MAJOR=1			// Major version number
+MINOR=1			// Minor version number
+[CODE471_OPTION]		// ddr bin 파일이 세팅됨.
+NUM=1
+Path1=bin/rk35/rk3568_edp_p04_ddr_1560MHz_v1.21.bin
+Sleep=1
+[CODE472_OPTION]		// usbplub bin 파일이 세팅됨.
+NUM=1
+Path1=bin/rk35/rk356x_usbplug_v1.17.bin
+[LOADER_OPTION]
+NUM=2
+LOADER1=FlashData
+LOADER2=FlashBoot
+FlashData=bin/rk35/rk3568_edp_p04_ddr_1560MHz_v1.21.bin		// FlashData ,  현재 ddr bin으로 세팅.
+FlashBoot=bin/rk35/rk356x_spl_v1.13.bin 					// flashBoot , 현재 미니로더 저장소로 세팅.
+[OUTPUT]
+PATH=rk356x_spl_loader_v1.21.113.bin				// 출력 파일 이름
+[SYSTEM]
+NEWIDB=true
+[FLAG]
+471_RC4_OFF=true
+RC4_OFF=true
+```
+
+ - 툴 사용 방법
+
+```bash
+./tools/boot_merge [ini file]
+
+ ./tools/boot_merger RKBOOT/RK3568MINIALL_POCEDPP04.ini 
+********boot_merger ver 1.34********
+Info:Pack loader ok.
+
+```
