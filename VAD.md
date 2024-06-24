@@ -1,6 +1,5 @@
 
 VAD 
-
 =====
 
 > VAD : Voice Activity Detect 
