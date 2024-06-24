@@ -19,7 +19,7 @@ VAD
   
 ## Overview
   
- - RAD data flow  
+ - VAD data flow  
   
 ![](./images/VAD_02.png)  
   
