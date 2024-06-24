@@ -1147,7 +1147,7 @@ OPTIONS: I18n
 Port /dev/ttyUSB0, 15:51:02
 
 Press Meta-Z for help on special keys
-    // START
+    ////// START
 DDR 2d653b3476 typ 24/01/20-15:04:19,fwver: v1.21
 In
  LP4/4x derate en, other dram:1x trefi
@@ -1391,7 +1391,7 @@ unpack success
 <hr>
 
 
-## boot_merge
+### boot_merge
 
  miniloader + ddr + usb plug 를 pack 하여 loader firmware를 생성.
 
@@ -1433,5 +1433,30 @@ RC4_OFF=true
  ./tools/boot_merger RKBOOT/RK3568MINIALL_POCEDPP04.ini 
 ********boot_merger ver 1.34********
 Info:Pack loader ok.
+```
+ 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+ - loaderimage
+
+ 기능 : uboot.img 및 trust.img  생성
+
+```bash
+// uboot pack 
+
+/** 
+  * @[input bin]: uboot.bin 파일 
+  * @[output image]: 출력 파일
+  * @[load_addr]: load 주소
+  * @[size] : --size [KB] [count]. 
+  */
+
+./tools/loaderimage -h
+Usage: ./tools/loaderimage [--pack|--unpack] [--uboot|--trustos|--kernel] 
+file_in file_out [load_addr]  [--size] [size number]            [--version] [version] | [--info] [file]
 
 ```
