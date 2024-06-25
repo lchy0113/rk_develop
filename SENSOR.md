@@ -199,6 +199,29 @@ static int open_sensors(...)
 <br/>
 <hr>
 
+## Sensor
+
+> Sensor 는 개발하는 proximity sensor에 App layer 에서 access 하는 API를 제공. 
+> Sensor 추가 시, 어떤 SENSOR_TYPE 사용할 지에 대해 정리.
+
+ - TYPE_PROXIMITY : proximity sensor. wakeup 목적의 센서.  
+ SensorEvent.values 를 통해 값을 전달.
+
+ - TYPE_SIGNIFICANT_MOTION : motion trigger 센서.  
+ 이벤트가 발생화면 트리거 된 다음 자동으로 비활성화 됨.  
+ 센서는 절전 모드에 있는동안 계속 작동하며, 움직임이 감지되면 자동으로 Wakeup.   
+ App layer에서는 triggger하기 위해 wakelock을 관리하지 않아도 됨.   
+   
+    * TriggerEvent : TriggerEventListener에 의해 호출되며, 트리거가 발생했을때, 보유값(시간, 값, 정보 등)을 관리한다.  
+	  values : TYPE_SIGNIFICANT_MOTION 의 경우, 값 필드의 길이는 1. 센서가 트리거되면 value[0] = 1.0   
+		(1.0 만 허용)  
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
 # Develop
 
 ## vcnl4000.c
