@@ -60,6 +60,26 @@
 
  >branch feature/wifi
 
+```bash
+/develop/Rockchip/ROCKCHIP_ANDROID12_DEV$ repo status 
+project device/kdiwin/nova/common/              (*** NO BRANCH ***)
+ -m     media/bootanimation.zip
+ project device/kdiwin/test/rk3568_edpp04/       branch feature/wifi
+ project device/rockchip/common/                 branch feature/wifi
+ project device/rockchip/rk356x/                 branch feature/wifi
+ project hardware/rockchip/libhwjpeg/            (*** NO BRANCH ***)
+  -m     src/version.h
+  project kernel-4.19/                            branch feature/wifi
+   -m     logo.bmp
+    --     logo.bmp.dev
+	 -m     logo_kernel.bmp
+	  --     logo_kernel.bmp.dev
+	  project packages/modules/BootPrebuilt/5.10/arm64/ (*** NO BRANCH ***)
+	   -t     boot-userdebug.img
+
+```
+
+
 CONFIG_RTL8822CU
 
  WiFi 드라이버 로딩은 wifi chip type 노드에 의존하지 않으므로, board 수준 dts 를 구성할 필요 없다.
