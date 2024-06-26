@@ -18,6 +18,22 @@ DEVFREQ
 [CPUFreq](#cpufreq)  
 [....cpu frequence overview](#cpu-frequence-overview)  
 
+[code path](#code-path)  
+[configuration](#configuration)  
+[....menuconfig](#menuconfig)  
+[....clock configuration](#clock-configuration)  
+[....regulator configuration](#regulator-configuration)  
+[....OPP table configuration](#opp-table-configuration)  
+[......Add OPP table](#add-opp-table)  
+[....Modify OPP Table According to Leakage](#modify-opp-table-according-to-leakage)  
+[......Modify Voltage According to Leakage](#modify-voltage-according-to-leakage)  
+[....Modify OPP Table According to PVTM](#modify-opp-table-according-to-pvtm)  
+[....Wide Temperature Configuration](#wide-temperature-configuration)  
+  
+[User interface](#user-interface)  
+  
+[Issue](#issue)  
+
 <br/>
 <br/>
 <br/>
@@ -316,26 +332,36 @@ cat /sys/kernel/debug/regulator/vdd_core/voltage
   
 ![](./images/DDR_01.png)
   
- - CPUFreq governor : :CPU frequency를 언제 변경할지, 어느 frequency로 변경할지를 결정하는데 사용합니다.
-  kernel을 아래 governor를 포함하고 있다.
-  * conservative : cpu 부하에 따라 dynamic으로 frequcncy를 변경하고, 일정 비율로 frequency를 부드럽게 늘리거나 낮춘다.
-  * ondemand : cpu 부하에 따라 dynamic으로 frequency를 변경하고, frequency는 넓은 범위에서 변경될 수 있다. 
-   ex. max frequency or min frequency 에서 변경된다. 
-  * interactive : cpu 부하에 따라 frequency를 dynamic으로 변경하고, ondemand 대비 변경속도가 빠르고 매개변수가 많으며 유연하다.
-  * userspace : user mode application에서 frequency를 변경할 수 있는 user interface를 제공한다.
-  * powersave :  소비전력을 우선시하고 frequency는 항상 min frequcncy으로 설정한다.
-  * performance : performance를 우선시 하고, frequency는 가장 높은 값으로 설정된다. 
-  * schedutil : EAS의 special governor (EAS; Energy Aware Scheduling)는 CPUFreq 및 CPU Idle의 전력과 결합된 차세대  work scheduling 으로 작업을 위해 실행중인 CPU를 선택할때, performance와 power saving을 모두 고려하여 최저 시스템 에너지를 보장하고 성능을 높입니다. 
- - CPUFreq core : cpufreq 거버너, cpufreq 드라이버를 캡슐화 및 추상화하고 명확한 인터페이스를 정의한다.
- - CPUFreq driver : cpu frequency 테이블을 초기화하고 cpu frequency를 설정하는데 사용한다. 
- - CPUFreq stats : cpufreq에 대한 통계를 제공 
-
-
------
-
-### 2. code path
+ - **CPUFreq governor** : CPU frequency를 언제 변경할 지, 어느 frequency로 변경할지를 결정하는데 사용.  
+	                       governor 종류.  
+   * **conservative** : cpu 부하에 따라 dynamic으로 frequcncy를 변경하고,   
+                         일정 비율로 frequency를 부드럽게 늘리거나 낮춘다.  
+   * **ondemand** : cpu 부하에 따라 dynamic으로 frequency를 변경하고,  
+                      frequency는 넓은 범위에서 변경될 수 있다.   
+                      ex. max frequency or min frequency 에서 변경된다. 
+   * **interactive** : cpu 부하에 따라 frequency를 dynamic으로 변경하고,   
+                      ondemand 대비 변경속도가 빠르고 매개변수가 많으며 유연하다.  
+   * **userspace** : user mode application에서 frequency를 변경할 수 있는 user interface를 제공.
+   * **powersave** :  소비전력을 우선 시하고 frequency는 항상 min frequcncy으로 설정.  
+   * **performance** : performance를 우선 시 하고, frequency는 가장 높은 값으로 설정.   
+   * **schedutil** : EAS의 special governor (EAS; Energy Aware Scheduling)는 CPUFreq 및 CPU Idle의 전력과  
+                     결합된 차세대  work scheduling 으로 작업을 위해 실행중인 CPU를 선택할때,  
+					 performance와 power saving을 모두 고려하여 최저 시스템 에너지를 보장하고 성능을 높인다.  
+  
+ - **CPUFreq core** : cpufreq governor, cpufreq 드라이버를 캡슐화 및 추상화하고 명확한 인터페이스를 정의.  
+ - **CPUFreq driver** : cpu frequency 테이블을 초기화하고 cpu frequency를 설정하는데 사용.   
+ - **CPUFreq stats** : cpufreq에 대한 통계를 제공   
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
+### code path
 
  - governor related code:
+  
 ```bash
 drivers/cpufreq/cpufreq_conservative.c    /* conservative governor */
 drivers/cpufreq/cpufreq_ondemand.c        /* ondemand governor */
@@ -344,29 +370,34 @@ drivers/cpufreq/cpufreq_userspace.c        /* userspace governor */
 drivers/cpufreq/cpufreq_performance.c    /* performance governor */
 kernel/sched/cpufreq_schedutil.c        /* schedutil governor */
 ```
-
+  
  - stats related code:
+  
 ```bash
 drivers/cpufreq/cpufreq_stats.c
 ```
-
+  
  - core related code:
+  	 
 ```bash
 drivers/cpufreq/cpufreq.c
 ```
-
+  
  - driver related code:
+  
 ```bash
 drivers/cpufreq/cpufreq-dt.c                /* platform driver */
 drivers/cpufreq/rockchip-cpufreq.c            /* platform device */
 drivers/soc/rockchip/rockchip_opp_select.c    /* interface for changing opp */
 ```
+<br/>
+<br/>
+<br/>
+<hr>
 
------
+### configuration
 
-### 3. configuration
-
-#### 3.1 menuconfig
+#### menuconfig
 
 ```bash
 
@@ -398,30 +429,34 @@ drivers/soc/rockchip/rockchip_opp_select.c    /* interface for changing opp */
 (...)
 ```
 
-----
+<br/>
+<br/>
+<br/>
+<hr>
 
-#### 3.2 clock configuration
+#### clock configuration
 
-----
+<br/>
+<br/>
+<br/>
+<hr>
 
-#### 3.3 regulator configuration
+#### regulator configuration
 
- devicetree의 CPU nde에 "cpu-supply" property을 추가합니다.
- Regulator에 대한 자세한 구성 지침은 아래와 같습니다.
+ devicetree의 CPU nde에 "cpu-supply" property을 추가.
  
-   - Regulator, PMIC 관련 개발 문서
-
-       rk3568을 예로 들어 "cpu-supply" property 을 cpu0 node에 추가한다.(for non-big.LITTLE core platform)
+ - Regulator, PMIC 관련 개발 문서
+  
+    rk3568을 예로 들어 "cpu-supply" property 을 cpu0 node에 추가.(for non-big.LITTLE core platform)
         
-   - regulator 를 configured하지 않은 경우라도, cpufreq driver는 loaded된다.  voltage를 변경하지 않고 CPU frequency가 변경되는 것. 
-   - 그러나 cpu freq가 일정 값을 초과하면 low voltage 으로 인해 crash가 발생할 수 있다.
+ - regulator 를 configured하지 않은 경우라도, cpufreq driver는 loaded된다.  
+   voltage를 변경하지 않고 CPU frequency가 변경되는 것. 
+ - 그러나 cpu freq가 일정 값을 초과하면 low voltage 으로 인해 crash가 발생할 수 있다.
 
 ```dts
-
 &cpu0 {
     cpu-supply = <&vdd_cpu>;
 };
-
 
 
 &i2c0 {
@@ -445,33 +480,49 @@ drivers/soc/rockchip/rockchip_opp_select.c    /* interface for changing opp */
         };
     };
 
-
 ```
 
-----
+<br/>
+<br/>
+<br/>
+<hr>
 
-#### 3.4 OPP table configuration
+#### OPP table configuration
+  
+  Operating Performance Points(OPP) 는 linux kernel의 기능으로   
+  CPU의 performance와 power saving을 조절하는데 사용된다.  
 
-  Operating Performance Points(OPP) 는 linux kernel의 기능으로 CPU의 performance와 power saving을 조절하는데 사용된다.
-  OPP는 CPU의 frequency와 voltage를 조합하여 나타내며, CPU의 perforfance와 power saving 은 OPP의 조합에 따라 달라진다. 
-  OPP는 CPU의 성능을 높이거나 전력 소비량을 줄이기 위해 사용될 수 있다.   
-   예를 들어, CPU의 성능을 높이기 위해서는 높은 주파수와 높은 전압의 OPP를 사용해야 하며, 
-   전력 소비량을 줄이기 위해서는 낮은 주파수와 낮은 전압의 OPP를 사용해야 한다.
+  OPP는 CPU의 frequency와 voltage를 조합하여 나타내며,   
+  CPU의 perforfance와 power saving 은 OPP의 조합에 따라 달라진다.   
 
-  - OPP 는 linux kernel의 power/opp.c 파일에서 관리된다. power/opp.c 파일에는 cpu의 opp목록이 저장되어 있으며, cpu의 opp는 power/opp.c파일에서 조회/변경 가능하다.
-  - OPP 는 CPU의 성능과 전력 소비량을 조절하는데 중요한 역할을 한다. 
+  OPP는 CPU의 성능을 높이거나 전력 소비량을 줄이기 위해 사용될 수 있다.     
 
+  예를 들어, CPU의 성능을 높이기 위해서는 높은 주파수와 높은 전압의 OPP를 사용해야 하며,   
+  전력 소비량을 줄이기 위해서는 낮은 주파수와 낮은 전압의 OPP를 사용해야 한다.  
+
+  - OPP 는 linux kernel의 power/opp.c 파일에서 관리.  
+  - power/opp.c 파일에는 cpu의 opp목록이 저장되어 있으며,  
+    cpu의 opp는 power/opp.c파일에서 조회/변경 가능하다.  
+  - OPP 는 CPU의 성능과 전력 소비량을 조절하는데 중요한 역할을 한다.   
+  
 ```bash
 Documentation/devicetree/bindings/opp/opp.txt
 Documentation/power/opp.txt
 ```
 
-  - kernel은 frequency, voltage관련 파일을 devicetree에서 얻어 입력합니다.
+  - kernel은 frequency, voltage관련 파일을 devicetree에서 얻어 입력한다.
   - devicetree의 OPP Table node는 frequency, voltage를 가지고 있다.
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
- 3.4.1 Add OPP table
-
-    platform에 따라 OPP table node를 추가하는 방법을 다르지만 일반적으로  dtsi파일에서 각 cpu node sub system에 "operating-points-v2" property 을 추가하여 사용한다.
+##### Add OPP table
+  
+ platform에 따라 OPP table node를 추가하는 방법을 다르지만 일반적으로    
+ dtsi파일에서 각 cpu node sub system에 "operating-points-v2" property 을 추가하여 사용. 
 
 ```dtb
 // rk3568.dtsi
@@ -552,12 +603,12 @@ Documentation/power/opp.txt
         >;
 
         opp-408000000 {
-            opp-hz = /bits/ 64 <408000000>;                        /* Hz */
-            opp-microvolt = <850000 850000 1150000>;            /* uV, <target min max> */
-            opp-microvolt-L0 = <850000 850000 1150000>;            
+            opp-hz = /bits/ 64 <408000000>;                /* Hz */
+            opp-microvolt = <850000 850000 1150000>;       /* uV, <target min max> */
+            opp-microvolt-L0 = <850000 850000 1150000>;
             opp-microvolt-L1 = <825000 825000 1150000>;
             opp-microvolt-L2 = <825000 825000 1150000>;
-            clock-latency-ns = <40000>;                            /* ns, the time required to compile the transformation */
+            clock-latency-ns = <40000>;   /* ns, the time required to compile the transformation */
         };
         opp-600000000 {
             opp-hz = /bits/ 64 <600000000>;
@@ -619,37 +670,52 @@ Documentation/power/opp.txt
     };
 ```
 
-- Note :OPP Table에 "operating-point-v2"가 포함되어 잇지 않으면, cpufreq는 초기화가 되지 않는다. 초기화가 되지 않으면 system이 frequency와 voltage를 변경할 수 없으며 아래와 같은 error가 출력된다.
+- Note :OPP Table에 "operating-point-v2"가 포함되어 있지 않으면,  cpufreq는 초기화가 되지 않는다.  
+ 초기화가 되지 않으면 system이 frequency와 voltage를 변경할 수 없으며 아래와 같은 error가 출력된다.  
 
 ```bash
 cpu cpu0: OPP-v2 not supported
 cpu cpu0: couldn't find opp table for cpu:0, -19
 ```
 
-----
 
-#### 3.5 Modify OPP Table According to Leakage
-  IDDQ(Integrated Circuit Quiescent Current)는 정지 상태에서의 누설 전류(leakage) 를 측정하는 반도체 디바이스의 테스팅을 의미.
-  > 정지상태란 디바이스의 입력이 모두 고정되어 있고, 출력이 변하지 않는 상태를 의미한다. 누설 전류는 디바이스가 작동하지 않더라도 흐르는 전류를 의미
+<br/>
+<br/>
+<br/>
+<hr>
 
-  - IDDQ 테스트 방법 : 
-    1. 디바이스를 정지 상태로 만든다.
-    2. 디바이스의 전원 공급 장치의 전류를 측정.
-    3. 측정된 전류가 디바이스의 누설 전류.
+#### Modify OPP Table According to Leakage
 
- - CPU의 leakage은 특정 전압을 제공할 때 CPU의 대기 전류(quiescent current)를 의미.
+  IDDQ(Integrated Circuit Quiescent Current)는 정지 상태에서의   
+  누설 전류(leakage) 를 측정하는 반도체 디바이스의 테스팅을 의미.  
+  > 정지상태란 디바이스의 입력이 모두 고정되어 있고, 출력이 변하지 않는 상태를 의미한다.   
+  > 누설 전류는 디바이스가 작동하지 않더라도 흐르는 전류를 의미  
+  
+  - IDDQ 테스트 방법 :   
+    1. 디바이스를 정지 상태로 만든다.  
+    2. 디바이스의 전원 공급 장치의 전류를 측정. 
+    3. 측정된 전류가 디바이스의 누설 전류.   
+  
+ - CPU의 leakage은 특정 전압을 제공할 때 CPU의 대기 전류(quiescent current)를 의미.  
+  
+ - note : 칩 생산 시 leakage 값을 eFuse 또는 OTP에 저장 시켜 관리.  
 
- - note : 칩 생산 시 leakage 값을 eFuse 또는 OTP에 저장 시켜 관리.
-
-##### 3.5.1 Modify Voltage According to Leakage
-
- - 기능 설명 : eFuse 또는 OTP에서 CPU leakage value을 가져오고 particular table에서 leakage에 해당하는 voltage을 가져와 적용시킨다
- - 적용 방법 : 
-   * eFuse 또는 OTP에 대한 관련 코드를 추가한다.
-   * OPP table node에 "rockchip, leak-voltage-sel", "nvmem-cells", "nvmem-cell-names" 속석 3개를 추가한다. 
-
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
+##### Modify Voltage According to Leakage
+  
+ - 기능 설명 : eFuse 또는 OTP에서 CPU leakage value을 가져오고  
+              particular table에서 leakage에 해당하는 voltage을 가져와 적용시킨다
+ - 적용 방법 :   
+   * eFuse 또는 OTP에 대한 관련 코드를 추가한다.  
+   * OPP table node에 "rockchip, leak-voltage-sel", "nvmem-cells", "nvmem-cell-names" 속석 3개를 추가한다.   
+  
  - exampele
-
+  
 ```dtb
     cpu0_opp_table: cpu0-opp-table {
         compatible = "operating-points-v2";
@@ -707,13 +773,18 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
     };
 ```
 
-----
-
-#### 3.6 Modify OPP Table According to PVTM
-
-  CPU PVTM(Process-Voltage-Temperature Monitor)는 CPU 가까이에 위치 한 모듈이며, CPU의 전압, 온도를 모니터링 하고 제어하는 기능. 
-  PVTM 은 CPU의 성능과 전력 소비를 최적화 하는데 사용.
-
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
+#### Modify OPP Table According to PVTM
+  
+  CPU PVTM(Process-Voltage-Temperature Monitor)는 CPU 가까이에 위치 한 모듈이며,   
+   CPU의 전압, 온도를 모니터링 하고 제어하는 기능. 
+  PVTM 은 CPU의 성능과 전력 소비를 최적화 하는데 사용.  
+  
  - 기능 설명 : 정해진 voltage 및 frequency에서 PVTM value 을 얻은 후, 기준 온도에서 PVTM value을 변환하여 PVTM table 에서  해당하는 voltage 의 값을 얻어 적용한다.
  - 적용 방법 : PVTM 관련 코드를 추가한다.   
       "rockchip,pvtm-voltage-sel", "rockchip,thermal-zone", "rockchip,pvtm-<name>" property을 OPP table node에 추가한다. 
@@ -772,15 +843,19 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
         >;
 ```
 
-----
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-#### 3.7 Wide Temperature Configuration
- 
+#### Wide Temperature Configuration
+   
  일반적으로 주변 온도가 − 40°C ~ + 85°C임을 의미한다.
 
-시스템이 온도가 특정 값보다 낮다는 것을 감지하면 각 주파수의 전압을 높입니다.
+ 시스템이 온도가 특정 값보다 낮다는 것을 감지하면 각 주파수의 전압을 높입니다.
 
-  일부 주파수의 전압이 시스템에서 제한하는 최대 전압을 초과하면 해당 주파수가 금지됩니다. 즉, 해당 주파수 없이 작동합니다.
+ 일부 주파수의 전압이 시스템에서 제한하는 최대 전압을 초과하면 해당 주파수가 금지됩니다. 즉, 해당 주파수 없이 작동합니다.
 
     온도가 정상 온도로 돌아오면 전압이 기본 상태로 돌아갑니다.
 
@@ -837,12 +912,19 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ```
 
-----
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-### 4. User interface
+### User interface
 
  - Non-big.Little platforms : 모든 core 는 하나의 clock을 공유하고 동일한 user interface 를 아래 경로를 통해 갖는다.
+
       /sys/devices/system/cpu/cpufreq/policy0/
+
 ```bash
 rk3568_rgbp01:/sys/devices/system/cpu/cpufreq/policy0 # pwd
 /sys/devices/system/cpu/cpufreq/policy0
@@ -884,7 +966,13 @@ drwxr-xr-x 4 root root    0 2023-06-12 11:04 ..
 
 > Note : Big.Little platform 에서 cluster는 고성능 코어와 저전력 코어의 그룹입니다. 고성능 코어는 짧은 시간 동안 많은 작업을 처리하는데 적합하며, 저전력 코어는 장기간 동안 적은 작업을 처리하는데 적절합니다. 클러스터는 2가지 유형의 코어를 결합하여 장치의 전력 효율성과 성능을 향상시킵니다.
 
------
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## issue
 
