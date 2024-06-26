@@ -1,28 +1,46 @@
 
 DEVFREQ
 =====
+  
+  
+[Overview](#overview)  
+  
+<br/>
+<br/>
+<br/>
+<hr>
 
-정해진 governor에 따라 frequency 와 voltage가 동적으로 제어되도록 커널 developer가 정의한 framework 모델로, 성능과 전력소모를 효과적으로 관리할 수 있다.
-devfreq는 cpufreq와 유사하지만, cpufreq는 cpu에만 적용되며 devfreq는 cpu 외에 동적 frequency 제어 및 voltage 제어 이 필요한 모듈을 타겟으로 사용된다.
+
+## Overview
+
+정해진 governor에 따라 frequency 와 voltage가 동적으로 제어되도록  
+커널 developer가 정의한 framework 모델로, 성능과 전력소모를 효과적으로 관리할 수 있다.  
+  
+devfreq는 cpufreq와 유사하지만, cpufreq는 cpu에만 적용되며   
+devfreq는 cpu 외에 동적 frequency 제어 및 voltage 제어가 필요한 모듈을 타겟으로 사용.  
+  
 devfreq 프레임워크는 governer, core, driver, event 로 구성되며 software framework는 아래와 같다.
-
+  
 ![](./images/DEVFREQ_01.png)
-
- - devfreq governor : frequency를 결정하기 위해 사용되며 아래 governor가 포함되어 있다.
-   * simple ondemand, userspace, powersave, performance, dmc ondemand.
- - devfreq core : devfreq governor와 devfreq 드라이버를 캡슐화 및 추상화하고, 인터페이스를 정의.
- - devfreq driver : device의 frequency voltage를 초기화하고, 특정 장치의 주파수를 설정한다.
- - devfreq event : device 의 부하 정보를 무니터링 하는데 사용.
-
-
-
------
-
-# GPU_DVFS
+    
+ - devfreq governor : frequency를 결정하기 위해 사용되며 아래 governor가 포함되어 있다.  
+   * simple ondemand, userspace, powersave, performance, dmc ondemand.  
+ - devfreq core : devfreq governor와 devfreq 드라이버를 캡슐화 및 추상화하고, 인터페이스를 정의.  
+ - devfreq driver : device의 frequency voltage를 초기화하고, 특정 장치의 주파수를 설정.  
+ - devfreq event : device 의 부하 정보를 모니터링 하는데 사용.  
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
+## GPU_DVFS
 
  - OPP Table
- 특정frequency를 disable하려면 해당 opp node아래에 "status = disabled"; 를 추가.
 
+ 특정frequency를 disable하려면 해당 opp node아래에 *"status = disabled";* 를 추가.
+  
 ```dtb
 	gpu: gpu@fde60000 {
 		compatible = "arm,mali-bifrost";
@@ -80,18 +98,18 @@ devfreq 프레임워크는 governer, core, driver, event 로 구성되며 softwa
 
 ```
 
-# DMC DVFS
+## DMC DVFS
  DMC(Dynamic Memory Controller) DVFS, 즉 DDR Frequency 변환.
 
-# BUS DVFS 
+## BUS DVFS 
 
 
 
 -----
 
-# cpu frequeycy 변경
+## cpu frequeycy 변경
 
-## rk3568 CPU의 max frequency 변경 
+### rk3568 CPU의 max frequency 변경 
 
  rk3568 cpu의 기본 max frequency는 1992 MHz 이며, 2016 MHz 로 변경하려면 수정이 필요하다.
  
@@ -140,7 +158,7 @@ index 7da2c01c4444..a129cf95e4c1 100644
 ```
 
 
-## rk3568 주파수 모드 설명
+### rk3568 주파수 모드 설명
 
  RK3568의 전력 소비를 줄이고 운영 체제의 견고성을 향상시키기 위해서는 제품 현장에서 RK3568의 주 주파수를 조정하는 것이 특히 중요하다.
  
@@ -173,7 +191,7 @@ index 7da2c01c4444..a129cf95e4c1 100644
   
  문서에 따르면 전력소모를 줄이고 chip의 수명을 보장하기 위해 RK3568J의 frequency setting은 1.4(1.416) GHz를 초과 하지 않는 것이 좋다.  
 
-## check current frequency 
+### check current frequency 
 
  - for non big.LITTLE core chipset 
 
@@ -200,7 +218,7 @@ cat /sys/kernel/debug/clk/armclkb/clk_rate /* big core frequency */
 > ARM big.LITTLE core chipset은 ARM에서 개발한 이기종 다중 처리(HMP) 컴퓨팅 아키텍처이다. 
 > 전력 소모가 적은 저성능 코어(LITTLE)들과 전력 소모가 많은 고성능 프로세서 코어(big) 들을 함께 탑재하는 구조를 말한다.
 
-## check current voltage
+### check current voltage
 
 ```bash
 /* here vdd_core is not the fixing name, please modify */
@@ -210,10 +228,10 @@ cat /sys/kernel/debug/regulator/vdd_core/voltage
 
 -----
 
-# CPUFreq
+## CPUFreq
 
 
-## 1. overview
+### 1. overview
 
  CPUFreq는 지정된 governor에 따라서 cpu frequency 와 voltage를 동적으로 변경하기위해 kernel 개발자가 정의한 프레임워크 모델이다. 
  cpu의 performance에 따라서 cpu의 소비전력을 낮추는것이 효과적일 수 있다.
@@ -238,7 +256,7 @@ cat /sys/kernel/debug/regulator/vdd_core/voltage
 
 -----
 
-## 2. code path
+### 2. code path
 
  - governor related code:
 ```bash
@@ -269,9 +287,9 @@ drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
 
 -----
 
-## 3. configuration
+### 3. configuration
 
-### 3.1 menuconfig
+#### 3.1 menuconfig
 
 ```bash
 
@@ -305,11 +323,11 @@ drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
 
 ----
 
-### 3.2 clock configuration
+#### 3.2 clock configuration
 
 ----
 
-### 3.3 regulator configuration
+#### 3.3 regulator configuration
 
  devicetree의 CPU nde에 "cpu-supply" property을 추가합니다.
  Regulator에 대한 자세한 구성 지침은 아래와 같습니다.
@@ -355,7 +373,7 @@ drivers/soc/rockchip/rockchip_opp_select.c	/* interface for changing opp */
 
 ----
 
-### 3.4 OPP table configuration
+#### 3.4 OPP table configuration
 
   Operating Performance Points(OPP) 는 linux kernel의 기능으로 CPU의 performance와 power saving을 조절하는데 사용된다.
   OPP는 CPU의 frequency와 voltage를 조합하여 나타내며, CPU의 perforfance와 power saving 은 OPP의 조합에 따라 달라진다. 
@@ -533,7 +551,7 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ----
 
-### 3.5 Modify OPP Table According to Leakage
+#### 3.5 Modify OPP Table According to Leakage
   IDDQ(Integrated Circuit Quiescent Current)는 정지 상태에서의 누설 전류(leakage) 를 측정하는 반도체 디바이스의 테스팅을 의미.
   > 정지상태란 디바이스의 입력이 모두 고정되어 있고, 출력이 변하지 않는 상태를 의미한다. 누설 전류는 디바이스가 작동하지 않더라도 흐르는 전류를 의미
 
@@ -546,7 +564,7 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
  - note : 칩 생산 시 leakage 값을 eFuse 또는 OTP에 저장 시켜 관리.
 
-#### 3.5.1 Modify Voltage According to Leakage
+##### 3.5.1 Modify Voltage According to Leakage
 
  - 기능 설명 : eFuse 또는 OTP에서 CPU leakage value을 가져오고 particular table에서 leakage에 해당하는 voltage을 가져와 적용시킨다
  - 적용 방법 : 
@@ -614,7 +632,7 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ----
 
-### 3.6 Modify OPP Table According to PVTM
+#### 3.6 Modify OPP Table According to PVTM
 
   CPU PVTM(Process-Voltage-Temperature Monitor)는 CPU 가까이에 위치 한 모듈이며, CPU의 전압, 온도를 모니터링 하고 제어하는 기능. 
   PVTM 은 CPU의 성능과 전력 소비를 최적화 하는데 사용.
@@ -679,7 +697,7 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ----
 
-### 3.7 Wide Temperature Configuration
+#### 3.7 Wide Temperature Configuration
  
  일반적으로 주변 온도가 − 40°C ~ + 85°C임을 의미한다.
 
@@ -744,7 +762,7 @@ cpu cpu0: couldn't find opp table for cpu:0, -19
 
 ----
 
-## 4. User interface
+### 4. User interface
 
  - Non-big.Little platforms : 모든 core 는 하나의 clock을 공유하고 동일한 user interface 를 아래 경로를 통해 갖는다.
 	  /sys/devices/system/cpu/cpufreq/policy0/
@@ -791,9 +809,9 @@ drwxr-xr-x 4 root root    0 2023-06-12 11:04 ..
 
 -----
 
-# issue
+## issue
 
- ## tcs4525 부재
+### tcs4525 부재
  > tcs4525 모듈은3.3v low voltage management IC이다. 
  
  - rk3568 evb vs rk3568 poc
