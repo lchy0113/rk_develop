@@ -5,6 +5,15 @@ DEVFREQ
   
 [Overview](#overview)  
   
+[GPU DVFS](#gpu-dvfs)  
+[DMC DVBS](#dmc-dvfs)  
+[BUS DVBS](#bus-dvfs)  
+  
+[CPU frequence change](#cpu-frequence-change)  
+[change cpu max frequence on rk3568](#change-cpu-max-frequence-on-rk3568)  
+[frequence mode on rk3568](#frequence-mode-on-rk3568)  
+
+  
 <br/>
 <br/>
 <br/>
@@ -98,18 +107,47 @@ devfreq 프레임워크는 governer, core, driver, event 로 구성되며 softwa
 
 ```
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
 ## DMC DVFS
  DMC(Dynamic Memory Controller) DVFS, 즉 DDR Frequency 변환.
+> TBD
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
 
 ## BUS DVFS 
 
+> TBD
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+  
+## CPU frequeycy change
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
-## cpu frequeycy 변경
-
-### rk3568 CPU의 max frequency 변경 
+### change cpu max frequence on rk3568
 
  rk3568 cpu의 기본 max frequency는 1992 MHz 이며, 2016 MHz 로 변경하려면 수정이 필요하다.
  
@@ -157,23 +195,27 @@ index 7da2c01c4444..a129cf95e4c1 100644
 
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
-### rk3568 주파수 모드 설명
+### frequence mode on rk3568 
 
- RK3568의 전력 소비를 줄이고 운영 체제의 견고성을 향상시키기 위해서는 제품 현장에서 RK3568의 주 주파수를 조정하는 것이 특히 중요하다.
+ RK3568의 전력 소비를 줄이고 운영 체제의 견고성을 향상시키기 위해 RK3568의 주 주파수를 조정.  
  
  (reference : RK3568J 공식 데이터 시트 주 주파수모드 설명)
  > Rockchip_Rk3568B2_Datasheet_V1.0-20210701.pdf 문서에 언급이 TBD로 되어 있어 RK3568J 문서 참고.
  > RK3568J는 RK3568의 산업용 코어 보드 버전?
-
+  
 ![](./images/DEVFREQ_02.png) 
   
   
- - normal mode  
+ - **normal mode**  
     datasheet에 따르면 rk3568 chip은 normal mode에서 수명이 더 길다.   
 	시뮬레이션 결과에 따르면 1.4GHz@0.9V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 10년을 초과할 수 있다.  
   
- - over drive mode  
+ - **over drive mode**  
     datasheet에 따르면 over driver mode에서는 processor frequency를 더 높이 설정할 수 있지만, chip의 서비스 수명이 단축된다.  
 	시뮬레이션 결과에 따르면 1.8GHz@1.05V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 3년 미만으로 단축된다.  
   
