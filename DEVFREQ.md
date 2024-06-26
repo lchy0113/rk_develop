@@ -10,11 +10,14 @@ DEVFREQ
 [BUS DVBS](#bus-dvfs)  
   
 [CPU frequence change](#cpu-frequence-change)  
-[    change cpu max frequence on rk3568](#change-cpu-max-frequence-on-rk3568)  
-[    frequence mode on rk3568](#frequence-mode-on-rk3568)  
-[    check current frequency](#check-current-frequency)  
-[    check current voltage](#check-current-voltage)  
+[....change cpu max frequence on rk3568](#change-cpu-max-frequence-on-rk3568)  
+[....frequence mode on rk3568](#frequence-mode-on-rk3568)  
+[....check current frequency](#check-current-frequency)  
+[....check current voltage](#check-current-voltage)  
   
+[CPUFreq](#cpufreq)  
+[....cpu frequence overview](#cpu-frequence-overview)  
+
 <br/>
 <br/>
 <br/>
@@ -214,33 +217,49 @@ index 7da2c01c4444..a129cf95e4c1 100644
   
  - **normal mode**  
     datasheet에 따르면 rk3568 chip은 normal mode에서 수명이 더 길다.   
-    시뮬레이션 결과에 따르면 1.4GHz@0.9V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 10년을 초과할 수 있다.  
+    시뮬레이션 결과에 따르면 1.4GHz@0.9V 및 105°C 에서 지속적으로 작동시킬 때,   
+	RK3568J chip의 서비스 수명은 10년을 초과할 수 있다.  
   
- - **over drive mode**  
-    datasheet에 따르면 over driver mode에서는 processor frequency를 더 높이 설정할 수 있지만, chip의 서비스 수명이 단축된다.  
-    시뮬레이션 결과에 따르면 1.8GHz@1.05V 및 105°C 에서 지속적으로 작동시킬 때, RK3568J chip의 서비스 수명은 3년 미만으로 단축된다.  
+ - **overdrive mode**  
+    datasheet에 따르면 overdriver mode에서는 processor frequency를 더 높이 설정할 수 있지만,  
+	chip의 서비스 수명이 단축된다.    
+    시뮬레이션 결과에 따르면 1.8GHz@1.05V 및 105°C 에서 지속적으로 작동시킬 때,  
+	RK3568J chip의 서비스 수명은 3년 미만으로 단축된다.  
+    
   
+    높은 주 주파수에서 실행해야하는 경우, 전력 소비를 줄이고 chip의 서비스 수명을 늘리려면   
+	frequency와 voltage를 동적으로 조정하고, 우수한 열 방출 조건을 보장해야 한다.  
 
-    높은 주 주파수에서 실행해야하는 경우, 전력 소비를 줄이고 chip의 서비스 수명을 늘리려면 frequency와 voltage를 동적으로 조정하고,   
-    우수한 열 방출 조건을 보장해야 한다.  
+ - avaliable frequency setting : 시스템은 6개의 frequency mode를 지원한다.   
+                                 전력 소비를 줄이고 chip의 서비스 수명을 보장하기 위해     
+								 performance frequency mode로 설정된다.     
 
- avaliable frequency setting : 시스템은 6개의 frequency mode를 지원한다. 전력 소비를 줄이고 chip의 서비스 수명을 보장하기 위해 performance frequency mode로 설정된다.   
- frequency setting :1.4(1.416) GHz.   
+   * frequency setting :1.4(1.416) GHz.     
+  
  > frequency mode는 **kernel config**, **cmd line**을 통해 수정할 수 있다.  
    
  참고 : 설정 가능한 주파수는 아래와 같다.   
- 408000 KHz, 600000 KHz, 816000 KHz, 1104000 KHz, 1416000 KHz, 1608000 KHz, 1800000 KHz, 1992000 KHz 를 지원한다.  
-  
-  
- 문서에 따르면 전력소모를 줄이고 chip의 수명을 보장하기 위해 RK3568J의 frequency setting은 1.4(1.416) GHz를 초과 하지 않는 것이 좋다.  
+ 408000 KHz, 600000 KHz, 816000 KHz, 1104000 KHz, 1416000 KHz,  
+ 1608000 KHz, 1800000 KHz, 1992000 KHz 를 지원한다.  
+    
+    
+ 문서에 따르면 전력소모를 줄이고 chip의 수명을 보장하기 위해   
+ RK3568J의 frequency setting은 1.4(1.416) GHz를 초과 하지 않는 것이 좋다.  
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 
 ### check current frequency 
-
- - for non big.LITTLE core chipset 
-
+  
+ - for non big.LITTLE core chipset  (rk3568 case)
+  
 ```bash
 /* Method 1 : cpufreq userspace interface */
 cat /sys/devices/system/cpu/cpufreq/policy0/scaling_cur_freq
+1992000
 
 /* Method 2 : clock debug interface */
 cat /sys/kernel/debug/clk/armclk/clk_rate
@@ -258,8 +277,14 @@ cat /sys/kernel/debug/clk/armclkl/clk_rate /* LITTLE core frequency*/
 cat /sys/kernel/debug/clk/armclkb/clk_rate /* big core frequency */
 ```
 
-> ARM big.LITTLE core chipset은 ARM에서 개발한 이기종 다중 처리(HMP) 컴퓨팅 아키텍처이다. 
-> 전력 소모가 적은 저성능 코어(LITTLE)들과 전력 소모가 많은 고성능 프로세서 코어(big) 들을 함께 탑재하는 구조를 말한다.
+> ARM big.LITTLE core chipset은 ARM에서 개발한 헤테로지니어스 멀티프로세싱, Heterogeneous Multiprocessing(HMP) 컴퓨팅 아키텍처이다. 
+> HMP 아키텍처는 전력 소모가 적은 저성능 코어(LITTLE)들과 전력 소모가 많은 고성능 프로세서 코어(big) 들을 함께 탑재하는 구조를 말한다.
+> 다양한 코어를 통합하여 성능과 전력 효율을 균형있게 유지 하는 것이 HMP 아키텍처의 핵심 목표.   
+ 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ### check current voltage
 
@@ -267,21 +292,30 @@ cat /sys/kernel/debug/clk/armclkb/clk_rate /* big core frequency */
 /* here vdd_core is not the fixing name, please modify */
 cat /sys/kernel/debug/regulator/vdd_core/voltage
 ```
-
-
------
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## CPUFreq
-
-
-### 1. overview
-
- CPUFreq는 지정된 governor에 따라서 cpu frequency 와 voltage를 동적으로 변경하기위해 kernel 개발자가 정의한 프레임워크 모델이다. 
- cpu의 performance에 따라서 cpu의 소비전력을 낮추는것이 효과적일 수 있다.
-
- CPUFreq framwork는 governor, core, driver, stats으로 구성된다.
+  
+<br/>
+<br/>
+<br/>
+<hr>
+  
+### cpu frequence overview
+  
+ CPUFreq는 지정된 governor에 따라서 cpu frequency 와 voltage를 동적으로 변경하기위해  
+ kernel 개발자가 정의한 프레임워크 모델이다.   
+ cpu의 performance에 따라서 cpu의 소비전력을 낮추는것이 효과적일 수 있다.  
+  
+ CPUFreq framwork는 governor, core, driver, stats으로 구성된다.  
+  
 ![](./images/DDR_01.png)
-
+  
  - CPUFreq governor : :CPU frequency를 언제 변경할지, 어느 frequency로 변경할지를 결정하는데 사용합니다.
   kernel을 아래 governor를 포함하고 있다.
   * conservative : cpu 부하에 따라 dynamic으로 frequcncy를 변경하고, 일정 비율로 frequency를 부드럽게 늘리거나 낮춘다.
