@@ -10,10 +10,10 @@ DEVFREQ
 [BUS DVBS](#bus-dvfs)  
   
 [CPU frequence change](#cpu-frequence-change)  
-    [change cpu max frequence on rk3568](#change-cpu-max-frequence-on-rk3568)  
-    [frequence mode on rk3568](#frequence-mode-on-rk3568)  
-    [check current frequency](#check-current-frequency)  
-    [check current voltage](#check-current-voltage)  
+[    change cpu max frequence on rk3568](#change-cpu-max-frequence-on-rk3568)  
+[    frequence mode on rk3568](#frequence-mode-on-rk3568)  
+[    check current frequency](#check-current-frequency)  
+[    check current voltage](#check-current-voltage)  
   
 <br/>
 <br/>
