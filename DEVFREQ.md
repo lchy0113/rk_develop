@@ -21,7 +21,7 @@ DEVFREQ
 [code path](#code-path)  
 [configuration](#configuration)  
 [....menuconfig](#menuconfig)  
-[....clock configuration](#clock-configuration)  
+[....cpu freq governor tuning parameter](#cpu-freq-governor-tuning-parameter)  
 [....regulator configuration](#regulator-configuration)  
 [....OPP table configuration](#opp-table-configuration)  
 [......Add OPP table](#add-opp-table)  
@@ -434,7 +434,97 @@ drivers/soc/rockchip/rockchip_opp_select.c    /* interface for changing opp */
 <br/>
 <hr>
 
-#### clock configuration
+#### cpu freq governor tuning parameter
+
+ - conservative governor   
+   * down_threshold : CPU 부하가 감소할 때 주파수를 낮추는 기준 정의. ex. 20 인경우, CPU 부하 20 미만일때 주파수 내림. (legacy 20)
+   * freq_step : 주파수를 변경할 때 얼마나 큰 단계로 변경할 지 결정. 더 큰 값은 주파수 변경을 더 느리고 수행(legacy 5)
+   * ignore_nice_load : CPU 부하 추정 코드에서 "nice" 레벨이 0 보다 큰 작업의 CPU 시간을 CPU가  Idle 상태로 처리하도록 하는 매개변수. (legacy 0) 
+   * sampling_down_factor : (legacy 1)   
+   * sampling_rate : (legacy 10000)  
+   * up_threshold : CPU 부하가 상승할 때 주파수를 증가시키는 기준을 정의. ex. 80 인경우, CPU 부하 80 이상일 때 주파수 올림.(legacy 80)
+   
+   
+
+ - interactive governor  
+   * above_hispeed_delay : 속도가 hispeed_freq인 경우, 속도를 올리기 전에 대기 하는 시간 (legacy 20000)  
+   * boostpulse :
+   * go_hispeed_load : hispeed_freq로 증가시킬 CPU 부하(legacy 99 )  
+   * io_is_busy : (legacy 0)
+   * target_loads : (legacy 60) 
+   * timer_slack : (legacy 80000) 
+   * boost : (legacy 0)
+   * boostpulse_duration : 
+   * hispeed_freq : cpu 부하가 분출할 때 저속에서 올릴 높은 주파수 (legacy 1008000 hz)  (to 1992000 hz)
+   * min_sample_time : 주파수를 낮추기 전에 현재 주파수에서 머물러야 하는 최소 시간.(legacy 40000 us)  
+   * timer_rate : cpu가 idle이 아닐 때, 부하를 다시 계산할 샘플링 비율 (legacy 20000 us)  
+
+
+ - governor interface
+ 
+ 새로울 governor는 cpufreq_register_governor 함수를 통해 CPUFreq 코어에 자신을 등록. 
+ 이때 아래 값들이 전달되더야 함. 
+
+  - governor->name : governor 이름.   
+  - governor->governor : governor 콜백 함수.   
+  - governor->owner : governor에 대한 모듈.  
+
+   governor 콜백 함수 받을 이벤트
+   CPUFREQ_GOV_START  
+   CPUFREQ_GOV_STOP  
+   CPUFREQ_GOV_LIMITS  
+
+<br/>
+<br/>
+<hr>
+
+##### example
+
+ - 복사 과정  
+ 
+```bash
+// device/rockchip/rk356x/device.mk
+// init.rk356x.rc 파일 복사
+   (...)
+$(LOCAL_PATH)/init.rk356x.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.rk356x.rc \
+
+// device/rockchip/rk356x/init.rk356x.rc
+// boot 완료 후, target_loads para값 65 write
+on property:sys.boot_completed=1
+	(...)
+    write /sys/devices/system/cpu/cpufreq/policy0/interactive/target_loads 65
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 0
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor interactive
+
+    write /sys/class/devfreq/dmc/governor dmc_ondemand
+```
+
+ - 실행 과정  
+
+```bash
+//////////////////////////////////////////
+// [ro.board.platform]: [rk356x]
+// [ro.hardware]: [rk30board]
+// [ro.boot.hardware]: [rk30board]
+//////////////////////////////////////////
+
+// system/etc/init/hw/init.rc
+import /vendor/etc/init/hw/init.${ro.hardware}.rc
+
+// /vendor/etc/init/hw/init.rk30board.rc
+import /vendor/etc/init/hw/init.rk356x.rc
+
+// /vendor/etc/init/hw/init.rk356x.rc
+// boot 완료 후, target_loads para값 65 write
+on property:sys.boot_completed=1
+	(...)
+    write /sys/devices/system/cpu/cpufreq/policy0/interactive/target_loads 65
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 0
+    write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor interactive
+
+    write /sys/class/devfreq/dmc/governor dmc_ondemand
+
+```
 
 <br/>
 <br/>
