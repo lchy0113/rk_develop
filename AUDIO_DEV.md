@@ -65,7 +65,9 @@ PRODUCT_PACKAGES += \
  - common HAL API : core 및 effect HAL 에서 공통적으로 사용되는 데이터 유형의 라이브러리.   
                    인터페이스는 없으며 데이터 구조만 정의함.   
  - code : hardware/interfaces/audio/core/all-versions/default/  
-  
+ 
+   
+     
   
  - audio lib
 
@@ -80,7 +82,7 @@ PRODUCT_PACKAGES += \
 	...
 ```
 
- hardware/rockchip/audio/tinyalsa_hal/Android.mk 정의
+   * hardware/rockchip/audio/tinyalsa_hal/Android.mk 정의
 
  *audio.primary.rk30board.so*
 
