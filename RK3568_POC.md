@@ -214,6 +214,45 @@
 +---------------+
 ```
 
+ - rk3568_edp_p04 board
+	  
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|               |
+|  SERIAL1-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL2-+-M0-+ <----> zigbee aliases:serial3
+|          +-M1-+
+|               |
+|  SERIAL3-+-M0-+ <----> rfid door	aliases:serial2
+|          +-M1-+
+|               |
+|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) door lock aliases:serial1
+|          +-M1-+
+|               |
+|  SERIAL5-+-M0-+ <----> micom(voice)
+|          +-M1-+
+|               |
+|  SERIAL6-+-M0-+ <----> bluetooth
+|          +-M1-+
+|               |
+|  SERIAL7-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL8-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL9-+-M0-+ <----> debug
+|          +-M1-+
+|               |
++---------------+
+```
+
+
 
 
 ----
