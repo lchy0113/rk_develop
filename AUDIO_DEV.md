@@ -86,6 +86,10 @@ PRODUCT_PACKAGES += \
 
  *audio.primary.rk30board.so*
 
+<br/>
+<br/>
+<hr>
+
 ### ANALYSE_audio interface
 
 > upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
