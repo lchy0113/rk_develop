@@ -8,6 +8,7 @@
 <br/>  
 <hr>
 
+[AUDIO_DEV}(#audio-dev)  
  - [ANALYSE audio_hal](#analyse-audio_hal)  
 	- [ANALYSE audio package related](#analyse-audio-package-related)  
     - [ANALYSE tinyalsa](#analyse-tinyalsa)  
@@ -33,7 +34,7 @@
  - [Volume Control](#volume-control)  
  - [wallAudioConfiguration](#wallaudioconfiguration)  
   
- - [develop](#develop)
+[develop](#develop)
 
 
 <hr>
