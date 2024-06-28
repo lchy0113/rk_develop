@@ -6,7 +6,6 @@
 <br/>  
 <br/>  
 <br/>  
-
 <hr>
 
 - [ANALYSE audio_hal](#ANALYSE-audio_hal)
@@ -21,16 +20,12 @@
 
 <hr>
 
-----
 	
 <br/>  
 <br/>  
 <br/>  
 <br/>  
-
-----
-	
-
+<hr>
 
 ## ANALYSE audio_hal
 
@@ -102,13 +97,9 @@ Audio HAL 관련 2개 interface 제공
 
 <br/>  
 <br/>  
-
-----
-
-
+<hr>
 
 ### ANALYSE tinyalsa
-
 
 #### audio patch
 
@@ -132,7 +123,7 @@ Audio HAL 관련 2개 interface 제공
 
 ![](./images/AUDIO_DEV_03.png) 
 
-----
+<hr>
 
  - **audio patch scenarios 1** : Mix, that is, stream, plays to multiple Devices, that is, hardware
 
@@ -148,10 +139,9 @@ Audio HAL 관련 2개 interface 제공
 
 ![](./images/AUDIO_DEV_07.png)
 
- <br/>
- <br/>
-
-----
+<br/>
+<br/>
+<hr>
 
  - **audio patch scenarios 2** : Device to Mix, that is recording from hardware device to an audio track.
 
@@ -165,10 +155,9 @@ Audio HAL 관련 2개 interface 제공
 
 ![](./images/AUDIO_DEV_11.png)
 
- <br/>
- <br/>
-
-----
+<br/>
+<br/>
+<hr>
 
  - **audio patch scenarios 3** : Device to Device. 
  > encoder 처리 없이 AudioFlinger 
@@ -221,7 +210,7 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 
 ```
 
-----
+<hr>
 
 #### route 
 
@@ -296,7 +285,7 @@ adev_open_output_stream()
 ```
 
 
-----
+<hr>
 
 #### note
 
@@ -317,13 +306,11 @@ adev_open_output_stream()
 out->stream.common.standby = out_standby
 ```
 
-
------
-
 <br/>  
 <br/>  
 <br/>  
 <br/>  
+<hr>
 
 ## ANALYSE reference Qualcomm Audio HAL audio path settings
   
@@ -394,6 +381,11 @@ PCM3 <------------> *           * <----DAI3-----> BT
    * Secondary_MI2S  
    * Tertiary_MI2S  
   
+<br/>
+<br/>
+<br/>
+<hr>
+
 ### 2. **HAL use case(사용 예제) 및 장치**  
    
  **use case(사용 예제)**  
@@ -516,7 +508,12 @@ enum {
   
  - platform_get_output_snd_device()  
  - platform_get_input_snd_device()  
-  
+ 
+<br/>
+<br/>
+<br/>
+<hr> 
+
 ### 3. **audio routing**  
 
 > qualcomm hal layer 오디오 채널의 routing에 대해 설명
@@ -525,7 +522,10 @@ enum {
   
  FE_PCM <=> BE_DAI <=> DEVICE  
   
-  
+<br/>
+<br/>
+<br/>
+<hr> 
 
 #### 3.1 FE_PCM open
 
@@ -538,13 +538,21 @@ enum {
  - start_output_stream() 코드 분석  
   upper layer는 audio mode를 AUDIO_MODE_IN_CALL 로 설정. 
  - out_set_parameters() 코드 분석  
-
+  
+<br/>
+<br/>
+<hr> 
 
 #### 3.2 routing 선택
 
  routing은 실제로 usecase와 device를 routing하는 것을 의미.   
  예를들어 deep-buffer-playback speaker는 deep buffer playback FE PCM과 speaker device를 routing.    
-
+  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr> 
 
 ### 4. **audio framework develop data**
 
@@ -556,15 +564,17 @@ enum {
 ![](./images/AUDIO_DEV_20.png)
   
 
- 
 <br/>  
 <br/>  
 <br/>  
 <br/>  
-
-----
+<hr>
 	
 # WIKI control audio interface 
+
+<br/>
+<br/>
+<hr>
 
 ## 개발 project 및 branch
 
@@ -581,6 +591,10 @@ $ repo branch
 
 
 ```
+
+<br/>
+<br/>
+<hr>
 
 ## audio policy 지정
 
@@ -618,6 +632,9 @@ $ repo branch
  Audio Port Config 나타내는 Class, Audio Port와 Config을 정의.   
  Audio Patch 시, 사용됨.   
  
+<br/>
+<br/>
+<hr>
 
 ### Create Audio Patch
 
@@ -633,6 +650,9 @@ $ repo branch
 04-24 16:08:11.809  3309  3309 D AudioPatchTestFragment: release audio patch
 ```
 
+<br/>
+<br/>
+<hr>
 
 ### Release Audio Patch
 
@@ -721,11 +741,7 @@ $ repo branch
 <br/>  
 <br/>  
 <br/>  
-
-----
-	
-
-
+<hr>
 
 # develop
 
@@ -759,8 +775,8 @@ Card:0
 	  
 ```
   
-----
-	
+<hr>	
+
 - io contorl - door
 
   SEL_DC : GPIO0_A6
@@ -781,7 +797,7 @@ Card:0
 
 
   
------
+<hr>	
 
  - STO/RDY 핀 기능
   
@@ -810,3 +826,4 @@ Card:0
 
 ```
 
+<hr>	
