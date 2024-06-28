@@ -8,20 +8,26 @@
 <br/>  
 <hr>
 
-- [ANALYSE audio_hal](#ANALYSE-audio_hal)
-	- [ANALYSE tinyalsa](#ANALYSE-tinyalsa)
-		- [ANALYSE tinyalsa](#ANALYSE-tinyalsa)
-	- [ANALYSE reference Quallcomm Audio HAL](#ANALYSE-reference-Qualcomm-Audio-HAL)
-
-- [WIKI control audio interface](#WIKI-control-audio-interface)
-
-- [develop](#develop)
+ - [ANALYSE audio_hal](#analyse-audio_hal)  
+	- [ANALYSE audio package related](#analyse-audio-package-related)  
+    - [ANALYSE tinyalsa](#analyse-tinyalsa)  
+    - [ANALYSE audio interface](#analyse-audio-interface)  
+    - [ANALYSE tinyalsa](#analyse-tinyalsa)  
+		- [audio patch](#audio-patch)  
+		- [route](#route)  
+  
+ - [ANALYSE reference Quallcomm Audio HAL](#analyse-reference-qualcomm-audio-hal)  
+	 - [1. Audio block diagram overview](#1.-audio-block-diagram-overview)  
+	 - [1. HAL use case(use example) and device](#1.-audio-block-diagram-overview)  
+  
+ - [WIKI control audio interface](#wiki-control-audio-interface)  
+  
+ - [develop](#develop)
 
 
 <hr>
 
-	
-<br/>  
+    
 <br/>  
 <br/>  
 <br/>  
@@ -39,9 +45,9 @@
  
 ```bash
 PRODUCT_PACKAGES += \ 
-	android.hardware.audio@2.0-service \ 
-	android.hardware.audio@7.0-impl \ 
-	android.hardware.audio.effect@7.0-impl
+    android.hardware.audio@2.0-service \ 
+    android.hardware.audio@7.0-impl \ 
+    android.hardware.audio.effect@7.0-impl
 ```
   
 > *android.hardware.audio@2.0-service, android.hardware.audio@7.0-impl naming rule*  
@@ -77,9 +83,9 @@ PRODUCT_PACKAGES += \
 
 ```bash
 PRODUCT_PACKAGES += \
-	audio_policy.$(TARGET_BOARD_HARDWARE) \ 
-	audio.primary.$(TARGET_BOARD_HARDWARE) \
-	...
+    audio_policy.$(TARGET_BOARD_HARDWARE) \ 
+    audio.primary.$(TARGET_BOARD_HARDWARE) \
+    ...
 ```
 
    * hardware/rockchip/audio/tinyalsa_hal/Android.mk 정의
@@ -90,7 +96,7 @@ PRODUCT_PACKAGES += \
 <br/>
 <hr>
 
-### ANALYSE_audio interface
+### ANALYSE audio interface
 
 > upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
 
@@ -122,7 +128,7 @@ PRODUCT_PACKAGES += \
 -  ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다.   
         물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.  
         실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나,  
-		2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.  
+        2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.  
   
 > android.permission.MODIFY_AUDIO_ROUTING permission 필요.  
 
@@ -155,8 +161,6 @@ PRODUCT_PACKAGES += \
 
 ![](./images/AUDIO_DEV_07.png)
 
-<br/>
-<br/>
 <hr>
 
  - **audio patch scenarios 2** : Device to Mix, that is recording from hardware device to an audio track.
@@ -171,8 +175,6 @@ PRODUCT_PACKAGES += \
 
 ![](./images/AUDIO_DEV_11.png)
 
-<br/>
-<br/>
 <hr>
 
  - **audio patch scenarios 3** : Device to Device. 
@@ -197,8 +199,7 @@ PRODUCT_PACKAGES += \
 <br/>
 <br/>
 <br/>
-
------
+<hr>
 
  - adev_create_audio_patch
 ```c
@@ -215,6 +216,8 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 // mix(1e) : // audio port 가 sub mix 인 경우, audio port configuration structre 에 대한 확장.
 ```
 
+<hr>
+
  - *AudioPatch는 AUDIO_DEVICE_API_VERSION_3_0 버전 이상에서 지원.*
    * 이하버전에서는 AudioPolicy에서 전달한 AudioPatch는 AudioFlinger에서 set_parameters로 변환되어 HAL로 전달. 
 
@@ -226,11 +229,12 @@ adev_create_audio_patch num_sources:1,num_sinks:1,device(80000004)->mix(1e),hand
 
 ```
 
+<br/>
 <hr>
 
 #### route 
 
-alsa_route.c
+ - alsa_route.c
 
 ```c
 #define PCM_DEVICE0_PLAYBACK 0 
@@ -242,15 +246,15 @@ alsa_route.c
 
 #define PCM_MAX PCM_DEVICE2_CAPTURE
 
-struct pcm* 	mPcm[PCM_MAX + 1];
-struct mixer* 	mMixerPlabyack;
-struct mixer*	mMixerCapture;
+struct pcm*     mPcm[PCM_MAX + 1];
+struct mixer*     mMixerPlabyack;
+struct mixer*    mMixerCapture;
 
 
 route_pcm_open()
     |
     +-> route_init()
-    |	/* route_init 시, mPcm[PCM_MAX]을 NULL로 초기화 */
+    |    /* route_init 시, mPcm[PCM_MAX]을 NULL로 초기화 */
     |
     +-> is_playback_route(route) 
     |   /* route value를 참고하여 playback, capture 여부 확인 */
@@ -273,7 +277,7 @@ route_pcm_open()
     |     *    { 
     |     *      int fd;                            fd 값
     |     *      struct snd_ctl_elem_info *info;    control element List 저장.
-    |     *      struct mixer_ctl *ctl;				control element value 저장
+    |     *      struct mixer_ctl *ctl;                control element value 저장
     |     *      unsigned count;                    control count값 
     |     *    }
     |     */
@@ -284,10 +288,11 @@ route_pcm_open()
     |      */ 
 ```
 
-audio_hw.c
+ - audio_hw.c
+
 ```c
 adev_open_output_stream()
-    |	/** 
+    |    /** 
     |     * adev_open_output_stream() 함수는 출력 장치를 열고, 해당 장치에 대한 출력 스트림을 생성.
     |     * audio_device_t device : 열고자하는 출력 장치를 지정.
     |     *                         정수형 상수로, 다양한 출력 장치를 나타냄.(ex. 스피커, 헤드폰, HDMI)
@@ -301,6 +306,7 @@ adev_open_output_stream()
 ```
 
 
+<br/>  
 <hr>
 
 #### note
@@ -325,11 +331,14 @@ out->stream.common.standby = out_standby
 <br/>  
 <br/>  
 <br/>  
-<br/>  
 <hr>
 
 ## ANALYSE reference Qualcomm Audio HAL audio path settings
   
+<br/>  
+<br/>  
+<hr>
+ 
 ### 1. **Audio block diagram overview**  
   
 ```bash
@@ -351,9 +360,11 @@ PCM3 <------------> *           * <----DAI3-----> BT
 ```
   
  - Front End PCMs : Audio front end, 1개의 fornt end 는 1개의 PCM device에 연결됨.  
- - Back End DAIs : Audio back end, 1개의 back end 는 DAI 인터페이스에 해당하고 FE, PCM 은 하나 이상의 back end DAI에 연결될 수 있다.   
+ - Back End DAIs : Audio back end, 1개의 back end 는 DAI 인터페이스에 해당하고   
+                   FE, PCM 은 하나 이상의 back end DAI에 연결될 수 있다.   
  - Audio devices : Headset, Speakers, Earpiece, Mic, Bt, Modem, FM 등을 의미.  
-                   서로 다른 장치가 서로 다른 DAI 인터페이스에 연결될 수 이도 있고, 동일한 DAI 인터페이스 연결될 수 있다.   
+                   서로 다른 장치가 서로 다른 DAI 인터페이스에 연결될 수 이도 있고,   
+                   동일한 DAI 인터페이스 연결될 수 있다.     
  - SoC DSP : routing 기능 구현되는 모듈, front end PCM 및 back end DAI 연결. (예, PCM0 & DAI1 연결)   
   
 ```bash
@@ -399,10 +410,9 @@ PCM3 <------------> *           * <----DAI3-----> BT
   
 <br/>
 <br/>
-<br/>
 <hr>
 
-### 2. **HAL use case(사용 예제) 및 장치**  
+### 2. **HAL use case(use example) and device**
    
  **use case(사용 예제)**  
  사용예제는 일반적으로 다음과 같은 audio front end 에 해당하는 오디오 동작 시나리오를 의미한다. 
@@ -527,7 +537,6 @@ enum {
  
 <br/>
 <br/>
-<br/>
 <hr> 
 
 ### 3. **audio routing**  
@@ -538,8 +547,6 @@ enum {
   
  FE_PCM <=> BE_DAI <=> DEVICE  
   
-<br/>
-<br/>
 <br/>
 <hr> 
 
@@ -556,7 +563,6 @@ enum {
  - out_set_parameters() 코드 분석  
   
 <br/>
-<br/>
 <hr> 
 
 #### 3.2 routing 선택
@@ -564,8 +570,6 @@ enum {
  routing은 실제로 usecase와 device를 routing하는 것을 의미.   
  예를들어 deep-buffer-playback speaker는 deep buffer playback FE PCM과 speaker device를 routing.    
   
-<br/>
-<br/>
 <br/>
 <br/>
 <hr> 
@@ -585,9 +589,10 @@ enum {
 <br/>  
 <br/>  
 <hr>
-	
+    
 # WIKI control audio interface 
 
+<br/>
 <br/>
 <br/>
 <hr>
@@ -610,6 +615,7 @@ $ repo branch
 
 <br/>
 <br/>
+<br/>
 <hr>
 
 ## audio policy 지정
@@ -621,7 +627,7 @@ $ repo branch
   모듈에 나열된 mixPorts, devicePorts, routes 는 audio routing에 대한 정보를 기술.  
   
    * device port 
-	     
+         
 | **index** | **io_path (Devices)** | **route mode**           | **data stream**                                  |
 |-----------|-----------------------|--------------------------|--------------------------------------------------|
 | 0         | Speaker               | 내장 SPK 출력(기본 모드) | mixer(android)  -> 내장 SPK                      |
@@ -639,6 +645,9 @@ $ repo branch
 | -         | -                     | -                        | -                                                |
   
 
+<br/>
+<br/>
+<br/>
 <hr>
 
 ## AudioPortConfig
@@ -677,8 +686,10 @@ $ repo branch
 
 ![](./images/AUDIO_DEV_19.png)
 
+<br/>
+<br/>
+<br/>
 <hr>
-
 
 ## Volume Control
 
@@ -686,9 +697,9 @@ $ repo branch
    (PCM데이터가 오디오 인터페이스(mixer)를 통해 통신 되는 경우)  
    * 통화 모드 : 
      + normal(STBY)
-	 + 도어폰 백콜 출력(DOOR_CALL)
-	 + Voip&서브폰 통화(VOIP_SUB_TALK)   
-	 + Voip&도어폰 통화(VOIP_DOOR_TALK)  
+     + 도어폰 백콜 출력(DOOR_CALL)
+     + Voip&서브폰 통화(VOIP_SUB_TALK)   
+     + Voip&도어폰 통화(VOIP_DOOR_TALK)  
 
    
   
@@ -709,6 +720,9 @@ $ repo branch
 
 
 
+<br/>
+<br/>
+<br/>
 <hr>
 
 ## wallAudioConfiguration
@@ -723,11 +737,11 @@ $ repo branch
 | WAudioManager.ROUTE_VOIP_DOOR_CALL | wall(mix) -> door(spk), door(mic) -> wall(mix) | STREAM_VOICE_CALL |
 | WAudioManager.ROUTE_DOOR_SUBP_CALL | door(mic) -> subp(spk), subp(mic) -> door(spk) | STREAM_VOICE_CALL |
 | WAudioManager.ROUTE_VOIP_SUBP_CALL | wall(mix) -> subp(spk), subp(mic) -> wall(mix) | STREAM_VOICE_CALL |
-| WAudioManager.ROUTE_PSTN_RING    	 | wall(mix) -> wall(spk)	                      | STREAM_RING       |
-| WAudioManager.ROUTE_PSTN_DIAL	     | pstn -> wall(spk), wall(mic) -> pstn	          | STREAM_VOICE_CALL |
-| WAudioManager.ROUTE_PSTN_CALL	     | pstn -> wall(spk), wall(mic) -> pstn 	      | STREAM_VOICE_CALL |
-| WAudioManager.ROUTE_PSTN_CALL_DIAL | pstn -> wall(spk), wall(mic) -> pstn	          | STREAM_VOICE_CALL | 
-| WAudioManager.ROUTE_SUBP_CALL	     | pstn -> subp(spk), subp(mic) -> pstn	          | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_PSTN_RING         | wall(mix) -> wall(spk)                          | STREAM_RING       |
+| WAudioManager.ROUTE_PSTN_DIAL         | pstn -> wall(spk), wall(mic) -> pstn              | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_PSTN_CALL         | pstn -> wall(spk), wall(mic) -> pstn           | STREAM_VOICE_CALL |
+| WAudioManager.ROUTE_PSTN_CALL_DIAL | pstn -> wall(spk), wall(mic) -> pstn              | STREAM_VOICE_CALL | 
+| WAudioManager.ROUTE_SUBP_CALL         | pstn -> subp(spk), subp(mic) -> pstn              | STREAM_VOICE_CALL |
 
 
 ```xml
@@ -788,10 +802,10 @@ syncing cache
 Card:0
   id iface dev sub idx num perms     type   name
      1 MIXER   0   0   0   1 rw        ENUM   IO Control Path: (0 STBY) { STBY=0, DOOR_CALL=1, DOOR_TALK=2, DOOR_SUB_TALK=3, VOIP_SUB_TALK=4 }
-	  
+      
 ```
   
-<hr>	
+<hr>    
 
 - io contorl - door
 
@@ -813,7 +827,7 @@ Card:0
 
 
   
-<hr>	
+<hr>    
 
  - STO/RDY 핀 기능
   
@@ -842,4 +856,4 @@ Card:0
 
 ```
 
-<hr>	
+<hr>    
