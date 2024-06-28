@@ -6,6 +6,20 @@
  - [Analysis](#analysis)  
 
 [Develop](#develop)  
+ - [ASoC : Audio System on Chip](#asoc--audio-system-on-chip)  
+ - [sound card](#sound-card)  
+ - [I2S](#i2s)  
+     - [master / slave](#master--slave)  
+ - [Machine driver](#machine-driver)  
+     - [dts](#dts)  
+ 
+ - [AK7755 Control Software](#ak7755-control-software)  
+  
+[Reference](#reference)  
+ - [Reference RK817](#reference-rk817)  
+ - [Reference Audio Codec driver Develop sample guide](#reference-audiocodec-driver-develop-sample)  
+  
+[Memo](#memo)  
 
 <br/>
 <br/>
@@ -54,7 +68,7 @@
  - CFh_D2 (DSPRESETN; DSP Reset N) : CRESETN bit = "0"이고 DSPRESETN bit = "0" 인경우, system reset 상태가 됩니다.  
  - CFh_D0 (DLRDY; DSP Download Ready field) : clock reset(CKRESETN bit = "0")인 경우나 main clock이 멈춘 경우,    
           **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다.  
-		  다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.  
+          다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.  
 
  - Note:
  > - Master Mode (CKM mode 0, 1: using XTI Input Clock) : input clock를 BITFS[1:0] bits에 세팅된  XTI pin 으로 받는다.
@@ -75,6 +89,11 @@
 <hr>
 
 # Develop
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## ASoC : Audio System on Chip
 
@@ -99,6 +118,10 @@ struct snd_soc_component_driver
 (...)
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## sound card 
 
@@ -109,21 +132,39 @@ struct snd_soc_component_driver
    * MACHINE : Link dai and codec to be a new sound card
    * DMAENGINE : Transfer data between memory and dai's fifo
 
- > 일반적으로 SDK를 기반으로하여 sound card를 추가하려면 codec driver를 작성만 하면되지만, 경우에 따라서 machine driver를 추가해야 하는 경우도 있다. 
+ > 일반적으로 SDK를 기반으로하여 sound card를 추가하려면 codec driver를 작성만 하면되지만,
+ > 경우에 따라서 machine driver를 추가해야 하는 경우도 있다. 
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## I2S
+
+<br/>
+<br/>
+<hr>
 
 ### master / slave
 
  - 설정  
-   master / slave설정은 machine driver를 통해 dts를 파싱 한 후, set_fmt API를 호출하여 controler 의 protocol type을 설정한다.   
+   master / slave설정은 machine driver를 통해 dts를 파싱 한 후,   
+    set_fmt API를 호출하여 controler 의 protocol type을 설정한다.   
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Machine driver  
 
  - simple card는 ASoC용 공통으로 사용되는 Machine driver로 대부분의 표준 사운드 카드 추가를 지원한다.   
- 
+
+<br/>
+<br/>
+<hr>
+
 ### dts
 
 ```dtb
@@ -142,8 +183,6 @@ ak7755_sound: ak7755-sound {
         sound-dai = <&ak7755_codec>;
     };
 };
-
-
 ```
 
 <br/>
@@ -153,7 +192,7 @@ ak7755_sound: ak7755-sound {
 
 ## AK7755 Control Software
 
- DSP 셋업을 위해 필요한 파일
+ DSP 셋업을 위해 필요한 파일  
 
   - SCRIPT File
   - PRAM File
@@ -238,10 +277,10 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
 ```
 
-<br />
-<br />
-<br />
-<br />
+<br/>
+<br/>
+<br/>
+<br/>
 <hr>
 
 # Reference AudioCodec driver Develop sample
@@ -260,21 +299,37 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
     record : cat /dev/dsp > raw.wav
     play : cat raw.wav > /dev/dsp
 ```
+  
+  여기 까지 했을때 record, play가 잘되면 디바이스 드라이버 단까지는 완료된 것으로 판단해도 됨.  
 
-  여기 까지 했을때 record, play가 잘되면 디바이스 드라이버 단까지는 완료된 것으로 판단해도 됨.
+  디바이스 드라이버 기능 동작까지는 잘 확인했으니, 한 이삼일동안 데이터 시트 보면서   
+  오디오 코덱의 여러 기능들을 테스트 해 보는 시간을 가져야 한다.  
 
-  디바이스 드라이버 기능 동작까지는 잘 확인했으니, 한 이삼일동안 데이터 시트 보면서 오디오 코덱의 여러 기능들을 테스트 해 보는 시간을 가져야 한다.
-  시간을 버리는 것처럼 보일 수 있지만 이번에 이런걸 해보아야 Application 개발자에게 전달할 때 Application을 쉽게 짤 수 있도록 여러 준비를 할 수 있는 토대를 마련할 수 있다.
+  시간을 버리는 것처럼 보일 수 있지만 이번에 이런걸 해보아야   
+  Application 개발자에게 전달할 때 Application을 쉽게 짤 수 있도록  
+  여러 준비를 할 수 있는 토대를 마련할 수 있다.  
+  
+  **꼭 기억. 플랫폼 개발자는 자기 개발건만 생각하면 안된다.  
+  H/W, S/W 엔지니어가 쉽게 개발을 할 수 있도록 항상 신경써 주면서 개발해야 한다.**  
 
-  **꼭 기억. 플랫폼 개발자는 자기 개발건만 생각하면 안된다. H/W, S/W 엔지니어가 쉽게 개발을 할 수 있도록 항상 신경써 주면서 개발해야 한다.**
+  이제 디바이스 드라이버단에 대한 개발은 완료되었으니   
+  application 개발자를 위해 library를 만들어 주자.  
 
-  이제 디바이스 드라이버단에 대한 개발은 완료되었으니 application 개발자를 위해 library를 만들어 주자.
-  요즘은 디바이스 드라이버 단독으로 동작하는 경우는 거의 없고, ALSA나 OSS같은 프레임워크에 연동되도록 디바이스 드라이버를 작성하고 잇다.
-  하지만  그렇다 하더라도 '네가 알아서 ALSA, OSS 프레임워크에 맞게 Application을 작성해라' 라고 하는 것은 능력 없는 플랫폼 개발자나 하는 행동이고 뛰어난 플랫폼 개발자는 Application 개발자가 API만 호출해서 쓸수 있도록 준비해 줘야 합니다.
+  요즘은 디바이스 드라이버 단독으로 동작하는 경우는 거의 없고,   
+  ALSA나 OSS같은 프레임워크에 연동되도록 디바이스 드라이버를 작성하고 있다.  
 
+  하지만  그렇다 하더라도 '네가 알아서 ALSA, OSS 프레임워크에 맞게 Application을 작성해라'   
+  라고 하는 것은 능력 없는 플랫폼 개발자나 하는 행동이고  
+  뛰어난 플랫폼 개발자는 Application 개발자가 API만 호출해서 쓸수 있도록 준비해 줘야 합니다.  
 
+<br/>
+<br/>
+<br/>
+<br/>
 <hr>
- 
+
+# Memo 
+
  - tinymix command 
 
  ```bash
@@ -389,14 +444,7 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 | -                       | -                        | IN2/INN1/DMCLK1(33)(I/O)       | -                 |
 | -                       | -                        | IN1/INP1/DMDAT1(34)(Input)     | MIC               |
 
-<br/>
-<br/>
-<br/>
-<br/>
 <hr>
-
-# Memo
-```
 
  - Linux Sound Subsystem Documentation : https://www.kernel.org/doc/html/latest/sound/index.html  
   
