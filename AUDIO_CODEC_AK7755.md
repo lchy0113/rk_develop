@@ -30,6 +30,14 @@
 
 # AK7755
 
+ AK7755EN 은 고성능 스테레오 오디오 코덱으로 사용자 프로그램 가능한 DSP 를 포함하고 있음.  
+
+ DSP 에는 모노 ADC, 쓰테레오 오디오 CODEC, 마이크 프리앰프, 라인 출력 앰프 및 디지털 오디오 I/F가 포함됨.  
+ AK7755EN은 48KHz  에서 2560 단계의 병렬 처리 능력을 갖고 있음.  
+ 
+ RAM기반 DSP로 사용자 요구사항에 맞게 프로그램 할수 있음.  
+
+
 ## Analysis
 
 > datasheet 분석 
@@ -81,6 +89,37 @@
  > - BICK fs Select(BITFS[1:0]) : BICK fs Select는 슬래이브 모드와 마스터 모드에서 동작되며,
  >   * 슬래이브 모드에서는  LRCK에 대한 BICK input sampling frequcncy 를 설정합니다. 
  >   * 마스터모드에서는 LRCK에 대한 BICK output sampling frequency를 설정.  
+
+<br/>
+<br/>
+<br/>
+<hr> 
+
+## Datasheet
+
+ - Program RAM(PRAM) : 144 Byte (4096 x 36-bit)
+   * 프로그램 코드를 저장하는 메모리  
+   * DSP에서 실행되는 알고리즘, 필터, 변환 등의 프로그램 코드를 관리  
+   * Program RAM은 DSP 가 작동하는데 필요한 명령어와 제어 흐름을 저장.  
+  
+ - Coefficient RAM(CRAM) : 48 Byte (2048 x 24-bit)
+   * 계수(Coefficient)을 저장하는 메모리.  
+   * DSP에서 필터, 이퀄라이저, 변환 등의 계산에 사용되는 계수(가중치)가 저장됨.  
+   * Coefficient RAM에는 신호 처리를 수행하는데 필요한 상수 값을 저장.  
+  
+ - Offset Register(OFREG) : (32 x 13-bit)
+   * Offset 값을 저장하는 레지스터.   
+   * Offset 은 신호를 보정하는데 사용.   
+   * 입력 신호의 Offset 을 조정하여 정확한 처리를 수행 하도록 함.  
+
+ - Accelerator Coefficient RAM(ACRAM) : 40 Byte (2048 x 20-bit)
+   * Accelerator Coefficient 를 저장하는 RAM.  
+   * 특정 알고리즘을 가속화 하는데 사용.
+   * 예를 들어 오디오 처리 알고리즘에서 필요한 계수를 저장.  
+
+ - Data RAM : 48 Byte (2048 x 24-bit)
+ - Delay RAM : (8192 x 24-bit)
+ - Accelerator Data RAM : (2048 x 16-bit)
 
 <br/>
 <br/>
