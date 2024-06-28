@@ -55,6 +55,7 @@ PRODUCT_PACKAGES += \
 <br/>
 
  *android.hardware.audio@2.0-service* : core HAL, effect HAL API를 포함.   
+
  	- core HAL : AudioFlinger가 오디오를 재생하고 오디오 라우팅을 제어하는데 사용하는 주API.  
 	- effect HAL : effect framework가 오디오 effect를 제어하는 데 사용되는 API  
 	- code : hardware/interfaces/audio/common/all-versions/default/service/  
