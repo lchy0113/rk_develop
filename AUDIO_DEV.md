@@ -94,47 +94,53 @@ PRODUCT_PACKAGES += \
 
 > upper layer (android.media)에서 사용할 수 있는 사운드 관련 프레임워크 관련 method를 audio 드라이버에게 연결하는 역할 담당.
 
-아래 경로에 코드 위치
- - hardware/libhardware/include/hardware/ 
+ 아래 경로에 코드 위치  
+ - hardware/libhardware/include/hardware/   
 
-Audio HAL 관련 2개 interface 제공
- 1. audio device의 main function을 제공하는 interface
- hardware/libhardware/include/hardware/audio.h
+ Audio HAL 관련 2개 interface 제공  
 
- 2. effect(echo cancellation, noise suppression, downmixing, etc) interface 제공
- hardwrae/libhardware/include/hardware/audio_effect.h
-
+ 1. audio device의 main function을 제공하는 interface  
+ hardware/libhardware/include/hardware/audio.h  
+  
+ 2. effect(echo cancellation, noise suppression, downmixing, etc) interface 제공  
+ hardwrae/libhardware/include/hardware/audio_effect.h  
+  
 
 <br/>  
 <br/>  
 <hr>
 
 ### ANALYSE tinyalsa
-
+  
+<br/>  
+<hr>
+  
 #### audio patch
 
  audio patch는 하나 이상의 source 를 하나 이상의 sink에 represent 하기 위해 사용됨.   
 
 -  ex. 댐에 비유해 설명하면, 물의 유입구와 배출구는 여러 개 있을 수 있다.   
- 물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.  
- 실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나, 2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.  
+        물을 저장 및 방수하기 위해 유입구와 배출구는 하나일 수도 있고 여러개가 될 수도 있다.  
+        실제 동작에서 1개 오디오 파일이 2개 speaker, headphone 으로 playback되거나,  
+		2개의 mic가 left, right channel을 1개 오디오 파일에 record 하는 것.  
   
 > android.permission.MODIFY_AUDIO_ROUTING permission 필요.  
 
  audio_patch 구조에는 2개 배열이 있으며, 각 포트는 audio_port이다.  
  stream, device 등 기본적으로 필요한 몇가지 기본 매개변수가 포함되어 있다.  
-
+  
 ![](./images/AUDIO_DEV_02.png)
-
-
- 각 audio_path는 APS에서 지정한 매개변수를 통해 Audioflinger에서 생성되며, Audioflinger 호출을 통해 AudioHAL에서 처리됨.   
-
+  
+  
+ 각 audio_path는 APS에서 지정한 매개변수를 통해 Audioflinger에서 생성되며,  
+ Audioflinger 호출을 통해 AudioHAL에서 처리됨.   
+  
  > (빨간색 선 생성과정, 파란색 선 처리 과정)
-
+   
 ![](./images/AUDIO_DEV_03.png) 
-
+  
 <hr>
-
+  
  - **audio patch scenarios 1** : Mix, that is, stream, plays to multiple Devices, that is, hardware
 
 ![](./images/AUDIO_DEV_04.png)
