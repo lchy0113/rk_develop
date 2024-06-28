@@ -17,10 +17,21 @@
 		- [route](#route)  
   
  - [ANALYSE reference Quallcomm Audio HAL](#analyse-reference-qualcomm-audio-hal)  
-	 - [1. Audio block diagram overview](#1.-audio-block-diagram-overview)  
-	 - [1. HAL use case(use example) and device](#1.-audio-block-diagram-overview)  
+	 - [1. Audio block diagram overview](#1-audio-block-diagram-overview)  
+	 - [2. HAL use case(use example) and device](#2-hal-use-caseuse-example-and-device)  
+	 - [3. audio routing](#3-audio-routing)  
+	 	- [3.1 FE_PCM open](#31-fe-pcm-open)  
+		- [3.2 routing select](#32-routing-select)  
+ 	 - [4. audio framework develop data](#4-audio-framework-develop-data)  
   
- - [WIKI control audio interface](#wiki-control-audio-interface)  
+[WIKI control audio interface](#wiki-control-audio-interface)  
+ - [Develop projct and branch](#develop-project-and-branch)  
+ - [select audio policy](#select-audio-policy)  
+ - [AudioPortConfig](#audioportconfig)  
+ - [Create Audio Patch](#create-audio-patch)  
+ - [Release Audio Patch](#release-audio-patch)  
+ - [Volume Control](#volume-control)  
+ - [wallAudioConfiguration](#wallaudioconfiguration)  
   
  - [develop](#develop)
 
@@ -565,7 +576,7 @@ enum {
 <br/>
 <hr> 
 
-#### 3.2 routing 선택
+#### 3.2 routing select
 
  routing은 실제로 usecase와 device를 routing하는 것을 의미.   
  예를들어 deep-buffer-playback speaker는 deep buffer playback FE PCM과 speaker device를 routing.    
@@ -597,10 +608,10 @@ enum {
 <br/>
 <hr>
 
-## 개발 project 및 branch
-
+## Develop project and branch
+  
  - 아래 project/branch 에서 개발 작업 진행.  
-
+  
 ```bash
 $ repo branch 
 (...)
@@ -618,7 +629,7 @@ $ repo branch
 <br/>
 <hr>
 
-## audio policy 지정
+## select audio policy
 
 <hr>
 
