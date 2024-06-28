@@ -233,9 +233,9 @@ ak7755_sound: ak7755-sound {
 
  DSP 셋업을 위해 필요한 파일  
 
-  - SCRIPT File
-  - PRAM File
-  - CRAM File
+  - **PRAM File** : *.obj file
+  - **CRAM File** : *.cra file
+  - **SCRIPT File** : *.txt file
 
 <br/>
 <br/>
