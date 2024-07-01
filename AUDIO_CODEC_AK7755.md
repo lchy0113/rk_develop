@@ -234,7 +234,16 @@ ak7755_sound: ak7755-sound {
  DSP 셋업을 위해 필요한 파일  
 
   - **PRAM File** : **.obj file*
+	* ak7755_pram_data2.bin : private  
+	* ak7755_pram_data3.bin : tuning 
+
   - **CRAM File** : **.cra file*
+	* ak7755_cram_data2.bin : door_call
+	* ak7755_cram_data3.bin : pstn
+	* ak7755_cram_data4.bin : voip h-g
+	* ak7755_cram_data5.bin : voip h-h, voip h-l
+	* ak7755_cram_data6.bin : voip h_sub-g, voip h_sub-h, voip h_sub-l
+
   - **SCRIPT File** : **.txt file*
 
 <br/>
