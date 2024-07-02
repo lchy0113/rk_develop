@@ -235,7 +235,6 @@ ak7755_sound: ak7755-sound {
 
   - **PRAM File** : **.obj file*
 	* ak7755_pram_data2.bin : private  
-	* ak7755_pram_data3.bin : tuning 
 
   - **CRAM File** : **.cra file*
 	* ak7755_cram_data2.bin : door_call

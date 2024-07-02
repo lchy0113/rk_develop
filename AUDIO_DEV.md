@@ -787,6 +787,66 @@ $ repo branch
 
 # develop
 
+## 3rd_party 
+
+ - memo 
+ 
+```bash
+dumpsys wall_service cmd show_navigation_bar
+
+```
+
+
+ - related file
+
+device/kdiwin/newjeans/le1000/le1000.mk
+	|
+	+-> device/kdiwin/newjeans/base/device_wallpad_lotte.mk
+		|	
+		+-> device/kdiwin/newjeans/base/device_wallpad.mk
+			|
+			+-> device/kdiwin/newjeans/base/device_common.mk
+
+ audio 관련 파일(*.xml) 복사 : /vendor/etc/*.xml
+  
+```
+# AK7755 tuning
+PRODUCT_COPY_FILES += \
+    device/kdiwin/newjeans/base/audio/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+    device/kdiwin/newjeans/base/audio/audio_policy_engine_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_configuration.xml \
+    device/kdiwin/newjeans/base/audio/audio_policy_engine_default_stream_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_default_stream_volumes.xml \
+    device/kdiwin/newjeans/base/audio/audio_policy_engine_product_strategies.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_product_strategies.xml \
+    device/kdiwin/newjeans/base/audio/audio_policy_engine_stream_volumes.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_engine_stream_volumes.xml \
+    device/kdiwin/newjeans/base/audio/ak7755_pram_data2.bin:$(TARGET_COPY_OUT_VENDOR)/etc/firmware/ak7755_pram_data2.bin \
+    device/kdiwin/newjeans/base/audio/ak7755_cram_data2.bin:$(TARGET_COPY_OUT_VENDOR)/etc/firmware/ak7755_cram_data2.bin 
+
+PRODUCT_COPY_FILES += \
+    device/kdiwin/newjeans/base/audio/wall_audio_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/wall_audio_configuration.xml
+
+```
+
+AOSP
+ - audio_policy_configuration.xml
+ 
+ - audio_policy_engine_configuration.xml
+ 
+ - audio_policy_engine_default_stream_volumes.xml
+ 
+ - audio_policy_engine_product_strategies.xml
+ 
+ - audio_policy_engine_stream_volumes.xml
+ 
+ 
+3rd_party
+ - wall_audio_configuration.xml
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
  - regmap 
 
 > regmap은 cache mechanism base로 운영된다. 

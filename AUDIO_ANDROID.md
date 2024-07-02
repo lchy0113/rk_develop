@@ -3,6 +3,12 @@ ANDROID AUDIO
 > Android의 Audio Framework에 대한 문서.
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
 Index
 =====
 
@@ -1022,3 +1028,33 @@ core/all-versions/default/
 	 정의된 enum데이터들은 AUDIO HAL 에서 지원하는 *audio format*, *channel masks*, *input flags* 을 나타내는데 사용.
 
 	
+	
+# develop
+
+ - audio_policy_configuration.xml:
+    이 파일은 Android 7.0부터 도입된 audio policy configuration 파일.
+    기기의 오디오 토폴로지를 설명하고 오디오 기기, 스트림 프로필, 볼륨 곡선 등을 정의.
+    주요 기능:
+        mix port: 재생 및 캡처를 위한 스트림의 구성 프로필을 설명.
+        device port: 기기 유형에 연결할 수 있는 기기를 설명.
+        route: 믹스 포트에서 기기까지의 연결 경로를 설명.
+        volume table: UI 색인에서 dB 단위의 볼륨으로 변환하는 데 사용되는 곡선을 정의.
+	frameworks/av/services/audiopolicy/managerdefault/AudioPolicyManager.cpp
+
+ - default_volume_tables.xml:
+    이 파일은 기본 볼륨 테이블을 정의.
+    각 스트림 유형에 대한 기본 볼륨 곡선을 설정.
+
+ - audio_policy_engine_configuration.xml:
+    이 파일은 Android 10 이하에서 사용되는 audio policy engine configuration 파일.
+    audio_policy_engine에서 사용되는 전략과 관련된 설정을 포함.
+	frameworks/av/services/audiopolicy/engine/config/config/src/EngineConfig.cpp
+
+ - audio_policy_engine_default_stream_volumes.xml:
+    이 파일은 Android 10 이하에서 사용되는 기본 스트림 볼륨 설정을 정의.
+
+ - audio_policy_engine_product_strategies.xml:
+    이 파일은 Android 10 이하에서 사용되는 제품별 라우팅 전략을 정의.
+
+ - audio_policy_engine_stream_volumes.xml:
+    이 파일은 Android 10 이하에서 사용되는 스트림 볼륨 설정을 정의.

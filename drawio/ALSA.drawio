@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-05-22T04:55:10.931Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="Qzo9BdgjhD8_mUlMoEp7" version="21.6.8" type="device" pages="6">
+<mxfile host="Electron" modified="2024-07-02T07:05:46.724Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="8-J7-6KRgPKMGgkpYwTZ" version="21.6.8" type="device" pages="7">
   <diagram id="z_Vnb7Ci68XTlHzQFAwz" name="개발_tinyalsa_config">
-    <mxGraphModel dx="3857" dy="1997" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2722" dy="1409" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -304,13 +304,10 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KJU83SnIgYuwSPoUAOeF" name="개발_ak7755_develop">
-    <mxGraphModel dx="2571" dy="231" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2314" dy="98" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-5" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;" parent="1" vertex="1">
-          <mxGeometry x="2580" y="2220" width="790" height="530" as="geometry" />
-        </mxCell>
         <mxCell id="MPJSHC4YUEVf3yLT9aQ_-2" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=2;fillColor=default;strokeColor=default;dashed=1;dashPattern=1 4;" parent="1" vertex="1">
           <mxGeometry x="10" y="3470" width="1650" height="830" as="geometry" />
         </mxCell>
@@ -4091,51 +4088,6 @@
         <mxCell id="ROu7n8_RHUorLQTyRjX7-7" value="&lt;div&gt;&lt;b&gt;[&lt;/b&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;control]&lt;/b&gt;&lt;/div&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;------------------&lt;b style=&quot;background-color: initial; border-color: var(--border-color);&quot;&gt;---------------------&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;---------------------&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;---------------------&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;---------------------&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;---------------------&lt;/b&gt;&lt;b style=&quot;border-color: var(--border-color); background-color: initial;&quot;&gt;---------------------&lt;/b&gt;&lt;br&gt;&lt;/b&gt;&lt;div&gt;Mixer name: &#39;rockchip,ak7755&#39;&lt;/div&gt;&lt;div&gt;Number of controls: 76&lt;/div&gt;&lt;div&gt;ctl&amp;nbsp; &amp;nbsp; &amp;nbsp;type&amp;nbsp; &amp;nbsp; num&amp;nbsp; &amp;nbsp; &amp;nbsp;name&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;value&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;MIC Input Volume L&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0&lt;/div&gt;&lt;div&gt;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;MIC Input Volume R&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0&lt;/div&gt;&lt;div&gt;2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Line Out Volume 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 0&lt;/div&gt;&lt;div&gt;3&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Line Out Volume 2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 15&lt;/div&gt;&lt;div&gt;4&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Line Out Volume 3&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 15&lt;/div&gt;&lt;div&gt;5&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Line Input Volume&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 0dB&lt;/div&gt;&lt;div&gt;6&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ADC Digital Volume L&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;207&lt;/div&gt;&lt;div&gt;7&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ADC Digital Volume R&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;207&lt;/div&gt;&lt;div&gt;8&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ADC2 Digital Volume L&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 207&lt;/div&gt;&lt;div&gt;9&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ADC2 Digital Volume R&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 207&lt;/div&gt;&lt;div&gt;10&amp;nbsp; &amp;nbsp; &amp;nbsp; INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DAC Digital Volume L&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;231&lt;/div&gt;&lt;div&gt;11&amp;nbsp; &amp;nbsp; &amp;nbsp; INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DAC Digital Volume R&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;231&lt;/div&gt;&lt;div&gt;12&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ADC Mute&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;13&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;ADC2 Mute&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;&lt;div&gt;14&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DAC Mute&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;On&lt;/div&gt;&lt;div&gt;15&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Analog DRC Lch&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;16&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Analog DRC Rch&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;17&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;MICGAIN Lch Zero-cross&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;18&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;MICGAIN Rch Zero-cross&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;19&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DAC De-emphasis&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;&lt;div&gt;20&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;JX0 Enable&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;21&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;JX1 Enable&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;22&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;JX2 Enable&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;23&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;JX3 Enable&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;24&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DLRAM Mode(Bank1:Bank0)&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 5120:3072&lt;/div&gt;&lt;div&gt;25&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DRAM Size(Bank1:Bank0)&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;1024:1024&lt;/div&gt;&lt;div&gt;26&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DRAM Addressing Mode(Bank1:Bank0)&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Linear:Ring&lt;/div&gt;&lt;div&gt;27&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;POMODE DLRAM Pointer 0&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DBUS Immediate&lt;/div&gt;&lt;div&gt;28&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM Memory Assignment&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;65 word&lt;/div&gt;&lt;div&gt;29&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;FIRMODE1 Accelerator Ch1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Adaptive Filter&lt;/div&gt;&lt;div&gt;30&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;FIRMODE2 Accelerator Ch2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Adaptive Filter&lt;/div&gt;&lt;div&gt;31&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SUBMODE1 Accelerator Ch1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Fullband&lt;/div&gt;&lt;div&gt;32&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SUBMODE2 Accelerator Ch2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Fullband&lt;/div&gt;&lt;div&gt;33&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Accelerator Memory(ch1:ch2)&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 1024:1024&lt;/div&gt;&lt;div&gt;34&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CLKO pin&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CLKO=L&lt;/div&gt;&lt;div&gt;35&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CLKO Output Clock&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 12.288MHz&lt;/div&gt;&lt;div&gt;36&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;BICK fs&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 64fs&lt;/div&gt;&lt;div&gt;37&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP Firmware PRAM&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;&lt;div&gt;38&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP Firmware CRAM&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;&lt;div&gt;39&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP Firmware OFREG&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;40&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP Firmware ACRAM&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;41&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Set CRAM Address H&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;00&lt;/div&gt;&lt;div&gt;42&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Set CRAM Address L&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;00&lt;/div&gt;&lt;div&gt;43&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Set CRAM Data H&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 00&lt;/div&gt;&lt;div&gt;44&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Set CRAM Data M&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 00&lt;/div&gt;&lt;div&gt;45&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Set CRAM Data L&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 00&lt;/div&gt;&lt;div&gt;46&amp;nbsp; &amp;nbsp; &amp;nbsp; INT&amp;nbsp; &amp;nbsp; &amp;nbsp;1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Read MIR&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0&lt;/div&gt;&lt;div&gt;47&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM EQ1 Level&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0dB&lt;/div&gt;&lt;div&gt;48&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM EQ2 Level&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0dB&lt;/div&gt;&lt;div&gt;49&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM EQ3 Level&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0dB&lt;/div&gt;&lt;div&gt;50&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM EQ4 Level&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0dB&lt;/div&gt;&lt;div&gt;51&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM EQ5 Level&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;0dB&lt;/div&gt;&lt;div&gt;52&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM HPF1 fc&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;53&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM HPF2 fc&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;54&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM Limiter Release Time&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 128ms&lt;/div&gt;&lt;div&gt;55&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;CRAM Limiter Volume&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;&lt;div&gt;56&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SELMIX2-0&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; SDOUTAD&lt;/div&gt;&lt;div&gt;57&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;LineOut Amp3 Mixer LOSW1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;58&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;LineOut Amp3 Mixer LOSW2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;59&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;LineOut Amp3 Mixer LOSW3&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;60&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;LineOut Amp2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;61&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;LineOut Amp1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;On&lt;/div&gt;&lt;div&gt;62&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;RIN MUX&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; IN3&lt;/div&gt;&lt;div&gt;63&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;LIN MUX&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; IN1&lt;/div&gt;&lt;div&gt;64&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSPIN SDOUTAD2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;65&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSPIN SDOUTAD&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;&lt;div&gt;66&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SDOUT3 Enable Switch&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;67&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SDOUT2 Enable Switch&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;68&amp;nbsp; &amp;nbsp; &amp;nbsp; BOOL&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SDOUT1 Enable Switch&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;On&lt;/div&gt;&lt;div&gt;69&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SDOUT3 MUX&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP DOUT3&lt;/div&gt;&lt;div&gt;70&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SDOUT2 MUX&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP&lt;/div&gt;&lt;div&gt;71&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SDOUT1 MUX&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DSP&lt;/div&gt;&lt;div&gt;72&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;DAC MUX&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; DSP&lt;/div&gt;&lt;div&gt;73&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SELMIX DSP&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;74&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SELMIX AD2&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;Off&lt;/div&gt;&lt;div&gt;75&amp;nbsp; &amp;nbsp; &amp;nbsp; ENUM&amp;nbsp; &amp;nbsp; 1&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;SELMIX AD&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Off&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#666666;fillColor=#f5f5f5;fontColor=#333333;gradientColor=none;" parent="1" vertex="1">
           <mxGeometry x="1930" y="2220" width="600" height="1190" as="geometry" />
         </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-1" value="struct audio_device" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="2612.5" y="2250" width="207.5" height="154" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-2" value="+ (...)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="26" width="207.5" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-15" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="52" width="207.5" height="8" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-17" value="+ audio_device_t out_device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="60" width="207.5" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-18" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="86" width="207.5" height="8" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-13" value="+ audio_device_t in_device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="94" width="207.5" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="120" width="207.5" height="8" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-4" value="+ struct io_control" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-1" vertex="1">
-          <mxGeometry y="128" width="207.5" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-6" value="struct io_control" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="2795" y="2440" width="160" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-7" value="+ bool use_io_control" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-6" vertex="1">
-          <mxGeometry y="26" width="160" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="GLX8IWY6zmg9Rqz8EnJD-6" vertex="1">
-          <mxGeometry y="52" width="160" height="8" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-9" value="+ char *ctl_path" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-6" vertex="1">
-          <mxGeometry y="60" width="160" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="GLX8IWY6zmg9Rqz8EnJD-6" vertex="1">
-          <mxGeometry y="86" width="160" height="8" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-10" value="+ int ctl_route" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="GLX8IWY6zmg9Rqz8EnJD-6" vertex="1">
-          <mxGeometry y="94" width="160" height="26" as="geometry" />
-        </mxCell>
-        <mxCell id="GLX8IWY6zmg9Rqz8EnJD-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="GLX8IWY6zmg9Rqz8EnJD-4" target="GLX8IWY6zmg9Rqz8EnJD-6" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="GLX8IWY6zmg9Rqz8EnJD-19" value="&lt;h1&gt;&lt;b&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Reference&lt;/font&gt;&lt;/b&gt;&lt;/h1&gt;" style="text;html=1;strokeColor=default;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="510" y="2600" width="1120" height="30" as="geometry" />
         </mxCell>
@@ -5526,8 +5478,8 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram id="hE24PQ2bOoNk4tP-cya6" name="분석_Audio_HAL">
-    <mxGraphModel dx="1596" dy="1926" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+  <diagram id="hE24PQ2bOoNk4tP-cya6" name="분석_Audio_HAL_dataflow">
+    <mxGraphModel dx="3857" dy="3097" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -6488,8 +6440,409 @@
       </root>
     </mxGraphModel>
   </diagram>
+  <diagram id="BLmGoBnIgMkkGfwJ6loX" name="분석_Audio_Hal_structure">
+    <mxGraphModel dx="-110" dy="-791" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="td5ID40vGP1y_6lIZeYI-1" value="" style="rounded=1;whiteSpace=wrap;html=1;arcSize=2;fontSize=11;strokeColor=#4D4D4D;" vertex="1" parent="1">
+          <mxGeometry x="2580" y="2220" width="1110" height="1480" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-2" value="struct audio_device" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2612.5" y="2250" width="207.5" height="664" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-1" value="+&amp;nbsp;struct audio_hw_device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="26" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-9" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="52" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-10" value="+ pthread_mutex_t lock" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="60" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="86" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-5" value="+ audio_device_t out_device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="94" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-6" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="120" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-7" value="+ audio_device_t in_device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="128" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="154" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-12" value="+ bool mic_mute" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="162" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-44" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="188" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-13" value="+ struct audio_route *ar" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="196" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="222" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-14" value="&lt;span style=&quot;background-color: rgb(0, 255, 0);&quot;&gt;+ audio_source_t input_source&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="230" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="256" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-15" value="+ audio_channel_mask_t in_channel_mask" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="264" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-28" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="290" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-16" value="+ struct stream_out *&lt;span style=&quot;background-color: rgb(0, 255, 0);&quot;&gt;outputs&lt;/span&gt;[OUTPUT_TOTAL]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="298" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-27" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="324" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-17" value="+ pthread_mutex_t lock_outputs" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="332" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-29" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="358" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-18" value="+ unsigned int mode" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="366" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-30" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="392" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-19" value="+ bool screenOff" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="400" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-31" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="426" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-20" value="+ int *owner[2]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="434" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-32" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="460" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-21" value="+ struct dev_info &lt;span style=&quot;background-color: rgb(0, 255, 0);&quot;&gt;dev_out&lt;/span&gt;[SND_OUT_SOUND_CARD_MAX]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="468" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-33" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="494" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-22" value="+ struct dev_info dev_in[SND_IN_SOUND_CARD_MAX]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="502" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-34" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="528" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-23" value="+ audio_patch_handle_t next_patch_handle" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="536" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-35" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="562" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-24" value="+ struct listnode output_stream_list" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="570" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-36" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="596" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-26" value="+ struct listnode input_stream_list" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="604" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-37" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="630" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-9" value="+ struct io_control" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-2">
+          <mxGeometry y="638" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-10" value="struct io_control" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2820" y="2980" width="160" height="154" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-11" value="+ bool use_io_control" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="26" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="52" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-13" value="+ char *ctl_path" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="60" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-14" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="86" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-15" value="+ int ctl_route" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="94" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-39" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="120" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-38" value="+ int ctl_vol" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry y="128" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="td5ID40vGP1y_6lIZeYI-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;fontSize=10;strokeWidth=0.5;strokeColor=#4D4D4D;" edge="1" parent="1" source="td5ID40vGP1y_6lIZeYI-9" target="td5ID40vGP1y_6lIZeYI-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-5" value="Common method of the audio device." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontColor=#4D4D4D;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2850" y="2274" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;fontSize=10;strokeWidth=0.5;strokeColor=#4D4D4D;dashed=1;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-1" target="lVLIOgOfEohCw5WUwTPT-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-40" value="audio device info value&lt;br&gt;(ex.&amp;nbsp;AUDIO_DEVICE_OUT_SPEAKER,&lt;br&gt;AUDIO_DEVICE_IN_BUILTIN_MIC)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontColor=#4D4D4D;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2850" y="2360" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=0.5;strokeColor=#4D4D4D;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="td5ID40vGP1y_6lIZeYI-5" target="lVLIOgOfEohCw5WUwTPT-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=0.5;strokeColor=#4D4D4D;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="td5ID40vGP1y_6lIZeYI-7" target="lVLIOgOfEohCw5WUwTPT-40">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=0.5;strokeColor=#4D4D4D;dashed=1;endArrow=none;endFill=0;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-45" target="lVLIOgOfEohCw5WUwTPT-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-45" value="audio source info&lt;br&gt;(ex. AUDIO_SOURCE_DEFAULT)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontColor=#4D4D4D;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2840" y="2480" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=0.5;strokeColor=#4D4D4D;dashed=1;endArrow=none;endFill=0;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-46" target="lVLIOgOfEohCw5WUwTPT-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-46" value="mangement output stream" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontColor=#4D4D4D;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2840" y="2548" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=0.5;strokeColor=#4D4D4D;dashed=1;endArrow=none;endFill=0;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-47" target="lVLIOgOfEohCw5WUwTPT-21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-52" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=0.5;strokeColor=#4D4D4D;dashed=1;endArrow=none;endFill=0;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-47" target="lVLIOgOfEohCw5WUwTPT-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-47" value="audio device info" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontColor=#4D4D4D;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2840" y="2735" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-53" value="struct dev_info" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="2930" y="2800" width="160" height="154" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-54" value="+ const char *id" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="26" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-55" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="52" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-56" value="+ int card" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="60" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-57" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="86" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-58" value="+ int device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="94" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-59" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="120" width="160" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-60" value="+ int score" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry y="128" width="160" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=0.5;endArrow=none;endFill=0;dashed=1;strokeColor=#4D4D4D;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-21" target="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=0.5;endArrow=none;endFill=0;dashed=1;strokeColor=#4D4D4D;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-22" target="lVLIOgOfEohCw5WUwTPT-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-122" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=0.5;dashed=1;strokeColor=#4D4D4D;endArrow=none;endFill=0;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-63" target="lVLIOgOfEohCw5WUwTPT-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-63" value="struct stream_out" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="3100" y="2600" width="207.5" height="1004" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-64" value="+ struct audio_stream_out stream" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="26" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-65" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="52" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-66" value="+ pthread_mutex_t lock" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="60" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-67" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="86" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-68" value="+ struct pcm *pcm[SND_OUT_SOUND_CARD_MAX]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="94" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-69" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="120" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-70" value="+ struct pcm_config config" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="128" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-71" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="154" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-72" value="+ struct audio_config aud_config" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="162" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-73" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="188" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-74" value="+ unsigned int pcm_device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="196" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-75" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="222" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-76" value="+ bool &lt;span style=&quot;background-color: rgb(0, 255, 0);&quot;&gt;standby&lt;/span&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="230" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-77" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="256" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-78" value="+ audio_device_t device" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="264" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-79" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="290" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-80" value="+ bool disabled" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="298" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-81" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="324" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-82" value="+ audio_channel_mask_t channel_mask" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="332" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-83" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="358" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-84" value="+ audio_channel_masks_t supported_channel_masks[MAX_SUPPORTED_CHANNEL_MASKS + 1]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="366" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-85" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="392" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-86" value="+ supported_sample_rates[MAX_SUPPORTED_SAMPLE_RATES+1]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="400" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-87" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="426" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-88" value="+ bool muted" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="434" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-89" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="460" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-90" value="+ uint64_t written" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="468" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-91" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="494" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-92" value="+ uint64_t nframes" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="502" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-93" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="528" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-94" value="+ bool output_direct" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="536" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-95" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="562" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-96" value="+ int output_direct_mode" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="570" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-97" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="596" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-98" value="+ struct audio_device *dev" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="604" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-99" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="630" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-100" value="+ struct resampler_itfe *resampler" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="638" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-112" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="664" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-102" value="+ rk_bistream *bistream" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="672" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-113" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="698" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-103" value="+ struct hdmi_audio_infors hdmi_audio" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="706" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-114" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="732" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-104" value="+ bool snd_reopen" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="740" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-115" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="766" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-105" value="+ bool use_default_config" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="774" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-116" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="800" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-106" value="+ float volume[2]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="808" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-117" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="834" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-107" value="+ audio_io_handle_t handle" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="842" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-118" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="868" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-108" value="+ audio_patch_handle_t patch_handle" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="876" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-119" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="902" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-109" value="+ struct listnode list_node" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="910" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-120" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="936" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-110" value="+ audio_device_t devices[AUDIO_PATCH_PORTS_MAX]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="944" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-121" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;fontSize=11;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="970" width="207.5" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-111" value="+ int num_configs" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontSize=10;" vertex="1" parent="lVLIOgOfEohCw5WUwTPT-63">
+          <mxGeometry y="978" width="207.5" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-124" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#4D4D4D;strokeWidth=0.5;endArrow=none;endFill=0;" edge="1" parent="1" source="lVLIOgOfEohCw5WUwTPT-101" target="lVLIOgOfEohCw5WUwTPT-76">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lVLIOgOfEohCw5WUwTPT-101" value="true if all PCMs are inactive" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=0;fontColor=#4D4D4D;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="3330" y="2828" width="210" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
   <diagram id="2zkmUAJfDQfXsW1LXNBY" name="분석_ALSA">
-    <mxGraphModel dx="2924" dy="2298" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3164" dy="2298" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -7234,7 +7587,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="Yq_YVlYkhONwLpyZH5fJ" name="audio_policy_configuration">
-    <mxGraphModel dx="7485" dy="2995" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="6328" dy="2396" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
