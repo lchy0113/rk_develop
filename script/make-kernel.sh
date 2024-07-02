@@ -32,7 +32,12 @@ fi
 if [ ! -f ./kernel/configs/$TARGET_DEVICE.config ]; then
 	echo "...link $TARGET_DEVICE.config"
 	cd ./kernel/configs/
-	ln -s ../../../device/kdiwin/test/$TARGET_DEVICE/configs/kconfig.config $TARGET_DEVICE.config
+	if [ -f ../../../device/kdiwin/newjeans/base/configs/kconfig_edpp04.config ]; then
+		ln -s ../../../device/kdiwin/newjeans/base/configs/kconfig_edpp04.config $TARGET_DEVICE.config
+	fi
+	if [ -f ../../../device/kdiwin/test/rk3568_edpp04/configs/kconfig.config ]; then
+		ln -s ../../../device/kdiwin/test/rk3568_edpp04/configs/kconfig.config $TARGET_DEVICE.config
+	fi
 	cd -
 fi
 
