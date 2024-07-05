@@ -377,6 +377,12 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
 # Memo 
 
+ - develop branch
+  private/audio_io_sec : tuning value 적용
+       device/kdiwin/test/common/
+	   hardware/rockchip/audio/
+	   kernel-4.19
+
  - tinymix command 
 
  ```bash
