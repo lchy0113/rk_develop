@@ -22,33 +22,32 @@ if [ -f ./logo_kernel.bmp.dev ]; then
 	cp logo_kernel.bmp.dev logo_kernel.bmp
 fi
 
-if [ ! -f ./kernel/configs/kconfig.config ]; then
+
+# target common kconfig
+if [ ! -f ./kernel/configs/kconfig.config ] || [ ! -e ./kernel/configs/kconfig.config ]; then
 	echo "...link kconfig.config"
 	cd ./kernel/configs/
-	ln -s ../../../device/kdiwin/test/common/configs/kconfig.config kconfig.config
+	rm kconfig.config
+	if [ "${TARGET_DEVICE:0:6}" = "rk3568" ]; then
+		ln -s ../../../device/kdiwin/test/common/configs/kconfig.config kconfig.config
+	elif [ "${TARGET_DEVICE}" = "le1000" ]; then
+		ln -s ../../../device/kdiwin/newjeans/base/configs/kconfig.config
+	fi
 	cd -
 fi
 
-if [ ! -f ./kernel/configs/$TARGET_DEVICE.config ]; then
+# target device kconfig
+if [ ! -f ./kernel/configs/$TARGET_DEVICE.config ] || [ ! -e ./kernel/configs/$TARGET_DEVICE.config ]; then
 	echo "...link $TARGET_DEVICE.config"
 	cd ./kernel/configs/
-	if [ -f ../../../device/kdiwin/newjeans/base/configs/kconfig_edpp04.config ]; then
-		ln -s ../../../device/kdiwin/newjeans/base/configs/kconfig_edpp04.config $TARGET_DEVICE.config
-	fi
-	if [ -f ../../../device/kdiwin/test/rk3568_edpp04/configs/kconfig.config ]; then
-		ln -s ../../../device/kdiwin/test/rk3568_edpp04/configs/kconfig.config $TARGET_DEVICE.config
+	rm $TARGET_DEVICE.config
+	if [ "${TARGET_DEVICE:0:6}" = "rk3568" ]; then
+		ln -s ../../../device/kdiwin/test/$TARGET_DEVICE/configs/kconfig.config $TARGET_DEVICE.config
+	elif [ "${TARGET_DEVICE}" = "le1000" ]; then
+		ln -s ../../../device/kdiwin/newjeans/base/configs/kconfig_edpp05.config $TARGET_DEVICE.config
 	fi
 	cd -
 fi
-
-# ./kernel-4.19/arch/arm64/configs/rockchip_defconfig 
-# ./kernel/configs/android-11.config -> ../../../mkcombinedroot/configs/android-11.config
-# ./kernel/configs/non_debuggable.config -> ../../../mkcombinedroot/configs/non_debuggable.config 
-# ./kernel/configs/disable_incfs.config -> ../../../mkcombinedroot/configs/disable_incfs.config
-# ./kernel/configs/kconfig.config -> ../../../device/company/test/rk3568_poc/kconfig.config
-#KERNEL_DTS="rk3568-rgb-p01"
-#KERNEL_DTS="rk3568-rgb-p02"
-#KERNEL_DTS="rk3568-poc-v00"
 
 if [ ! -d $BUILD_PATH ]; then
 	mkdir $BUILD_PATH
@@ -79,8 +78,6 @@ if [ "$1" = "modules" ]; then
 fi
 
 echo ">>> Start build kernel"
-#make clean ; 
-#make $ADDON_ARGS ARCH=$KERNEL_ARCH $KERNEL_DEFCONFIG
 make $ADDON_ARGS ARCH=$KERNEL_ARCH O=$BUILD_PATH $KERNEL_DTS.img -j32 
 
 if [ $? -eq 0 ]; then
@@ -89,12 +86,6 @@ else
     echo "Build kernel failed!"
     exit 1
 fi
-
-#KERNEL_DEBUG=arch/arm64/boot/Image
-## copy to aosp out directory
-#cp arch/arm64/boot/Image ../out/target/product/rk3568_poc/kernel
-#cp arch/arm64/boot/dts/rockchip/rk3568-poc-v00.dtb ../out/target/product/rk3568_poc/dtb.img
-
 
 echo ">>> package resource.img with character images"
 ## copy to aosp out directory
