@@ -223,7 +223,34 @@ rk3568_edpp01:/ # io -4 -w 0xfdd60004 0x00200020
   *  io -4 -w 0xfdc20014 0x00300000; io -4 -w 0xfdd6000c 0x00200020; io -4 -w 0xfdd60004 0x00200020
 ```
 
+ex)
+GPIO1_D6 (gpio number; 62) (gpio1_30)
 
+```bash
+io -4 -r -l 0x4 0xfdc6001c
+```
+
+ex)
+GPIO1_D7 (gpio number; 63) (gpio1_31)
+
+```bash
+# GRF_GPIO1D_IOMUX_L 
+# Address: Operational Base(SYS_GRF; 0xfdc60000) + offest (0x000c)
+io -4 -r -l 0x4 0xfdc6001c
+fdc6001c:  00001110
+
+
+
+# Port Data Direction Register(High)
+# Address: Operation Base(0xfe740000) + offset (0x000c)
+# 16 bit is high (output)
+io -4 -r -l 0x4 0xfe74000c
+fe74000c:  00008000
+
+
+# set High value to gpio1_d7
+io -4 -w 0xfe740004 0x80008000
+```
 -----
 
 <br/>
