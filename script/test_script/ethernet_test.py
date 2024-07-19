@@ -56,11 +56,10 @@ init(autoreset=True)
 print("begin serial interface. if input 'exit' to exit")
 
 while True:
+	date = datetime.now()
 	received_data = ser.readline().decode().strip() #read serial data
 	if received_data:
-		print(received_data)
-
-	date = datetime.now()
+		print(f"[{date}][{count_succ}] " + received_data)
 
 	if log_bootvcc3v3_string in received_data:
 		count_succ += 1
@@ -70,9 +69,9 @@ while True:
 		time.sleep(10)
 		ser.write(b'ip route\r\n')
 
-	if log_test_hnnova_dhcp_string in received_data:
+	if log_test_static_string in received_data:
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
-		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_hnnova_dhcp_string}'" + Fore.RESET)
+		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_static_string}'" + Fore.RESET)
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
 		time.sleep(3)
 #		poweroff()
