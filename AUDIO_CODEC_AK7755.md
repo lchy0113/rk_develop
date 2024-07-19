@@ -244,6 +244,59 @@ ak7755_sound: ak7755-sound {
 	* ak7755_cram_data6.bin : voip h_sub-g, voip h_sub-h, voip h_sub-l
 
   - **SCRIPT File** : **.txt file*
+  
+<br/>
+<br/>
+<hr>
+
+### Note
+  
+ [ ] voip_gurd_subp_call   
+  - voip_subp_call 을 변경.     
+  VOIP_SUBP_CALL -> VOIP_GURD_SUBP_CALL
+  voip_subp_call -> voip_gurd_subp_call
+  [v] create patch
+  [ ] tuning
+
+ [ ] voip_home_subp_call  
+  - 신규
+  VOIP_HOME_SUBP_CALL
+  voip_home_sbup_call
+  [ ] create patch
+  [ ] tuning
+
+ [ ] voip_loby_subp_call  
+  - 신규
+  VOIP_LOBY_SUBP_CALL
+  voip_loby_subp_call
+  [ ] create patch
+  [ ] tuning
+   
+ [ ] voip_gurd_call  
+  - 신규  
+  VOIP_GURD_CALL
+  voip_gurd_call
+  [ ] create patch
+  [ ] tuning
+
+ [ ] voip_home_call  
+  - 신규  
+  VOIP_HOME_CALL
+  voip_home_call
+  [ ] create patch
+  [ ] tuning
+
+ [ ] voip_loby_call  
+  - 신규  
+  VOIP_LOBY_CALL
+  voip_loby_call
+  [ ] create patch
+  [ ] tuning
+
+
+```
+adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot 
+```
 
 <br/>
 <br/>
