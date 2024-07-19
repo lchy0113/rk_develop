@@ -250,6 +250,8 @@ ak7755_sound: ak7755-sound {
 <hr>
 
 ### Note
+
+> Related voip call
   
  - [ ] voip_gurd_subp_call   
      * voip_subp_call 을 변경.     
