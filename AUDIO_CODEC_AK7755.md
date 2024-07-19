@@ -255,7 +255,7 @@ ak7755_sound: ak7755-sound {
   - voip_subp_call 을 변경.     
   VOIP_SUBP_CALL -> VOIP_GURD_SUBP_CALL
   voip_subp_call -> voip_gurd_subp_call
-   - [v] create patch
+   * [v] create patch
    - [ ] tuning
 
  - [ ] voip_home_subp_call  
