@@ -252,46 +252,46 @@ ak7755_sound: ak7755-sound {
 ### Note
   
  - [ ] voip_gurd_subp_call   
-  - voip_subp_call 을 변경.     
+> voip_subp_call 을 변경.     
   VOIP_SUBP_CALL -> VOIP_GURD_SUBP_CALL
   voip_subp_call -> voip_gurd_subp_call
      * [x] create patch
-   * [ ] tuning
+     * [ ] tuning
 
  - [ ] voip_home_subp_call  
-  - 신규
+> 신규  
   VOIP_HOME_SUBP_CALL
   voip_home_sbup_call
-  - [ ] create patch
-  - [ ] tuning
+     * [ ] create patch
+     * [ ] tuning
 
  - [ ] voip_loby_subp_call  
-  - 신규
+> 신규  
   VOIP_LOBY_SUBP_CALL
   voip_loby_subp_call
-  - [ ] create patch
-  - [ ] tuning
+     * [ ] create patch
+     * [ ] tuning
    
  - [ ] voip_gurd_call  
-  - 신규  
+> 신규  
   VOIP_GURD_CALL
   voip_gurd_call
-  - [ ] create patch
-  - [ ] tuning
+     * [ ] create patch
+     * [ ] tuning
 
  - [ ] voip_home_call  
-  - 신규  
+> 신규  
   VOIP_HOME_CALL
   voip_home_call
-  - [ ] create patch
-  - [ ] tuning
+     * [ ] create patch
+     * [ ] tuning
 
  - [ ] voip_loby_call  
-  - 신규  
+> 신규  
   VOIP_LOBY_CALL
   voip_loby_call
-  - [ ] create patch
-  - [ ] tuning
+     * [ ] create patch
+     * [ ] tuning
 
 
 ```
