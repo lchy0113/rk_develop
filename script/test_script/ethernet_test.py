@@ -66,6 +66,9 @@ while True:
 		print(Fore.BLUE + f"-----------------------------------------" + Fore.RESET)
 		print(Fore.BLUE + f"[BOOT_COMPLETED] [{date}] [{count_succ}] " + Fore.RESET)
 		print(Fore.BLUE + f"-----------------------------------------" + Fore.RESET)
+		ser.write(b'setprop log.tag.EthernetNetworkFactory VERBOSE \r\n')
+		ser.write(b'setprop log.tag.EthernetTracker VERBOSE \r\n')
+		ser.write(b'setprop log.tag.EthernetService VERBOSE \r\n')
 		time.sleep(10)
 		ser.write(b'ip route\r\n')
 
