@@ -7,6 +7,7 @@
 <hr>
 
 [Fn-Link 6222D-UUC](#fn-link-6222d-uuc)
+[Fn-Link 6222B-SRC](#fn-link-6222b-src)
 
 <br/>
 <br/>
@@ -49,6 +50,22 @@
 +----------------------+             +-----------------+
 
 ```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Fn-Link 6222B-SRC
+
+ FN-Link 사에서 제공하는 6222B-SRC 
+ **Realtek RTL8822CS-VE-CG**i IC을 기반으로 함.
+
+ - Host Interface 
+   * SDIO V3.0/V2.0/V1.1 interface for WLAN
+   * UAR/PCM interface for Bluetooth
+ - bluettoth : bt5.0 
 
 <br/>
 <br/>
