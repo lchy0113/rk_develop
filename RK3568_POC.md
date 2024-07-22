@@ -61,6 +61,45 @@
 +---------------+
 ```
 
+ - rk3568_rgb_p05 board
+	  
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|               |
+|  SERIAL1-+-M0-+ <----> 공용부
+|          +-M1-+
+|               |
+|  SERIAL2-+-M0-+ <----> zigbee aliases:serial3
+|          +-M1-+
+|               |
+|  SERIAL3-+-M0-+ 
+|          +-M1-+
+|               |
+|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) sub-phone aliases:serial1
+|          +-M1-+
+|               |
+|  SERIAL5-+-M0-+ <----> reserve
+|          +-M1-+
+|               |
+|  SERIAL6-+-M0-+ <----> bluetooth
+|          +-M1-+
+|               |
+|  SERIAL7-+-M0-+ <----> rfid door
+|          +-M1-+
+|               |
+|  SERIAL8-+-M0-+
+|          +-M1-+
+|               |
+|  SERIAL9-+-M0-+ <----> debug
+|          +-M1-+
+|               |
++---------------+
+```
+
+
  - rk3568_edp_p02 board
 	  
 ```bash
@@ -362,6 +401,33 @@
 |    I2C_HDMI---+
 +---------------+
 ```
+
+- rk3568_rgb_p05 board
+
+```bash
++---------------+
+| [RK3568]      |
+|               |
+|    I2C0-------+
+|               |
+|    I2C1-------+ <----> rtc, hot key, touch ic
+|               |
+|    I2C2--+-M0-+
+|          +-M1-+ <----> internal cam
+|               |
+|    I2C3--+-M0-+ <----> touch ic
+|          +-M1-+
+|               |
+|    I2C4--+-M0-+ <----> pmic, decoder
+|          +-M1-+
+|               |
+|    I2C5--+-M0-+
+|          +-M1-+ <----> audio codec
+|               |
+|    I2C_HDMI---+
++---------------+
+```
+
 
 ----
 
