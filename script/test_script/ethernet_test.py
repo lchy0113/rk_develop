@@ -9,7 +9,8 @@ import os
 # test trigger 
 log_test_static_string = "10.1.0.0/16 dev eth0 proto kernel scope link src 10.1.7.1"
 log_test_hnnova_static_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.200"
-log_test_hnnova_dhcp_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.111"
+log_test_hnnova_dhcp_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0."
+log_test_private_dhcp_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.126"
 log_bootvcc3v3_string = "vcc3v3_pcie: disabling"
 
 # set serial port 
@@ -50,10 +51,18 @@ def poweron():
 	print(result.stdout)
 	print(Fore.RED + f"(power on)" + Fore.RESET)
 
+def setdate():
+	ser.write(b'su\n')
+	date = datetime.now()
+	formatted_date = "date " + date.strftime("%m%d%H%M%y") + "\n"
+	ser.write(formatted_date.encode())
+
+
 
 init(autoreset=True) 
 
 print("begin serial interface. if input 'exit' to exit")
+
 
 while True:
 	date = datetime.now()
@@ -62,20 +71,23 @@ while True:
 		print(f"[{date}][{count_succ}] " + received_data)
 
 	if log_bootvcc3v3_string in received_data:
+		setdate()
 		count_succ += 1
 		print(Fore.BLUE + f"-----------------------------------------" + Fore.RESET)
 		print(Fore.BLUE + f"[BOOT_COMPLETED] [{date}] [{count_succ}] " + Fore.RESET)
 		print(Fore.BLUE + f"-----------------------------------------" + Fore.RESET)
-		ser.write(b'setprop log.tag.EthernetNetworkFactory VERBOSE \r\n')
-		ser.write(b'setprop log.tag.EthernetTracker VERBOSE \r\n')
-		ser.write(b'setprop log.tag.EthernetServiceImpl VERBOSE \r\n')
-		ser.write(b'setprop log.tag.WifiSleepController VERBOSE \r\n')
-		ser.write(b'setprop log.tag.EthernetService VERBOSE \r\n')
+		ser.write(b'setprop log.tag.EthernetNetworkFactory VERBOSE \n')
+		ser.write(b'setprop log.tag.EthernetTracker VERBOSE \n')
+		ser.write(b'setprop log.tag.EthernetServiceImpl VERBOSE \n')
+		ser.write(b'setprop log.tag.WifiSleepController VERBOSE \n')
+		ser.write(b'setprop log.tag.EthernetService VERBOSE \n')
 		time.sleep(10)
-		ser.write(b'ip route\r\n')
+		ser.write(b'ip route\n')
 
+#	if log_test_private_dhcp_string in received_data:
 	if log_test_static_string in received_data:
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
+#		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_private_dhcp_string}'" + Fore.RESET)
 		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_static_string}'" + Fore.RESET)
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
 		time.sleep(3)
