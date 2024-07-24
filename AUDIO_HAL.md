@@ -6,36 +6,29 @@ AUDIO_HAL
 Index
 =====
 
-```
-▼ Audio HAL 구조 : section
-    Audio HAL layer interface : section
-    Audio HAL modules : section
-  ▼ key class 및 structure : section
-    ▼ Audio HAL의 연결 포인터 3그룹. : section
-        1. module open시 일어나는 audio_hw_device 관련 연결 작업. : section
-        2. openOutput에서 일어나는 audio_hw_output 관련 연결 작업 : section
-        3. openInput에서 일어나는 audio_hw_input 관련 연결 작업 : section
+[Audio HAL Structure](#audio-hal-structure)  
+[....Audio HAL layer interface](#audio-hal-layer-interface)  
+[....Audio Hal module](#audio-hal-modules)  
+[....key class and structure](#key-class-and-structure)  
+[........Connection point of Audio HAL 3Group](#connection-point-of-audio-hal-3group)  
+[............1. audio_hw_device when module open](#1--audio-hw-deviec-when-module-open)  
+[............2. audio_hw_output when openOutput](#2--audio-hw-output-when-openoutput)  
+[............3. audio_hw_input when openInput](#3--audio-hw-input-when-openinput)  
+[Analyse](#analyse)  
+[Reference](#reference)  
+[Develop](#develop)  
+[Note](#node)  
 
-▼ 분석 : section
-    분석 : device directory : section
-    분석 : audio_route : section
-
-▼ 참고 : section
-    참고 : rk817 mixer info : section
-
-▼ 개발 : section
-    develop command : section
-
-▼ Note : section
-    android_automotive : section
-```
-
-
-# Audio HAL 구조 
+# Audio HAL Structure
 
 - blockdiagram
 
  ![](images/AUDIO_HAL_01.png)
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Audio HAL layer interface
  - audio HAL에는 audio_module과 audio_policy_module이 존재. 
@@ -45,7 +38,10 @@ Index
  - audio.primary.default.so(장치의 대부분의 audio 관리)
  - 일부 manufacturer 은 audio.primary.rk30board.so 와 같은 lib를 구현해 배포.
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Audio HAL modules
 
@@ -69,9 +65,12 @@ Index
 #define AUDIO_HARDWARE_MODULE_ID_MSD "msd"
 ```
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
-## key class 및 structure
+## key class and structure
  - HAL은 upper layer에 hardware에 대한 인터페이스를 제공해야 한다.
    * **struct audio_hw_device** : struct audio_hw_device 를 통해 인터페이스를 제공한다.
 
@@ -139,11 +138,16 @@ Index
  * AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
  * open_output_stream 함수를 호출하면 struct audio_stream를 하나 생성하여 각 포인터를 연결합니다.
 
------
+<br/>
+<br/>
+<hr>
 
-### Audio HAL의 연결 포인터 3그룹.
+### Connection point of Audio HAL 3Group
 
-#### 1. module open시 일어나는 audio_hw_device 관련 연결 작업.
+<br/>
+<hr>
+
+#### 1. audio_hw_device when module open
 
 ```c
    static int adev_open(....)
@@ -168,7 +172,10 @@ Index
    }
 ```
 
-#### 2. openOutput에서 일어나는 audio_hw_output 관련 연결 작업
+<br/>
+<hr>
+
+#### 2. audio_hw_output when openOutput
  
 ```c
  static int adev_open_output_stream(.... ) 
@@ -194,7 +201,10 @@ Index
    }
 ```
 
-#### 3. openInput에서 일어나는 audio_hw_input 관련 연결 작업
+<br/>
+<hr>
+
+#### 3. audio_hw_input when openInput
  
 ```c
    static int adev_open_input_stream(....)
@@ -224,21 +234,20 @@ Index
    * 5.1 채널 : 6개의 채널로 좌우, 전면, 후면, 서라운드, 서라운드 리어 채널로 구성
    * 7.1 채널 : 8개의 채널로 5.1 채널에 서라운드 리어 센터 채널이 추가.
 
------
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-<br />
-<br />
-<br />
-<br />
-<br />
+# Analyse
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
-# 분석
-
------
-
-## 분석 : device directory
+## Analyse : device directory
 
 device/company/test/rk3568_poc/rk3568_poc.mk
 device/company/nova/rk3568/device.mk
@@ -328,8 +337,13 @@ PRODUCT_COPY_FILES += \
     hardware/rockchip/audio/tinyalsa_hal/codec_config/mixer_paths.xml:system/etc/mixer_paths.xml 
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 분석 : audio_route
+## Analyse : audio_route
+
  audio_route.c 는 /system/media/audio_route 디렉토리에 있는 android에서 제공하는 audio path library(libaudioroute.so) 이다.
  1. /system/etc/mixer_paths.xml 구성 파일을 파싱한다.
  2. audio ctl access 방법을 capsulate 하여, audio_hw(hal) 호출을 편리하게 한다.
@@ -366,12 +380,20 @@ system/media/audio_route 경로에 위치하며, tinyalsa_hal에서 libtinyalsa.
 
  - 참고 : hardware/qcom/audio/hal/audio_hw.c 의 voice_start_call() -> voice_start_usecase() -> voice_set_sidetone() -> platform_set_sidetone()
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
+# Reference
 
+<br/>
+<br/>
+<br/>
+<hr>
 
-# 참고
-
-## 참고 : rk817 mixer info
+## Reference : rk817 mixer info
 ```
 rk3568_evb:/ # tinymix
 Mixer name: 'rockchip,rk809-codec'
@@ -448,19 +470,20 @@ typedef enum _AudioRoute {
 } AudioRoute;
 ```
 
------
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-<br />
-<br />
-<br />
-<br />
-<br />
+# Develop
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
-# 개발
-
-## develop command
+## Develop command
 
 ```bash
 adb root ; adb remount ; adb push  device/COMPANY/test/rk3568_edpp01/audio/audio_policy_configuration.xml  /vendor/etc/
@@ -468,19 +491,21 @@ adb root ; adb remount ; adb push  out/target/product/rk3568_edpp01/vendor/lib/h
 scrcpy -m1024 --always-on-top
 ```
 
------
-
-<br />
-<br />
-<br />
-<br />
-<br />
-
------
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # Note
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## android_automotive
+
  - [ ] Car audio policy의 경우, alarm, notification, system sound는 cpu board에서 출력되고, 그외 sound는 extend audio board 에서 출력  
  - [ ] *android_policy_configuration.xml*에서 **role** 의 속성으로 *sink(output)*, *source(input)* 을 세팅하는데, door와 같은 시나리오에 어떻게 적용해야 하나 ?
  - [ ] prebuilts/vndk/v31/x86_x64/include/hardware/libhardware/include/hardware/audio.h : 뭐하는 곳?
