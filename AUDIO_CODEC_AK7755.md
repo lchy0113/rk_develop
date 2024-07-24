@@ -253,51 +253,54 @@ ak7755_sound: ak7755-sound {
 
 > Related voip call
   
- - [ ] voip_gurd_subp_call   
-     * voip_subp_call 을 변경.     
+ - [ ] voip_gurd_subp_call
+     * voip_subp_call 을 변경.
   VOIP_SUBP_CALL -> VOIP_GURD_SUBP_CALL
   voip_subp_call -> voip_gurd_subp_call
      * [x] create patch
-     * [ ] tuning
+     * [x] tuning
 
- - [ ] voip_home_subp_call  
-     * 신규  
+ - [x] voip_home_subp_call
+     * 신규
   VOIP_HOME_SUBP_CALL
   voip_home_sbup_call
-     * [ ] create patch
-     * [ ] tuning
+     * [x] create patch
+     * [x] tuning
 
- - [ ] voip_loby_subp_call  
-     * 신규  
+ - [x] voip_loby_subp_call
+     * 신규
   VOIP_LOBY_SUBP_CALL
   voip_loby_subp_call
-     * [ ] create patch
-     * [ ] tuning
+     * [x] create patch
+     * [x] tuning
    
- - [ ] voip_gurd_call  
-     * 신규  
+ - [x] voip_gurd_call
+     * 신규
   VOIP_GURD_CALL
   voip_gurd_call
-     * [ ] create patch
-     * [ ] tuning
+     * [x] create patch
+     * [x] tuning
 
- - [ ] voip_home_call  
-     * 신규  
+ - [x] voip_home_call
+     * 신규
   VOIP_HOME_CALL
   voip_home_call
-     * [ ] create patch
-     * [ ] tuning
+     * [x] create patch
+     * [x] tuning
 
- - [ ] voip_loby_call  
-     * 신규  
+ - [x] voip_loby_call
+     * 신규
   VOIP_LOBY_CALL
   voip_loby_call
-     * [ ] create patch
-     * [ ] tuning
+     * [x] create patch
+     * [x] tuning
 
 
 ```
+// download image
 adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot 
+// download image + enable log
+adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot; adb wait-for-device ; adb root ; adb remount ; adb shell "setprop log.tag.AudioHardwareTiny VERBOSE  ; setprop log.tag.alsa_route VERBOSE ;  echo "file sound/soc/codecs/ak7755.c +p" > /sys/kernel/debug/dynamic_debug/control ; echo 40 > /sys/class/gpio/export ; echo "out" > /sys/class/gpio/gpio40/direction ; echo 1 > /sys/class/gpio/gpio40/value"
 ```
 
 <br/>
