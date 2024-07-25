@@ -52,7 +52,10 @@ def poweron():
 	print(Fore.RED + f"(power on)" + Fore.RESET)
 
 def setdate():
-	ser.write(b'su\n')
+#	ser.write(b'su\n')
+	ser.write(b'kdu\n')
+	time.sleep(1)
+	ser.write(b'123\n')
 	date = datetime.now()
 	formatted_date = "date " + date.strftime("%m%d%H%M%y") + "\n"
 	ser.write(formatted_date.encode())
