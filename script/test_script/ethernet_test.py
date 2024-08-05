@@ -8,6 +8,7 @@ import os
 
 # test trigger 
 log_test_static_string = "10.1.0.0/16 dev eth0 proto kernel scope link src 10.1.7.1"
+log_test_static_short_string = "10.1.7.1"
 log_test_hnnova_static_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.200"
 log_test_hnnova_dhcp_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0."
 log_test_private_dhcp_string = "192.168.0.0/24 dev eth0 proto kernel scope link src 192.168.0.126"
@@ -88,10 +89,10 @@ while True:
 		ser.write(b'ip route\n')
 
 #	if log_test_private_dhcp_string in received_data:
-	if log_test_static_string in received_data:
+	if log_test_static_short_string in received_data:
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
 #		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_private_dhcp_string}'" + Fore.RESET)
-		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_static_string}'" + Fore.RESET)
+		print(Fore.GREEN + f"[NORMAL CASE] [{date}] '{log_test_static_short_string}'" + Fore.RESET)
 		print(Fore.GREEN + f"------------------------------------------" + Fore.RESET)
 		time.sleep(3)
 #		poweroff()
