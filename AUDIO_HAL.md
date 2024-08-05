@@ -77,12 +77,12 @@ Index
  - AudioFlinger가 library를 호출하는 과정은 아래와 같다.
 
 ```bash
-	AudioFlinger::loadHwModule
-	->AudioFlinger::loadHwModule_l
-	-->mDevicesFactoryHal->openDevice(name, &dev);
-	--->load_audio_interface
-	---->audio_hw_device_open(mod, dev);
-	----->module->methods->open 
+    AudioFlinger::loadHwModule
+    ->AudioFlinger::loadHwModule_l
+    -->mDevicesFactoryHal->openDevice(name, &dev);
+    --->load_audio_interface
+    ---->audio_hw_device_open(mod, dev);
+    ----->module->methods->open 
 ```
   
   * AudioFlinger에서 libhardware 함수 hw_get_module(hw_get_module_by_class)을 통해 struct hw_module_t정보를 획득합니다.
@@ -90,49 +90,49 @@ Index
     방법은 hw_module_t->methods(hw_module_methods_t)->open 을 호출하면 audio hal에서 adev_open 함수를 호출합니다.
 
 ```c
-	struct audio_device {
-		struct audio_hw_device device;
-		...
-	};
+    struct audio_device {
+        struct audio_hw_device device;
+        ...
+    };
 ```
-	struct audio_device를 생성하여 멤버변수 struct audio_hw_device device를 리턴합니다.
+    struct audio_device를 생성하여 멤버변수 struct audio_hw_device device를 리턴합니다.
 
 ```c
-	struct audio_hw_device {
-		struct hw_device_t common;
-		uint32_t (*get_supported_devices)(const struct audio_hw_device *dev);
-		int (*init_check)(const struct audio_hw_device *dev);
-		int (*set_voice_volume)(struct audio_hw_device *dev, float volume);
-		int (*set_master_volume)(struct audio_hw_device *dev, float volume);
-		int (*get_master_volume)(struct audio_hw_device *dev, float *volume);
-		int (*set_mode)(struct audio_hw_device *dev, audio_mode_t mode);
-		int (*set_mic_mute)(struct audio_hw_device *dev, bool state);
-		int (*get_mic_mute)(const struct audio_hw_device *dev, bool *state);
-		int (*set_parameters)(struct audio_hw_device *dev, const char *kv_pairs);
-		char * (*get_parameters)(const struct audio_hw_device *dev,
-		                         const char *keys);
-		size_t (*get_input_buffer_size)(const struct audio_hw_device *dev,
-		                                const struct audio_config *config);
-		int (*open_output_stream)(struct audio_hw_device *dev,
-		                          audio_io_handle_t handle,
-		                          audio_devices_t devices,
-		                          audio_output_flags_t flags,
-		                          struct audio_config *config,
-		                          struct audio_stream_out **stream_out);
-		void (*close_output_stream)(struct audio_hw_device *dev,
-		                            struct audio_stream_out* stream_out);
-		int (*open_input_stream)(struct audio_hw_device *dev,
-		                         audio_io_handle_t handle,
-		                         audio_devices_t devices,
-		                         struct audio_config *config,
-		                         struct audio_stream_in **stream_in);
-		void (*close_input_stream)(struct audio_hw_device *dev,
-		                           struct audio_stream_in *stream_in);
-		int (*dump)(const struct audio_hw_device *dev, int fd);
-		int (*set_master_mute)(struct audio_hw_device *dev, bool mute);
-		int (*get_master_mute)(struct audio_hw_device *dev, bool *mute);
-	};
-	typedef struct audio_hw_device audio_hw_device_t;
+    struct audio_hw_device {
+        struct hw_device_t common;
+        uint32_t (*get_supported_devices)(const struct audio_hw_device *dev);
+        int (*init_check)(const struct audio_hw_device *dev);
+        int (*set_voice_volume)(struct audio_hw_device *dev, float volume);
+        int (*set_master_volume)(struct audio_hw_device *dev, float volume);
+        int (*get_master_volume)(struct audio_hw_device *dev, float *volume);
+        int (*set_mode)(struct audio_hw_device *dev, audio_mode_t mode);
+        int (*set_mic_mute)(struct audio_hw_device *dev, bool state);
+        int (*get_mic_mute)(const struct audio_hw_device *dev, bool *state);
+        int (*set_parameters)(struct audio_hw_device *dev, const char *kv_pairs);
+        char * (*get_parameters)(const struct audio_hw_device *dev,
+                                 const char *keys);
+        size_t (*get_input_buffer_size)(const struct audio_hw_device *dev,
+                                        const struct audio_config *config);
+        int (*open_output_stream)(struct audio_hw_device *dev,
+                                  audio_io_handle_t handle,
+                                  audio_devices_t devices,
+                                  audio_output_flags_t flags,
+                                  struct audio_config *config,
+                                  struct audio_stream_out **stream_out);
+        void (*close_output_stream)(struct audio_hw_device *dev,
+                                    struct audio_stream_out* stream_out);
+        int (*open_input_stream)(struct audio_hw_device *dev,
+                                 audio_io_handle_t handle,
+                                 audio_devices_t devices,
+                                 struct audio_config *config,
+                                 struct audio_stream_in **stream_in);
+        void (*close_input_stream)(struct audio_hw_device *dev,
+                                   struct audio_stream_in *stream_in);
+        int (*dump)(const struct audio_hw_device *dev, int fd);
+        int (*set_master_mute)(struct audio_hw_device *dev, bool mute);
+        int (*get_master_mute)(struct audio_hw_device *dev, bool *mute);
+    };
+    typedef struct audio_hw_device audio_hw_device_t;
 ```
 
  * AudioFlinger에서 hw_get_module와 audio_hw_device_open를 호출하여 audio HAL과 연결을 먼저하고, 
@@ -257,68 +257,68 @@ TARGET_BOARD_HARDWARE ?= rk30board
 ```
 device/rockchip/common/device.mk
 ```
-	PRODUCT_COPY_FILES += \
-		$(LOCAL_PATH)/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
-		$(LOCAL_PATH)/audio_policy_volumes_drc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes_drc.xml \
-		frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
-		frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration_7_0.xml \
-		frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
-		frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
-		frameworks/av/media/libeffects/data/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
+    PRODUCT_COPY_FILES += \
+        $(LOCAL_PATH)/audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_configuration.xml \
+        $(LOCAL_PATH)/audio_policy_volumes_drc.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_policy_volumes_drc.xml \
+        frameworks/av/services/audiopolicy/config/default_volume_tables.xml:$(TARGET_COPY_OUT_VENDOR)/etc/default_volume_tables.xml \
+        frameworks/av/services/audiopolicy/config/a2dp_audio_policy_configuration_7_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/a2dp_audio_policy_configuration_7_0.xml \
+        frameworks/av/services/audiopolicy/config/r_submix_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/r_submix_audio_policy_configuration.xml \
+        frameworks/av/services/audiopolicy/config/usb_audio_policy_configuration.xml:$(TARGET_COPY_OUT_VENDOR)/etc/usb_audio_policy_configuration.xml \
+        frameworks/av/media/libeffects/data/audio_effects.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio_effects.xml
 
-	(...)
+    (...)
 
-	$(call inherit-product-if-exists, hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk)
+    $(call inherit-product-if-exists, hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk)
 
-	(...)
+    (...)
 
-	# audio lib
-	PRODUCT_PACKAGES += \
-		audio_policy.$(TARGET_BOARD_HARDWARE) \
-		audio.primary.$(TARGET_BOARD_HARDWARE) \
-		audio.alsa_usb.$(TARGET_BOARD_HARDWARE) \
-		audio.a2dp.default\
-		audio.r_submix.default\
-		libaudioroute\
-		audio.usb.default\
-		libanr
+    # audio lib
+    PRODUCT_PACKAGES += \
+        audio_policy.$(TARGET_BOARD_HARDWARE) \
+        audio.primary.$(TARGET_BOARD_HARDWARE) \
+        audio.alsa_usb.$(TARGET_BOARD_HARDWARE) \
+        audio.a2dp.default\
+        audio.r_submix.default\
+        libaudioroute\
+        audio.usb.default\
+        libanr
 
-	PRODUCT_PACKAGES += \
-		android.hardware.audio@2.0-service \
-		android.hardware.audio@7.0-impl \
-		android.hardware.audio.effect@7.0-impl
+    PRODUCT_PACKAGES += \
+        android.hardware.audio@2.0-service \
+        android.hardware.audio@7.0-impl \
+        android.hardware.audio.effect@7.0-impl
 
-	(...)
-		
-	# audio lib
-	PRODUCT_PACKAGES += \
-		libasound \
-		alsa.default \
-		acoustics.default \
-		libtinyalsa \
-		tinymix \
-		tinyplay \
-		tinycap \
-		tinypcminfo
+    (...)
+        
+    # audio lib
+    PRODUCT_PACKAGES += \
+        libasound \
+        alsa.default \
+        acoustics.default \
+        libtinyalsa \
+        tinymix \
+        tinyplay \
+        tinycap \
+        tinypcminfo
 
-	PRODUCT_PACKAGES += \
-		alsa.audio.primary.$(TARGET_BOARD_HARDWARE)\
-		alsa.audio_policy.$(TARGET_BOARD_HARDWARE)
+    PRODUCT_PACKAGES += \
+        alsa.audio.primary.$(TARGET_BOARD_HARDWARE)\
+        alsa.audio_policy.$(TARGET_BOARD_HARDWARE)
 
-	(...)
+    (...)
 
-	USE_XML_AUDIO_POLICY_CONF := 1
+    USE_XML_AUDIO_POLICY_CONF := 1
 
-	(...)
+    (...)
 
-	# add AudioSetting
-	PRODUCT_PACKAGES += \
-		rockchip.hardware.rkaudiosetting@1.0-service \
-		rockchip.hardware.rkaudiosetting@1.0-impl \
-		rockchip.hardware.rkaudiosetting@1.0
+    # add AudioSetting
+    PRODUCT_PACKAGES += \
+        rockchip.hardware.rkaudiosetting@1.0-service \
+        rockchip.hardware.rkaudiosetting@1.0-impl \
+        rockchip.hardware.rkaudiosetting@1.0
 
-	PRODUCT_COPY_FILES += \
-		$(LOCAL_PATH)/rt_audio_config.xml:/system/etc/rt_audio_config.xml
+    PRODUCT_COPY_FILES += \
+        $(LOCAL_PATH)/rt_audio_config.xml:/system/etc/rt_audio_config.xml
 
 ```
  > "android.hardware.audio@7.0-impl" 에서 impl은 implementation의 약어.
@@ -326,9 +326,9 @@ device/rockchip/common/device.mk
 
 device/rockchip/common/BoardConfig.mk
 ```
-	(...)
-	# Audio
-	BOARD_USES_GENERIC_AUDIO ?= true
+    (...)
+    # Audio
+    BOARD_USES_GENERIC_AUDIO ?= true
 
 ```
 hardware/rockchip/audio/tinyalsa_hal/codec_config/rk_audio.mk
@@ -477,6 +477,7 @@ typedef enum _AudioRoute {
 <hr>
 
 # Develop
+> audio hal layer 개발 자료 정리
 
 <br/>
 <br/>
@@ -489,6 +490,18 @@ typedef enum _AudioRoute {
 adb root ; adb remount ; adb push  device/COMPANY/test/rk3568_edpp01/audio/audio_policy_configuration.xml  /vendor/etc/
 adb root ; adb remount ; adb push  out/target/product/rk3568_edpp01/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/
 scrcpy -m1024 --always-on-top
+```
+
+## Develop : PlanB
+
+```bash
+//create_patch
+AudioHardwareTiny: out_set_parameters: kvpairs = io_path=door_ring;routing=1677721
+
+
+//release_patch
+AudioHardwareTiny: out_set_parameters: kvpairs = routing=0
+
 ```
 
 <br/>
@@ -510,7 +523,7 @@ scrcpy -m1024 --always-on-top
  - [ ] *android_policy_configuration.xml*에서 **role** 의 속성으로 *sink(output)*, *source(input)* 을 세팅하는데, door와 같은 시나리오에 어떻게 적용해야 하나 ?
  - [ ] prebuilts/vndk/v31/x86_x64/include/hardware/libhardware/include/hardware/audio.h : 뭐하는 곳?
  - [ ] to enable the audio patch feature, the audio HAL should set the major HAL version 3.0 or higher? : https://source.android.com/docs/core/audio/device-type-limit
-	 ref : audio HAL for Cuttlefish 
+     ref : audio HAL for Cuttlefish 
  - [ ] 자동차 오디오 HAL 구현 :  https://source.android.com/docs/devices/automotive/audio/audio-hal?hl=ko
  
  - [ ] audiopolicymanager_tests :  gtest Framework를 사용하는 테스트 프로그램
@@ -519,3 +532,69 @@ scrcpy -m1024 --always-on-top
  - [x] frames_rd 는 오디오 드라이버가 읽은 오디오 프레임 수를 의미함. 오디오 드라이버는 오디오 스트림에서 오디오 데이터를 읽고 이 데이터를 하드웨어에 전송한다. frames_rd 값은 오디오 드라이버가 읽은 오디오 프레임 수와 오디오 하드웨어에 전송된 오디오 프레임 수를 추적하는데 사용.
 
 
+<br/>
+<br/>
+<br/>
+<hr>
+
+## create_audio_patch
+
+```c
+ (create_patch)
+
+ out_set_parameters()
+    |
+    +-> get_io_control_route_val
+    +-> do_out_standby() // with standby(1) // do nothing.
+    +-> start_output_stream() // 
+    |       +-> route_pcm_card_open() // with io_control_path
+    |              +-> get_route_config() 
+    |              +-> route_pcm_close(PLAYBACK_OFF_ROUTE);
+    |              +-> route_set_controls() // with io_control_path
+    |
+    |  // unset standby
+
+```
+
+```c
+ (set volume)
+
+ adev_set_parameters
+    | // with kvpairs=sink_gain=3; source_gain=0
+    | 
+    +-> route_set_doorcall_volume
+
+ out_set_parameters()
+    | 
+    +-> do_out_statndby() // with standby(0)
+        |
+        +-> route_pcm_close(PLAYBACK_OFF_ROUTE)
+```
+
+```c
+ (playback touch sound)
+ out_write() // with standby(1) // out->device(2)
+    |
+    +-> start_output_stream()
+        +-> route_pcm_card_open() // with io_control_path
+                +-> get_route_config()
+                +-> route_pcm_close()
+                +-> route_set_controls() // with io_control_path
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## release_audio_patch
+
+```c
+ (relase_patch)
+ out_set_parameters()
+     |
+     +-> do_out_standby() // with standby(0)
+             |
+             +-> route_set_controls() // with IO_STBY_ROUTE
+             +-> route_pcm_close()
+```
