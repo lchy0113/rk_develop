@@ -14,6 +14,7 @@
      - [dts](#dts)  
  
  - [AK7755 Control Software](#ak7755-control-software)  
+     - [AK7755 Binary info](#ak7755-binary-info)  
   
 [Reference](#reference)  
  - [Reference RK817](#reference-rk817)  
@@ -245,6 +246,42 @@ ak7755_sound: ak7755-sound {
 
   - **SCRIPT File** : **.txt file*
   
+
+<br/>
+<br/>
+<hr>
+
+### AK7755 Binary info
+
+ - basic code
+   1. Playback (Digital to Analog)
+   2. Recording 9Analog to Digital)
+   3. Mono Recording (Analog to Digital)
+   4. SDIN - DSP - SDOUT (Digital to Digital)
+
+![](./images/AUDIO_CODEC_09.png)
+
+
+ - data2 code
+
+   1. ADC - DSP - DAC (Analog to Analog)
+
+![](./images/AUDIO_CODEC_10.png)
+
+   * 5 Band Equalizer 
+     + CRAM EQ1 Level : Level of EQ1 in 5 Band Equalizer.
+     + CRAM EQ2 Level : Level of EQ2 in 5 Band Equalizer.
+     + CRAM EQ3 Level : Level of EQ3 in 5 Band Equalizer.
+     + CRAM EQ4 Level : Level of EQ4 in 5 Band Equalizer.
+     + CRAM EQ5 Level : Level of EQ5 in 5 Band Equalizer.
+
+   * HPF
+     + CRAM HPF1 fc : cut off frequency of High Pass Filter HPF1
+     + CRAM HPF2 fc : cut off frequency of High Pass Filter HPF2
+
+   * Limiter & Volume
+     + CRAM Limiter Relese Time : Release time of Limiter
+
 <br/>
 <br/>
 <hr>
@@ -563,7 +600,7 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 >> AsahiKASEI 사 AK7755 를 레퍼런스 함.  
   
  - block diagram 
-    ![](images/AU DIO_CODEC_01.png)  
+    ![](images/AUDIO_CODEC_01.png)  
   
  - Path and Sequence   
    * playback(digital to analog)  
