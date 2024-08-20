@@ -4,12 +4,12 @@
 <br/>
 <br/>
 <br/>
+<br/>
 <hr>
 
 [Fn-Link 6222D-UUC](#fn-link-6222d-uuc)  
 [Fn-Link 6222B-SRC](#fn-link-6222b-src)  
 
-<br/>
 <br/>
 <br/>
 <br/>
@@ -54,7 +54,6 @@
 <br/>
 <br/>
 <br/>
-<br/>
 <hr>
 
 ## Fn-Link 6222B-SRC
@@ -67,7 +66,6 @@
    * UAR/PCM interface for Bluetooth
  - bluettoth : bt5.0 
 
-<br/>
 <br/>
 <br/>
 <br/>
@@ -112,6 +110,10 @@ Bus 001 Device 002: ID 0bda:c82c
 /vendor/lib/modules/88x2cu.ko
 ```
 
+<br/>
+<br/>
+<hr>
+
 ### wifi chip recognition process
 
  1. power up wifi module
@@ -128,6 +130,9 @@ hardware/realtek
 external/wpa_supplicant_8
 ```
 
+<br/>
+<br/>
+<hr>
 
 ### HAL
 
