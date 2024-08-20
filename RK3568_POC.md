@@ -62,32 +62,32 @@
 ```
 
  - rk3568_rgb_p05 board
-	  
+
 ```bash
 +---------------+
 | [RK3568]      |
 |               |
-|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:serial0
+|  SERIAL0------+ <----> device control;rs485(/w GPIO0_C4) aliases:/dev/ttyS0
 |               |
-|  SERIAL1-+-M0-+ <----> 공용부
+|  SERIAL1-+-M0-+ <----> loby;rs485 aliases:/dev/ttyS3
 |          +-M1-+
 |               |
-|  SERIAL2-+-M0-+ <----> zigbee aliases:serial3
+|  SERIAL2-+-M0-+ <----> none aliases:/dev/ttyS2
 |          +-M1-+
 |               |
-|  SERIAL3-+-M0-+ 
+|  SERIAL3-+-M0-+
 |          +-M1-+
 |               |
-|  SERIAL4-+-M0-+ <----> sub device;rs485(w/ GPIO1_A5) sub-phone aliases:serial1
+|  SERIAL4-+-M0-+ <----> sub device;rs485 sub-phone aliases:/dev/ttyS1
 |          +-M1-+
 |               |
-|  SERIAL5-+-M0-+ <----> reserve
+|  SERIAL5-+-M0-+
 |          +-M1-+
 |               |
-|  SERIAL6-+-M0-+ <----> bluetooth
+|  SERIAL6-+-M0-+ <----> bluetooth;rtscts aliases:/dev/ttyS7
 |          +-M1-+
 |               |
-|  SERIAL7-+-M0-+ <----> rfid door
+|  SERIAL7-+-M0-+ <----> rfid door;rs485 aliases:/dev/ttyS4
 |          +-M1-+
 |               |
 |  SERIAL8-+-M0-+
