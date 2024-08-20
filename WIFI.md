@@ -13,7 +13,7 @@
 [Develop](#develop)  
 
 [Reference](#reference)  
-  [..Document](#document)  
+[..Document](#document)  
 
 <br/>
 <br/>
@@ -70,6 +70,39 @@
    * SDIO V3.0/V2.0/V1.1 interface for WLAN
    * UAR/PCM interface for Bluetooth
  - bluettoth : bt5.0 
+
+```bash
++------------------------+             +-----------------+
+|(host)                  |             |(combomodule)    |
+| GPIO1_B1   BT_WAKE_HOST+-------------+BT_WAKE_HOST     |
+| GPIO1_B0   HOST_WAKE_BT+-------------+HOST_WAKE_BT     |
+|                        |             |                 |
+| GPIOx_xx         BT_RTS+-------------+UART_CTS_N       |
+| GPIOx_xx         BT_CTS+-------------+UART_RTS_N       |
+| GPIOx_xx         BT_TXD+-------------+UART_RXD         |
+| GPIOx_xx         BT_RXD+-------------+UART_TXD         |
+|                        |             |                 |
+| GPIOx_xx          BT_EN+-------------+BT_REG_ON        |
+|                        |             |                 |
+|                        |             |                 |
+| GPIO1_A7         WL_RST+-------------+SD_RESET         |
+|                        |             |                 |
+| GPIO0_A4          WL_EN+-------------+WL_REG_ON        |
+| GPIO1_B3   WL_WAKE_HOST+-------------+WL_WAKE_HOST     |
+|                        |             |                 |
+| GPIO0_B5   WL_SDIO0_INT+-------------+WL_WAKE_HOST/OOB |
+|                        |             |                 |
+| SDMMC0_D0   WL_SDIO0_D0+-------------+SDIO_DATA_0      |
+| SDMMC0_D1   WL_SDIO0_D1+-------------+SDIO_DATA_1      |
+| SDMMC0_D2   WL_SDIO0_D2+-------------+SDIO_DATA_2      |
+| SDMMC0_D3   WL_SDIO0_D3+-------------+SDIO_DATA_3      |
+| SDMMC0_CLK WL_SDIO0_CLK+-------------+SDIO_CLK         |
+| SDMMC0_CMD WL_SDIO0_CMD+-------------+SDIO_CMD         |
+|                        |             |                 |
++------------------------+             +-----------------+
+
+```
+
 
 <br/>
 <br/>
@@ -179,3 +212,4 @@ device/rockchip/common/device.mk
 <hr>
 
 ### Document
+
