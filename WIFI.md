@@ -215,6 +215,15 @@ device/rockchip/common/device.mk
 
 <br/>
 <br/>
+<hr>
+
+### module
+
+ - drivers/net/wireless/rockchip_wlan/rtl8821cs/ 
+// rtl8821cs module base 로 진행
+
+<br/>
+<br/>
 <br/>
 <hr>
 
