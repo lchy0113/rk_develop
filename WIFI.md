@@ -74,6 +74,8 @@
 ```bash
 +--------------------------+             +-----------------+
 |(host)                    |             |(combomodule)    |
+| GPIOx_xx            BT_EN+-------------+BT_REG_ON        | //enable pin for bt device.(on:high,off:low)
+|                          |             |                 |
 | GPIO1_B1     BT_WAKE_HOST+-------------+BT_WAKE_HOST     |
 | GPIO1_B0     HOST_WAKE_BT+-------------+HOST_WAKE_BT     |
 |                          |             |                 |
@@ -82,15 +84,15 @@
 | GPIOx_xx           BT_TXD+-------------+UART_RXD         |
 | GPIOx_xx           BT_RXD+-------------+UART_TXD         |
 |                          |             |                 |
-| GPIOx_xx            BT_EN+-------------+BT_REG_ON        |
 |                          |             |                 |
 |                          |             |                 |
-| GPIO1_A7(39)       WL_RST+-------------+SD_RESET         |
+| GPIO1_A7(39)       WL_RST+-------------+SD_RESET         | //reset active low
 |                          |             |                 |
-| GPIO0_A4(4)         WL_EN+-------------+WL_REG_ON        |
+| GPIO0_A4(4)         WL_EN+-------------+WL_REG_ON        | //enable pin for wlan device.(on:high,off:low)
+|                          |             |                 |
 | GPIO1_B3(43) WL_WAKE_HOST+-------------+WL_WAKE_HOST     |
 |                          |             |                 |
-| GPIO0_B5     WL_SDIO0_INT+-------------+WL_WAKE_HOST/OOB |
+| GPIO0_B5(13) WL_SDIO0_INT+-------------+WL_WAKE_HOST/OOB |
 |                          |             |                 |
 | SDMMC0_D0     WL_SDIO0_D0+-------------+SDIO_DATA_0      |
 | SDMMC0_D1     WL_SDIO0_D1+-------------+SDIO_DATA_1      |
@@ -132,6 +134,17 @@ project device/kdiwin/nova/common/              (*** NO BRANCH ***)
 
 ```
 
+
+ - interface
+
+```bash
+/sys/bus/sdio/devices/mmc0:0001:1 # cat uevent 
+SDIO_CLASS=07
+SDIO_ID=024C:C822
+MODALIAS=sdio:c07v024CdC822
+```
+
+ - kernel module
 
 CONFIG_RTL8822CU
 
