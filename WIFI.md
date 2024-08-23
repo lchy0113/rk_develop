@@ -74,10 +74,10 @@
 ```bash
 +--------------------------+             +-----------------+
 |(host)                    |             |(combomodule)    |
-| GPIOx_xx            BT_EN+-------------+BT_REG_ON        | //enable pin for bt device.(on:high,off:low)
+| GPIOx_xx            BT_EN+----->>>-----+BT_REG_ON(38)    | //enable pin for bt device.(on:high,off:low)
 |                          |             |                 |
-| GPIO1_B1     BT_WAKE_HOST+-------------+BT_WAKE_HOST     |
-| GPIO1_B0     HOST_WAKE_BT+-------------+HOST_WAKE_BT     |
+| GPIO1_B1     BT_WAKE_HOST+-----<<<-----+BT_WAKE_HOST(50) | //bt device to wake-up HOST
+| GPIO1_B0     HOST_WAKE_BT+----->>>-----+HOST_WAKE_BT(49) | //HOST wake-up bt device
 |                          |             |                 |
 | GPIOx_xx           BT_RTS+-------------+UART_CTS_N       |
 | GPIOx_xx           BT_CTS+-------------+UART_RTS_N       |
@@ -86,13 +86,13 @@
 |                          |             |                 |
 |                          |             |                 |
 |                          |             |                 |
-| GPIO1_A7(39)       WL_RST+-------------+SD_RESET         | //reset active low
+| GPIO1_A7(39)       WL_RST+----->>>-----+SD_RESET(44)     | //reset active low
 |                          |             |                 |
-| GPIO0_A4(4)         WL_EN+-------------+WL_REG_ON        | //enable pin for wlan device.(on:high,off:low)
+| GPIO0_A4(4)         WL_EN+----->>>-----+WL_REG_ON(15)    | //enable pin for wlan device.(on:high,off:low)
+|                          |             |                 |    (WL_DIS_N)(if Pin44 connected this pin can NC)
+| GPIO1_B3(43) WL_WAKE_HOST+-----<<<-----+WL_WAKE_HOST(16) | //WLAN to wake-up HOST
 |                          |             |                 |
-| GPIO1_B3(43) WL_WAKE_HOST+-------------+WL_WAKE_HOST     |
-|                          |             |                 |
-| GPIO0_B5(13) WL_SDIO0_INT+-------------+WL_WAKE_HOST/OOB |
+| GPIO0_B5(13) WL_SDIO0_INT+-----<<<-----+WL_WAKE_HOST/OOB | //SDIO interrupt
 |                          |             |                 |
 | SDMMC0_D0     WL_SDIO0_D0+-------------+SDIO_DATA_0      |
 | SDMMC0_D1     WL_SDIO0_D1+-------------+SDIO_DATA_1      |
@@ -104,6 +104,12 @@
 +--------------------------+             +-----------------+
 
 ```
+
+
+ - Host Interface Timing
+
+   * power up timing
+     + vdd >>> SD_RESET(39)(high) >>> CHIP_EN(4)(high) 
 
 
 <br/>
@@ -137,6 +143,23 @@ project device/kdiwin/nova/common/              (*** NO BRANCH ***)
 
  - interface
 
+ 전원이 켜진 후, 시스템에 SDIO wifi 장치가 있는지 확인. 
+ sdio 의 경우 아래 로그 출력.
+
+```bash
+mmc0:new ultra high speed SDR104 SDIO card at address 0001
+mmc0: new high speed SDIO card at address 0001
+
+mmc2: new HS200 MMC card at address 0001
+
+```
+
+ sdio interface 에 연결된 sdio pid, vid정보를 통해 확인.
+ RTL8822CS 모듈의 SDIO PID와 VID 정보는 다음과 같습니다:
+
+ Vendor ID (VID): 0x024C
+ Product ID (PID): 0xC822
+
 ```bash
 /sys/bus/sdio/devices/mmc0:0001:1 # cat uevent 
 SDIO_CLASS=07
@@ -159,6 +182,9 @@ Bus 001 Device 002: ID 0bda:c82c
 
 # module file  
 /vendor/lib/modules/88x2cu.ko
+
+# insmod module with debug level
+# insmod 8822.ko rtw_drv_log_level=6
 ```
 
 <br/>
@@ -221,6 +247,7 @@ device/rockchip/common/device.mk
 
  - drivers/net/wireless/rockchip_wlan/rtl8821cs/ 
 // rtl8821cs module base 로 진행
+// rtl8821cs 는 기존 kernel 에 있는 코드
 
 <br/>
 <br/>
