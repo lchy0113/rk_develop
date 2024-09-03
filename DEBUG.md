@@ -145,6 +145,26 @@ fdc60074:  00001000 00000001
 ```
 
 
+### 사용 예제(GPIO0_A4)
+ - View the multiplexing of GPIO0_A4 pins  
+
+```bash
+
+// change to gpio0_a4 
+rk3568_poc:/ # io -4 -r -l 0x10 0xfdc60004
+rk3568_poc:/ # io -4 -w 0xfdc60004 0x00030000
+
+rk3568_poc:/ # io -4 -r -l 0x4 0xfdd60008 
+rk3568_poc:/ # io -4 -w 0xfdd60008 
+
+```
+
+
+
+
+
+
+
 ### GRF Address Mapping Table
 ![](./images/DEBUG_01.png)
 
