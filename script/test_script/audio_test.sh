@@ -1,5 +1,16 @@
 #!/bin/bash
 
+#ADB_DEVICE=192.168.0.118:5577
+ADB_DEVICE=c3ed44535eb7d217
+
+
+values=("default" "door_call" "door_ring" "door_subp_call" "pstn_call" "pstn_dial" "pstn_subp_call" "voip_door_call" "voip_gurd_call" "voip_gurd_subp_call" "voip_home_call" "voip_home_subp_call" "voip_loby_call" "voip_loby_subp_call")
+maxwait=100
+count=0
+
+DATE=$(date +"%Y%m%d")
+TIME=$(date +"%H%M%S")
+
 progress_bar()
 {
 	local PROG_BAR_MAX=${1:-30}
@@ -22,18 +33,34 @@ progress_bar()
 	echo
 }
 
-values=("default" "door_call" "door_ring" "door_subp_call" "pstn_call" "pstn_dial" "pstn_subp_call" "voip_door_call" "voip_gurd_call" "voip_gurd_subp_call" "voip_home_call" "voip_home_subp_call" "voip_loby_call" "voip_loby_subp_call")
-maxwait=30
+func_procrank()
+{
+	adb -s ${ADB_DEVICE} shell procrank > log/proccrank_${DATE}-${TIME}_${count}.log
+}
+
+adb -s ${ADB_DEVICE} root ;
+adb -s ${ADB_DEVICE} remount ;
 
 while [ true ]
 do 
+	echo " - AUDIO_TEST count : $count"
 	random_index=$(($RANDOM % ${#values[@]}))
 
 	echo "Create patch value: ${values[$random_index]}"
-	adb shell "cmd wall_service set_audio_route ${values[$random_index]}"
+	adb -s ${ADB_DEVICE} shell "cmd wall_service set_audio_route ${values[$random_index]}"
 	
 	delay=$((RANDOM%$maxwait))
 	progress_bar $delay
 
+	if [ $((count % 100)) -eq 0 ]; then
+		echo ""
+		echo "save log..."
+		echo ""
+		func_procrank
+	else
+		echo ""
+		echo ""
+	fi
 
+	count=$((count + 1))
 done
