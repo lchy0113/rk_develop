@@ -261,6 +261,22 @@ device/rockchip/common/device.mk
 ```
 
 
+ - android.hardware.wifi@1.0  
+ wifi hal의 이름이며, android system server 와 통신하여 wifi 기능 제어.
+ 기존의 wpa_supplicant 프로세스를 대체하는 hidl 인터페이스로 wifi 인증 및 연결 관리 담당.
+
+ /hardware/interfaces/wifi/1.5/default/Android.mk
+
+```bash
+int main(...) 
+   |
+   +-> int wifi_load_driver() // frameworks/opt/net/wifi/libwifi_hal
+         // libwifi_hal코드는 frameworks/opt/net/wifi 경로에 위치하는데, 프레임워크의 일부로 통합되어 있음.
+
+
+
+```
+
 <br/>
 <br/>
 <hr>
@@ -310,6 +326,9 @@ device/rockchip/common/device.mk
  3. pcba bt
 
 
+<br/>
+<br/>
+<hr>
 
 ### ble
 
@@ -323,6 +342,13 @@ device/rockchip/common/device.mk
    GATT는 연결이 설정된 후에 사용되며, 연결은 독점적이다. 
    즉, ble 주변 장치는 한번에 하나의 중앙 장치(ex. smartphone) 에 만 연결할 수 있다. 
    연결이 설정되면 양방향 통신이 가능하며, 중앙 장치와 주변 장치간에 데이터를 주고 받을 수 있다. 
+
+<br/>
+<br/>
+<hr>
+
+### HAL
+ 
 
 <br/>
 <br/>
