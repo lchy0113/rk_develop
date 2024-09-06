@@ -21,10 +21,10 @@
 # Panel 장치
 ## Documentation and source code
 - kernel
-	drivers/gpu/drm/panel/panel-simple.c
-	Documentation/devicetree/bindings/display/panel/simple-panel.txt
+    drivers/gpu/drm/panel/panel-simple.c
+    Documentation/devicetree/bindings/display/panel/simple-panel.txt
 - uboot (next-dev)
-	drivers/video/drm/rockchip_panel.c
+    drivers/video/drm/rockchip_panel.c
 
 ## DT binding
 1) simple-panel(lvds/rgb/edp)
@@ -39,80 +39,80 @@
 # RGB 인터페이스
 ## Documentation and source code
 - uboot (next-dev)
-	drivers/video/drm/rockchip_rgb.c
-	drivers/video/drm/inno_video_combo_phy.c
-	drivers/video/drm/inno_video_phy.c
+    drivers/video/drm/rockchip_rgb.c
+    drivers/video/drm/inno_video_combo_phy.c
+    drivers/video/drm/inno_video_phy.c
 
 ## DT Bindings (rgb)
 ### Host
 ```dtb
 &rgb {
-	status = "okay";
+    status = "okay";
 
-	ports {
-		port@1 {
-			reg = <1>;
+    ports {
+        port@1 {
+            reg = <1>;
 
-			rgb_out_panel: endpoint {
-				remote-endpoint = <&panel_in_rgb>;
-			};
-		};
-	};
+            rgb_out_panel: endpoint {
+                remote-endpoint = <&panel_in_rgb>;
+            };
+        };
+    };
 };
 ```
 
 ### PHY
 ```dtb
-&video_phy	{
-	status = "okay";
+&video_phy    {
+    status = "okay";
 };
 ```
 
 
 ### Panel
 ```dtb
-	panel {
-		compatible = "simple-panel";
-		bus-format = <MEDIA_BUS_FMT_RGB666_1X24_CPADHI>;
-		backlight = <&backlight>;
-		enable-gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_LOW>;
-		enable-delay-ms = <20>;
-		reset-gpios = <&gpio0 RK_PB7 GPIO_ACTIVE_LOW>;
-		reset-delay-ms = <10>;
-		prepare-delay-ms = <20>;
-		unprepare-delay-ms = <20>;
-		disable-delay-ms = <20>;
-		status = "okay";
-		width-mm = <1024>;
-		height-mm = <600>;
-		bpc = <8>;
+    panel {
+        compatible = "simple-panel";
+        bus-format = <MEDIA_BUS_FMT_RGB666_1X24_CPADHI>;
+        backlight = <&backlight>;
+        enable-gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_LOW>;
+        enable-delay-ms = <20>;
+        reset-gpios = <&gpio0 RK_PB7 GPIO_ACTIVE_LOW>;
+        reset-delay-ms = <10>;
+        prepare-delay-ms = <20>;
+        unprepare-delay-ms = <20>;
+        disable-delay-ms = <20>;
+        status = "okay";
+        width-mm = <1024>;
+        height-mm = <600>;
+        bpc = <8>;
 
-		display-timings {
-			native-mode = <&timing0>;
+        display-timings {
+            native-mode = <&timing0>;
 
-			timing0: timing0 {
-				clock-frequency = <51200000>;
-				hactive = <1024>;
-				vactive = <600>;
-				hback-porch = <140>;
-				hfront-porch = <160>;
-				vback-porch = <20>;
-				vfront-porch = <12>;
-				hsync-len = <100>;
-				vsync-len = <10>;
-				hsync-active = <1>;
-				vsync-active = <1>;
-				de-active = <0>;
-				pixelclk-active = <1>;
-			};
-		};
+            timing0: timing0 {
+                clock-frequency = <51200000>;
+                hactive = <1024>;
+                vactive = <600>;
+                hback-porch = <140>;
+                hfront-porch = <160>;
+                vback-porch = <20>;
+                vfront-porch = <12>;
+                hsync-len = <100>;
+                vsync-len = <10>;
+                hsync-active = <1>;
+                vsync-active = <1>;
+                de-active = <0>;
+                pixelclk-active = <1>;
+            };
+        };
 
-		ports {
-			panel_in_rgb: endpoint {
-				remote-endpoint = <&rgb_out_panel>;
-			};
-		};
-	};
+        ports {
+            panel_in_rgb: endpoint {
+                remote-endpoint = <&rgb_out_panel>;
+            };
+        };
+    };
 ```
 
 <br/>  
@@ -127,18 +127,18 @@
 ### Host
 ```dtb
 &hdmi {
-	status = "okay";
-	rockchip,phy-table =
-		<92812500  0x8009 0x0000 0x0270>,
-		<165000000 0x800b 0x0000 0x026d>,
-		<185625000 0x800b 0x0000 0x01ed>,
-		<297000000 0x800b 0x0000 0x01ad>,
-		<594000000 0x8029 0x0000 0x0088>,
-		<000000000 0x0000 0x0000 0x0000>;
+    status = "okay";
+    rockchip,phy-table =
+        <92812500  0x8009 0x0000 0x0270>,
+        <165000000 0x800b 0x0000 0x026d>,
+        <185625000 0x800b 0x0000 0x01ed>,
+        <297000000 0x800b 0x0000 0x01ad>,
+        <594000000 0x8029 0x0000 0x0088>,
+        <000000000 0x0000 0x0000 0x0000>;
 };
 
 &hdmi_in_vp0 {
-	status = "okay";
+    status = "okay";
 };
 
 ```
@@ -148,34 +148,34 @@
 ### Host
 ```dtb
 &edp {
-	hpd-gpios = <&gpio0 RK_PC2 GPIO_ATIVE_HIGH>;
-	status = "okay";
+    hpd-gpios = <&gpio0 RK_PC2 GPIO_ATIVE_HIGH>;
+    status = "okay";
 };
 ```
 
 ### PHY
 ```dtb
 &edp_phy {
-	status = "okay";
+    status = "okay";
 };
 
 
 &edp_in_vp0 {
-	status = "okay";
+    status = "okay";
 };
 
 &edp_in_vp1 {
-	status = "disabled";
+    status = "disabled";
 };
 ```
 
 ### Panel
 ```dtb
-	panel {
-		compatible = "simple-panel";
-		bus-format = <MEDIA_BUS_FMT_RGB666_1X24_CPADHI>;
-		backlight = <&backlight>;
-	
+    panel {
+        compatible = "simple-panel";
+        bus-format = <MEDIA_BUS_FMT_RGB666_1X24_CPADHI>;
+        backlight = <&backlight>;
+    
 
 
 ```
@@ -335,8 +335,8 @@ id      fb      pos     size
   #1 1920x1080 47.99 1920 1944 1992 2080 1080 1083 1095 1112 111000 flags: nhsync, nvsync; type: driver 
 
     modes:                                                                                                                                                      
-	        index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot                                                                                         
-			  #0 640x480 59.94 640 656 752 800 480 489 492 525 25175 flags: nhsync, nvsync; type: preferred  
+            index name refresh (Hz) hdisp hss hse htot vdisp vss vse vtot                                                                                         
+              #0 640x480 59.94 640 656 752 800 480 489 492 525 25175 flags: nhsync, nvsync; type: preferred  
 
 # modetest -M rockchip -s 348@87:1920x1080 -v                                   <
 setting mode 1920x1080-60.01Hz on connectors 348, crtc 87
@@ -404,7 +404,7 @@ freq: 60.01Hz
 
  edp-1:  [route_edp]  -> [vp0_out_edp]  -> [edp_in_vp0]
          [route_hdmi] -> [vp1_out_hdmi] -> [hdmi_in_vp1]
-		 
+         
  edp-2:  [route_edp]  -> [vp1_out_edp]  -> [edp_in_vp1]
          [route_hdmi] -> [vp0_out_hdmi] -> [hdmi_in_vp0]
 
@@ -416,28 +416,28 @@ freq: 60.01Hz
 
 ```dtb
 display_subsystem: {
-	compatible = "rockchip,display-subsystem";
+    compatible = "rockchip,display-subsystem";
 
-	route {
-		route_dsi0:	{
-			connect = <&vp0_out_dsi0>;
-		};
-		route_dsi1:	{
-			connect = <&vp0_out_dsi1>;
-		};
-		route_edp:	{
-			connect = <&vp0_out_edp>;
-		};
-		route_hdmi:	{
-			connect = <&vp1_out_hdmi>;
-		};
-		route_lvds:	{
-			connect = <&vp1_out_lvds>;
-		};
-		route_rgb:	{
-			connect = <&vp2_out_rgb>;
-		};
-	};
+    route {
+        route_dsi0:    {
+            connect = <&vp0_out_dsi0>;
+        };
+        route_dsi1:    {
+            connect = <&vp0_out_dsi1>;
+        };
+        route_edp:    {
+            connect = <&vp0_out_edp>;
+        };
+        route_hdmi:    {
+            connect = <&vp1_out_hdmi>;
+        };
+        route_lvds:    {
+            connect = <&vp1_out_lvds>;
+        };
+        route_rgb:    {
+            connect = <&vp2_out_rgb>;
+        };
+    };
 };
 
 ```
@@ -445,150 +445,150 @@ display_subsystem: {
 - vop
 
 ```dtb
-vop: vop@fe040000	{
-	compatible = "rockhcip,rk3568-vop";
+vop: vop@fe040000    {
+    compatible = "rockhcip,rk3568-vop";
 
-	vop_out: ports {
-		vp0: port@0	{
-			vp0_out_dsi0:	{
-				remote-endpoint = <&dsi0_in_vp0>;
-			};
-			vp0_out_dsi1:	{
-				remote-endpoint = <&dsi1_in_vp0>;
-			};
-			vp0_out_edp:	{
-				remote-endpoint = <&edp_in_vp0>;
-			};
-			vp0_out_hdmi:	{
-				remote-endpoint = <&hdmi_in_vp0>;
-			};
-		};
-		vp1: port@1	{
-			vp1_out_dsi0:	{
-				remote-endpoint = <&dsi0_in_vp1>;
-			};
-			vp1_out_dsi1:	{
-				remote-endpoint = <&dsi1_in_vp1>;
-			};
-			vp1_out_edp:	{
-				remote-endpoint = <&edp_in_vp1>;
-			};
-			vp1_out_hdmi:	{
-				remote-endpoint = <&hdmi_in_vp1>;
-			};
-			vp1_out_lvds:	{
-				remote-endpoint = <&lvds_in_vp1>;
-			};
-		};
-		vp2: port@2	{
-			vp2_out_lvds:	{
-				remote-endpoint = <&lvds_in_vp2>;
-			};
-			vp2_out_rgb:	{
-				remote-endpoint = <&rgb_in_vp2>;
-			};
-		}:
+    vop_out: ports {
+        vp0: port@0    {
+            vp0_out_dsi0:    {
+                remote-endpoint = <&dsi0_in_vp0>;
+            };
+            vp0_out_dsi1:    {
+                remote-endpoint = <&dsi1_in_vp0>;
+            };
+            vp0_out_edp:    {
+                remote-endpoint = <&edp_in_vp0>;
+            };
+            vp0_out_hdmi:    {
+                remote-endpoint = <&hdmi_in_vp0>;
+            };
+        };
+        vp1: port@1    {
+            vp1_out_dsi0:    {
+                remote-endpoint = <&dsi0_in_vp1>;
+            };
+            vp1_out_dsi1:    {
+                remote-endpoint = <&dsi1_in_vp1>;
+            };
+            vp1_out_edp:    {
+                remote-endpoint = <&edp_in_vp1>;
+            };
+            vp1_out_hdmi:    {
+                remote-endpoint = <&hdmi_in_vp1>;
+            };
+            vp1_out_lvds:    {
+                remote-endpoint = <&lvds_in_vp1>;
+            };
+        };
+        vp2: port@2    {
+            vp2_out_lvds:    {
+                remote-endpoint = <&lvds_in_vp2>;
+            };
+            vp2_out_rgb:    {
+                remote-endpoint = <&rgb_in_vp2>;
+            };
+        }:
 
-	};
+    };
 };
 ```
 
 - display
 
 ```dtb
-grf: syscon@fdc60000	{
-	lvds: lvds	{
-		compatible = "rockchip,rk3568-lvds";
-		ports	{
-			port@0	{
-				lvds_in_vp1:	{
-					remote-endpoint = <&vp1_out_lvds>;
-				};
-				{
-				lvds_in_vp2:	{
-					remote-endpoint = <&vp2_out_lvds>;
-				};
+grf: syscon@fdc60000    {
+    lvds: lvds    {
+        compatible = "rockchip,rk3568-lvds";
+        ports    {
+            port@0    {
+                lvds_in_vp1:    {
+                    remote-endpoint = <&vp1_out_lvds>;
+                };
+                {
+                lvds_in_vp2:    {
+                    remote-endpoint = <&vp2_out_lvds>;
+                };
 
-			};
-		};
-	};
+            };
+        };
+    };
 
-	rgb: rgb	{
-		compatible = "rockchip,rk3568-rgb";
+    rgb: rgb    {
+        compatible = "rockchip,rk3568-rgb";
 
-		ports {
-			port@0	{
-				rgb_in_vp2: endpoint	{
-					remote-endpoint = <&vp2_out_rgb>;
-				};
-			};
-		};
-	};
+        ports {
+            port@0    {
+                rgb_in_vp2: endpoint    {
+                    remote-endpoint = <&vp2_out_rgb>;
+                };
+            };
+        };
+    };
 };
 
-dsi0: dsi@fe060000	{
-	compatible = "rockchip,rk3568-mipi-dsi";
-	status = "okay";	// dsi0 enabled
+dsi0: dsi@fe060000    {
+    compatible = "rockchip,rk3568-mipi-dsi";
+    status = "okay";    // dsi0 enabled
 
-	ports {
-		dsi0_in: port@0	{
-			dsi0_in_vp0:	{
-				remote-endpoint = <&vp0_out_dsi0>;
-			};
-			dsi0_in_vp1:	{
-				remote-endpoint = <&vp1_out_dsi0>;
-				status = "okay";	// dsi0_in_vp1 enabled
-			};
-		};
-	};
+    ports {
+        dsi0_in: port@0    {
+            dsi0_in_vp0:    {
+                remote-endpoint = <&vp0_out_dsi0>;
+            };
+            dsi0_in_vp1:    {
+                remote-endpoint = <&vp1_out_dsi0>;
+                status = "okay";    // dsi0_in_vp1 enabled
+            };
+        };
+    };
 };
 
-dsi1: dsi@fe070000	{
-	compatible = "rockchip,rk3568-mipi-dsi";
+dsi1: dsi@fe070000    {
+    compatible = "rockchip,rk3568-mipi-dsi";
 
-	ports {
-		dsi1_in: port@0	{
-			dsi1_in_vp0:	{
-				remote-endpoint = <&vp0_out_dsi1>;
-			};
-			dsi1_in_vp1:	{
-				remote-endpoint = <&vp1_out_dsi1>;
-			};
-		};
-	};
-};
-
-
-hdmi: hdmi@fe0a0000	{
-	compatible = "rockchip,rk3568-dw-hdmi";
-
-	ports {
-		hdmi_in: port	{
-			hdmi_in_vp0:	{
-				remote-endpoint = <&vp0_out_hdmi>;
-			};
-			hdmi_in_vp1:	{
-				remote-endpoint = <&vp1_out_hdmi>;
-			};
-
-		};
-	};
+    ports {
+        dsi1_in: port@0    {
+            dsi1_in_vp0:    {
+                remote-endpoint = <&vp0_out_dsi1>;
+            };
+            dsi1_in_vp1:    {
+                remote-endpoint = <&vp1_out_dsi1>;
+            };
+        };
+    };
 };
 
 
-edp: edp@fe0c0000	{
-	compatible = "rockchip,rk3568-edp";
+hdmi: hdmi@fe0a0000    {
+    compatible = "rockchip,rk3568-dw-hdmi";
 
-	ports {
-		edp_in: port@0	{
-			edp_in_vp0:	{
-				remote-endpoint = <&vp0_out_edp>;
-			};
-			edp_in_vp1:	{
-				remote-endpoint = <&vp1_out_edp>;
-			};
-		};
-	};
+    ports {
+        hdmi_in: port    {
+            hdmi_in_vp0:    {
+                remote-endpoint = <&vp0_out_hdmi>;
+            };
+            hdmi_in_vp1:    {
+                remote-endpoint = <&vp1_out_hdmi>;
+            };
+
+        };
+    };
+};
+
+
+edp: edp@fe0c0000    {
+    compatible = "rockchip,rk3568-edp";
+
+    ports {
+        edp_in: port@0    {
+            edp_in_vp0:    {
+                remote-endpoint = <&vp0_out_edp>;
+            };
+            edp_in_vp1:    {
+                remote-endpoint = <&vp1_out_edp>;
+            };
+        };
+    };
 };
 ```
 
@@ -604,36 +604,36 @@ edp: edp@fe0c0000	{
 rgb node : rockchip,rk3568-rgb
 ```dtb
 // rockchip/rk3568.dtsi
-	grf: syscon@fdc60000 {
-		compatible = "rockchip,rk3568-grf", "syscon", "simple-mfd";
-		reg = <0x0 0xfdc60000 0x0 0x10000>;
+    grf: syscon@fdc60000 {
+        compatible = "rockchip,rk3568-grf", "syscon", "simple-mfd";
+        reg = <0x0 0xfdc60000 0x0 0x10000>;
 ...
 
-		rgb: rgb {
-			compatible = "rockchip,rk3568-rgb";
-			pinctrl-names = "default";
-			pinctrl-0 = <&lcdc_ctl>;
-			status = "disabled";
+        rgb: rgb {
+            compatible = "rockchip,rk3568-rgb";
+            pinctrl-names = "default";
+            pinctrl-0 = <&lcdc_ctl>;
+            status = "disabled";
 
-			ports {
-				#address-cells = <1>;
-				#size-cells = <0>;
+            ports {
+                #address-cells = <1>;
+                #size-cells = <0>;
 
-				port@0 {
-					reg = <0>;
-					#address-cells = <1>;
-					#size-cells = <0>;
+                port@0 {
+                    reg = <0>;
+                    #address-cells = <1>;
+                    #size-cells = <0>;
 
-					rgb_in_vp2: endpoint@2 {
-						reg = <2>;
-						remote-endpoint = <&vp2_out_rgb>;
-						status = "disabled";
-					};
-				};
-			};
-		};
+                    rgb_in_vp2: endpoint@2 {
+                        reg = <2>;
+                        remote-endpoint = <&vp2_out_rgb>;
+                        status = "disabled";
+                    };
+                };
+            };
+        };
 
-	}
+    }
 ```
 
 driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
@@ -683,7 +683,7 @@ index ad2eb99253ad..d8023dc15788 100644
          이 에러는 특정 CRTC(CRTC 71)에서 발생.   
  - vblank wait timed out : 수직 동기화(V-sync) 기능을 사용하여 화면을 업데이트 하려고 할 때,   
                           타임아웃이 발생했다는 것을 의미.   
-						  V-sync 는 화면의 수직 리프레시 주기에 맞춰 프레임을 동기화 하는 기술.  
+                          V-sync 는 화면의 수직 리프레시 주기에 맞춰 프레임을 동기화 하는 기술.  
   
   예상 되는 원인  
  [ ] 하드웨어 :   
@@ -707,14 +707,14 @@ rk3568 poc 의 디스플레이는 아래와 같이 구성되어 동작되고 있
 
 ```
 vop_out
-	|
-	+-> vp0 (0xfe040c00)
-	|	|
-	|	+-> hdmi interface
-	|
-	+-> vp2 (0xfe040e00)
-		|
-		+-> rgb interface
+    |
+    +-> vp0 (0xfe040c00)
+    |    |
+    |    +-> hdmi interface
+    |
+    +-> vp2 (0xfe040e00)
+        |
+        +-> rgb interface
 ```
 
 - hdmi to cvbs converter 
