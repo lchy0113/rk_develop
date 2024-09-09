@@ -7,11 +7,11 @@
 Index
 =====
 
-[1. DAPM](#1-dapm)
-[2. Kcontrol](#2-kcontrol)
-[3. Widget](3-widget)
-[4. Route](4-route)
-[5. DAPM Operation](5-dapm-operation)
+[1. DAPM](#1-dapm)  
+[2. Kcontrol](#2-kcontrol)  
+[3. Widget](3-widget)  
+[4. Route](4-route)  
+[5. DAPM Operation](5-dapm-operation)  
 
 
 <br/>
