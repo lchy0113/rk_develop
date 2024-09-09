@@ -138,10 +138,10 @@ project device/kdiwin/nova/common/              (*** NO BRANCH ***)
   project kernel-4.19/                            branch feature/wifi
    -m     logo.bmp
     --     logo.bmp.dev
-	 -m     logo_kernel.bmp
-	  --     logo_kernel.bmp.dev
-	  project packages/modules/BootPrebuilt/5.10/arm64/ (*** NO BRANCH ***)
-	   -t     boot-userdebug.img
+     -m     logo_kernel.bmp
+      --     logo_kernel.bmp.dev
+      project packages/modules/BootPrebuilt/5.10/arm64/ (*** NO BRANCH ***)
+       -t     boot-userdebug.img
 
 ```
 
@@ -349,6 +349,35 @@ int main(...)
 
 ### HAL
  
+ android.hardware.bluetooth@1.0
+
+ Android 하드웨어 HAL 레이어의 인터페이스 중 하나로, 블루투스 하드웨어와 상호 작용하기 위한 표준 인터페이스를 정의.
+ Android 프레임워크와 블루투스 하드웨어 간의 통신 지원.
+ 블루투스 HAL 헤더 파일 : hardware/libhardware/include/hardware/bluetooth.h 
+
+ hardware/interfaces/bluetooth/1.0/default/Android.bp
+
+```
+cc_binary {
+    name: "android.hardware.bluetooth@1.0-service",
+    defaults: ["hidl_defaults"],
+    relative_install_path: "hw",
+    vendor: true,
+    init_rc: ["android.hardware.bluetooth@1.0-service.rc"],
+    srcs: ["service.cpp"],
+
+    shared_libs: [
+        "liblog",
+        "libcutils",
+        "libdl",
+        "libbase",
+        "libutils",
+        "libhardware",
+        "libhidlbase",
+        "android.hardware.bluetooth@1.0",
+    ],
+}
+```
 
 <br/>
 <br/>
