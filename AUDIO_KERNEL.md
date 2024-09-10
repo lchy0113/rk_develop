@@ -1122,6 +1122,17 @@ EXPORT_SYMBOL_GPL(snd_soc_dapm_add_routes);
 
 ```
 
+```c
+snd_soc_dapm_route= {
+ {"Line OUT1", NULL, "LineOut Amp1"},
+
+// "Line OUT1" : route 목적지 위젯 의미."Line OUT1" 이라는 출력 위젯 의미 
+// NULL : route 제어 신호, NULL은 제어 신호가 필요하지 않음을 의미
+// "LineOut Amp1" : route 경로의 출발지 위젯 의미. "LineOut Amp1"이라는 입력 위젯 의미
+// LineOut Amp1 에서 Line OUT1 
+}
+```
+
 <br/>
 <br/>
 <br/>
@@ -1235,7 +1246,126 @@ static int dapm_generic_check_power(struct snd_soc_dapm_widget *w)
 <br/>
 <hr>
 
-## 5.5 정리
+## 5.5 soc-dapm.h
+
+> SoC dynamic audio power management
+
+ 4개의 power domains 제공
+
+ 1. Codec domain - VREF, VMID
+  - SND_SOC_DAPM_VMID
+
+ 2. Platform/Machine domain - 물리적인 입력/출력 장치 연결, ex, HP
+  - SND_SOC_DAPM_SIGGEN
+  - SND_SOC_DAPM_SINK
+  - SND_SOC_DAPM_INPUT
+  - SND_SOC_DAPM_OUTPUT : 오디오 코덱의 출력 핀 의미.
+```c
+SND_SOC_DAPM_OUTPUT("Line Out1"),
+// "Line Out1" : 출력 핀 이름을 나타냄.
+```
+  - SND_SOC_DAPM_MIC
+  - SND_SOC_DAPM_HP
+  - SND_SOC_DAPM_SPK
+  - SND_SOC_DAPM_LINE
+  - SND_SOC_DAPM_INIT_REG_VAL
+
+ 3. Path domain - 내부 코덱 path mixer 에 의해 자동으로 세팅. 
+> mixer와 mux세팅이 유저에 의해 변경될 때, 자동으로 세팅되게 해주는 widget(alsamixer나 amixer에서 사용)
+  - SND_SOC_DAPM_PGA : DAPM인터페이스에서 Programmable Gain Amplifier를 정의하는데 사용. 
+  Macro는 오디오 PATH에서 특정 widget을 정의하고 해당 widget이 활성화/비활성화 될 때 수행할 작업 지정
+```c
+SND_SOC_DAPM_PGA("DSP", AK7755_CF_RESET_POWER_SETTING,2 ,0, NULL, 0)
+// "DSP" : widget 이름
+// AK7755_CF_RESET_POWER_SETTING : 레지스터 주소
+// 2 : 레지스터 bit 위치
+// 0 : bit 값 정의
+// NULL : event handler 함수, NULL인경우, 별도 핸들러 함수 없음
+// 0 : user define data
+
+// "DSP" 라는 이름의 PGA widget을 정의. 
+// widget이 활성화되거나 비활성화 될 때, 해당 비트가 설정/해제 됨
+```
+
+  - SND_SOC_DAPM_OUT_DRV
+  - SND_SOC_DAPM_MIXER
+  - SND_SOC_DAPM_MIXER_NAMED_CTL
+  - SND_SOC_DAPM_MICBIAS
+  - SND_SOC_DAPM_SWITCH
+  - SND_SOC_DAPM_MUX : 여러 입력 중 하나를 선택하여 출력하는 아날로그 스위치를 나타냄. 
+  오디오 경로에서 특정 입력을 선택할 수 있도록 함.
+```c
+SND_SOC_DAPM_MUX("LineOut Amp1", AK7755_CE_POWER_MANAGEMENT, 2, 0, &ak7755_pmlo1_mux_control),
+// "LineOut Amp1" : MUX 이름
+// AK7755_CE_POWER_MANAGEMENT : AK7755 의 CE 레지스터와 관련. 
+// 2 : 해당 레지스터의 레지스터 비트 위치. 2번째 비트 사용
+// 0 : 레지스터의 MASK 값. MASK값은 0
+// ak7755_pmlo1_mux_control : 선택 가능한 입력들을 정의
+```
+
+  - SND_SOC_DAPM_DEMUX
+  - SOC_PGA_ARRAY
+  - SOC_MIXER_ARRAY
+  - SOC_MIXER_NAMED_CTL_ARRAY
+  - SND_SOC_DAPM_PGA_E
+  - SND_SOC_DAPM_OUT_DRV_E
+  - SND_SOC_DAPM_MIXER_E
+  - SND_SOC_DAPM_MIXER_NAMED_CTL_E
+  - SND_SOC_DAPM_SWITCH_E
+  - SND_SOC_DAPM_MUX_E
+  - SND_SOC_DAPM_PGA_S
+  - SND_SOC_DAPM_SUPPLY_S
+  - SOC_PGA_E_ARRAY
+  - SOC_MIXER_E_ARRAY
+  - SOC_MIXER_NAMED_CTL_E_ARRAY
+  - SND_SOC_DAPM_PRE
+  - SND_SOC_DAPM_POST
+
+ 4. Stream domain - DAC, ADC 가 활성화 되었을때 실행.
+> stream playback/record 기능이 시작되고 멈추는 것을 enable/disable 할수 있는 widget
+  - SND_SOC_DAPM_AIF_IN
+  - SND_SOC_DAPM_AIF_IN_E
+  - SND_SOC_DAPM_AIF_OUT
+  - SND_SOC_DAPM_AIF_OUT_E
+  - SND_SOC_DAPM_DAC
+  - SND_SOC_DAPM_DAC_E : DAC widget 정의. '_E'는 이벤트 핸들러를 포함하는 위젯 의미.  
+```c
+SND_SOC_DAPM_DAC_E("DAC Left", NULL, SND_SOC_NOPM, 0, 0, ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+// "DAC Left" : DAC 위젯 이름. 
+// NULL : power management 레지스터. NULL 은 위젯이 power management 와 관련 없음.
+// SND_SOC_NOPM : power management 레지스터와 무관함. power management domain에 포함 되지 않음 의미.
+// 0, 0 : power management 레지스터의 비트 위치와 Mask 값.
+// ak775_clkset_event : event handler를 나타냄. 특정 이벤트가 발생할때 호출.
+// SND_SOC_DAPM_POST_PMU : event 발생 시점 의미. POST_PMU 는 power management 가 활성화 된 후, 이벤트 발생.
+```
+  - SND_SOC_DAPM_ADC
+  - SND_SOC_DAPM_ADC_E
+  - SND_SOC_DAPM_CLOCK_SUPPLY
+ 
+  5. generic widgets
+   - SND_SOC_DAPM_REG 
+   - SND_SOC_DAPM_SUPPLY : power supply widget 정의 
+```c
+SND_SOC_DAPM_SUPPLY("CLOCK", AK7755_C1_CLOCK_SETTING2, 0, 0, ak7755_clock_event, SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
+// "CLOCK" : power supply widget 이름. "CLOCK"이라는 power supply 위젯 정의
+// AK7755_C1_CLOCK_SETTING2 : power supply register 의미. AK7755 레지스터
+// 0, 0 : power supply register bit 위치와 Mask 값.
+// ak7755_clock_event : event handler. 특정 event 가 발생할때 호출.
+// SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD : event 발생 시점. POST_PMU : power management 가 활성화 된 후. PRE_PMD : power management 가 비활성화 되기 전. 
+```
+   - SND_SOC_DAPM_REGULATOR_SUPPLY
+   - SND_SOC_DAPM_PINCTRL
+
+ 
+
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+
+## 5.6 정리
 
 -----
 

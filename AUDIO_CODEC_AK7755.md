@@ -16,6 +16,7 @@
  - [AK7755 Control Software](#ak7755-control-software)  
      - [AK7755 Binary info](#ak7755-binary-info)  
   
+ - [issue pop noise](#issuepop-noise)   
 [Reference](#reference)  
  - [Reference RK817](#reference-rk817)  
  - [Reference Audio Codec driver Develop sample guide](#reference-audiocodec-driver-develop-sample)  
@@ -43,15 +44,37 @@
 
 > datasheet 분석 
 
- - Control Register 설정.
+ - *Control Register 설정*
    * power down(PDN pin = "L" -> "H") 이 release 되었을 때, Control Register 는 초기화 됨.
+
    * CONT00 ~ CONT01은 clock generation과 관련이있음. 
      + clock reset 시, (CKRESETN bit (CONT01:D0) = "0")으로 변경해야 함.
-   * CONT12 ~ CONT19는 동작중에 write가능함. 
-   * 그외 다른 register는 error 및 noise를 방지하기 위해 clock reset 또는 system reset(CRESETN bit(CONT0F:D3) 및 DSPRESETN bit(CONT0F:D2)="0") 중에 하나를 변경해야 함. 
 
-   * 시스템 reset중에는 CONT0D:D6, CONT1A:D4, CONT26:D0, CONT2A:D7 bit 를 "1"로 설정해야 함.
+   * CONT12 ~ CONT19는 동작중에 write가능함. 
+
+   * 그외 다른 register는 error 및 noise를 방지하기 위해 *clock reset* 또는 *system reset + dsp reset* 둘 중에 하나를 적용해야 함. 
+     + clock reset : CKRESETN bit(CONT01:D0)
+                     power-down released 이후 진행. 
+
+     + system reset + dsp reset : CRESETN bit(CONT0F:D3) + DSPRESETN bit(CONT0F:D2)
+                     system reset 은 clock reset 이 relesed 된 후, CREESTN bit=0 및  DSPRESETN bit=0 인 경우 설정됨.  
+                     PRAM, CRAM 이 다운로드 진행 중에는 system reset 상태.
+                     clock reset 이 released된 이후, PLL clock이 안정화 되면, PRAM과, CRAM이 Access한다.
+                     (PLL clock이 안정되 되기까지  10 ms 정도 소요되거나 STO pin 이 H상태 출력을 한다.) 
+                     system reset 이 released 된 후, DSP Firmware 는 전달된다.
+
+                     slave mode에서 AK7755 는 system reset 이 released되면, LRCK 핀 rising edge 와 sync되어 작동을 시작한다.
+                     LRCK 핀과 BICK 핀이 멈추면 AK7575는 system reset 상태가 된다. 
+                     다시 LRCK 핀과 BICK 핀이 입력되면 system reset 이 released 상태가 된다.
+
+
+   * 시스템 reset 진행 동안은 CONT0D:D6, CONT1A:D4, CONT26:D0, CONT2A:D7 bit 를 "1"로 설정해야 함.
      + 한번 "1"로 설정된 경우, power down이 발생되기 전까지, 값을 유지함. 
+     + CONT0D:D6  
+     + CONT1A:D4  
+     + CONT26:D0  
+     + CONT2A:D7  
+
    * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는 write 하면 안됨.
 
 ![](./images/AUDIO_CODEC_07.png)
@@ -79,6 +102,14 @@
           **DLRDY** (DSP Download Ready field)를 1로 세팅하여 DSP programs과 coefficient data를 다운로드 할 수 있습니다.  
           다운로드 완료 후, **DSP Download Ready field** 를 0 으로 재 세팅 해야 합니다.  
 
+
+
+ - DSP reset 제한
+
+ DSP write operation에 CRAM program이 포함되어 있는 경우, DSP RUN 중 microprocessor 가 DSP reset (DSPRESETN bit="1"->"0") 을 실행시,
+ CRAM write 가 실패 할 수 있다.  
+
+
  - Note:
  > - Master Mode (CKM mode 0, 1: using XTI Input Clock) : input clock를 BITFS[1:0] bits에 세팅된  XTI pin 으로 받는다.
  >   * XTI에 synchronized된 internal counter는 LRCK(1fs) 및 BICK(64fs, 48fs, 32fs, 256fs)를 생성합니다. BICK frequency 는  BITFS[1:0] bits에 의해 설정된다.   
@@ -102,11 +133,13 @@
    * 프로그램 코드를 저장하는 메모리  
    * DSP에서 실행되는 알고리즘, 필터, 변환 등의 프로그램 코드를 관리  
    * Program RAM은 DSP 가 작동하는데 필요한 명령어와 제어 흐름을 저장.  
+   * real file size : ak7755_pram_data2.bin(15K)
   
  - Coefficient RAM(CRAM) : 48 Byte (2048 x 24-bit)
    * 계수(Coefficient)을 저장하는 메모리.  
    * DSP에서 필터, 이퀄라이저, 변환 등의 계산에 사용되는 계수(가중치)가 저장됨.  
    * Coefficient RAM에는 신호 처리를 수행하는데 필요한 상수 값을 저장.  
+   * real file size : ak7755_cram_data2.bin(6.1K)
   
  - Offset Register(OFREG) : (32 x 13-bit)
    * Offset 값을 저장하는 레지스터.   
@@ -235,14 +268,14 @@ ak7755_sound: ak7755-sound {
  DSP 셋업을 위해 필요한 파일  
 
   - **PRAM File** : **.obj file*
-	* ak7755_pram_data2.bin : private  
+    * ak7755_pram_data2.bin : private  
 
   - **CRAM File** : **.cra file*
-	* ak7755_cram_data2.bin : door_call
-	* ak7755_cram_data3.bin : pstn
-	* ak7755_cram_data4.bin : voip h-g
-	* ak7755_cram_data5.bin : voip h-h, voip h-l
-	* ak7755_cram_data6.bin : voip h_sub-g, voip h_sub-h, voip h_sub-l
+    * ak7755_cram_data2.bin : door_call
+    * ak7755_cram_data3.bin : pstn
+    * ak7755_cram_data4.bin : voip h-g
+    * ak7755_cram_data5.bin : voip h-h, voip h-l
+    * ak7755_cram_data6.bin : voip h_sub-g, voip h_sub-h, voip h_sub-l
 
   - **SCRIPT File** : **.txt file*
   
@@ -281,6 +314,7 @@ ak7755_sound: ak7755-sound {
 
    * Limiter & Volume
      + CRAM Limiter Relese Time : Release time of Limiter
+     + CRAM Limiter Volume : Volume level of Limitter and Volume.
 
 <br/>
 <br/>
@@ -338,7 +372,33 @@ ak7755_sound: ak7755-sound {
 adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot 
 // download image + enable log
 adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot; adb wait-for-device ; adb root ; adb remount ; adb shell "setprop log.tag.AudioHardwareTiny VERBOSE  ; setprop log.tag.alsa_route VERBOSE ;  echo "file sound/soc/codecs/ak7755.c +p" > /sys/kernel/debug/dynamic_debug/control ; echo 40 > /sys/class/gpio/export ; echo "out" > /sys/class/gpio/gpio40/direction ; echo 1 > /sys/class/gpio/gpio40/value"
+// downimage test apk
+adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.walltest ; adb shell rm -rf /system/priv-app/WallTest/* ; adb shell pm clear com.kdiwin.walltest ; adb push out/target/product/le1000/system/priv-app/WallTest/WallTest.apk /system/priv-app/WallTest/ ;
+// re-install test apk
+adb root && adb remount && adb push system/priv-app/WallService/*.apk /system/priv-app/WallService/ && adb push system/priv-app/WallService/oat/* /system/priv-app/WallService/oat/ && adb push system/lib64/libwallservice.so /system/lib64/ && adb shell killall com.kdiwin.wall && adb root && adb remount && adb push system/priv-app/WallTest/WallTest.apk /system/priv-app/WallTest/ && adb shell killall com.kdiwin.walltest; adb shell am start -n com.kdiwin.walltest/.MainActivity --es select audio
+// set_route  by para command
+adb shell "cmd wall_service set_audio_hack_option SET_ROUTE_BY_PARAMETER true"
+adb shell "setprop log.tag.AudioHardwareTiny VERBOSE  ; setprop log.tag.alsa_route VERBOSE ; "
+// so push command
+adb root ; adb remount ; adb push vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ;
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## issue:pop noise
+
+> pop noise 이슈 해결
+
+ - Todo : 
+ external amp 활성화 하기 전, Lineout 1 Power Managerment 를 제어(normal-op)해야함. 
+ DAPM으로 제어하도록 함.
+
+   * Lineout 1 Power Management : AK7755_CE_POWER_MANAGEMENT [D2 bit,0:power-down,1:normal-operation]
+
+
 
 <br/>
 <br/>
@@ -475,8 +535,8 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
  - develop branch
   private/audio_io_sec : tuning value 적용
        device/kdiwin/test/common/
-	   hardware/rockchip/audio/
-	   kernel-4.19
+       hardware/rockchip/audio/
+       kernel-4.19
 
  - tinymix command 
 
