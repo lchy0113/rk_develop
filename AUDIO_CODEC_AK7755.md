@@ -52,12 +52,13 @@
 
    * CONT12 ~ CONT19는 동작중에 write가능함. 
 
-   * 그외 다른 register는 error 및 noise를 방지하기 위해 *clock reset* 또는 *system reset + dsp reset* 둘 중에 하나를 적용해야 함. 
+   * 그외 다른 control register는 error 및 noise를 방지하기 위해 *clock reset* 또는 *system reset + dsp reset* 둘 중에 하나를 적용해야 함. 
      + clock reset : CKRESETN bit(CONT01:D0)
                      power-down released 이후 진행. 
 
      + system reset + dsp reset : CRESETN bit(CONT0F:D3) + DSPRESETN bit(CONT0F:D2)
-                     system reset 은 clock reset 이 relesed 된 후, CREESTN bit=0 및  DSPRESETN bit=0 인 경우 설정됨.  
+                     system reset 은 clock reset 이 relesed 된 후,
+                     CREESTN bit=0 및  DSPRESETN bit=0 인 경우 설정됨.  
                      PRAM, CRAM 이 다운로드 진행 중에는 system reset 상태.
                      clock reset 이 released된 이후, PLL clock이 안정화 되면, PRAM과, CRAM이 Access한다.
                      (PLL clock이 안정되 되기까지  10 ms 정도 소요되거나 STO pin 이 H상태 출력을 한다.) 
