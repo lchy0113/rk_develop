@@ -1099,10 +1099,10 @@ core/all-versions/default/
     이 파일은 Android 7.0부터 도입된 audio policy configuration 파일.  
     기기의 오디오 토폴로지를 설명하고 오디오 기기, 스트림 프로필, 볼륨 곡선 등을 정의.  
     주요 기능:  
-        mix port: 재생 및 캡처를 위한 스트림의 구성 프로필을 설명.  
-        device port: 기기 유형에 연결할 수 있는 기기를 설명.  
-        route: 믹스 포트에서 기기까지의 연결 경로를 설명.  
-        volume table: UI 색인에서 dB 단위의 볼륨으로 변환하는 데 사용되는 곡선을 정의.  
+    * mix port: 재생 및 캡처를 위한 스트림의 구성 프로필을 설명.  
+    * device port: 기기 유형에 연결할 수 있는 기기를 설명.  
+    * route: 믹스 포트에서 기기까지의 연결 경로를 설명.  
+    * volume table: UI 색인에서 dB 단위의 볼륨으로 변환하는 데 사용되는 곡선을 정의.  
     frameworks/av/services/audiopolicy/managerdefault/AudioPolicyManager.cpp  
   
  - default_volume_tables.xml:  
