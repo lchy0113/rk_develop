@@ -316,72 +316,6 @@ ak7755_sound: ak7755-sound {
      + CRAM Limiter Relese Time : Release time of Limiter
      + CRAM Limiter Volume : Volume level of Limitter and Volume.
 
-<br/>
-<br/>
-<hr>
-
-### Note
-
-> Related voip call
-  
- - [x] voip_gurd_subp_call
-     * voip_subp_call 을 변경.
-  VOIP_SUBP_CALL -> VOIP_GURD_SUBP_CALL
-  voip_subp_call -> voip_gurd_subp_call
-     * [x] create patch
-     * [x] tuning
-
- - [x] voip_home_subp_call
-     * 신규
-  VOIP_HOME_SUBP_CALL
-  voip_home_sbup_call
-     * [x] create patch
-     * [x] tuning
-
- - [x] voip_loby_subp_call
-     * 신규
-  VOIP_LOBY_SUBP_CALL
-  voip_loby_subp_call
-     * [x] create patch
-     * [x] tuning
-   
- - [x] voip_gurd_call
-     * 신규
-  VOIP_GURD_CALL
-  voip_gurd_call
-     * [x] create patch
-     * [x] tuning
-
- - [x] voip_home_call
-     * 신규
-  VOIP_HOME_CALL
-  voip_home_call
-     * [x] create patch
-     * [x] tuning
-
- - [x] voip_loby_call
-     * 신규
-  VOIP_LOBY_CALL
-  voip_loby_call
-     * [x] create patch
-     * [x] tuning
-
-
-```
-// download image
-adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot 
-// download image + enable log
-adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.wall ; adb shell rm -rf /system/priv-app/WallService/* ; adb shell pm clear com.kdiwin.wall ; adb push out/target/product/rk3568_edpp05/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push device/kdiwin/test/common/audio/audio_policy_configuration.xml /vendor/etc/audio_policy_configuration.xml ; adb push device/kdiwin/test/common/audio/wall_audio_configuration.xml /vendor/etc/wall_audio_configuration.xml ; adb push out/target/product/rk3568_edpp05/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ; adb reboot; adb wait-for-device ; adb root ; adb remount ; adb shell "setprop log.tag.AudioHardwareTiny VERBOSE  ; setprop log.tag.alsa_route VERBOSE ;  echo "file sound/soc/codecs/ak7755.c +p" > /sys/kernel/debug/dynamic_debug/control ; echo 40 > /sys/class/gpio/export ; echo "out" > /sys/class/gpio/gpio40/direction ; echo 1 > /sys/class/gpio/gpio40/value"
-// downimage test apk
-adb root ; adb remount ; adb shell pm uninstall --user 0 com.kdiwin.walltest ; adb shell rm -rf /system/priv-app/WallTest/* ; adb shell pm clear com.kdiwin.walltest ; adb push out/target/product/le1000/system/priv-app/WallTest/WallTest.apk /system/priv-app/WallTest/ ;
-// re-install test apk
-adb root && adb remount && adb push system/priv-app/WallService/*.apk /system/priv-app/WallService/ && adb push system/priv-app/WallService/oat/* /system/priv-app/WallService/oat/ && adb push system/lib64/libwallservice.so /system/lib64/ && adb shell killall com.kdiwin.wall && adb root && adb remount && adb push system/priv-app/WallTest/WallTest.apk /system/priv-app/WallTest/ && adb shell killall com.kdiwin.walltest; adb shell am start -n com.kdiwin.walltest/.MainActivity --es select audio
-// set_route  by para command
-adb shell "cmd wall_service set_audio_hack_option SET_ROUTE_BY_PARAMETER true"
-adb shell "setprop log.tag.AudioHardwareTiny VERBOSE  ; setprop log.tag.alsa_route VERBOSE ; "
-// so push command
-adb root ; adb remount ; adb push vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/ ;
-```
 
 <br/>
 <br/>
@@ -534,7 +468,7 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
  - develop branch
   private/audio_io_sec : tuning value 적용
-       device/kdiwin/test/common/
+       device//test/common/
        hardware/rockchip/audio/
        kernel-4.19
 
