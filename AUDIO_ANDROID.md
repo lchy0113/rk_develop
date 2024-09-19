@@ -2,6 +2,34 @@ ANDROID AUDIO
 =====
 > Android의 Audio Framework에 대한 문서.
 
+[Overview](#overview)  
+[Implementation](#implementation)  
+ - [Policy Configuration](#policy-configuration)   
+   - [Advantatges of the XML format](#advantages-of-the-xml-format)  
+   - [File format and location](#file-format-and-location)  
+   - [File inclustions](#file-inclustions)  
+   - [Audio policy code organization](#audio-policy-code-organization)  
+   - [Configuration using Parameter Framework](#configuration-using-parameter-framework)  
+   - [Audio policy routing APIs](#audio-policy-routing-apis)  
+  
+ - [Android Audio device](#android-audio-device)  
+  
+[Audio on Android](#audio-on-android)  
+ - [Mixer configuration](#mixer-configuration)  
+ - [Format of mixer_paths.xml](#format-of-mixer-paths-xml)  
+  
+[Audio HAL Code](#audio-hal-code)  
+ - [Analysis of important interface files](#analysis-of-important-interface-files)  
+ - [HAL Initialization](#hal-initialization)  
+
+[Audio Framework](#audio-framework)  
+ - [Audio Policy Configurations](#audio-policy-configurations)  
+ - [Audio Patch](#audio-patch)  
+ - [Audio Focus](#audio-focus)  
+
+[Audio Volume](#audio-volume)  
+ - [Related file](#related-file)  
+
 
 <br/>
 <br/>
@@ -9,38 +37,6 @@ ANDROID AUDIO
 <br/>
 <hr>
 
-Index
-=====
-
-```
-▼ Implementation : section
-  ▼ Policy Configuration : section
-      Advantages of the XML format : section
-      File format and location : section
-
-▼ Android Audio device : section
-    audio data path : section
-    audio sequence : section
-    audio structure in audio hal : section
-
-▼ Audio on Android : section
-    Mixer configuration : section
-    Format of mixer_paths.xml : section
-
-▼ Audio HAL 코드 : section
-    1. Analysis of important interface files : section
-    2. HAL Initialization : section
-
-▼ reference : section
-  ▼ 3. Audio Framework : section
-    ▼ 3.1 Audio Policy Configuration : section
-        route를 통해 devicePort와 mixPort를 연결하는 방법 : section
-        MixPort의 플래그 : section
-      3.2 Audio Patch : section
-      3.3 Audio Focus : section
-
-  Develop : section
-```
 
 # Overview
 
@@ -48,12 +44,12 @@ Index
 
  - **APPLICATION FRAMEWORK** : android.media API를 사용하여 오디오 하드웨어와 상호작용하는 앱 코드가 존재.  
  - **JNI** : android.media와 연결된 JNI코드는 오디오 하드웨어에 액세스 하기 위해 하위 수준의 기본 코드를 호출.  
-	 JNI는 frameworks/base/core/jni/ 및 framewworks/base/media/jni 에 존재.  
+     JNI는 frameworks/base/core/jni/ 및 framewworks/base/media/jni 에 존재.  
  - **NATIVE FRAMEWORK** : 기본 프레임워크는 android.media 패키지와 동일한 기본 기능을 제공하며,   
      바인더 IPC 프록시를 호출하여 미디어 서버의 오디오 관련 서비스에 액세스한다.  
-	 기본 프레임워크 코드는 frameworks/av/media/libmedia에 존재.  
+     기본 프레임워크 코드는 frameworks/av/media/libmedia에 존재.  
  - **BINDER IPC** : 바인더 IPC 프록시는 프로세스 경계를 통한 통신을 용이하게 한다.  
-	 frameworks/av/media/libmedia에 존재하며 I로 시작한다.  
+     frameworks/av/media/libmedia에 존재하며 I로 시작한다.  
  - **MEDIA SERVER** : 미디어 서버는 HAL 구현과 상호작용하는 실제 코드인 오디오 서비스가 포함되어 있다.  
      frameworks/av/services/audioflinger에 존재  
  - **HAL** : HAL은 오디오 서비스가 호출하고 오디오 하드웨어가 올바르게 작동하기 위해 구현해야 하는 표준 인터페이스를 정의  
@@ -61,45 +57,60 @@ Index
  - **LINUX KERNEL** : 오디오 드라이버는 하드웨어 및 HAL 구현과 상호 작용한다.  
     ALSA, OSS 또는 사용자 지정 드라이버를 사용할 수 있다.
 
------
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # Implementation
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## Policy Configuration
 
-Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy configuration file format(XML)이 도입되었다.  
-이전의 Android 버전에서는 device/\<company\>/\<device\>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해야 했다.  
+Android 7.0 버전에서 audio topology 를 기술하기 위해 audio policy configuration file format(XML)이 도입.  
+이전의 Android 버전에서는 device/\<company\>/\<device\>/audio/audio_policy.conf 파일을 사용하여 제품의 오디오 장치를 선언해 사  
 
-> Galaxy Nexus 오디오 하드웨어에 대한 예제는 device/samsung/tuna/audio/audio_policy.conf 에서 볼 수 있다. 
->
-그러나 audio_policy.conf 파일은 TV, automobiles와 같은 복잡한 topology를 기술하기에는 제한이 있다.  
-Android 7.0은 audio_policy.conf를 사용하지 않으며, audio topology를 더 쉽고 광범위하게 적용할 수 있는 XML 파일 형식이 도입되었다.  
-Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택한다.  
+> 예> Galaxy Nexus 오디오 하드웨어에 대한 예제는 device/samsung/tuna/audio/audio_policy.conf 
 
-> Android 10 에서 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원한다.
-  
- - [x] rockchip platform 확인.  :  device/rockchip/common/device.mk USE_XML_AUDIO_POLICY_CONF := 1
-	 
+ audio_policy.conf 파일은 TV, automobiles와 같은 복잡한 topology를 기술하기에는 제한 있음  
+ Android 7.0은 audio_policy.conf를 사용하지 않으며, audio topology를 더 쉽고 광범위하게 적용할 수 있는 XML 파일 형식 도입  
+ Android 7.0은 USE_XML_AUDIO_POLICY_CONF build flag를 사용하여 configuration file의 XML 형식을 선택  
+
+> Android 10 부터 conf 형식은 제거되고, USE_XML_AUDIO_POLICY_CONF 빌드 플래그를 지원
+> rockchip platform  :  device/rockchip/common/device.mk USE_XML_AUDIO_POLICY_CONF := 1
+
+<br/>
+<br/>
+<hr>
 
 ### Advantages of the XML format
  
-conf 파일에서와 마찬가지로 XML파일을 사용하면 output 및 input Stream profiles 의 수와 유형, play, capture에서 사용할 수 있는  
-device, audio attributes 을 정의 할 수 있다.   
-또한 XML파일은 아래와 같은 향상된 기능을 제공.  
+ conf 파일에서와 마찬가지로 XML파일을 사용하면 output 및 input stream profiles 의 갯수와 유형, play, capture에서 사용할 수 있는 device, audio attributes 정의   
+ 
+ XML파일은 아래와 같은 향상된 기능을 제공
 
- - 동시에 멀티 recording app 동작을 지원.   
- - client는 무음 오디오 샘플을 지원한다.   
- - Audio format에 따라서 각 각 서로 다른 sampling rate/ channel 을 사용할 수 있다.  
- - device와 streams간  연결 가능한 모든 연결에 대해 정의를 시킬 수 있다.  (controlling connections requested with audio patch APIs)  
-	 XML 파일을 통해 topology 에 대해 기술한다.  
- - include에 대한 지원은 표준 A2DP, USB 또는 reroute 제출 정의의 반복을 방지한다.  
- - 볼륨 곡선은 사용자 정의할 수 있습니다. 이전에는 볼륨 테이블이 하드코딩되었습니다. XML 형식으로 볼륨 테이블이 설명되고 사용자 정의될 수 있다.  
- - template 은 frameworks/av/services/audiopolicy/config/audio_policy_configuration.xml 에 정의 되어 있다.  
+ - 동시에 멀티 recording app 동작을 지원   
+ - client는 무음 오디오 샘플 지원   
+ - Audio format에 따라서 각 각 서로 다른 sampling rate/ channel 사용  
+ - device와 streams간  연결 가능한 모든 연결에 대해 정의 (controlling connections requested with audio patch APIs)  
+     XML 파일을 통해 topology 에 대해 기술  
+ - include에 대한 지원은 표준 A2DP, USB 또는 reroute 제출 정의의 반복 방지  
+ - 볼륨 곡선은 사용자 정의 함. 이전에는 볼륨 테이블이 하드코딩 되어 사용. XML 형식으로 볼륨 테이블이 설명되고 사용자 정의  
+ - template 은 frameworks/av/services/audiopolicy/config/audio_policy_configuration.xml 에 정의 됨  
+
+<br/>
+<br/>
+<hr>
 
 ### File format and location
   
-새로운 audio policy configuration file은 *audio_policy_configuration.xml*파일이며, /vendor/etc/에 존재한다.  
-아래 샘플은 Android12 및 Android12 이하 버전에서 XML 파일 형식의 간단한 audio policy configuration을  보여준다.  
+ 새로운 audio policy configuration file은 *audio_policy_configuration.xml*파일이며, /vendor/etc/ 존재.  
+ 아래 샘플 Android12 버전에서 XML 파일 형식의 간단한 audio policy configuration 파일
 
  ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -165,7 +176,7 @@ device, audio attributes 을 정의 할 수 있다.
  ```
 
  top-level structure 는 각 audio HAL hardware module에 해당하는 module 이 포함되어 있으며,   
- 각 module은 **mixPorts**, **devicePort**, **routes** 가 포함되어 있습니다.   
+ 각 module은 **mixPorts**, **devicePort**, **routes** 가 포함되어 있음.   
 
  - **mixPorts** :   
    Mix ports는 play, capture를 위해 Audio HAL에서 열수 있는 stream의 가능한 config profiles을 기술한다.   
@@ -210,6 +221,10 @@ device, audio attributes 을 정의 할 수 있다.
 </volumes>
  ```
 
+<br/>
+<br/>
+<hr>
+
  ### File inclusions
 
  XML include(XINclude) method는 다른 XML 파일에 있는 audio policy configuration information을 include할 수 있다. 
@@ -217,6 +232,10 @@ device, audio attributes 을 정의 할 수 있다.
 
  - File에는 최상위 요소만 포함될 수 있다.
  - File은 XInclude 요소를 포함할 수 없다.
+
+<br/>
+<br/>
+<hr>
 
  ### Audio policy code organization
 
@@ -230,11 +249,18 @@ device, audio attributes 을 정의 할 수 있다.
  - /enginedefault
  - /service
 
+<br/>
+<br/>
+<hr>
+
  ### Configuration using Parameter Framework
 
  Audio policy code는 configuration files에 의해 정의된 audio policy 를 지원하면서 쉽게 이해하고 유지 할 수 있도록 구성된다.   
  organization and audio policy 설계는 Intel's Parameter Framework 베이스로 한다.  
 
+<br/>
+<br/>
+<hr>
 
  ### Audio policy routing APIs
 
@@ -246,15 +272,19 @@ device, audio attributes 을 정의 할 수 있다.
  Enumeration and Selection API에 대한 자세한 내용은 Android 구성 인터페이스 및 OpenSLES_AndroidConfiguration.h를 참조하세요.  
  오디오 라우팅에 대한 자세한 내용은 AudioRouting을 참조하십시오.  
 
+<br/>
+<br/>
+<br/>
+<hr>
 
-# Android Audio device
+## Android Audio device
 
  Android 에는 많은 Audio device를 정의.
 ```java
 // frameworks/base/media/java/android/media/AudioSystem.java file
 
  (...)
-	/*
+    /*
      * AudioPolicyService methods
      */
 
@@ -452,40 +482,18 @@ const struct config_control ak7755_speaker_normal_controls[] = {
 };
 ```
 
-## audio data path
-
-```bash
- route_pcm_open()
-    |
-    +-> get_route_config(route)
-        |
-        +-> route_set_controls()
-            |
-            +-> route_pcm_close()
-                |
-                +-> route_set_controls()
-```
-
-## audio sequence
-
-```bash
-// output
-adev_open_init
-out_set_parameters, in_set_parameters
-
-```
-
-## audio structure in audio hal
-
-```c
-struct audio_device 
-    |
-	+-> struct stream_in
-    |
-    +-> struct stream_out
-```
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # Audio on Android
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Mixer configuration
  > Android Audio HAL이 ALSA mixer 를 configuration하는 방법에 대해 설명.
@@ -498,6 +506,11 @@ struct audio_device
  tinyalsa는 linux 커널에서 ALSA와 interface하는 standalone library이다.   
  audio HAL은 XML에서 audio path를 load하고, tinyalsa를 통해 mixer를 제어하는 audio_route library를 호출한다.   
   
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## Format of mixer_paths.xml
  - ALSA 제어는 *ctl* elements로 정의한다.
  - Audio route는 *path* elements로 정의한다.
@@ -506,11 +519,20 @@ struct audio_device
 
   경로 요소에는 ctl 요소와 기타 경로 요소의 컬렉션이 포함됩니다.
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
+# Audio HAL Code
 
-# Audio HAL 코드
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 1. Analysis of important interface files
+## Analysis of important interface files
   
 > HAL 인터페이스 파일을 통하여 HAL Layer  분석.   
   
@@ -542,31 +564,31 @@ class DeviceHalInterface : public RefBase
     virtual status_t initCheck() = 0;
 
     //// Set call volume, range 0-1.0 
-	// Set the audio volume of a voice call. Range is between 0.0 and 1.0.
+    // Set the audio volume of a voice call. Range is between 0.0 and 1.0.
     virtual status_t setVoiceVolume(float volume) = 0;
 
-	//// Set the volume of all audio stream types except call volume, range 0-1.0, 
-	//// if the hardware does not support this function, the function is completed by the mixer of the software layer
+    //// Set the volume of all audio stream types except call volume, range 0-1.0, 
+    //// if the hardware does not support this function, the function is completed by the mixer of the software layer
     // Set the audio volume for all audio activities other than voice call.
     virtual status_t setMasterVolume(float volume) = 0;
 
     // Get the current master volume value for the HAL.
     virtual status_t getMasterVolume(float *volume) = 0;
 
-	//// Setting mode, NORMAL state is normal mode, RINGTONE means incoming call mode
-	//// (the sound heard at this time is the ringtone of the incoming call) 
-	//// IN_CALL means call mode (the sound heard at this time is the voice during the phone call)
+    //// Setting mode, NORMAL state is normal mode, RINGTONE means incoming call mode
+    //// (the sound heard at this time is the ringtone of the incoming call) 
+    //// IN_CALL means call mode (the sound heard at this time is the voice during the phone call)
     // Called when the audio mode changes.
     virtual status_t setMode(audio_mode_t mode) = 0;
 
-	//// Microphone switch control
+    //// Microphone switch control
     // Muting control.
     virtual status_t setMicMute(bool state) = 0;
     virtual status_t getMicMute(bool *state) = 0;
     virtual status_t setMasterMute(bool state) = 0;
     virtual status_t getMasterMute(bool *state) = 0;
 
-	//// Set the global audio parameters in the form of key/value organization
+    //// Set the global audio parameters in the form of key/value organization
     // Set global audio parameters.
     virtual status_t setParameters(const String8& kvPairs) = 0;
 
@@ -577,8 +599,8 @@ class DeviceHalInterface : public RefBase
     virtual status_t getInputBufferSize(const struct audio_config *config,
             size_t *size) = 0;
 
-	//// Create an audio output stream object (equivalent to opening an audio output device) AF writes data through write, 
-	//// and the pointer type will return the type, number of channels, and sampling rate supported by the audio output stream
+    //// Create an audio output stream object (equivalent to opening an audio output device) AF writes data through write, 
+    //// and the pointer type will return the type, number of channels, and sampling rate supported by the audio output stream
     // Creates and opens the audio hardware output stream. The stream is closed
     // by releasing all references to the returned object.
     virtual status_t openOutputStream(
@@ -589,7 +611,7 @@ class DeviceHalInterface : public RefBase
             const char *address,
             sp<StreamOutHalInterface> *outStream) = 0;
 
-	//// Create an audio input stream object (equivalent to opening an audio input device) AF can read data
+    //// Create an audio input stream object (equivalent to opening an audio input device) AF can read data
     // Creates and opens the audio hardware input stream. The stream is closed
     // by releasing all references to the returned object.
     virtual status_t openInputStream(
@@ -606,9 +628,9 @@ class DeviceHalInterface : public RefBase
     // Returns whether createAudioPatch and releaseAudioPatch operations are supported.
     virtual status_t supportsAudioPatches(bool *supportsPatches) = 0;
 
-	//// The AudioPatch concept is used to represent the end-to-end connecton relationship in audio, 
-	//// such as connecting source and sink, which can be a real audio input device, such as MIC, 
-	//// or the audio stream after mixing in the bottom layer; here Sink represents the output device, such as speakers, headphones, etc.
+    //// The AudioPatch concept is used to represent the end-to-end connecton relationship in audio, 
+    //// such as connecting source and sink, which can be a real audio input device, such as MIC, 
+    //// or the audio stream after mixing in the bottom layer; here Sink represents the output device, such as speakers, headphones, etc.
     // Creates an audio patch between several source and sink ports.
     virtual status_t createAudioPatch(
             unsigned int num_sources,
@@ -718,8 +740,12 @@ private:
 };
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 2. HAL Initialization
+## HAL Initialization
 
  HAL layer 초기화는 AF 초기화 진행 중에 수행됩니다.
  AudioFlinger -> HAL
@@ -727,10 +753,10 @@ private:
 
  [-> *frameworks/av/services/audioflinger/AudioFlinger.cpp* ]
 ```cpp
-AudioFlinger::AudioFlinger()	{
-	(...)
+AudioFlinger::AudioFlinger()    {
+    (...)
     mDevicesFactoryHal = DevicesFactoryHalInterface::create();
-	(...)
+    (...)
 }
 ```
 
@@ -805,89 +831,113 @@ service vendor.audio-hal /vendor/bin/hw/android.hardware.audio.service
 
 ```
 
-
-
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # reference 
 
- ## site 
- - AOSP : https://source.android.com/docs/core/audio
+<br/>
+<br/>
+<br/>
+<hr>
 
+## site 
+ - AOSP : https://source.android.com/docs/core/audio
 
  - ref QUBER company : 
   ![](./images/AUDIO_ANDROID_03.png)  
-  
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
-## 3. Audio Framework
+# Audio Framework
 
-### 3.1 Audio Policy Configuration
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Audio Policy Configuration
  
  *AudioPolicyManager*가 초기화 될 때, *deseralizeAudioPolicyXmlConfig* 함수에서 audio_policy_configuration.xml 분석 및 반환 된다. 
 
- * **module** tag  
-	Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp, submix, bluetooth hearing aid등과 같이 나눠져 있다.  
+ - **module** tag  
+    Module tag는 hal 에 해당한다. hal의 소스 코드 구현은 primary, usb, a2dp, submix, bluetooth hearing aid등과 같이 나눠져 있다.  
   
- * **MixPort** label  
-	MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.  
- 	- *AudioProfile class*  
+ - **MixPort** label  
+    MixPort lable은 type, samplingRates, Masks, output, input stream을 구성한다.  
+     - *AudioProfile class*  
 
- * **DevicePort** label  
-	 DevicePort tag는 device 로 이해할 수 있으며 device도 output, input이 구분되지만 MixPort와 깥은 역할로 구분되지 않고 다음과 같이 type에서 "IN", "OUT"으로 구분된다.  
-	- *DeviceDescriptor class*  
+ - **DevicePort** label  
+     DevicePort tag는 device 로 이해할 수 있으며 device도 output, input이 구분되지만 MixPort와 깥은 역할로 구분되지 않고 다음과 같이 type에서 "IN", "OUT"으로 구분된다.  
+    - *DeviceDescriptor class*  
 
 ```xml
 <devicePort tagName="BT A2DP Headphones" types="AUDIO_DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES" role="sink"
-		encodedFormats="AUDIO_FORMAT_LDAC AUDIO_FORMAT_APTX AUDIO_FORMAT_APTX_HD AUDIO_FORMAT_AAC AUDIO_FORMAT_SBC">
-	<profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
-		samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
+        encodedFormats="AUDIO_FORMAT_LDAC AUDIO_FORMAT_APTX AUDIO_FORMAT_APTX_HD AUDIO_FORMAT_AAC AUDIO_FORMAT_SBC">
+    <profile name="" format="AUDIO_FORMAT_PCM_16_BIT"
+        samplingRates="44100,48000,88200,96000" channelMasks="AUDIO_CHANNEL_OUT_STEREO"/>
 </devicePort>
 ```  
   
- * **Route** label  
+ - **Route** label  
  Route 는 *deviceport*와 *mixport*를 연결하는 route이며, 데이터는 하나의 stream에서 다른 device로, 또는 한 device에서 다른 stream으로 출력된다.  
-	- *AudioRoute class*
+    - *AudioRoute class*
 
 
  HAL 제공업체는 HAL에 대한 name 및 여러 configuration 정보를 지닌 config file을 정의한다.  
  ex. ./device/google/crosshatch/audio_policy_configuration.xml
 ```xml
-	<module name="primary" halVersion="2.0">
-	<module name="usb" halVersion="2.0">
+    <module name="primary" halVersion="2.0">
+    <module name="usb" halVersion="2.0">
 
-	<xi:include href="r_submix_audio_policy_configuration.xml"/>
-	<xi:include href="bluetooth_hearing_aid_audio_policy_configuration.xml"/>
+    <xi:include href="r_submix_audio_policy_configuration.xml"/>
+    <xi:include href="bluetooth_hearing_aid_audio_policy_configuration.xml"/>
 ```
-	총 4 가지 HAL을 loading   
-		primary   
-		usb  
-		submix  
-		bluetooth hearing aid  
-	  
-	제조사는 HAL service를 통해 설정에 있는 name 별로의 HAL을 생성해 줘야함  
+    총 4 가지 HAL을 loading   
+        primary   
+        usb  
+        submix  
+        bluetooth hearing aid  
+      
+    제조사는 HAL service를 통해 설정에 있는 name 별로의 HAL을 생성해 줘야함  
 
-  
+<br/>
+<hr>
 
 #### route를 통해 devicePort와 mixPort를 연결하는 방법  
 
  route는 mixport stream data를 devicPort장치로 전송할 수 있는지 결정하고, 둘 사이의 연결 관계를 설정한다.
  [ -> *frameworks/av/services/audiopolicy/common/managerdefinitions/src/HwModule.cpp* ]
 
- ![](images/AUDIO_ANDROID_02.png)
+![](images/AUDIO_ANDROID_02.png)
+
+<br/>
+<hr>
 
 #### MixPort의 플래그
 
-| **AUDIO_OUTPUT_FLAG**              	| **설명**                                                                                                                                     	|
-|------------------------------------	|----------------------------------------------------------------------------------------------------------------------------------------------	|
-| AUDIO_OUTPUT_FLAG_PRIMARY          	| 일반적으로 벨소리에 사용되는 기본 출력 장치로 오디오 스트림을 출력해야 함을 나타냅니다.                                                      	|
-| AUDIO_OUTPUT_FLAG_DIRECT           	| 오디오 스트림이 소프트웨어 믹싱 없이 오디오 장치로 직접 출력됨을 나타내며 일반적으로 HDMI 장치의 사운드 출력에 사용됩니다.                   	|
-| AUDIO_OUTPUT_FLAG_FAST             	| 오디오 스트림을 오디오 장치로 빠르게 출력해야 함을 나타내며 일반적으로 버튼 소리 및 게임 배경음과 같이 대기 시간이 긴 장면에서 사용됩니다.   	|
-| AUDIO_OUTPUT_FLAG_DEEP_BUFFER      	| 오디오 스트림 출력이 일반적으로 높은 지연이 필요하지 않은 음악, 비디오 재생 및 기타 장면에서 사용되는 큰 지연을 허용할 수 있음을 나타냅니다. 	|
-| AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD 	| 오디오 스트림이 소프트웨어에 의해 디코딩되지 않았으며 하드웨어 디코더에 의한 디코딩을 위해 하드웨어 디코더로 출력되어야 함을 나타냅니다.     	|
+| **AUDIO_OUTPUT_FLAG**                  | **설명**                                                                                                                                         |
+|------------------------------------    |----------------------------------------------------------------------------------------------------------------------------------------------    |
+| AUDIO_OUTPUT_FLAG_PRIMARY              | 일반적으로 벨소리에 사용되는 기본 출력 장치로 오디오 스트림을 출력해야 함을 나타냅니다.                                                          |
+| AUDIO_OUTPUT_FLAG_DIRECT               | 오디오 스트림이 소프트웨어 믹싱 없이 오디오 장치로 직접 출력됨을 나타내며 일반적으로 HDMI 장치의 사운드 출력에 사용됩니다.                       |
+| AUDIO_OUTPUT_FLAG_FAST                 | 오디오 스트림을 오디오 장치로 빠르게 출력해야 함을 나타내며 일반적으로 버튼 소리 및 게임 배경음과 같이 대기 시간이 긴 장면에서 사용됩니다.       |
+| AUDIO_OUTPUT_FLAG_DEEP_BUFFER          | 오디오 스트림 출력이 일반적으로 높은 지연이 필요하지 않은 음악, 비디오 재생 및 기타 장면에서 사용되는 큰 지연을 허용할 수 있음을 나타냅니다.     |
+| AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD     | 오디오 스트림이 소프트웨어에 의해 디코딩되지 않았으며 하드웨어 디코더에 의한 디코딩을 위해 하드웨어 디코더로 출력되어야 함을 나타냅니다.         |
 
  이외에도 AUDIO_OUTPUT_FLAG_NOW_BLOCKING, AUDIO_OUTPUT_FLAG_HW_AV_SYNC, AUDIO_OUTPUT_FLAG_TTS, AUDIO_OUTPUT_FLAG_RAW, AUDIO_OUTPUT_FLAG_SYNC, AUDIO_OUTPUT_FLAG_IEC958_MONAUDIO, AUDIO_OUTPUT_FLAG_DIRECT_PCM, AUDIO_OUTPUT_FLAG_MMAP_NOIRQ, AUDIO_OUTPUT_VOIP_RX, AUDIO_OUTPUT_FLAG_INCALL_MUSIC
 
-### 3.2 Audio Patch
+<br/>
+<br/>
+<hr>
+
+###  Audio Patch
 
  audio patch는 하나 이상의 source port 와 하나 이상의 sink port 간 연결을 나타낸다.  
  patch는 framework api를 통해 audio policy manager 또는 application에서 framework API를 통해 연결 및 연결 해제 가능하다.  
@@ -929,13 +979,20 @@ struct audio_port_config {
 };
 ```
 
-### 3.3 Audio Focus
+<br/>
+<br/>
+<hr>
+
+### Audio Focus
 
  한번에 하나의 앱만 Audio Focus를 유지 할수 있도록 하는 기능 입니다.  
  앱이 오디오를 출력해야 하는 경우, Audio Focus를 요청해야 합니다. Focus가 있는 앱은 사운드를 재생할 수 있습니다.   
 
------
-
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # Develop
 
@@ -1008,14 +1065,14 @@ core/all-versions/default/
 ├── TEST_MAPPING
 └── util
     ├── Android.bp
-	    ├── CoreUtils.cpp
-		    ├── include
-			    │   └── util
-				    │       └── CoreUtils.h
-					    └── tests
-						        └── coreutils_tests.cpp
+        ├── CoreUtils.cpp
+            ├── include
+                │   └── util
+                    │       └── CoreUtils.h
+                        └── tests
+                                └── coreutils_tests.cpp
 
-								7 directories, 21 files
+                                7 directories, 21 files
 
 ```
  - mixer_paths.xml 분석
@@ -1025,11 +1082,18 @@ core/all-versions/default/
    * audio-hal-enums.h 
 > /system/media/audio/include/system/audio-hal-enums.h 
      audio-hal-enums.h 헤더 파일은 system <-> vendor(framework <-> hal) 간 데이터 enum파일이 정의된 헤더파일.
-	 정의된 enum데이터들은 AUDIO HAL 에서 지원하는 *audio format*, *channel masks*, *input flags* 을 나타내는데 사용.
+     정의된 enum데이터들은 AUDIO HAL 에서 지원하는 *audio format*, *channel masks*, *input flags* 을 나타내는데 사용.
 
-	
-	
-# develop
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# Audio Volume
+
+
+## Related file
 
  - audio_policy_configuration.xml:
     이 파일은 Android 7.0부터 도입된 audio policy configuration 파일.
@@ -1039,7 +1103,7 @@ core/all-versions/default/
         device port: 기기 유형에 연결할 수 있는 기기를 설명.
         route: 믹스 포트에서 기기까지의 연결 경로를 설명.
         volume table: UI 색인에서 dB 단위의 볼륨으로 변환하는 데 사용되는 곡선을 정의.
-	frameworks/av/services/audiopolicy/managerdefault/AudioPolicyManager.cpp
+    frameworks/av/services/audiopolicy/managerdefault/AudioPolicyManager.cpp
 
  - default_volume_tables.xml:
     이 파일은 기본 볼륨 테이블을 정의.
@@ -1048,7 +1112,7 @@ core/all-versions/default/
  - audio_policy_engine_configuration.xml:
     이 파일은 Android 10 이하에서 사용되는 audio policy engine configuration 파일.
     audio_policy_engine에서 사용되는 전략과 관련된 설정을 포함.
-	frameworks/av/services/audiopolicy/engine/config/config/src/EngineConfig.cpp
+    frameworks/av/services/audiopolicy/engine/config/config/src/EngineConfig.cpp
 
  - audio_policy_engine_default_stream_volumes.xml:
     이 파일은 Android 10 이하에서 사용되는 기본 스트림 볼륨 설정을 정의.
