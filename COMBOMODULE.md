@@ -381,6 +381,24 @@ cc_binary {
 
 <br/>
 <br/>
+<hr>
+
+### bluetooth issue
+
+ - BT Open Failure(UART)
+ H5 SYNC 실패 인경우, hardware circuit 이 정상인지 확인. (Power Supply, BT Reset PIN, UART TX/RX, CTS/RTS
+   * H5 SYNC : HCI H5 프로토콜 동기화 과정 (Hardware controller Interface) 
+      HCI H5 protocol은 UART 를 통해 bluetooth Host 와 컨트롤러 간의 통신을 관리하는 프로토콜 
+
+ - download fw, config 파일 확인.
+ Download 가 완료 된후, Controller에서 complete Command를 수신하지 못하면, BT Reset PIN 이 High상태이다.
+   * fw, config파일이 올바른지 확인
+
+ - down fw, config가 성공하면, bluedroid stack 은 HCI Command을 전송한다. 
+   * 첫번째 HCI commid가 재전송되는지 확인
+
+<br/>
+<br/>
 <br/>
 <hr>
 
