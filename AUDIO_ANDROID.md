@@ -1095,7 +1095,7 @@ core/all-versions/default/
   
 ## Related file  
   
- - audio_policy_configuration.xml:  
+ - /vendor/etc/audio_policy_configuration.xml:  
     이 파일은 Android 7.0부터 도입된 audio policy configuration 파일.  
     기기의 오디오 토폴로지를 설명하고 오디오 기기, 스트림 프로필, 볼륨 곡선 등을 정의.  
     주요 기능:  
@@ -1109,16 +1109,72 @@ core/all-versions/default/
     이 파일은 기본 볼륨 테이블을 정의.  
     각 스트림 유형에 대한 기본 볼륨 곡선을 설정.  
   
- - audio_policy_engine_configuration.xml:  
+ - /vendor/etc/audio_policy_engine_configuration.xml:  
     이 파일은 Android 10 이하에서 사용되는 audio policy engine configuration 파일.  
     audio_policy_engine에서 사용되는 전략과 관련된 설정을 포함.  
     frameworks/av/services/audiopolicy/engine/config/config/src/EngineConfig.cpp  
   
- - audio_policy_engine_default_stream_volumes.xml:  
-    이 파일은 Android 10 이하에서 사용되는 기본 스트림 볼륨 설정을 정의.  
-  
- - audio_policy_engine_product_strategies.xml:  
+ - /vendor/etc/audio_policy_engine_product_strategies.xml:  
     이 파일은 Android 10 이하에서 사용되는 제품별 라우팅 전략을 정의.  
+    * AttributesGroup : 오디오 속성 그룹을 정의 
+    * VolumeGroup : 볼륨 그룹을 정의하여 특정 스트림 유형에 대한 볼륨 곡선을 설정 하도록 선언함 
   
- - audio_policy_engine_stream_volumes.xml:  
+ - /vendor/etc/audio_policy_engine_stream_volumes.xml:  
     이 파일은 Android 10 이하에서 사용되는 스트림 볼륨 설정을 정의.  
+    각 오디오 스트림 유형에 대한 볼륨 곡선을 설정하고 특정 상황에서 볼륨 레벨을 조정하는데 사용  
+    * Stream Types : 각 오디오 스트림 유형(MUSIC, RINGTONE, ALARM 등)에 대한 볼륨 설정을 정의  
+    * Volume Curves : 볼륨 곡선을 정의하여 UI에서 설정한 볼륨 레벨을 실제 dB 값으로 변환.
+ 
+ - /vendor/etc/audio_policy_engine_default_stream_volumes.xml:  
+    이 파일은 Android 10 이하에서 사용되는 기본 스트림 볼륨 설정을 정의.  
+    특정 기기나 상황에 맞춘 custom 설정이 없을때 사용되는 기본 볼륨 곡선을 제공함.
+    * Default Volume Curvew : 기본 볼륨 곡선을 정의 
+  
+
+```
+audio_policy_engine_configuration.xml
+    |
+    +-> audio_policy_engine_product_strategies.xml
+    |
+    +-> audio_policy_engine_stream_volumes.xml 
+    |
+    +-> audio_policy_engine_default_stream_volumes.xml
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Control Android Volume Curves
+
+ speaker 에서 출력되는 Music의 볼륨을 제어하려면 Volume Curves를 제어해야함.  
+
+ 1. music volumeGrupe의 DEFAULT_DEVICE_CATEGORY_SPEAKER_VOLUME_CURVE 의 Volume Curves 를 찾는다.  
+ 2. default volume table에서 해당하는 Volume Curve 값을 조정.
+   - 볼륨 레벨은 4개의 세그먼트(1, 20, 60, 100;벌롬 백분율)로 나누어 지며, 
+     -5800, -4000, -1700, 0 은 -58dB, -40dB, -17dB, 0 으로 감쇠하는 볼륨 값.
+
+```xml
+// /vendor/etc/audio_policy_engine_stream_volumes.xml
+<volumeGroup>
+        <name>music</name>
+        <indexMin>0</indexMin>
+        <indexMax>15</indexMax>
+        <volume deviceCategory="DEVICE_CATEGORY_HEADSET" ref="DEFAULT_MEDIA_VOLUME_CURVE"/>
+        <volume deviceCategory="DEVICE_CATEGORY_SPEAKER" ref="DEFAULT_DEVICE_CATEGORY_SPEAKER_VOLUME_CURVE"/>
+        <volume deviceCategory="DEVICE_CATEGORY_EARPIECE" ref="DEFAULT_MEDIA_VOLUME_CURVE"/>
+        <volume deviceCategory="DEVICE_CATEGORY_EXT_MEDIA" ref="DEFAULT_MEDIA_VOLUME_CURVE"/>
+        <volume deviceCategory="DEVICE_CATEGORY_HEARING_AID"  ref="DEFAULT_HEARING_AID_VOLUME_CURVE"/>
+    </volumeGroup>
+    
+// /vendor/etc/audio_policy_engine_default_stream_volumes.xml
+<reference name="DEFAULT_DEVICE_CATEGORY_SPEAKER_VOLUME_CURVE">
+    <!-- Default is Speaker Media Volume Curve -->
+        <point>1,-5800</point>
+        <point>20,-4000</point>
+        <point>60,-1700</point>
+        <point>100,0</point>
+    </reference>
+
+```
