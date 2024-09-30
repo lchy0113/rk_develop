@@ -14,6 +14,7 @@ SENSOR
 <br/>
 <br/>
 <br/>
+<br/>
 <hr>
 
 # VISHAY,VCNL4200 
@@ -40,6 +41,10 @@ SENSOR
 
 # Analyse
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## kernel layer
  
@@ -55,8 +60,6 @@ SENSOR
 <br/>
 <br/>
 <hr>
-
-
 
 ## hal layer
 
@@ -169,16 +172,16 @@ static int open_sensors(...)
                  * SensorBase(PS_DEVICE_NAME, "proximity") // PS_DEVICE_NAME      "/dev/psensor"
                  * open_device() // 
                  * ioctl(PSENSOR_IOCTL_GET_ENABLED, &flags) -> sensor_dev module 
-				 *     -> setInitialState() ; 초기화 값
-				 *         -> get abs value from input device
-				 *            struct input_absinfo {
-				 *                __s32 value;
-				 *                __s32 minimum;
-				 *                __s32 maximum;
-				 *                __s32 fuzz;
-				 *                __s32 flat;
-				 *                __s32 resolution;
-				 *            };
+                 *     -> setInitialState() ; 초기화 값
+                 *         -> get abs value from input device
+                 *            struct input_absinfo {
+                 *                __s32 value;
+                 *                __s32 minimum;
+                 *                __s32 maximum;
+                 *                __s32 fuzz;
+                 *                __s32 flat;
+                 *                __s32 resolution;
+                 *            };
                  * sensor_dev module feedback status_cur(SENSOR_ON) -> hal
                  */ 
             /**
@@ -193,7 +196,6 @@ static int open_sensors(...)
 
 ```
 
-<br/>
 <br/>
 <br/>
 <br/>
@@ -213,8 +215,8 @@ static int open_sensors(...)
  App layer에서는 triggger하기 위해 wakelock을 관리하지 않아도 됨.   
    
     * TriggerEvent : TriggerEventListener에 의해 호출되며, 트리거가 발생했을때, 보유값(시간, 값, 정보 등)을 관리한다.  
-	  values : TYPE_SIGNIFICANT_MOTION 의 경우, 값 필드의 길이는 1. 센서가 트리거되면 value[0] = 1.0   
-		(1.0 만 허용)  
+      values : TYPE_SIGNIFICANT_MOTION 의 경우, 값 필드의 길이는 1. 센서가 트리거되면 value[0] = 1.0   
+        (1.0 만 허용)  
 
 <br/>
 <br/>
@@ -223,6 +225,11 @@ static int open_sensors(...)
 <hr>
 
 # Develop
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## vcnl4000.c
 
@@ -279,8 +286,6 @@ kernel-4.19/drivers/iio/light/vcnl4000.c
     |   +-> vcnl4200_measure(data, &data->vcnl4200_al, val);
     +-> vcnl4200_measure_proximity(struct vcnl4000_data *data, int *val)
         +-> vcnl4200_measure(data, &data->vcnl4200_pl, val);
-
-
 ```
 
  - iio 장치
@@ -309,6 +314,11 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
 <hr>
 
 # Reference 
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## rk3568-evb
 
@@ -340,9 +350,6 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
         irq_enable = <0>;
         poll_delay_ms = <30>;
         type = <SENSOR_TYPE_ACCEL>;
-        power-off-in-suspend = <1>;
-        layout = <1>;
-    };
 };
 ```
  
@@ -401,7 +408,6 @@ PRODUCT_PACKAGES += \
 <br/>
 <br/>
 <hr>
-
 
 ## rk3326-evb
 
@@ -508,7 +514,6 @@ static int sensor_init(struct i2c_client *client)
 // val : 0x70; 0111 0000 : PS multi pulse(8 multi pulses), active force mode, enable sunlight cancellation
 // val : 0x07; 0000 0111 : PS mode selection, sunlight capability, sunlight protection mode
 ```
-
 
 <br/>
 <br/>
