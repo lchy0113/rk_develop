@@ -56,6 +56,9 @@ SENSOR
 
  code : kernel/drivers/input/sensors/sensor-dev.c 는 가속도, 자이로, 등 다양한 유형의 센서를 통합하는 코드.  
 
+ - interrupt or polling
+ sensor device node의 irq_enable이 존재하는 경우, interrupt mode. 그렇지 않은 경우, polling
+
 <br/>
 <br/>
 <br/>
@@ -231,6 +234,66 @@ static int open_sensors(...)
 <br/>
 <hr>
 
+## datasheet
+
+ - PS_CONF1 
+   * PS_Duty : PS_Duty 필드는 근접센서의 작동 주기 설정. 센서가 얼마나 자주 근접 감지를 수행할지를 결정.
+          1/40 = 40번 중 1번 작동, 1/320 = 320번 중 1번 작동
+   * PS_PERS : 근접 센서의 지속성 설정. 센서가 근접 이벤트를 감지할 때, 몇번의 연속된 측정을 통해 이벤트를 확인 할지 결정. 
+          1 = 1회 연속 측정,  4 = 4회 연속 측정
+   * PS_IT   : 근접 센서의 적외선 발광 다이오드(IRED) 펄스의 통합 시간 설정. 센서가 물체와의 거리를 감지하는데 사용되는 시간 간격을 나타냄. 
+          1T = 1 펄스 통합 시간,  9T = 9 펄스 통합 시간 
+          통합 시간의 역할 : 센서가 적외선 신호를 수집하고 처리하는데 걸리는 시간을 의미. 
+          더 긴 통합 시간은 더 많은 신호를 수집하여 감지 정확도를 높일 수 있지만,  응답시간이 길어진다. 
+          짧은 응담 시간은 빠른 응답을 제공하지만 감지 정확도가 낮다.  
+          즉, 선택 기준으로 짧은 통합시간(1T, 1.5T, 2T) 빠른 응답이 필요한 분야.
+              긴 통합 시간(4T,8T,9T) 높은 감지 정확도가 필요한 분야.  
+
+ - PS_CONF2
+   * PS_HD : 근접 센서의 동작 범위 설정. 높은 범위 설정 시, 센서의 감지 범위와 정확도가 향상
+     0 = PS output is 12 bits, 1 = PS output is 16 bits
+   * PS_INT : 근접 센서의 인터럽트 설정 제어
+     (0,0) = 인터럽트 비활성화, (0:1) = 오는거, (1:0) = 가는거, (1:1) = 오는거 가는거
+
+ - PS_CONF3 
+   * PS_MPS        : 근접 센서의 다중 펄스 설정 제어. 다중 펄스 설정시, 여러 펄스를 사용하여 감지 정확도 향상
+     (0,0) = 1, (0,1) = 2, (1,0) = 4, (1,1) = 8
+   * PS_SMART_PERS : 스마트 지속성 기능. 불필요한 트리거를 줄이고 정확한 감지를 보장. 
+     0 = 비활성화, 1 = 활성화
+   * PS_AF         : 강제 활성화 모드. 센서가 특정 조건에서 강제로 작동하도록 함.
+   * PS_TRIG       : 근접 센서의 트리거 모드 설정. 특정조건에서 트리거 되어 데이터를 보고하도록 함. 
+   * PS_SC_ADV     : 고급 자가 보정 기능. 센서가 환경 변화에 따라 자동으로 보정
+   * PS_SC_EN      : 자가 보정 기능. 센서가 초기 설정 시, 자동으로 보정. 
+  
+
+ - PS_MS
+   * PS_MS  : 근접 센서 모드를 설정하는 필드
+     - 0(Proximity Normal Operation with Interrupt Function) : 설정된 임계값을 초과할 때 인터럽트를 발생. 이를 통해 근접 상태를 감지하고 적절한 동작을 수행
+     - 1(Proximity Detection Logic Output Mode Enable) : 근접 센서가 논리 출력 모드로 동작. 근접 상태를 단순히 논리 신호로 출력. 추가적인 처리없이 근접 여부를 확인
+   * PS_SP  : 근접센서의 햇빚 내성을 설정. 
+     - 0 = typical sunlight capability 를 의미. 즉 센서가 일반적인 햇빛 조건에서 정상적으로 동작하도록 설정.
+     - 1 = 1.5 typical sunlight capability 를 의미, 일반적인 햇빛 조건의 1.5 배 강한 햇빛에서도 동작할 수 있도록 설정 
+   * PS_SPO : 
+   * LED_I  : 적외선 LED의 전류를 설정하는데 사용. 
+
+ - CANC_L, CANC_H
+   * PS_CANC_L : 근접 센서의 PS Cancellation Level을 설정하는데 사용. 
+                 근접 센서가 감지하는 배경 신호를 보정.(하위 바이트)
+   * PS_CANC_H : (상위 바이트)
+
+ - PS_THDL_L, PS_THDL_H
+   * PS_THDL_L : 근접센서의 낮은 임계값을 설정하는데 사용. (하위 바이트)
+   * PS_THDL_H :(상위 바이트) 
+
+ - PS_THDH_L, PS_THDH_H 
+   * PS_THDH_L : 근접센서의 높은 임계값을 설정하는데 사용. (하위 바이트)
+   * PS_THDH_H : (상위 바이트)
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## vcnl4000.c
 
 branch feature/proximity_sensor
@@ -304,8 +367,21 @@ dev  in_illuminance_raw  in_illuminance_scale  in_proximity_raw  name  of_node  
 
 ```
 
- - sensor dev
- 
+<br/>
+<br/>
+<br/>
+<hr>
+
+## proximity sensor rule
+
+| **level** | **distance** | **value**             |
+|-----------|--------------|-----------------------|
+| 4         | 60cm~        |        value <= 0x0e  |
+| 3         | 40cm~60cm    | 0x0e < value <= 0x10  |
+| 2         | 20cm~40cm    | 0x10 < value <= 0x2a  |
+| 1         | ~20cm        | 0x2a < value          |
+
+
 
 <br/>
 <br/>
