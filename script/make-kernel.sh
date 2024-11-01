@@ -30,7 +30,7 @@ if [ ! -f ./kernel/configs/kconfig.config ] || [ ! -e ./kernel/configs/kconfig.c
 	rm kconfig.config
 	if [ "${TARGET_DEVICE:0:6}" = "rk3568" ]; then
 		ln -s ../../../device/kdiwin/test/common/configs/kconfig.config kconfig.config
-	elif [ "${TARGET_DEVICE}" = "le1000" ]; then
+	else
 		ln -s ../../../device/kdiwin/newjeans/base/configs/kconfig.config
 	fi
 	cd -
@@ -43,8 +43,8 @@ if [ ! -f ./kernel/configs/$TARGET_DEVICE.config ] || [ ! -e ./kernel/configs/$T
 	rm $TARGET_DEVICE.config
 	if [ "${TARGET_DEVICE:0:6}" = "rk3568" ]; then
 		ln -s ../../../device/kdiwin/test/$TARGET_DEVICE/configs/kconfig.config $TARGET_DEVICE.config
-	elif [ "${TARGET_DEVICE}" = "le1000" ]; then
-		ln -s ../../../device/kdiwin/newjeans/base/configs/kconfig_edpp05.config $TARGET_DEVICE.config
+	else
+		ln -s ../../../device/kdiwin/newjeans/$TARGET_DEVICE/configs/kconfig.config $TARGET_DEVICE.config
 	fi
 	cd -
 fi
