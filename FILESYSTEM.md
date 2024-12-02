@@ -334,5 +334,6 @@ target : 5th generation platform
 
 
 ![](images/FILESYSTEM_01.png)
+<img src="images/FILESYSTEM_01.png">
   
 ![](images/FILESYSTEM_02.png)
