@@ -333,7 +333,7 @@ target : 5th generation platform
 | **SQLite 데이터베이스 성능 테스트 (Insert,Update,Delete)** | 370.92 QPS, 5.51 sec <br/> 455.73 QPS, 4.48 sec <br/> 545.29 QPS, 3.78 sec  | 365.7 QPS, 5.6 sec <br/> 425.7 QPS, 4.8 sec <br/> 517.03 QPS, 3.95 sec  | SQLite 데이터베이스 성능 테스트 <br/> 설명: 디바이스의 SQLite 데이터베이스 관련 작업 성능을 측정. <br/> Insert: 데이터 삽입 성능. <br/> Update: 데이터 업데이트 성능. <br/> Delete: 데이터 삭제 성능. <br/> 용도: 데이터베이스를 자주 사용하는 앱의 성능 최적화 분석. |
 
 
-![](images/FILESYSTEM_01.png)
-<img src="images/FILESYSTEM_01.png">
+<img src="images/FILESYSTEM_01.png" alt="ext4 filesystem" width="200">
+
+<img src="images/FILESYSTEM_02.png" alt="f2fs filesystem" width="200">
   
-![](images/FILESYSTEM_02.png)
