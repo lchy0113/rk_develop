@@ -311,13 +311,36 @@ target : 5th generation platform
 <br/>
 <hr>
 
-## 4. 벤치마크 
+## 4. 스토리지 인터페이스 속도 개선:Legacy Mode에서 HS200 으로 변경
+ 스토리지 인터페이스 속도를 기존 Legacy Mode(50MB/s) 에서 HS200(200MB/s)으로 업그레이드하여 데이터 전송 속도와 제품 생산성이 크게 향상되었습니다. 
 
 <br/>
 <br/>
 <hr>
 
-### 4.1 Storage Benchmark
+### 4.1 개선 사항
+
+ - 인터페이스 업그레이드 :
+   * 기존 : legacy mode(50 MB/s)
+   * 변경 : HS200 (200 MB/s)
+
+ - HS200의 주요 특징:
+   * 최대 200MB/s 데이터 전송 속도
+   * 낮은 전력 소비로 효율성 향상
+   * 고속 데이터 처리를 위한 최적화된 신호 타이밍
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## 5. 기대효과
+
+<br/>
+<br/>
+<hr>
+
+### 5.1 스토리지 벤치마크
 
 > 아래 툴을 사용하여 스토리지 성능을 검증합니다.
 
@@ -336,4 +359,18 @@ target : 5th generation platform
 <img src="images/FILESYSTEM_01.png" alt="ext4 filesystem" width="200">
   
 <img src="images/FILESYSTEM_02.png" alt="f2fs filesystem" width="200">
+
+<br/>
+<br/>
+<hr>
+
+### 5.2 생산성 향상
+
+ 파일시스템 변경(F2FS)와 스토리지 인터페이스 개선(HS200)을 통해 기존 생산 공정에서 발생하던 병목 현상을 해소하고, 안드로이드 제품의 이미지 다운로드 및 데이터 처리 속도를 크게 향상 시켰습니다. 
+
+ - 생산 공정 시간 단축
+ 
+   * 기대효과
+     생산 비용 절감, 제품 품질 향상. 
+
   
