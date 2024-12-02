@@ -312,3 +312,18 @@ target : 5th generation platform
 <hr>
 
 ## 4. 벤치마크 
+
+<br/>
+<br/>
+<hr>
+
+### 4.1 Storage Benchmark
+
+> 아래 툴을 사용하여 스토리지 성능을 검증합니다.
+
+ Androidbench : 안드로이드 디바이스에서 스토리지 성능을 측정하고, 분석할수 있는 벤치마크 툴을 사용하여, 
+ 디바이스의 스토리지의  읽기/쓰기 속도와 같은 성능 지표를 제공 해주는 툴.
+
+![](images/FILESYSTEM_01.png)
+  
+![](images/FILESYSTEM_02.png)
