@@ -4,6 +4,7 @@
 
 [AK7755](#ak7755)  
  - [Analysis](#analysis)  
+ - [Datasheet](#datasheet)  
 
 [Develop](#develop)  
  - [ASoC : Audio System on Chip](#asoc--audio-system-on-chip)  
@@ -32,6 +33,12 @@
 
 # AK7755
 
+```css
+[ Analog Input ] -> [ ADC ] -> [ DSP ] -> [ DAC ] -> [ Analog Output ]
+                                   ↘   ↙
+                           [ Digital I/O (I2S, TDM) ]
+```
+
  AK7755EN 은 고성능 스테레오 오디오 코덱으로 사용자 프로그램 가능한 DSP 를 포함하고 있음.  
 
  DSP 에는 모노 ADC, 쓰테레오 오디오 CODEC, 마이크 프리앰프, 라인 출력 앰프 및 디지털 오디오 I/F가 포함됨.  
@@ -39,6 +46,10 @@
  
  RAM기반 DSP로 사용자 요구사항에 맞게 프로그램 할수 있음.  
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Analysis
 
@@ -50,7 +61,7 @@
    * CONT00 ~ CONT01은 clock generation과 관련이있음. 
      + clock reset 시, (CKRESETN bit (CONT01:D0) = "0")으로 변경해야 함.
 
-   * CONT12 ~ CONT19는 동작중에 write가능함. 
+   * CONT12 ~ CONT19는 동작중에 가능함. 
 
    * 그외 다른 control register는 error 및 noise를 방지하기 위해 *clock reset* 또는 *system reset + dsp reset* 둘 중에 하나를 적용해야 함. 
      + clock reset : CKRESETN bit(CONT01:D0)
@@ -76,7 +87,7 @@
      + CONT26:D0  
      + CONT2A:D7  
 
-   * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는 write 하면 안됨.
+   * CONT1F ~ CONT25, CONT27 ~ CONT29, CONT2B ~ CONT3F register 는  하면 안됨.
 
 ![](./images/AUDIO_CODEC_07.png)
 
@@ -107,8 +118,8 @@
 
  - DSP reset 제한
 
- DSP write operation에 CRAM program이 포함되어 있는 경우, DSP RUN 중 microprocessor 가 DSP reset (DSPRESETN bit="1"->"0") 을 실행시,
- CRAM write 가 실패 할 수 있다.  
+ DSP  operation에 CRAM program이 포함되어 있는 경우, DSP RUN 중 microprocessor 가 DSP reset (DSPRESETN bit="1"->"0") 을 실행시,
+ CRAM  가 실패 할 수 있다.  
 
 
  - Note:
@@ -156,6 +167,41 @@
  - Delay RAM : (8192 x 24-bit)
  - Accelerator Data RAM : (2048 x 16-bit)
 
+<br/>
+<br/>
+<hr>
+
+### RAM Writing Timing during RUN
+
+> Codec 모듈 동작 상태에서 RAM data  기능에 대해 설명. 
+ RAM writing 작업은  preparation, writd preparation read, writd execution 순서로 진행됨. 
+ RAM writing preparation 단계 없이, RAM  를 할 경우, 오작동이 발생.
+
+  - RDY가 "H" 로 변경될 때까지 마이크로 컨트롤러의 액세스 작업은 금지.
+
+ RUN 상태에서 CRAM(Coefficient RAM), OFREG(Offset REG) 을 다시  하는 과정을 설명. 
+ 데이터  과정은 2단계(writd preparation, writd execution)로 실행됨. 
+
+ 1.  preparation
+  command code (8bit) 를 입력하여, 할당된 데이터 갯수를 순서대로 입력.  
+  slave mode 에서  preparation 은 DSP 리셋(DSPRESETN bit)을 해제 한 후, **2 LRCK** cycle(2/fs) 동안 금지 됨. 
+
+ 2.  Preparation Data Confirmation
+   preparation 이후, prepared data를 확인 할 수 있음. 
+  address와 data 는  preparation data 확인 명령어(0x24) 에 의해 read됨. 
+
+ 3.  Execution
+  RUN 상태에서 RAM 를 수행.
+
+ RAM 의 업데이트 (write modification)는 RAM 주소가 할당될 때마다 실행됨. 
+ 예를 들어, RAM address "10" 에 "5" data 가 write되면 아래와 같이 실행된다.
+
+```bash
+ [RAM execution address]    [07] [08] [09] [10] [11] [13] [16] [11] [12] [13] [14] [15]
+                                             V    V                   V    V    V
+ [Write execution position] [  ] [  ] [  ] [ O] [ O] [ ^] [  ] [  ] [ O] [ O] [ O] [  ]
+```
+ 
 <br/>
 <br/>
 <br/>
@@ -493,11 +539,11 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
 
    * Format 
     
-    **Write Operation during System Reset**
+    ** Operation during System Reset**
 
-      + Program RAM (PRAM) Write (during system reset)
+      + Program RAM (PRAM)  (during system reset)
     
-        | Field                | Write data                                                           |
+        | Field                |  data                                                           |
         |------------------    |------------------------------------------------------------------    |
         | (1) COMMAND Code     | 0xB8                                                                 |
         | (2) ADDRESS1         | 0 0 0 0 0 0 0                                                        |
@@ -509,9 +555,9 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
         | (8) DATA5            | D7 ~ D0                                                              |
         |                      | Five bytes of data may be written continuously for each address.     |
 
-      + Coefficient RAM (CRAM) Write (during system reset)
+      + Coefficient RAM (CRAM)  (during system reset)
 
-        | **Field**            | **Write data**                                                      |
+        | **Field**            | ** data**                                                      |
         |------------------    |-----------------------------------------------------------------    |
         | (1) COMMAND Code     | 0xB4                                                                |
         | (2) ADDRESS1         | 0 0 0 0 A10 A9 A8                                                   |
@@ -521,9 +567,9 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
         | (6) DATA3            | D7 ~ D0                                                             |
         |                      | Three bytes of data may be written continuosly for each address     |
 
-      + Offset REG (OFREG) Write (during sytem reset)
+      + Offset REG (OFREG)  (during sytem reset)
     
-        | **Field**            | **Write data**                                                      |
+        | **Field**            | ** data**                                                      |
         |------------------    |-----------------------------------------------------------------    |
         | (1) COMMAND Code     | 0xB2                                                                |
         | (2) ADDRESS1         | 0 0 0 0 0 0 0 0                                                     |
@@ -533,9 +579,9 @@ static int rk817_playback_path_put(struct snd_kcontrol *kcontrol,
         | (6) DATA3            | D7 ~ D0                                                             |
         |                      | Three bytes of data may be written continuosly for each address     |
         
-      + Accelerator Coefficient RAM (ACCRAM) Write (during system reset)
+      + Accelerator Coefficient RAM (ACCRAM)  (during system reset)
 
-        | **Field**            | **Write data**                                                      |
+        | **Field**            | ** data**                                                      |
         |------------------    |-----------------------------------------------------------------    |
         | (1) COMMAND Code     | 0xBB                                                                |
         | (2) ADDRESS1         | 0 0 0 0 0 A10 A9 A8                                                 |
