@@ -61,7 +61,15 @@ ifconfig wlan0 192.168.1.100 netmask 255.255.255.0
 iw wlan0 link
 ```
 
+<br/>
+<br/>
+<hr>
 
+### signal 검색
+
+```bash
+wlan0 scan | grep -E "SSID|signal" | sed '/SSID/!s/^/signal: /' | paste -d" " - -
+```
 
 <br/>
 <br/>
