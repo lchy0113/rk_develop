@@ -100,6 +100,13 @@ i2cget -f -y 5 0x08 0x4c
      d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ????????????????
      e0: ff ff ff ff ff ff ff ff ff ff ff ff c3 00 91 92    ?????????????.??
      f0: 00 a8 a5 9d 00 28 00 5a 00 03 03 02 56 31 02 a5    .???.(.Z.???V1??
+```
 
 
+```
+흰색   : adb shell "i2cset -y 5 0x08 0x4c 0x0f b"
+빨간색 : adb shell "i2cset -y 5 0x08 0x4c 0x03 b"
+파란색 : adb shell "i2cset -y 5 0x08 0x4c 0x09 b"
+
+상위로부터 흰색, 빨간색, 파란색, 비활성화에 대한 IOCTL 인터페이스를 제공. 
 ```
