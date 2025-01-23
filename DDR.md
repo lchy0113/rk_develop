@@ -2,22 +2,31 @@
 
 > DDR 메모리 대한 검증에 대한 내용을 설명합니다.
 
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 1. 조건 
 
 - 32 bit 또는 64 bit ARM 아키텍처 타겟으로 합니다.
 - 타겟 장치의 total ddr memory size 를 타겟으로 합니다.
 - ddr frequency 가 고정된 상태인 경우, 최대 frequency 로 세팅해야 합니다.
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 2. 준비 과정 
 
 - test 파일 다운로드
-	
+    
   * [stress test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_stressapptest/)   
- 	 *stressapptest* : https://github.com/stressapptest
+      *stressapptest* : https://github.com/stressapptest
   * [memtester test](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/static_memtester/)    
-	  *memtester* : https://pyropus.ca./software/memtester/, https://github.com/jnavila/memtester  
+      *memtester* : https://pyropus.ca./software/memtester/, https://github.com/jnavila/memtester  
   * [ddr_freq_scan.sh](./attachment/DDR/ddr_test_tools/ddr_particle_verification_test_resource/linux4.xx_ddr_test_files/ddr_freq_scan.sh)
 
 
@@ -41,10 +50,16 @@ $ adb shell chmod 0777 /data/local/tmp/ddr_freq_scan.sh
 $ adb shell echo 1 > /sys/power/wake_lock
 ```
 
------
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 3. Verification
 
+<br/>
+<br/>
+<hr>
 
 ### 3.1 Verify DDR Capacity
 
@@ -96,7 +111,9 @@ CmaReleased:        7820 kB
 CmaFree:               0 kB
 ```
 
-
+<br/>
+<br/>
+<hr>
 
 ### 3.2 DDR stress test 
 
@@ -163,9 +180,9 @@ rk3568_poc:/# /data/local/tmp/stressapptest -s 43200 -i 4 -C 4 -W --stop_on_erro
 실패인 경우, Status: FAIL 이 노출됩니다.  
 stressapptest 는 10초마다 로그를 출력하고, 로그는 남은 테스트 시간을 표시 합니다.  
 
-
------
-
+<br/>
+<br/>
+<hr>
 
 ### 3.3 memtester test 
 
@@ -273,29 +290,28 @@ EXIT_FAIL_OTHERTEST
 
 ```
 
-
------
-
+<br/>
+<br/>
+<hr>
 
 ### DDR Frequency Test
 (작성 예정)
 
-
------
-
 reference : 
 https://intrepidgeeks.com/tutorial/stressappst-user-guide 
 
-
-
------
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # DDR Log
 
 ```bash
-[2023-06-05 10:41:43.466] DDR Version V1.13 20220218		// ddr 초기화 코드 버전 정보, ddr initialzation code 시작.
+[2023-06-05 10:41:43.466] DDR Version V1.13 20220218        // ddr 초기화 코드 버전 정보, ddr initialzation code 시작.
 [2023-06-05 10:41:43.466] In
-							SRX		// SRX가 출력되는 경우, hot restart 의미. SRX가 출력되지 않은경우, cold boot 을 의미(일부 칩만 지원)
+                            SRX        // SRX가 출력되는 경우, hot restart 의미. SRX가 출력되지 않은경우, cold boot 을 의미(일부 칩만 지원)
 [2023-06-05 10:41:43.523] ddrconfig:0
 [2023-06-05 10:41:43.523] LP4 MR14:0x4d
 [2023-06-05 10:41:43.523] LPDDR4, 324MHz
@@ -352,19 +368,26 @@ https://intrepidgeeks.com/tutorial/stressappst-user-guide
 [2023-06-05 10:41:43.735] cs:0 mid  :0x85 0x84 0x7e 0x79 0x7b 0x77 0x73 ,0x88 0x84 0x80 0x7d 0x7d 0x7a 0x77 ,
 [2023-06-05 10:41:43.769] cs:0 max  :0xbd 0xc8 0xb7 0xba 0xb4 0xb8 0x9c ,0xbf 0xc7 0xb6 0xbe 0xb6 0xbd 0xa2 ,
 [2023-06-05 10:41:43.770] cs:0 range:0x70 0x87 0x71 0x81 0x71 0x81 0x52 ,0x6e 0x86 0x6b 0x82 0x71 0x86 0x56 ,
-[2023-06-05 10:41:43.771] out	// ddr initialize code 종료를 의미
+[2023-06-05 10:41:43.771] out    // ddr initialize code 종료를 의미
 [2023-06-05 10:41:43.785] U-Boot SPL board init
 [2023-06-05 10:41:43.801] U-Boot SPL 2017.09-gaaca6ffec1-211203 #zzz (Dec 03 2021 - 18:42:16)
 [20
 ```
 
-
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## rk3568 support ECC
 
 - RK3568은 ECC를 지원합니다. DDR ECC DQ0-7에 연결된 component가 있으면 loader가 자동으로 ECC 기능을 활성화합니다.
 - ECC Byte의 DRAM은 DQ0-31의 component와 동일한 row/bank/col을 가져야 합니다.
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## selection of rk356x ddr frequency
 
@@ -378,8 +401,10 @@ https://intrepidgeeks.com/tutorial/stressappst-user-guide
   예를 들어 rk3568에서 가장 높은 frequency 를 1332M으로 변경해야 하는경우, RKBOOT/RK3568MINIALL.ini의 Path1 및 FrashData가 가리키는 ddr bin 을 rkbin 프로젝트 directory의  1332M으로 변경해야 하며, 
   dts의 frequency point는  324M으로 변경된다. 
 
-
-
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## ddr DQ : eye diagram tool 
 
@@ -468,6 +493,9 @@ DQ eye width min: 49(read), 50(write)
 DQ eye width reference: 25(read), 24(write) in 1560MHz
 ```
 
+<br/>
+<br/>
+<hr>
 
 ### 출력 분석
  - tool version, ddr type, frequency 및 기타 정보를 출력함.
@@ -479,6 +507,9 @@ DQ eye width reference: 25(read), 24(write) in 1560MHz
  - eye diagram 그래프의 오른쪽 사이드에는 margin(Margin_L, Margin_R; sampling width), sampling point  정보를 출력한다.
  - tool은 eye diagram을 읽어 eye diagram을 작성하기 위한 최소 eye width, width limit value을 작성할 수 있도록 한다.
 
+<br/>
+<hr>
+
 #### eye diagram
  - eye diagram은 ddr sdram의 데이터 신호를 시각적으로 표현한 것.     
  - eye diagram을 데이터 신호의 진폭,위상,시간 오차 등을 나타낸다.
@@ -486,21 +517,24 @@ DQ eye width reference: 25(read), 24(write) in 1560MHz
  - eye diagram은 데이터 신호의 진폭이 클수록, 위상이 정확할 수록, 시간 오차가 적을 수록 품질이 좋다. 
  - eye diagram의 품질이 좋지 않으면 ddr sdram 데이터 신호가 유실되거나 오류가 발생할 수 있다.
 
+<br/>
+<hr>
+
 #### ddr dq mininum eye width limitation
  - read, write eye width of DDR DQ에 대한 최소 값.
    * minimum read, write eye width 을 충족하지 못한 경우, DDR operation 이 불안해 짐. 
  - DDR DQ mininum read, wrtie eye width를 충족한다는 것은 현재 DDR DQ eye width이 상대적으로 안정적이라는 의미이며, 설계에 다른 문제가 없다는 의미는 아님.
 
-| **DDR type** 	| **DDR clock frequency** 	| **minimum reading  eye width limit value** 	| **minimum write  eye width limit value** 	|
-|:------------:	|:-----------------------:	|:------------------------------------------:	|:----------------------------------------:	|
-| _LPDDR4_     	| _1560MHz_               	| 25                                         	| 24                                       	|
-| _LPDDR4_     	| _1184MHz_               	| 30                                         	| 29                                       	|
-| _DDR4_       	| _1560MHz_               	| 30                                         	| 22                                       	|
-| _DDR4_       	| _1184MHz_               	| 32                                         	| 26                                       	|
-| _LPDDR3_     	| _1184MHz_               	| 34                                         	| 25                                       	|
-| _LPDDR3_     	| _1056MHz_               	| 39                                         	| 28                                       	|
-| _DDR3_       	| _1184MHz_               	| 32                                         	| 31                                       	|
-| _DDR3_       	| _1056MHz_               	| 39                                         	| 34                                       	|
+| **DDR type**     | **DDR clock frequency**     | **minimum reading  eye width limit value**     | **minimum write  eye width limit value**     |
+|:------------:    |:-----------------------:    |:------------------------------------------:    |:----------------------------------------:    |
+| _LPDDR4_         | _1560MHz_                   | 25                                             | 24                                           |
+| _LPDDR4_         | _1184MHz_                   | 30                                             | 29                                           |
+| _DDR4_           | _1560MHz_                   | 30                                             | 22                                           |
+| _DDR4_           | _1184MHz_                   | 32                                             | 26                                           |
+| _LPDDR3_         | _1184MHz_                   | 34                                             | 25                                           |
+| _LPDDR3_         | _1056MHz_                   | 39                                             | 28                                           |
+| _DDR3_           | _1184MHz_                   | 32                                             | 31                                           |
+| _DDR3_           | _1056MHz_                   | 39                                             | 34                                           |
 
 
  - rk3568_evboard_log
