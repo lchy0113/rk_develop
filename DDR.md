@@ -306,6 +306,95 @@ https://intrepidgeeks.com/tutorial/stressappst-user-guide
 <br/>
 <hr>
 
+# Interface about between soc and ddr
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## 구성요소
+
+ - Memory Cotnroller
+  * SoC내부에 통합된 DDR Memory Controller 가 DDR 와의 물리적 연결과 데이터 전송을 제어.  
+  * 역할 : 메모리 초기화, 읽기/쓰기, DRAM 리프레시, QoS처리 및 대역폭 관리
+
+ - PHY (Physical Layer)
+  * Memory Controller 와 DDR 메모리를 연결하는 하드웨어 계층
+  * 역할 : 디지털 신호를 아날로그 신호로 변환 및 전송. 데이터 신호의 타이밍 조정 및 보정.  
+  DQ(Data Lines), DQS(Strobe), Address/Command 신호 핸들링.  
+
+ - PCB Layout  및 trace  설계
+  * SoC와 DDR 간의 신호 무결성을 보장하기 위해 PCB 설계가 중요
+  * 역할 : 신호 트레이스 길이 매칭( 특히 데이터 라인과 DQS). 신호 간 간섭 방지. 전원 무결성을 위한 디커플링 캡 추가.  
+
+ - 전원 관리
+  * DDR 메모리는 전압 레벨을 염격히 준수해야 하므로 SoC와 메모리 전원(VDD, VPP 등) 안정적으로 공급되도록 설계해야함.
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## 주요 신호 라인 
+
+ - Address / Command Bus
+ - Data Bus (DQ)
+ - Data Stobe (DQS)
+ - Clock (CK, CK#)
+ - Control Signals 
+  * CS#(Chip Select) : 메모리 칩 활성화
+  * RAS#, CAS#, WE# : 명령 제어 신호 (Row Address Stobe, Column Address Stobe, Write Enable)
+  * RESET#: 초기화 신호
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## DDR4의 특징 및 SoC와의 상호작용
+
+ - Burst Length 
+  * DDR4는 8 또는 16 버스트 길이를 지원하며, SoC는 이를 활용해 효율적인 데이터 전송 수행.  
+
+ - Bank Group
+  * DDR4 는 데이터 병렬 처리를 위해 Bank Group 구조를 도입.
+  * SoC 는 병렬 작업을 최적화하기 위해 이를 활용.
+ 
+ - Refresh
+  * DRAM의 특성상 데이터 유지를 위해 주기적으로 리프레시 명령을 발행해야함. 
+  * SoC메모리 컨트롤러가 자동으로 리프레시를 관리
+ 
+ - 데이터 전송 속도
+  * DDR4 데이터 속도는 1600MT/s 에서 최대 3200MT/s 이상 지원
+  * SoC와 DDR 메모리 간의 클럭 속도와 타이밍 설정이 중요한 역할
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## 인터페이스 최적화를 위한 주요 고려사항
+
+ - 타이밍 설정(Timing Parameters)
+  * **DDR4의 CL(CAS Latency), tRCD, tRP 등 타이밍 파라미터를 SoC 컨트롤러가 정확히 설정해야함**. 
+
+ - 신호 무결성
+  * 고속 데이터 전송에서 발생하는 노이즈, 반사 신호를 최소화하도록 PCB 설계.
+
+ - 메모리 매핑
+  * SoC 메모리 컨트롤러는 가상 메모리와 물리 메모리 간 매핑을 지원.
+
+ - 전력 관리
+  * DDR4 의 저전력 모드(예: power-down mode, self-refresh mode)를 SoC가 지원하여 에너지 효율성 높임.
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
 # DDR Log
 
 ```bash
