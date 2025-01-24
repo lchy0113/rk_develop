@@ -388,6 +388,63 @@ https://intrepidgeeks.com/tutorial/stressappst-user-guide
  - 전력 관리
   * DDR4 의 저전력 모드(예: power-down mode, self-refresh mode)를 SoC가 지원하여 에너지 효율성 높임.
 
+<br/>
+<br/>
+<br/>
+<hr>
+
+## DDR 채널(Channel)
+
+ DDR ChannelA 와 ChannelB는 DDR 메모리 인터페이스에서 듀얼 채널(Dual Channel) 구성을 통해 메모리 대역폭과 성능을 높이기 위한 설계.  
+ 채널은 물리적으로 독립된 데이터 버스를 제공하며, 각각이 독립적으로 동작하거나 병렬로 동작 할 수 있다.  
+ 아래에서 DDR 메모리에서의 Channel A와 Channel B에 대해 설명.  
+
+<br/>
+<br/>
+<hr>
+
+### DDR 채널(Channel)의 개념
+
+ - 채널(Channel)은 CPU(또는 SoC)의 메모리 컨트롤러와 DDR 메모리 간의 연결을 의미. 
+ - 채널은 데이터, 주소, 제어 신호 라인의 독립된 집합으로 구성. 
+ - 일반적으로 듀얼 채널(Dual Channel) 또는 멀티 채널(Multi Channel) 구성을 통해 메모리 대역폭을 확장 할 수 있다.
+
+<br/>
+<br/>
+<hr>
+
+### Channel A와 Channel B의 차이
+
+ - Channel A와 Channel B는 2 개의 독립적인 메모리 인터페이스를 의미합니다.
+ - 두 채널이 병렬로 동작하여 데이터 전송 속도와 처리량을 증가시킵니다. 
+ - 각각의 채널은 별도의 메모리 모듈(DIMM 도는 SODIMM)을 사용 할 수도 있고, 단일 메모리 모듈에서 두 채널을 구현할 수도 있다.
+
+<br/>
+<br/>
+<hr>
+
+### 듀얼 채널(Dual Channel)의 작동 원리
+
+ - 병렬 데이터 처리:
+  두 채널(Channel A와 Channel B)이 병렬로 데이터를 처리하여 메모리 대역폭을 두 배로 확장. 
+  예를 들어, 단일 채널이 64비트 데이터 버스를 제공하는 경우, 듀얼 채널 구성에서는 128비트의 데이터 버스를 사용 할 수 있다. 
+ 
+ - 채널 독립성:
+  각 채널은 독립적ㅇ로 동작 가능하며, 서로 다른 작업을 동시에 처리할 수 있다.  
+  CPU는 각 채널에 다른 데이터를 요청하여 다중 작업(multitasking)의 성능을 최적화 한다.  
+
+<br/>
+<br/>
+<hr>
+
+### Channel A 와 Channel B 의 구성 예시
+
+ - 물리적 구성
+  * Channel A와 Channel B는 각각 독립적인 메모리 슬롯(DIMM) 또는 뱅크로 연결.
+
+ - 논리적 동작
+  * Channel A와 Channel B는 동일한 데이터가 아닌 다른 데이터를 처리하며 병렬 작업 성능을 높인다.  
+  * 동일한 데이터 전송 작업을 분리하여 병렬처리하거나, 대칭적으로 데이터를 나누어 처리할 수 있다.
 
 <br/>
 <br/>
