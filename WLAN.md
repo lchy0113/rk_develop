@@ -23,6 +23,24 @@ Debugging and analyzing WLAN devices
  - Supplicant HAL : AIDL 파일(hardware/interfaces/supplicant/aidl), HIDL 파일(hardware/interfaces/supplicant/1.x)
  - Hostapd HAL : AIDL 파일(hardware/interfaces/hostapd/aidl), HIDL 파일(hardware/interfaces/hostapd/1.x)
  
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Interface
+
+```bash
+aliase
+mmc0 = &sdmmc0;
+mmc1 = &sdmmc1;
+mmc2 = &sdhci;
+mmc3 = &sdmmc2;
+
+fe2b0000.dwmmc > aliase mmc0
+fe310000.sdhci > aliase mmc2
+```
+
 
 <br/>
 <br/>
