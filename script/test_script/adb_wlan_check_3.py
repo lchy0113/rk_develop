@@ -30,7 +30,7 @@ def plug_reboot():
 while True:
     print(f"------------------------------")
     # 랜덤으로 재부팅 방법 선택
-    reboot_method = random.choice(["adb", "plug"])
+    reboot_method = random.choice(["adb", "adb"])
     if reboot_method == "adb":
         print("Using adb to reboot the device.")
         adb_reboot()
@@ -39,7 +39,6 @@ while True:
         print("Using plug to reboot the device.")
         plug_reboot()
         plug_reboot_count += 1
-
 
     subprocess.run(["adb", "wait-for-device"])
     
@@ -68,6 +67,17 @@ while True:
     else:
         print("wlan0 인터페이스가 성공적으로 초기화되었습니다.")
         success_count += 1
+
+        # wlan0 상태가 정상일 경우 ping 테스트 수행
+        print("WiFi가 공유기에 접속될 때까지 ping을 전송합니다...")
+        while True:
+            response = subprocess.run(["adb", "shell", "ping -c 4 192.168.0.1"], capture_output=True, text=True)
+            if response.returncode == 0:
+                print("Ping successful")
+                break
+            else:
+                print("Ping failed, 재시도 중...")
+                time.sleep(5)  # 5초 대기 후 재시도
 
     # 현재 상태 출력
     print(f"전체 반복 횟수: {total_runs}")
