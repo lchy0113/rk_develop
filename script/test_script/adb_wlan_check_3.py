@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 import random
 
-token = "902e5885-6258-495e-af89-2f53c7c0f4cb"
+token = ""
 deviceid = "cb8ebc4d-d527-436b-844b-5a4c030fe68c"
 
 # 초기 index 값 설정

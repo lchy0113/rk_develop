@@ -1,11 +1,10 @@
 #!/bin/bash
 
-token="61ed264a-248f-4685-86a4-a155d3b469df"
+token=""
 deviceid="a33c21d8-bd0f-4004-8353-14660902510c"
 cmd_switchoff="switch:off"
 cmd_switchon="switch:off"
 
-# ./smartthings devices:commands --token=61ed264a-248f-4685-86a4-a155d3b469df
 # ─────────────────────────────────────────────────────────────────────────────────────────────
 #  #  Label                Name                     Type  Device Id
 # ─────────────────────────────────────────────────────────────────────────────────────────────
@@ -15,8 +14,6 @@ cmd_switchon="switch:off"
 # ─────────────────────────────────────────────────────────────────────────────────────────────
 # ? Select a device.
 
-# ./smartthings devices:commands $deviceid switch:off --token=61ed264a-248f-4685-86a4-a155d3b469df
-# ./smartthings devices:commands $deviceid switch:on --token=61ed264a-248f-4685-86a4-a155d3b469df
 
 progress_bar()
 {

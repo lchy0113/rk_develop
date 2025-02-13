@@ -29,9 +29,9 @@ filename = "serial_test.log"
 # ref : https://developer.smartthings.com/docs/sdks/cli/introduction
 # if need debug
 #     SMARTTHINGS_DEBUG=true smartthings <command>
-token="61ed264a-248f-4685-86a4-a155d3b469df"
+token=""
 deviceid="55884626-685e-4090-a05c-8fc223611992"
-token_new="902e5885-6258-495e-af89-2f53c7c0f4cb"
+token_new=""
 deviceid_new="cb8ebc4d-d527-436b-844b-5a4c030fe68c"
 
 
