@@ -259,17 +259,68 @@ PRODUCT_PACKAGES += \
     (current)         (tp2860)
                +----------------------+
       NTSC >>> + VIN1                 |
-               + VIN2                 |
+               + VIN2 MIPI-YUV-Sensor + >>> ISP
        FHD >>> + VIN3                 |
                + VIN4                 |
                +----------------------+
 `   (develop)        (tp2860)
                +----------------------+
                + VIN1                 |
-               + VIN2                 |
+               + VIN2 MIPI-YUV-Sensor + >>> ISP
  NTSC& FHD >>> + VIN3                 |
                + VIN4                 |
                | fhd = 0x2c or (0x0c) |
                |  sd = 0x78           |
                +----------------------+
+```
+
+ - /dev/media1 topology
+
+```plane
+
+    +-----------------+     +-----------------------+     +-------------------+
+    | Mipi YUV sensor | >>> | rockchip-mipi-dphy-rx | >>> | rkisp1-isp-subdev |
+    |                 |     |                       |     | v01.08.00         |
+    +-----------------+     +-----------------------+     +-------------------+
+
++-------------------------+
+| "m00_b_tp2860 4-0044":0 |
+| /dev/v4l-subdev3        |
++-------------------------+
+          V              media-ctl -d /dev/media1  -l '"m00_b_tp2860 4-0044":0 -> "rockchip-csi2-dphy0":0[0]'
++-------------------------+
+| "rockchip-csi2-dphy0":0 |
+| "rockchip-csi2-dphy0":1 |
+| /dev/v4l-subdev2        |
++-------------------------+
+          V              media-ctl -d /dev/media1 -l '"rockchip-csi2-dphy0":1 -> "rkisp-csi-subdev":0[1]'
++----------------------+
+| "rkisp-csi-subdev":0 |
+| "rkisp-csi-subdev":1 |
+| /dev/v4l-subdev1     |
++----------------------+
+          V             media-ctl -d /dev/media1 -l '"rkisp-csi-subdev":1 -> "rkisp-isp-subdev":0[1]'
++----------------------+
+| "rkisp-isp-subdev":0 |
+| "rkisp-isp-subdev":1 |
+| /dev/v4l-subdev0    |
++---------------------+
+          V             media-ctl -d /dev/media1 -l '"rkisp-isp-subdev":2 -> "rkisp_mainpath":0[1]'
++--------------------+
+| "rkisp_mainpath":0 |
+| /dev/video5        |
++--------------------+
+
+media-ctl -l "m00_b_tp2860 4-0044":0->"rockchip-csi2-dphy0":0[0]"
+
+```
+
+```bash
+# V4l2 미디어 컨트롤러를 사용하여 특정 엔티티의 pad format(영상 포맷) 조회
+rk3568_rgbp05:/ # media-ctl -d /dev/media1   --get-v4l2 '"m00_b_tp2860 4-0044":0'
+                [fmt:UYVY2X8/720x240]
+
+
+# media-ctl -V 옵션 : 특정 V4L2 엔티티의 pad format(영상 포맷)을 설정 명령어
+rk3568_rgbp05:/ # media-ctl -d /dev/media1 -V '"m00_b_tp2860 4-0044":0 [fmt:UYVY2X8/1920x1080]'
 ```
