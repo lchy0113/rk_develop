@@ -322,5 +322,6 @@ rk3568_rgbp05:/ # media-ctl -d /dev/media1   --get-v4l2 '"m00_b_tp2860 4-0044":0
 
 
 # media-ctl -V 옵션 : 특정 V4L2 엔티티의 pad format(영상 포맷)을 설정 명령어
+rk3568_rgbp05:/ # media-ctl -d /dev/media1 -V '"m00_b_tp2860 4-0044":0 [fmt:UYVY2X8/720x240]'
 rk3568_rgbp05:/ # media-ctl -d /dev/media1 -V '"m00_b_tp2860 4-0044":0 [fmt:UYVY2X8/1920x1080]'
 ```
