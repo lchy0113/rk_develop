@@ -302,8 +302,8 @@ PRODUCT_PACKAGES += \
           V             media-ctl -d /dev/media1 -l '"rkisp-csi-subdev":1 -> "rkisp-isp-subdev":0[1]'
 +----------------------+
 | "rkisp-isp-subdev":0 |
-| "rkisp-isp-subdev":1 |
-| /dev/v4l-subdev0    |
+| "rkisp-isp-subdev":2 |
+| /dev/v4l-subdev0     |
 +---------------------+
           V             media-ctl -d /dev/media1 -l '"rkisp-isp-subdev":2 -> "rkisp_mainpath":0[1]'
 +--------------------+
@@ -324,4 +324,69 @@ rk3568_rgbp05:/ # media-ctl -d /dev/media1   --get-v4l2 '"m00_b_tp2860 4-0044":0
 # media-ctl -V 옵션 : 특정 V4L2 엔티티의 pad format(영상 포맷)을 설정 명령어
 rk3568_rgbp05:/ # media-ctl -d /dev/media1 -V '"m00_b_tp2860 4-0044":0 [fmt:UYVY2X8/720x240]'
 rk3568_rgbp05:/ # media-ctl -d /dev/media1 -V '"m00_b_tp2860 4-0044":0 [fmt:UYVY2X8/1920x1080]'
+```
+
+ - dtb
+
+```dtb
+
+ [tp2860:tp2860_out] - [csi2_dphy0:dphy0_in] ------ [csi2_dphy0:dphy0_out] -- [rkisp_vir0:mipi_csi2_input]
+ [ov5695:ov5695_out] - [csi2_dphy0:mipi_in_ucam2] - [csi2_dphy0:csiphy_out] - [rkisp_vir0:isp0_in]
+```
+
+
+ - dv_timings
+   * struct v4l2_dv_timings_cap: 비디오 타이밍의 범위.
+    비디오 장치가 지원하는 타이밍 범위를 설정하거나 쿼리할때 사용.
+   * struct v4l2_dv_timings: 비디오 타이밍 정의.
+    비디오 장치의 현재 타이밍을 설정하거나 쿼리할때 사용
+
+```bash
+struct v4l2_dv_timings_cap {
+    __u32 type;                     // timing 유형(ex: V4L2_DV_BT_656_1120)
+    __u32 reserved[3];              // 예약된 필드 (호환성을 위해 사용)
+    struct v4l2_bt_timings_cap bt;  // BT.656/1120 타이밍 범위
+
+// BT656/1120 타이밍의 최소 및 최대 값 정의
+strcut v4l2_bt_timings_cap { 
+    __u32 min_width;              // 최소 너비 (픽셀 단위)
+    __u32 max_width;              // 최대 너비 (픽셀 단위)
+    __u32 min_height;             // 최소 높이 (라인 단위)
+    __u32 max_height;             // 최대 높이 (라인 단위)
+    __u64 min_pixelclock;         // 최소 픽셀 클럭 (Hz 단위)
+    __u64 max_pixelclock;         // 최대 픽셀 클럭 (Hz 단위)
+    __u32 standards;              // 지원되는 표준 (예: V4L2_DV_BT_STD_CEA861)
+    __u32 capabilities;           // 지원되는 기능 (예: V4L2_DV_BT_CAP_PROGRESSIVE)
+    __u32 reserved[16];           // 예약된 필드 (호환성을 위해 사용)
+};
+```
+
+```bash
+struct v4l2_dv_timings {
+    __u32 type;                   // 타이밍 유형 (예: V4L2_DV_BT_656_1120)
+    union {
+        struct v4l2_bt_timings bt; // BT.656/1120 타이밍
+        __u32 reserved[32];       // 예약된 필드 (호환성을 위해 사용)
+    };
+};
+
+struct v4l2_bt_timings {
+    __u32 width;                  // 너비 (픽셀 단위)
+    __u32 height;                 // 높이 (라인 단위)
+    __u32 interlaced;             // 인터레이스 여부 (V4L2_DV_PROGRESSIVE 또는 V4L2_DV_INTERLACED)
+    __u32 polarities;             // 신호 극성
+    __u64 pixelclock;             // 픽셀 클럭 (Hz 단위)
+    __u32 hfrontporch;            // 수평 프론트 포치
+    __u32 hsync;                  // 수평 동기 신호
+    __u32 hbackporch;             // 수평 백 포치
+    __u32 vfrontporch;            // 수직 프론트 포치
+    __u32 vsync;                  // 수직 동기 신호
+    __u32 vbackporch;             // 수직 백 포치
+    __u32 il_vfrontporch;         // 인터레이스 모드에서의 수직 프론트 포치
+    __u32 il_vsync;               // 인터레이스 모드에서의 수직 동기 신호
+    __u32 il_vbackporch;          // 인터레이스 모드에서의 수직 백 포치
+    __u32 standards;              // 지원되는 표준 (예: V4L2_DV_BT_STD_CEA861)
+    __u32 flags;                  // 추가 플래그
+    __u32 reserved[14];           // 예약된 필드 (호환성을 위해 사용)
+};
 ```
