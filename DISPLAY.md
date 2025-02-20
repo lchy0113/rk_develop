@@ -12,11 +12,11 @@
 2) Rockchip 플랫폼의 칩은 HDMI/MIPI-DSI/RGB/LVDS/eDP/DP등을 포함하고 있습니다.
 
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
------  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # Panel 장치
 ## Documentation and source code
@@ -30,11 +30,11 @@
 1) simple-panel(lvds/rgb/edp)
 2) simple-panel-dsi(mipi-dsi)
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
------  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # RGB 인터페이스
 ## Documentation and source code
@@ -115,11 +115,11 @@
     };
 ```
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
------  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # HDMI 인터페이스
 
@@ -180,11 +180,11 @@
 
 ```
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
------  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # DRM (Direct Rendering Manager)
  
@@ -353,25 +353,46 @@ freq: 60.01Hz
 (...)
 ```
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# issue
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## issue : display output issue in recovery mode
+
+ - recovery mode 에서 rgb display(main) + hdmi display(second) 중, rgb display 출력이 되지않음. 
+
+ 원인 : drm 우선순위 문제. (추측)
+   hdmi 가 활성화 된 경우, kernel이 hdmi를 기본 display로 할당하고, rgb display는 secondary로 설정될 가능성이 있음.
+   하지만 recovery mode에서는 fb1이 활성화 되지 않는 경우가 많으므로, 즉 hdmi 가 우선권을 가져가면 rgb 출력이 되지 않는 상황 발생.
+   edp 의 경우, display controller 가 독립적인 경우가 많아 이런 문제가 발생되지 않았을 가능성이 큼.
 
 
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
------  
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 
 # baseparameter images 
 > baseparameter 이미지는 rockchip 디스플레이 해상도, 디스플레이 효과 조정 구성 등과 같은 정보를 저장하는데 사용되며, 종료 및 재시작 후에도 이전과 동일한 효과가 유지 될 수 있도록 보장합니다. 
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
-
-----
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # 💻  code review
 
@@ -592,10 +613,10 @@ edp: edp@fe0c0000    {
 };
 ```
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
+<br/>
+<br/>
+<br/>
+<br/>
 
 ----
 
@@ -639,11 +660,11 @@ rgb node : rockchip,rk3568-rgb
 driver : drivers/gpu/drm/rockchip/rockchip_rgb.c
 
 
-<br/>  
-<br/>  
-<br/>  
-<br/>  
-----  
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # 🐛 디버그 : HDMI interface 제어(resolution 관련)
 
@@ -694,12 +715,11 @@ index ad2eb99253ad..d8023dc15788 100644
 "[drm] [CRTC:71:video_port0] state:1, vblank wait timed out"
 ```
 
----
-
 <br/>
 <br/>
 <br/>
 <br/>
+<hr>
 
 # 📌 정리
 
@@ -720,10 +740,3 @@ vop_out
 - hdmi to cvbs converter 
  hdmi to cvbs converter 를 통해 cvbs 출력을 내보내는 기능을 사용하기 위해서는 GPIO4_D2 핀을 high 로 세팅하면 동작
  
-
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<hr>:
