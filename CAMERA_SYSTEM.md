@@ -230,6 +230,20 @@ PRODUCT_PACKAGES += \
     librkisp_awb      -> hardware/rockchip/camera_engine_rkisp/interface
 ```
 
+log review
+
+```
+initCameraHAL(void)
+Camera3HALModule: @initCameraHAL: RockChip Camera Hal3 Release version v2.1.0
+    hardware/rockchip/camera/Android.mk
+    hardware/rockchip/camera/Camera3HALModule.cpp
+
+PlatformData::init()
+    hardware/rockchip/camera/common/platformdata/PlatformData.cpp
+
+
+```
+
 <br/>
 <br/>
 <br/>
@@ -389,4 +403,12 @@ struct v4l2_bt_timings {
     __u32 flags;                  // 추가 플래그
     __u32 reserved[14];           // 예약된 필드 (호환성을 위해 사용)
 };
+```
+
+ - interlaced
+> only selfpath support interlaced
+
+```
+static int rkisp_start_streaming(struct vb2_queue *queue, unsigned int count)
+// kernel-4.19/drivers/media/platform/rockchip/isp/capture_V21.c
 ```
