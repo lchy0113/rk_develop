@@ -1,6 +1,15 @@
 # BOOTLOADER
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## rk_bootloader interoduce
+
+<br/>
+<br/>
+<hr>
 
 ### version
 RK3568 SDK에 사용되는 부트로더(next-dev)는 RK사에서 v2017.09(official version) 기반에서 개발한 버전이며 RK3568 AP를 공식적으로 지원합니다.
@@ -24,12 +33,20 @@ next-dev는 아래 기능을 지원합니다.
 - Support Mass storage, ethernet, HID and other USB devices;
 - Support dynamic selection of kernel DTB by hardware state;
 
+<br/>
+<br/>
+<hr>
+
 ### DM
 DM(Driver Model)은 커널의 Device-driver와 유사한 u-boot의 standard device-driver 개발 모델 입니다. 
 v2017 버전은 DM framework을 따라 module을 개발합니다. 
   
 https://www.linux4sam.org/bin/view/Linux4SAM/DriverModelInUBoot
-  
+
+<br/>
+<br/>
+<hr>
+
 ### Boot-order
 front-level loader code의 open source여부에 따라서 RK platform 은 2가지 startup methods 를 제공합니다. 
 - pre-loader closed source <br/>
@@ -39,6 +56,10 @@ front-level loader code의 open source여부에 따라서 RK platform 은 2가�
 
 > TPL은 ddr bin과 동일하고, SPL은 Miniloader 와 동일한 기능을 제공합니다. 
 > 즉 TPL+SPL 의 조합은 rk 코드  ddr.bin=miniloader와 동일한 기능을 제공하며 서로 교체되어 사용할 수 있습니다.
+
+<br/>
+<br/>
+<hr>
 
 ### TPL/SPL/U-Boot-proper
 U-Boot는 하나의 코드에서 TPL/SPL/U-Boot-proper이라는 컴파일 조건을 사용하여 각각 다른 기능을 가진 로더를 얻을 수 있습니다. 
@@ -51,6 +72,11 @@ TPL(Tiny Program Loader) 과 SPL(Secondary Program Loader)는 U-Boot 이전의 �
 부팅 절차 :
 BOOTROM ▶️ TPL(ddr bin) ▶️ SPL(miniloader) ▶️ TRUST ▶️ U-BOOT ▶️ KERNEL
 > Note : More references : doc/README.TPL and doc/README.SPL
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Build-Output
 U-Boot가 빌드 되면, root directory에 file이 생성됩니다. (TPL/SPL은 지원되는 경우에만 생성됩니다.)
@@ -97,6 +123,10 @@ u-boot$ ls -alh tpl/u-boot*
 -rw-r--r-- 1 lchy0113 lchy0113 5.1K  4월 13 08:23 tpl/u-boot-tpl.sym		// SYMBOL table file
 ```
 
+<br/>
+<br/>
+<hr>
+
 ### U-Boot DTS
 U-Boot에는 자체 DTS 파일이 있어 컴파일 시, 해당 DTB 파일을 자동으로 생성하며 u-boot.bin 끝에 추가됩니다.  
 File directory :
@@ -105,6 +135,12 @@ arch/arm/dts/
 ```
 
 각 플랫폼에서 사용되는 DTS파일은 defconfig의 *CONFIG_DEFAULT_DEVICE_TREE*에 의해 정의됩니다.
+
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## Relocation
 부트 단계에서 U-Boot는 이전단계의 부트로더에 의해 DRAM의 low address에 로드됩니다. 
@@ -125,11 +161,10 @@ Using default environment
 ...
 ```
 
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
+<hr>
 
 ## RK source code architecture
 
@@ -144,6 +179,10 @@ Using default environment
 (uboot)/arch/arm/mach-rockchip/board.c
 ```
 
+<br/>
+<br/>
+<hr>
+
 ### 플랫폼 구성
 - configure file : 플랫폼의 configuration  option 및 parameter는 일반적으로 다음 위치에 있습니다.
 ```bash
@@ -156,6 +195,10 @@ Using default environment
 (uboot)/include/configs/evb_rk3568.h
 (uboot)/configs/rk3568_defconfig
 ```
+
+<br/>
+<br/>
+<hr>
 
 ### start process
 RK platform의 u-boot startup process는 아래와 같습니다. 
@@ -220,6 +263,10 @@ recovery
 			
 ```
 
+<br/>
+<br/>
+<hr>
+
 ### storage layout
 Default storage map
 
@@ -239,8 +286,10 @@ Default storage map
 | rootfs                       	| 262144       	| 00040000 	| -                 	| -        	| -              	| -MB    	| 5              	| Linux system                         	|
 | Secondary GPT                	| 16777183     	| 00FFFFDF 	| 33                	| 00000021 	| 16896          	| 16.5KB 	|                	|                                      	|
 > Note 1: If preloader is miniloader, loader2 partition available for uboot.img and trust partition available for trust.img; if preloader is SPL without trust support, loader2 partition is available for u-boot.bin and trust partition not available; If preloader is SPL with trust support(ATF or OPTEE), loader2 is available for u-boot.itb(including u-boot.bin and trust binary) and trust partition not available.
->
->
+
+<br/>
+<br/>
+<hr>
 
 ### Kernel-DTB
  RK 플랫폼은 kernel dtb mechanism을 지원합니다. 커널 dtb를 사용하여 주변 장치를 초기화 합니다. 
@@ -266,23 +315,37 @@ Default storage map
 fdtdump ./u-boot.dtb | less
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## ATAGS parameters
 RK platform의 부팅 프로세스 :  
 ```
 BOOTROM ➡️ ddr-bin ➡️ Miniloader ➡️ TRUST ➡️ U-BOOT ➡️ KERNEL
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## U-Boot 부트 펌웨어
  u-boot 와 RK platform의 trust는 2가지 firmware format이 있습니다. 
  RK 및 FIT format은 Miniloader 및 SPL에 의해 guide 됩니다. 
 
  - RK foramt
-	 : Rockchip 의 custom firmware format 입니다. u-boot와 trust는 각각 uboot.img 및  trust.img로 패키징 됩니다. uboot.img 및 trust.img 이미지 파일의 magic 값은 "LOADER" 입니다.
+	 : Rockchip 의 custom firmware format 입니다. u-boot와 trust는 각각 uboot.img 및  trust.img로 패키징 됩니다. uboot.img 및 trust.img 이미지 파일의 magic 값은 "LOADER" 입니다. 
 
  - FIT format
 	 : u-boot mainline에서 지원하는 very flexible firmware format입니다. u-boot, trust, mcu와 같은 펌웨어는 uboot.img로 패키징 됩니다. 
 	 uboot.img 이미지의 magic값은 "d0 0d fe ed"이며, fdtdump uboot.img 명령을 사용하여 펍웨어 헤더를 확인합니다.
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 단축키
 RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-BOOT에서 지원합니다. 
@@ -294,6 +357,11 @@ RK플랫폼은 디버깅 및 프로그래밍을 위해 단축어 트리거를 U-
  * ctrl+i: enable kernel initcall_debug;
  * ctrl+p: print cmdline information;
  * ctrl+s: Enter U-Boot command line after "Starting kernel...";
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## make.sh 스크립트 파일 (u-boot)
 make.sh는 컴파일 스크립트일 뿐만 아니라 패키징 및 디버깅 도구이기도 합니다. 펌웨어를 분해하고 패키징하는 데 사용할 수 있습니다.
@@ -342,13 +410,19 @@ Example:
 
 ```
 
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
+<br/>
+<hr>
 
 # Compilation and programming
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 준비 : rkbin, GCC
  * rkbin
     - RK에서 제공하는 bin, scripts, packaging tool 저장소 입니다. (open source X) u-boot 컴파일 시, warehouse에서 관련 파일을 index하고, loader, trust, uboot firmware를 패키징 및 생성합니다.
@@ -372,6 +446,11 @@ Example:
 
 	   이 명령은 다음과 같을 수 있습니다.
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## 프로그래밍 
  * programming mode : RK platform은 2가지 programming mode(loader mode, maskrom mode)가 있습니다. 
    - loader mode(u-boot)
@@ -383,6 +462,10 @@ Example:
      + 부팅 시, ctrl+b 단축어를 입력한다.  
 	 + console에서 "rbrom"을 입력한다.   
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 빌드 명령어
 make.sh 는 compile script 이며, 외에 firmware packaging 및 디버깅 툴 입니다.   
@@ -409,11 +492,11 @@ package firmware를 분해(disassemble) 및 패키징하는데 사용할 수 있
 ./make.sh --spl-new // ./make.sh --spl 명령어는 packages만 진행합니다. -new 옵션이 추가되면 recompile을 한 후, packages합니다. 
 ```
 
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
+<br/>
+<hr>
 
 # Write GPT partition
  ## Write GPT partition table through rkdeveloptool
@@ -489,6 +572,12 @@ NO  LBA       Name
 
 ```
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
 # Flash binary to device
 
 ```bash
@@ -497,8 +586,26 @@ $ ./rkdeveloptool wlx uboot ~/AOA_PC/ssd/Rockchip/ROCKCHIP_ANDROID11/u-boot/uboo
 Write LBA from file (100%)
 
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## Write GPT partition table through U-boot
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## Write GPT partition table through U-boot's fastboot
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # SPL
 
@@ -506,6 +613,10 @@ Write LBA from file (100%)
  SPL은 현재 두 가지 type의 firmware booting을 지원합니다.  
  	-  FIT firmware : 기본적으로 활성화되어 있습니다.  
 	-  RKFW firmware : 기본적으로 비활성화되어 있으며 사용자가 구성하고 활성화해야 합니다.  
+
+<br/>
+<br/>
+<hr>
 
 ### FIT firmware
 
@@ -521,8 +632,12 @@ Write LBA from file (100%)
 	 * use default = 현재 선택된 default configuration을 지정합니다.
 
  - u-boot.itb 
------
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
 # FIT 
 FIT format 과 FIT format 기반의 security / non security 부팅 scheme 에 대해 설명합니다.
@@ -539,8 +654,14 @@ its파일은 DTS 문법을 따릅니다.
 
 RK 플랫폼은 U-boot와 함께 컴파일된 mkimage tool을 사용해야합니다.(RK사에서 최적화함)
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## sample
 u-boot.its, u-boot.itb를 설명합니다.
+
 ```dts
 /dts-v1/;
 
@@ -853,6 +974,11 @@ struct 2 : image is outside fdt_blob,
 ie : itb = fdt_blob + img
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## platform configuraiton
 code configuration
 code : 
@@ -888,6 +1014,10 @@ CONFIG_SPL_FIT_IMAGE_MULTIPLE=2
 CONFIG_ROCKCHIP_FIT_IMAGE_PACK=y
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## image file
  - uboot.img document
@@ -902,6 +1032,11 @@ CONFIG_ROCKCHIP_FIT_IMAGE_PACK=y
  - SPL document
  	SPL 파일은 spl/u-boot-spl.bin 경로에 컴파일 후 생성됩니다. 
 	uboot.img 를 FIT format 으로 부팅하는 역할을 합니다.
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## tools
 ```bash
@@ -923,16 +1058,18 @@ CONFIG_ROCKCHIP_FIT_IMAGE_PACK=y
  - --rollback-index-recovery [n] : 
  - --no-check : 
 
-
-
-
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
+<br/>
+<hr>
 
 # build u-boot
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## coufigure u-boot 
 configure :
@@ -944,6 +1081,11 @@ menuconfig  :
 ```bash
 make CROSS_COMPILE=arm-linux-gnueabi- menuconfig
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## build rockchip u-boot
 rockchip은 make.sh 스크립트를 제공합니다.  make.sh스크립트는 toolchain과 rkbin이 요구됩니다.
@@ -980,20 +1122,27 @@ u-boot/
 
 ```
 
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
-
-
+<br/>
+<hr>
 
 # 👨‍💻 develop bootloader
 > bootloader 개발 이력을 정리합니다. 
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## config
 - rk3568_poc_defconfig
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## platform architecture file 
 1. Platform Directory :
@@ -1031,12 +1180,10 @@ u-boot/
 ./configs/rk3568_poc_defconfig
 ```
 
-
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
+<hr>
 
 ## Rockchip loader binaries naming rule
 
@@ -1054,6 +1201,11 @@ u-boot/
 	 * ubootloader : ddrbin, usbplug, u-boot에서 merge되고 upgrade_tool에서 사용하는 loader
 	 * idbloader : IDB 포멧에 따라 ddrbin과 miniloader 또는 uboot와 merge되어 IDB 영역에 binary를 programming하는데 사용
    2. version definition of the merged loader : 
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## ddrbin_tool 사용 가이드
 
@@ -1092,12 +1244,11 @@ modify end
 
 ```
 
-
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
+<br/>
+<hr>
 
 # networking in uboot
 
@@ -1128,12 +1279,10 @@ done
 
 ```
 
-<hr/>
 <br/>
 <br/>
 <br/>
-<hr/>
-
+<hr>
 
 ## LOADER log from MASKROM mode
 
@@ -1277,9 +1426,7 @@ In
 <br/>
 <br/>
 <br/>
-<br/>
 <hr>
-
 
 ## Tool
 
@@ -1299,6 +1446,10 @@ In
 ../rkbin/tools/trust_merger
 ../rkbin/tools/boot_merger
 ```
+
+<br/>
+<br/>
+<hr>
 
 ### trust_merge
  
@@ -1383,13 +1534,10 @@ LoadAddr:0x8400000
 unpack success
 
 ```
- 
-<br/>
-<br/>
+
 <br/>
 <br/>
 <hr>
-
 
 ### boot_merge
 
@@ -1434,12 +1582,7 @@ RC4_OFF=true
 ********boot_merger ver 1.34********
 Info:Pack loader ok.
 ```
- 
-<br/>
-<br/>
-<br/>
-<br/>
-<hr>
+
 
  - loaderimage
 
