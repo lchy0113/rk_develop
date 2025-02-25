@@ -2,7 +2,7 @@
 #cd vendor/kdiwin/apps/
 
 unset kd_apps
-for kd_apps in $( find . -maxdepth 1 -name "wallpad-*" -print )
+for kd_apps in $( find . -maxdepth 1 -type d -print )
 do
 	echo $kd_apps
 	git -C $kd_apps checkout master ; 
