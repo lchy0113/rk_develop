@@ -255,12 +255,6 @@ PlatformData::init()
  - Camera HAL
    HIDL interface 는 Camera HAL(hardware/interfaces/camera)에 정의 
 
-      
-
-
-
-
-
 <br/>
 <br/>
 <br/>
@@ -412,3 +406,5 @@ struct v4l2_bt_timings {
 static int rkisp_start_streaming(struct vb2_queue *queue, unsigned int count)
 // kernel-4.19/drivers/media/platform/rockchip/isp/capture_V21.c
 ```
+
+
