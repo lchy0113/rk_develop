@@ -381,15 +381,15 @@ ak7755_sound: ak7755-sound {
 
 > ~pop noise 이슈 해결~
 
- - Todo : 
- external amp 활성화 하기 전, Lineout 1 Power Managerment 를 제어(normal-op)해야함. 
+ Todo 
+ - external amp 활성화 하기 전, Lineout 1 Power Managerment 를 제어(normal-op)해야함. 
  DAPM으로 제어하도록 함.
-
    * Lineout 1 Power Management : AK7755_CE_POWER_MANAGEMENT [D2 bit,0:power-down,1:normal-operation]
 
 
-
-
+ - door call 종료 시, pop noise 발생. 
+ - door call 종료 후, system sound 출력시, pop noise 발생.
+ door call 호출 후, 수락 > 5초 이후 통화 종료 > pop noise 발생
 
 <br/>
 <br/>
