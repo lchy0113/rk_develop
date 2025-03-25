@@ -44,51 +44,51 @@ cp -a $BOARD_DTBO_IMG $IMAGE_PATH/dtbo.img
 ```bash
 ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (device/rockchip/common/build/rockchip/RebuildDtboImg.mk)
 |
-+->	PRODUCT_DTBO_TEMPLATE := $(LOCAL_PATH)/dt-overlay.in // (device/rockchip/rk356x/rk3568_s/rk3568_s.mk)
-|											|
-|											+-> device/rockchip/rk356x/rk3568_s/dt-overlay.in
-|												/dts-v1/;
-|												/plugin/;
++->    PRODUCT_DTBO_TEMPLATE := $(LOCAL_PATH)/dt-overlay.in // (device/rockchip/rk356x/rk3568_s/rk3568_s.mk)
+|    |
+|    +-> device/rockchip/rk356x/rk3568_s/dt-overlay.in
+|    /dts-v1/;
+|    /plugin/;
 |
-|												&chosen {
-|													bootargs_ext = "androidboot.boot_devices=${_boot_device}";
-|												};
-|												
-|												&reboot_mode {
-|													mode-bootloader = <0x5242C309>;
-|													mode-charge = <0x5242C30B>;
-|													mode-fastboot = <0x5242C303>;
-|													mode-loader = <0x5242C301>;
-|													mode-normal = <0x5242C300>;
-|													mode-recovery = <0x5242C303>;
-|												};
+|    &chosen {
+|    bootargs_ext = "androidboot.boot_devices=${_boot_device}";
+|    };
+|    
+|    &reboot_mode {
+|    mode-bootloader = <0x5242C309>;
+|    mode-charge = <0x5242C30B>;
+|    mode-fastboot = <0x5242C303>;
+|    mode-loader = <0x5242C301>;
+|    mode-normal = <0x5242C300>;
+|    mode-recovery = <0x5242C303>;
+|    };
 |
 +-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts
-|	|
-|	+->	
+|    |
+|    +->    
 |
 +-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/rebuild-dtbo.img
-	|
-	| recipe : rebuild_dts AOSP_DTC_TOOL AOSP_MKDTIMG_TOOL
-	+-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts
-	|	| recipe : ROCKCHIP_FSTAB_TOOLS PRODUCT_DTBO_TEMPLATE
-	|	+-> out/soong/host/linux-x86/bin/fstab_tools -I dts -i device/rockchip/rk356x/rk3568_s/dt-overlay.in \
-	|		-p fe310000.sdhci,fe330000.nandc -f wait -o rockdev/richgold/device-tree-overlay.dts
-	|
-	+-> $ out/soong/host/linux-x86/bin/dtc -O dtb \
-	|	-o out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-dtbo.dtb \
-	|	out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts 
-	|
-	+-> $ out/soong/host/linux-x86/bin/mkdtimg	\
-		create out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/rebuild-dtbo.img \
-		out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-dtbo.dtb
+    |
+    | recipe : rebuild_dts AOSP_DTC_TOOL AOSP_MKDTIMG_TOOL
+    +-> out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts
+    |    | recipe : ROCKCHIP_FSTAB_TOOLS PRODUCT_DTBO_TEMPLATE
+    |    +-> out/soong/host/linux-x86/bin/fstab_tools -I dts -i device/rockchip/rk356x/rk3568_s/dt-overlay.in \
+    |        -p fe310000.sdhci,fe330000.nandc -f wait -o rockdev/richgold/device-tree-overlay.dts
+    |
+    +-> $ out/soong/host/linux-x86/bin/dtc -O dtb \
+    |    -o out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-dtbo.dtb \
+    |    out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-tree-overlay.dts 
+    |
+    +-> $ out/soong/host/linux-x86/bin/mkdtimg    \
+        create out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/rebuild-dtbo.img \
+        out/target/product/rk3568_evb/obj/FAKE/rockchip_dtbo_intermediates/device-dtbo.dtb
 ```
  * fstab_tools
- 	: fstab generator script
- 	```bash
- 	$ fstab_tools -h
- 	fstab_generator.py -I <type: fstab/dts> -i <fstab_template> -p <block_prefix> -d <dynamic_part_list> -f <flags> -c <chained_flags> -s <sdmmc_device> -o <output_file>
- 	```
+     : fstab generator script
+     ```bash
+     $ fstab_tools -h
+     fstab_generator.py -I <type: fstab/dts> -i <fstab_template> -p <block_prefix> -d <dynamic_part_list> -f <flags> -c <chained_flags> -s <sdmmc_device> -o <output_file>
+     ```
  * dtc 
  : devicetree compiler 
  * mkdtimg
@@ -105,26 +105,26 @@ ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (devi
  device/rockchip/common/build/rockchip/RebuildParameter.mk 에 Makefile 정의 되어 있습니다.
 ```bash
 $(rebuild_parameter) : $(PRODUCT_PARAMETER_TEMPLATE) $(ROCKCHIP_PARAMETER_TOOLS)
-	@echo "Building parameter.txt $@."
-	$(ROCKCHIP_PARAMETER_TOOLS) --input $(PRODUCT_PARAMETER_TEMPLATE) \
-	--start-offset 8192 \
-	--firmware-version $(BOARD_PLATFORM_VERSION) \
-	--machine-model $(PRODUCT_MODEL) \
-	--manufacturer $(PRODUCT_MANUFACTURER) \
-	--machine $(PRODUCT_DEVICE) \
-	--partition-list $(partition_list) \
-	--output $(rebuild_parameter)
+    @echo "Building parameter.txt $@."
+    $(ROCKCHIP_PARAMETER_TOOLS) --input $(PRODUCT_PARAMETER_TEMPLATE) \
+    --start-offset 8192 \
+    --firmware-version $(BOARD_PLATFORM_VERSION) \
+    --machine-model $(PRODUCT_MODEL) \
+    --manufacturer $(PRODUCT_MANUFACTURER) \
+    --machine $(PRODUCT_DEVICE) \
+    --partition-list $(partition_list) \
+    --output $(rebuild_parameter)
 
 
 /*
 sample
 parameter_tools --input device/rockchip/common/scripts/parameter_tools/parameter.in \
-	--firmware-version 12.0 \
-	--machine-model rk3568_s \
-	--manufacturer rockchip \
-	--machine rk3568_s \
-	--partition-list security:4M,uboot:4M,trust:4M,misc:4M,dtbo:8M,vbmeta:1M,boot:20M,recovery:64M,backup:384M,cache:384M,metadata:16M,super:3112M \
-	--output out/target/product/rk3568_s/obj/FAKE/rockchip_parameter_intermediates/parameter.txt
+    --firmware-version 12.0 \
+    --machine-model rk3568_s \
+    --manufacturer rockchip \
+    --machine rk3568_s \
+    --partition-list security:4M,uboot:4M,trust:4M,misc:4M,dtbo:8M,vbmeta:1M,boot:20M,recovery:64M,backup:384M,cache:384M,metadata:16M,super:3112M \
+    --output out/target/product/rk3568_s/obj/FAKE/rockchip_parameter_intermediates/parameter.txt
 */
 ```
 
@@ -387,6 +387,7 @@ newjeans
      : 통합.
    - modules 
     : 디렉토리 추가. (camera, lights, pstn, sensors, touch)
+     * audio: 음성인식 관련 feature, PACKAGE 복사
      * camera: feature xml파일 복사
      * lights: feature xml파일 복사
      * pstn: feature xml파일 복사
