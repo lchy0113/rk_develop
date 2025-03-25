@@ -42,6 +42,14 @@ cp -a $BOARD_DTBO_IMG $IMAGE_PATH/dtbo.img
 ### dtbo.img 생성 과정. 
 
 ```bash
+
+build.sh -> mkimage.sh
+
+OUT = out/target/product/swp5304h
+$OUT/dtbo.img 파일이 없는 경우, rebuild-dtbo.img를 사용하여 dtbo.img 생성
+```
+
+```bash
 ifdef PRODUCT_DTBO_TEMPLATE // PRODUCT_DTBO_TEMPLATE 이 정의된 경우, (device/rockchip/common/build/rockchip/RebuildDtboImg.mk)
 |
 +->    PRODUCT_DTBO_TEMPLATE := $(LOCAL_PATH)/dt-overlay.in // (device/rockchip/rk356x/rk3568_s/rk3568_s.mk)
