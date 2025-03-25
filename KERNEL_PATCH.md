@@ -13,7 +13,7 @@ KERNEL PATCH
   ASB는 안드로이드 운영체제와 관련된 보안 취약점과 그에 대한 패치 정보를 제공.  
   각 ASB는 특정 날짜에 발표되며, 해당 날짜에 대한 보안 패치와 수정 사항을 포함.  
 
-- base : git@gitlab.com:kdiwin/rk_kernel.git 
+- base : git@gitlab.com:COMPANY/rk_kernel.git 
 - remote : https://android.googlesource.com/kernel/common 
   * tag : ASB(Android Security Board) 에 대응하는 릴리즈. 
   * [ASB-2025-01-05_4.19-stable](https://android.googlesource.com/kernel/common/+/refs/tags/ASB-2025-01-05_4.19-stable) 태그는  
