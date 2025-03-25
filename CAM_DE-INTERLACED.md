@@ -16,33 +16,33 @@
 ```bash
 lchy0113@AOA:~/ssd/Rockchip/ROCKCHIP_ANDROID12$ repo branch 
 *  feature/csi                         | in:
-                                             device/kdiwin/nova/common
+                                             device/COMPANY/nova/common
                                              hardware/rockchip/camera
                                              kernel-4.19
    feature/rk3568_edp-p01              | in:
-                                             device/kdiwin/test/common
+                                             device/COMPANY/test/common
                                              kernel-4.19
                                              u-boot
                                              rkbin
    feature/rk3568_rgb-p02              | in kernel-4.19, u-boot, rkbin
-   feature/rk3568_rgb_p02              | in device/kdiwin/nova/rk3568
+   feature/rk3568_rgb_p02              | in device/COMPANY/nova/rk3568
    master                              | in:
-                                             device/kdiwin/nova/common
-                                             device/kdiwin/nova/rk3568
-                                             device/kdiwin/test/common
-                                             device/kdiwin/test/rk3568_rgbp01
-                                             device/kdiwin/test/rk3568_rgbp02
+                                             device/COMPANY/nova/common
+                                             device/COMPANY/nova/rk3568
+                                             device/COMPANY/test/common
+                                             device/COMPANY/test/rk3568_rgbp01
+                                             device/COMPANY/test/rk3568_rgbp02
                                              external/camera_engine_rkaiq
                                              hardware/rockchip/audio
                                              hardware/rockchip/camera
                                              kernel-4.19
                                              u-boot
-                                             vendor/kdiwin/packages/Wall
-                                             vendor/kdiwin/packages/WallTest
+                                             vendor/COMPANY/packages/Wall
+                                             vendor/COMPANY/packages/WallTest
                                              vendor/rockchip/common
                                              rkbin
    private/develop                     | in:
-                                             device/kdiwin/nova/rk3568
+                                             device/COMPANY/nova/rk3568
                                              external/camera_engine_rkaiq
                                              hardware/rockchip/audio
                                              hardware/rockchip/camera
