@@ -128,9 +128,9 @@ support WIFI, BT
 
 ```bash
 /develop/Rockchip/ROCKCHIP_ANDROID12_DEV$ repo status 
-project device/kdiwin/nova/common/              (*** NO BRANCH ***)
+project device/COMPANY/nova/common/              (*** NO BRANCH ***)
  -m     media/bootanimation.zip
- project device/kdiwin/test/rk3568_edpp04/       branch feature/wifi
+ project device/COMPANY/test/rk3568_edpp04/       branch feature/wifi
  project device/rockchip/common/                 branch feature/wifi
  project device/rockchip/rk356x/                 branch feature/wifi
  project hardware/rockchip/libhwjpeg/            (*** NO BRANCH ***)
@@ -236,7 +236,7 @@ external/wpa_supplicant_8
 ### HAL
 
 ```bash
-device/kdiwin/test/rk3568_edpp04/BoardConfig.mk
+device/COMPANY/test/rk3568_edpp04/BoardConfig.mk
   | // BOARD_WIFI_SUPPROT := true
   |
   +-> device/rockchip/common/device.mk
