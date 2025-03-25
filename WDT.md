@@ -1,6 +1,6 @@
 # WATCHDOG
 
-관련 자료 :https://gitlab.com/kdiwin/wdt_control
+관련 자료 :https://gitlab.com/COMPANY/wdt_control
 
 ## 사용법
 
