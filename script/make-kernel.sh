@@ -29,7 +29,7 @@ fi
 if [ ! -f "$CONFIG_DIR/$TARGET_DEVICE.config" ] || [ ! -e "$CONFIG_DIR/$TARGET_DEVICE.config" ]; then
     echo "...link $TARGET_DEVICE.config"
     cd "$CONFIG_DIR"
-    LINK_NAME="$CONFIG_DIR/$TARGET_DEVICE.config"
+    LINK_NAME="$TARGET_DEVICE.config"
     rm -f "$LINK_NAME"
     if [[ $TARGET_DEVICE == rk3568_poc* ]]; then
         ln -s "../../../device/kdiwin/test/rk3568_poc/configs/kconfig.$TARGET_DEVICE.config" "$LINK_NAME"
