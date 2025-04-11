@@ -382,7 +382,18 @@ BoardConfig.mk → 부트 이미지 및 커널 관련 설정
 <br/>
 <hr>
 
-## 250325
+## 250325 dt
+
+```
+[dts]  rk3568-poc-10p.dts         ← 최종 entry
+└── [dtsi] rk3568-rgb-p06.dtsi
+    ├── [dtsi] rk3568-rgb.dtsi
+    │   ├── rk3568.dtsi
+    │   └── rk3568-poc.dtsi
+    └── rk3568-android.dtsi
+```
+
+## 250325 device
 
 rk3568
  - login shell script
@@ -421,4 +432,7 @@ newjeans
      * WallTest: WallTest PACKAGE 추가
      * loginshell: loginshell PACKAGE 추가
      * kdu: kdu DEBUG_PACKAGE 추가
+
+
+
 
