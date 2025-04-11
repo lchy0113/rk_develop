@@ -8,8 +8,9 @@ KERNEL_ARCH="arm64"
 TARGET_DEVICE=`get_build_var TARGET_PRODUCT`
 KERNEL_DTS=`get_build_var PRODUCT_KERNEL_DTS`
 PRODUCT_DEVICE=`get_build_var PRODUCT_DEVICE`
-KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config rk3568_poc.config $TARGET_DEVICE.config"
-NOVA_MODULE_KCONFIGS=`get_build_var NOVA_MODULE_KCONFIGS`
+KERNEL_DEFCONFIG="rockchip_defconfig android-11.config disable_incfs.config rk3568_poc.config $TARGET_DEVICE.config"
+# KERNEL_DEFCONFIG="rockchip_defconfig android-11.config non_debuggable.config disable_incfs.config rk3568_poc.config $TARGET_DEVICE.config"
+NOVA_MODULE_KCONFIGS=`get_build_var NOVA_BOARD_MODULE_KCONFIGS`
 
 CONFIG_DIR="./kernel/configs"
 
@@ -24,6 +25,16 @@ fi
 if [ -f ./logo_kernel.bmp.dev ]; then
 	echo "...change kernellogo to develop"
 	cp logo_kernel.bmp.dev logo_kernel.bmp
+fi
+
+if [ ! -f "$CONFIG_DIR/newjeans.config" ] || [ ! -e "$CONFIG_DIR/newjeans.config" ]; then
+    echo "...link newjeans.config"
+    cd "$CONFIG_DIR"
+    LINK_NAME="newjeans.config"
+    rm -f "$LINK_NAME"
+    ln -s "../../../device/kdiwin/newjeans/base/configs/kconfig.config" "$LINK_NAME"
+    echo "Created symlink: $LINK_NAME -> ../../../device/kdiwin/newjeans/base/configs/kconfig.config"
+    cd -
 fi
 
 if [ ! -f "$CONFIG_DIR/$TARGET_DEVICE.config" ] || [ ! -e "$CONFIG_DIR/$TARGET_DEVICE.config" ]; then
