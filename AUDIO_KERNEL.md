@@ -1456,7 +1456,7 @@ static const struct snd_soc_component_driver soc_component_dev_ak7755 = {
     .dapm_routes = ak7755_intercon,                // DAPM 경로(route) 등록
     .num_dapm_routes = ARRAY_SIZE(ak7755_intercon),
 };
-
+```
 
 snd_soc_register_component() 함수 호출 시:
 
