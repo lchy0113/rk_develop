@@ -1368,6 +1368,24 @@ cif와 sensor는 비동기식으로 로드(probe)되며, cif와 sensor 드라이
 	  * v4l2 subdev 를 생성하여 ISP 노드에 연결해야 합니다.
 		  ![](./images/CAMERA_05.png)
 
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Issue : mclk 제어
+
+ camera 장치 초기화 후, mclk 이 발생되는 현상.
+ mclk : 24 MHz
+ pclk : 60 MHz
+
+ - 원인 : clock management가 되지 않아 발생.
+  clock enable from probe/init sequence. 
+
+
+```bash
+echo "file drivers/media/i2c/gc2145.c +p" >  /sys/kernel/debug/dynamic_debug/control' 
+```
 
 <br/>
 <br/>
