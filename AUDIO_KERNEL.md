@@ -1369,5 +1369,110 @@ SND_SOC_DAPM_SUPPLY("CLOCK", AK7755_C1_CLOCK_SETTING2, 0, 0, ak7755_clock_event,
 
 -----
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
 
+# 6. DAPM Flow
+
+## 6.1 DAPM 동작 흐름 요약
+
+1. route 등록(*ak7755_intercon[]*)
+
+```c
+static const struct snd_soc_dapm_route ak7755_intercon[] = 
+{
+    (...)
+    {"ADC Left", NULL, "CLOCK"},
+    {"ADC Right", NULL, "CLOCK"},
+    {"ADC2 Left", NULL, "CLOCK"},
+
+    {"LineIn Amp", NULL, "LIN"},
+    {"ADC2 Left", NULL, "LineIn Amp"},
+    {"SDOUTAD2", NULL, "ADC2 Left"},
+    (...)
+```
+
+2. widget 등록(*ak7755_dapm_widgets[]*)
+
+```c
+/* ak7755 dapm widgets */
+static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
+    (...)
+    // ADC, DAC
+    SND_SOC_DAPM_ADC_E("ADC Left", NULL, AK7755_CE_POWER_MANAGEMENT, 6, 0,
+        ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+    SND_SOC_DAPM_ADC_E("ADC Right", NULL, AK7755_CE_POWER_MANAGEMENT, 7, 0,
+        ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+    SND_SOC_DAPM_ADC_E("ADC2 Left", NULL, AK7755_CE_POWER_MANAGEMENT, 5, 0,
+        ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+
+    SND_SOC_DAPM_DAC_E("DAC Left", NULL, SND_SOC_NOPM, 0, 0,
+        ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+    SND_SOC_DAPM_DAC_E("DAC Right", NULL, SND_SOC_NOPM, 0, 0,
+        ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+    SND_SOC_DAPM_SUPPLY("CLOCK", AK7755_C1_CLOCK_SETTING2, 0, 0,
+        ak7755_clock_event, SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
+    (...)
+}
+```
+
+3. kcontrol widget 등록(*snd_kcontrol_new[]*)
+
+```c
+snd_kcontrol_new ak7755_snd_controls[] = { 
+    SOC_SINGLE_TLV("MIC Input Volume L",
+        AK7755_D2_MIC_GAIN_SETTING, 0, 0x0F, 0, mgnl_tlv),
+    SOC_SINGLE_TLV("MIC Input Volume R",
+        AK7755_D2_MIC_GAIN_SETTING, 4, 0x0F, 0, mgnr_tlv),
+    (...)
+}
+
+```
+4. 스트림 시작(capture/playback) -> PCM open
+5. ALSA 내부에서 snd_soc_dapm_stream_event() -> DAPM graph walk
+6. 필요한 widget들의 전원이 켜짐(snd_soc_dapm_widget_power())
+7. "ADC Left"  widget 이 활성화 된 경우, 
+  - register bit 6 <- 1
+  - ak7755_clkset_event() 호출
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## 6.2 snd_soc_component_driver
+
+```c
+static const struct snd_soc_component_driver soc_component_dev_ak7755 = {
+    .controls = ak7755_snd_controls,               // ALSA mixer 컨트롤 등록
+    .num_controls = ARRAY_SIZE(ak7755_snd_controls),
+
+    .dapm_widgets = ak7755_dapm_widgets,           // DAPM 위젯 등록
+    .num_dapm_widgets = ARRAY_SIZE(ak7755_dapm_widgets),
+
+    .dapm_routes = ak7755_intercon,                // DAPM 경로(route) 등록
+    .num_dapm_routes = ARRAY_SIZE(ak7755_intercon),
+};
+
+
+snd_soc_register_component() 함수 호출 시:
+
+ 1. ak7755_snd_controls[]에 정의된 모든 SOC_SINGLE_TLV, SOC_ENUM, SOC_DAPM_SINGLE 등이 → ALSA mixer에 등록됨
+    이건 일반적인 ALSA mixer control (amixer에서 보이는 볼륨, 스위치 등)
+
+ 2. ak7755_dapm_widgets[] → snd_soc_dapm_new_controls()를 내부적으로 호출하여 DAPM 위젯 등록
+    ADC, DAC, MUX, PGA, SUPPLY 등 오디오 블록들
+
+3. ak7755_intercon[] → snd_soc_dapm_add_routes() 내부적으로 호출됨
+    위젯 간의 연결 관계(route)를 ALSA DAPM 그래프에 등록
+```
+
+| 항목             | 역할                     | 연결되는 ALSA 내부 함수               |
+| -------------- | ---------------------- | ----------------------------- |
+| `controls`     | 일반 mixer 컨트롤 (볼륨, 스위치) | `snd_ctl_add()`               |
+| `dapm_widgets` | 전력/경로 제어용 오디오 블록       | `snd_soc_dapm_new_controls()` |
+| `dapm_routes`  | widget 간 신호 경로         | `snd_soc_dapm_add_routes()`   |
 
