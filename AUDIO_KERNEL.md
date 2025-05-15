@@ -9,9 +9,10 @@ Index
 
 [1. DAPM](#1-dapm)  
 [2. Kcontrol](#2-kcontrol)  
-[3. Widget](3-widget)  
-[4. Route](4-route)  
-[5. DAPM Operation](5-dapm-operation)  
+[3. Widget](#3-widget)  
+[4. Route](#4-route)  
+[5. DAPM Operation](#5-dapm-operation)  
+[6. DAPM Flow](#6-dapm-flow)  
 
 
 <br/>
@@ -20,7 +21,7 @@ Index
 <br/>
 <hr>
 
-# 1. DAPM 
+# 1.DAPM 
 
 <br/>
 <br/>
@@ -79,7 +80,30 @@ Index
 <br/>
 <hr>
 
-# 2. Kcontrol
+# 2.Kcontrol
+
+*struct snd_kcontrol_new*
+ : ALSA mixer에서 사용할 수 있는 사용자 제어 항목 정의  
+ (예: 볼륨 조절, 스위치 on/off, MUX 선택)  
+
+ - 주요 필드 예시
+
+```c
+struct snd_kcontrol_new {
+    const char *name;                   // 컨트롤 이름 (amixer에서 표시됨)
+    snd_kcontrol_info_t *info;          // 값의 범위, 타입, TLV 등
+    snd_kcontrol_get_t *get;            // 현재 값 가져오기 함수
+    snd_kcontrol_put_t *put;            // 값 설정 함수
+    void *private_value;                // SOC_* 매크로에서 설정값 저장
+};
+
+```
+
+ - 사용 예시 
+
+```c
+SOC_SINGLE_TLV("MIC Input Volume L", AK7755_D2_MIC_GAIN_SETTING, 0, 0x0F, 0, mgnl_tlv),
+```
 
 <br/>
 <br/>
@@ -524,7 +548,34 @@ static int snd_soc_add_controls(struct snd_card *card, struct device *dev,
 <br/>
 <hr>
 
-# 3. Widget
+# 3.Widget
+
+*struct snd_soc_dapm_widget*
+ : SoC 오디오 경로에서의 오디오 구성 블록을 나타남
+ (예: DAC, ADC, MUX, MIXER, PGA, AIF, SUPPLY 등) 
+
+ - 주요 필드 예시
+
+```c
+struct snd_soc_dapm_widget {
+    enum snd_soc_dapm_type id;          // 타입: DAC, MUX, PGA 등
+    const char *name;                   // 위젯 이름
+    int reg;                            // 제어할 레지스터
+    int shift;                          // 비트 위치
+    int invert;                         // 비트값 반전 여부
+    struct snd_kcontrol_new *kcontrol;  // 연결된 컨트롤 (MUX/MIXER 등)
+    dapm_event_cb event;                // power-up/down 시 실행되는 함수
+};
+```
+
+ - 사용 예시
+
+```c
+SND_SOC_DAPM_ADC_E("ADC Left", NULL, AK7755_CE_POWER_MANAGEMENT, 6, 0, ak7755_clkset_event, SND_SOC_DAPM_POST_PMU ),
+```
+ "ADC Left" 라는 이름의 ADC 블록을 정의.
+ - 레지스터 AK7755_CE_POWER_MANAGEMENT 의 6번 비트로 제어되고, 
+ - power-up 시, ak7755_clkset_event() 함수가 호출됨. 
 
 <br/>
 <br/>
@@ -867,7 +918,34 @@ static const struct snd_soc_dapm_widget ak7755_dapm_widgets[] = {
 <br/>
 <hr>
 
-# 4. Route(path)
+# 4.Route(path)
+
+*struct snd_soc_dapm_route*
+ : DAPM 위젯 간 신호 연결 경로를 정의
+ (예: "DAC Left"는 "DAC MUX" 의 출력을 입력으로 받는다) 
+
+ - 구조 형태
+
+```c
+struct snd_soc_dapm_route {
+    const char *sink;      // 목적지 위젯 이름 (도착지)
+    const char *control;   // MUX나 MIXER의 선택 항목 이름 (선택적)
+    const char *source;    // 소스 위젯 이름 (출발지)
+};
+
+```
+
+ - 사용 예시
+
+```c
+{ "DAC Left", NULL, "DAC MUX" }
+{ "DAC MUX", "SDIN1", "SDIN1" }
+{ "LineOut Amp1", "On", "DAC Left" }
+```
+
+ "DAC Left" 는 "DAC MUX" 출력을 입력받음.
+ "DAC MUX" 는 "SDIN1" 선택 시, SDIN1 신호가 사용됨.
+ "LineOut Amp1"이 "On"이면 "DAC Left" 의 출력으 ㄹ출력으로 사용함.
 
 <br/>
 <br/>
@@ -1139,7 +1217,7 @@ snd_soc_dapm_route= {
 <br/>
 <hr>
 
-# 5. DAPM Operation
+# 5.DAPM Operation
 
 <br/>
 <br/>
@@ -1375,7 +1453,12 @@ SND_SOC_DAPM_SUPPLY("CLOCK", AK7755_C1_CLOCK_SETTING2, 0, 0, ak7755_clock_event,
 <br/>
 <hr>
 
-# 6. DAPM Flow
+# 6.DAPM Flow
+
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## 6.1 DAPM 동작 흐름 요약
 
@@ -1458,6 +1541,14 @@ static const struct snd_soc_component_driver soc_component_dev_ak7755 = {
 };
 ```
 
+ ALSA SoC 오디오 드라이버를 이해할때 핵심이 되는 구조체 3가지.
+ - struct snd_kcontrol_new : 컨트롤 정의
+   [2. Kcontrol](#2-kcontrol)  
+ - struct snd_soc_dapm_widget : 오디오 블록(widget) 정의
+   [3. Widget](#3-widget)  
+ - struct snd_soc_dapm_route : widget 간 신호 경로 정의
+   [4. Route](#4-route)  
+
 snd_soc_register_component() 함수 호출 시:
 
  1. ak7755_snd_controls[]에 정의된 모든 SOC_SINGLE_TLV, SOC_ENUM, SOC_DAPM_SINGLE 등이 → ALSA mixer에 등록됨
@@ -1466,8 +1557,9 @@ snd_soc_register_component() 함수 호출 시:
  2. ak7755_dapm_widgets[] → snd_soc_dapm_new_controls()를 내부적으로 호출하여 DAPM 위젯 등록
     ADC, DAC, MUX, PGA, SUPPLY 등 오디오 블록들
 
-3. ak7755_intercon[] → snd_soc_dapm_add_routes() 내부적으로 호출됨
+ 3. ak7755_intercon[] → snd_soc_dapm_add_routes() 내부적으로 호출됨
     위젯 간의 연결 관계(route)를 ALSA DAPM 그래프에 등록
+
 ```
 
 | 항목             | 역할                     | 연결되는 ALSA 내부 함수               |
@@ -1476,3 +1568,25 @@ snd_soc_register_component() 함수 호출 시:
 | `dapm_widgets` | 전력/경로 제어용 오디오 블록       | `snd_soc_dapm_new_controls()` |
 | `dapm_routes`  | widget 간 신호 경로         | `snd_soc_dapm_add_routes()`   |
 
+즉, 이 세 구조체는 아래와 같이 연결.
+
+```bash
+          [snd_kcontrol_new]
+                    ↓
+          [snd_soc_dapm_widget]    ← 정의된 오디오 블록 (ADC, DAC, MUX 등)
+                    ↓
+          [snd_soc_dapm_route]     ← 위젯 간 신호 연결
+```
+ - 컨트롤로 위젯의 상태를 변경하고, 
+ - 위젯은 DAPM에서 정의되며
+ - 라우트를 통해 신호가 흐르고 전원이 관리됨.
+
+DAPM 상태 확인 방법
+
+```bash
+swp5304h:/sys/kernel/debug/asoc/rockchip,ak7755/ak7755-codec.5-0018/dapm # cat "ADC Left"
+ADC Left: Off  in 1 out 0 - R206(0xce) mask 0x40
+out  "static" "SDOUTAD"
+in  "static" "LIN MUX"
+in  "static" "CLOCK"
+```
