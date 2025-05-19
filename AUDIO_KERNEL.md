@@ -1590,3 +1590,24 @@ out  "static" "SDOUTAD"
 in  "static" "LIN MUX"
 in  "static" "CLOCK"
 ```
+
+<br/>
+<br/>
+<hr>
+
+### 6.2.1 Line Out1 Widget
+
+  define widget
+```c
+SND_SOC_DAPM_OUTPUT("Line Out1"),
+```
+
+ Line Out1 이 켜지는 조건
+  직접적으로 Line Out1 이 power = 1 이 되는 조건,
+  - 연결된 LineOut Amp1 위젯이 power-on 상태여야 함.
+  - "Lineout Amp1" 은 MUX  로 연결돼 있으며, "on" 선택 상태여야함. 
+  - 그 위에 있는  "DAC Left" 위젯도 power-on 되어 있어야 함.
+
+
+
+
