@@ -9,12 +9,37 @@
 
 ## AUDIO MUX
 
+```plane
+                              +------------+
+---(stream;ECHO_LINE_OUT)---> +             |
+                              |             |
+<--(stream;ECHO_LINE_IN)----- +             |
+                              |             |
+                              |             |
+<--(stream;DTMF)------------> +             |
+                              |             |
+                              |             |
+--(SEL_PSTN_AUD)------------> +             |
+--(DTMF_EN)-----------------> +             |
+--(SEL_LB_AUD)--------------> +             |
+                              +-------------+
+
+```
+
+| **MODE**  | **SEL_PSTN_AUD** | **DTMF_EN** | **SEL_LB_AUD** |
+|-----------|------------------|-------------|----------------|
+| pstn_call |         H        |      L      |        L       |
+| pstn_dial |         L        |      H      |        L       |
+| loby_call |         L        |      L      |        H       |
+
+
 <br/>
 <br/>
 <br/>
 <hr>
 
 ## RECEIVER UNIT
+
 ```plane
 
 ```
