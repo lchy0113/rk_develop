@@ -255,6 +255,39 @@ cat /proc/rkcif_mipi_lvds
 
 <br/>
 <br/>
+<hr>
+
+### error : MIPI error: packet: 0x00000010 로그 
+
+- 현상 : 지속적인 ECC/CRC 오류. 
+ ISP가 유효한 프레임 수신 실패.
+ 결국 camera HAL 또는 사용자 어플리케이션에서 프레임 수신 실패로 이어짐.
+
+- 원인 추정 정리 : MIPI 신호가 불완전하게 입력됨. (비트 레벨 노이즈, 라인 타이밍 mixmatch)
+
+- 해결 방안 : 
+ 패킷 에러 무시 및 재시도
+ MIPI error 발생 시 첫 몇 프레임 무시하고 재시도하는 로직 적용
+ Rockchip ISP는 보통 3~5프레임 동안 패킷에러 발생 후 정상화되기도 함
+
+ 현재 MIPI 에러는 단순 로그 경고가 아니라 프레임 수신 실패로 이어질 정도의 구조적 문제입니다.
+ 정상 로그에서는 에러가 1회로 끝나고 정상화되지만, 실패한 로그에서는 지속적으로 0x00010011 (ECC 오류)와 **PIC_SIZE_ERROR**가 반복됩니다.
+
+- 진행 과정 : 
+ Decoder 의 **MIPI Low Power mode Slew Rate Control** 레지스터 업데이트를 통해 안정적으로 동작. 
+ LP 송신 드라이버의 슬루율(Slew Rate)을 조정하여 MIPI 오류를 개선.
+
+ LPTXBUF Slew Rate Control 레지스터; 
+- 기능 : 각 Data Lane (Lane0 ~ Lane2) 의 Low Power(LP) 송신 드라이버 슬루율 제어
+ * 슬루율 제어 값 :0pF / 5pF/ 20pF / 70pF (값이 높을수록 슬로프가 완만해지고, 신호 전환 속도가 느려짐)
+
+0xff 에서 0xc5 업데이트
+- 기본 값 0xff 는 모든 lane을 70pF로 설정 ; 너무 느림, LP-HS 전환 불안정 가능성
+- 0xc5 값 Lane0, Lane1을 5pF 로 설정
+	LP -> HS 전환 타이밍이 빨라지고, Slew Rate가 너무 크지 않으면서 안정적인 전환 제공.
+
+<br/>
+<br/>
 <br/>
 <hr>
 
