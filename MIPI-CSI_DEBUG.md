@@ -2,6 +2,11 @@
 
 > mipi csi protocol 에 대해 개발을 하며 이슈를 정리.
 
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## environment
 
   - board : rk3568
@@ -10,8 +15,16 @@
   - mipi device : tp2860
   - camera : ntsc
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## check sequence
+
+<br/>
+<br/>
+<hr>
 
 ### driver load
 
@@ -42,6 +55,10 @@
                 [fmt:UYVY2X8/960x480]
                 -> "rockchip-csi2-dphy0":0 [ENABLED]
 ```
+
+<br/>
+<br/>
+<hr>
 
 ### mipi data
 
@@ -74,9 +91,16 @@
 ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 1920x1080 
 ```
 
-
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## error 종류
+
+<br/>
+<br/>
+<hr>
 
 ### error : capture 시, *select timeout* 에러 발생
 
@@ -104,6 +128,10 @@ select timeout
 
 - 디버깅 : 드라이버가 정상 동작하는지 확인, MIPI채널 데이터가 통신되는지 확인. 
 
+<br/>
+<br/>
+<hr>
+
 ### error : frame 에러 발생
 
 - 원인 : rockchip-mipi-csi2: ERR1: error matching frame start with frame end, reg: 0x10,cnt:2 출력
@@ -115,6 +143,9 @@ select timeout
 
 - 디버깅 : 불안정한 하드웨어에 의해 발생되므로 하드웨어 체크가 필요함.
 
+<br/>
+<br/>
+<hr>
 
 ### error : bandwidth lack
 
@@ -140,7 +171,10 @@ select timeout
 ```bash
 cat /proc/rkcif_mipi_lvds
 ```
-  
+
+<br/>
+<br/>
+<hr>
 
 ### error : 간섭 오류
 
@@ -175,12 +209,18 @@ cat /proc/rkcif_mipi_lvds
 
 - 디버깅 : 하드웨어가 불안정하여 발생하는 현상이지만, 이러한 현상이 발생하더라도 영상이 정상적으로 출력됨.
 
+<br/>
+<br/>
+<hr>
 
 ### error : ROCKCHIP Micro VI 모듈 사용(vicap)
 
 - 원인 : tp2860 모듈의 MIPI 채널에 연결된 신호는 YUV422 FORMAT이므로 ISP모듈을 거치지 않고 CIF 모듈을 통해서만 데이터를 출력하면 됨. video0 노드로 부터 이미지 출력시 에러가 발생됨.
 - 디버깅 : 에러 원인은 VI 모듈이 기본적으로 DMA에서 데이터를 얻는 반면 CIF는 메모리에서 전송되므로 아래 그림과 같이 메모리에서 데이터를 얻기 위해 VI 모듈의 데이터 소스를 변경해야 한다.
 
+<br/>
+<br/>
+<hr>
 
 ### error : 이미지 분할 화면 문제
 
@@ -196,16 +236,27 @@ cat /proc/rkcif_mipi_lvds
 		rockchip,cif-monitor = <3 2 10 1000 5>;
 ```
 
+<br/>
+<br/>
+<hr>
+
 ### error : ISP parameter 업데이트 문제
 
 - 원인 : 카메라 드라이버의 이미지 해상도를 변경한 후에도, 아래와 같이 ISP는 이전 FORAMT 값이 저장되 있는 것을 확인.
 - 디버깅 : 센서가 서로 다른 해상도의 Raw 데이터를 출력하도록 하려면 먼저 카메라 드라이버의 초기화 목록을 변경한 후, ISP가 다른 해상도의 이미지 포맷을 얻을 수 있도록  3A를 재 시작 해야함.  
 
+<br/>
+<br/>
+<hr>
 
 ### error : VICAP Abnormal 초기화
 
 - 원인 : Rockchip 플랫폼은 드라이버에 exception reset Function을 추가했다. rk3568의 경우 drivers/media/platform 에 있음. 
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## cif monitor 
 
