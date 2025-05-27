@@ -259,32 +259,70 @@ cat /proc/rkcif_mipi_lvds
 
 ### error : MIPI error: packet: 0x00000010 로그 
 
-- 현상 : 지속적인 ECC/CRC 오류. 
- ISP가 유효한 프레임 수신 실패.
- 결국 camera HAL 또는 사용자 어플리케이션에서 프레임 수신 실패로 이어짐.
+- 현상 : 지속적인 ECC/CRC 오류.   
+ ISP가 유효한 프레임 수신 실패.  
+ 결국 camera HAL 또는 사용자 어플리케이션에서 프레임 수신 실패로 이어짐.  
 
-- 원인 추정 정리 : MIPI 신호가 불완전하게 입력됨. (비트 레벨 노이즈, 라인 타이밍 mixmatch)
+- 원인 추정 정리 : MIPI 신호가 불완전하게 입력됨. (비트 레벨 노이즈, 라인 타이밍 mixmatch)  
+  
+- 해결 방안 :   
+ 패킷 에러 무시 및 재시도  
+ MIPI error 발생 시 첫 몇 프레임 무시하고 재시도하는 로직 적용  
+ Rockchip ISP는 보통 3~5프레임 동안 패킷에러 발생 후 정상화되기도 함  
 
-- 해결 방안 : 
- 패킷 에러 무시 및 재시도
- MIPI error 발생 시 첫 몇 프레임 무시하고 재시도하는 로직 적용
- Rockchip ISP는 보통 3~5프레임 동안 패킷에러 발생 후 정상화되기도 함
+ 현재 MIPI 에러는 단순 로그 경고가 아니라 프레임 수신 실패로 이어질 정도의 구조적 문제.  
+ 정상 로그에서는 에러가 1회로 끝나고 정상화되지만, 실패한 로그에서는 지속적으로 0x00010011 (ECC 오류)와 **PIC_SIZE_ERROR**가 반복.  
 
- 현재 MIPI 에러는 단순 로그 경고가 아니라 프레임 수신 실패로 이어질 정도의 구조적 문제입니다.
- 정상 로그에서는 에러가 1회로 끝나고 정상화되지만, 실패한 로그에서는 지속적으로 0x00010011 (ECC 오류)와 **PIC_SIZE_ERROR**가 반복됩니다.
+- 진행 과정 :   
+ Decoder 의 **MIPI Low Power mode Slew Rate Control** 레지스터 업데이트를 통해 안정적으로 동작.   
+ LP 송신 드라이버의 슬루율(Slew Rate)을 조정하여 MIPI 오류를 개선.  
+  
+ LPTXBUF Slew Rate Control 레지스터;   
+- 기능 : 각 Data Lane (Lane0 ~ Lane2) 의 Low Power(LP) 송신 드라이버 슬루율 제어  
+ * 슬루율 제어 값 :0pF / 5pF/ 20pF / 70pF (값이 높을수록 슬로프가 완만해지고, 신호 전환 속도가 느려짐)  
 
-- 진행 과정 : 
- Decoder 의 **MIPI Low Power mode Slew Rate Control** 레지스터 업데이트를 통해 안정적으로 동작. 
- LP 송신 드라이버의 슬루율(Slew Rate)을 조정하여 MIPI 오류를 개선.
+0xff 에서 0xc5 업데이트  
+- 기본 값 0xff 는 모든 lane을 70pF로 설정 ; 너무 느림, LP-HS 전환 불안정 가능성  
+- 0xc5 값 Lane0, Lane1을 5pF 로 설정  
+	LP -> HS 전환 타이밍이 빨라지고, Slew Rate가 너무 크지 않으면서 안정적인 전환 제공.  
+	이로 인해 MIPI SoT, ECC 오류가 줄고 ISP 수신이 안정화  
 
- LPTXBUF Slew Rate Control 레지스터; 
-- 기능 : 각 Data Lane (Lane0 ~ Lane2) 의 Low Power(LP) 송신 드라이버 슬루율 제어
- * 슬루율 제어 값 :0pF / 5pF/ 20pF / 70pF (값이 높을수록 슬로프가 완만해지고, 신호 전환 속도가 느려짐)
+<br/>
+<hr>
 
-0xff 에서 0xc5 업데이트
-- 기본 값 0xff 는 모든 lane을 70pF로 설정 ; 너무 느림, LP-HS 전환 불안정 가능성
-- 0xc5 값 Lane0, Lane1을 5pF 로 설정
-	LP -> HS 전환 타이밍이 빨라지고, Slew Rate가 너무 크지 않으면서 안정적인 전환 제공.
+#### LP -> HS 전환 타이밍과 Slew Rate(슬루율)
+
+LP -> HS 전환 타이밍과 Slew Rate는 MIPI D-PHY 물리 계층에서 매우 핵심적인 개념.  
+현재 케이스와 같이 Decider 가 MIPI 송신역할을 담당하고, Rockchip ISP가 수신일 때,  
+전환 타이밍과 신호 품질이 맞지 않으면 오류가 발생.  
+
+1. Slew Rate(슬루율) 
+ - 정의 : **신호 전압이 얼마나 빠르게 변화하느냐(상승/하강 속도)** 를 나타내는 물리적인 속성  
+ - 디지털 시스템에서의 의미 : 
+   * 너무 빠르면: Overshoot, EMI 노이즈, ringing 발생. 
+   * 너무 느리면: LP/HS 전환 실패, 타이밍 불일치, 수신기에서 전이점 감지 실패.  
+  
+2. MIPI D-PHY의 LP <-> HS 모드 전환  
+ - 모드 개요 : 
+| 모드                  | 설명                 | 전압레벨                    |
+| ------------------- | ------------------ | ----------------------- |
+| **LP (Low Power)**  | 저속 제어 신호 (ex. 초기화) | 단일 Ended, 1.2V          |
+| **HS (High Speed)** | 영상 데이터 전송          | 차동 신호, ~~200~~1500 Mbps |
+
+ - 전환 절차(Tx 기준)  
+```
+1. LP-11 상태 유지 (idle)
+2. → LP-01 (선로 준비)
+3. → LP-00 (HS 준비 신호)
+4. → HS 전압 차동 구간으로 진입
+```
+
+ - 문제 포인트:
+ 이 전환 도중 Slew Rate가 너무 느리면, 수신측은 여전히 LP 상태라고 인식하거나  
+타이밍 불일치로 HS 준비가 되지 않은 것으로 오해 → MIPI error (SoT 오류, ECC 오류 등)  
+
+
+
 
 <br/>
 <br/>
