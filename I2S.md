@@ -217,7 +217,67 @@ new AudioFormat.Builder()
  - WAV와 PCM 은 동일하지 않다. WAV는 PCM 외에 다른 인코딩 방식도 지원하고 있다. 즉, WAV가 PCM를 저장할 수 있는 포멧이다. 자체가 PCM이 아니다.  
      PCM은 순수 데이터만 저장하고 있다.  그렇기에 PCM데이터를 불러오는 경우, 샘플링 레이트, 채널 수, 비트 수를 직접 입력해야 한다. 즉 헤더 정보가 없다.   
  PCM파일을 직접 재생할 수 있는 프로그램은 Cool Edit 을 사용하면 된다.  
-  
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# 7. Audio Buffer
+
+// 오디오는 실시간 스트림이므로 끊기면 안됨.   
+// CPU가 오디오 데이터를 조금 씩 모아서(DMA buffer) 코덱으로 전송하거나,   
+// 오디오 코덱에서 읽어와야함.  
+// **이때 buffer를 만들어서 데이터를 쌓아주고, 주기적으로 처리하는 구조를 사용**  
+
+ - period_size 와 period_count
+
+   * **period_size** (단위 : frame 갯수)
+ 한번에 처리되는 오디오 데이터 크기  
+ buffer안에서 한 덩어리(period)의 크기  
+   -> DMA가 한번에 처리하는 DMA buffer의 block 사이즈  
+ 작을 수록 latency가 낮아짐.  클수록 안정성 향상  
+
+
+   * **period_count**
+ 전체 buffer가 몇 개의 buffer로 구성되는지 (총 몇 block 인지)  
+ 전체 buffer size = period_size * period_count  
+ 너무 작으면 underrun(xrum) 위험 있음.  
+ 너무 크면 latency  
+
+```sql
+|<------------ 전체 buffer ------------>|
++--------+--------+--------+--------+    ← period_count = 4
+| period | period | period | period |    ← period_size = 256 frame
++--------+--------+--------+--------+
+
+CPU는 이 buffer에 데이터를 쌓고
+DMA는 period 단위로 데이터를 전송
+
+```
+
+ - 예제
+
+```plane
+ - period_size = 256
+ - period_count = 4
+ - channels = 2
+ - rate = 48000
+ - format = S16_LE
+```
+
+ - frame 크기
+   * S16_LE = 16bit = 2byte
+   * channels = 2
+   * 1 frame 의 크기 = 2 byte * 2 = 4 byte
+
+ - 1 period 크기
+   * period_size(256 frame) * frame 크기(4byte) = 1024 byte
+
+ - 전체 buffer 크기
+   * 1024 byte * 4(period_count) = 4096 byte
+
 <br/>
 <br/>
 <br/>
