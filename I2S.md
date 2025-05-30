@@ -93,7 +93,7 @@ I2S interface
    CD는 16비트를 사용하고, DVD-Audio는 16,20,24비트를 사용할 수있다.  
 
 * **비트 레이트(bit rate)**  
-   초당 전송되는 데이터 양.   
+   초당 전송되는 데이터 양.  (bit rate = sample rate * bit depth * channels)  
    직접적으로 표현하면 1초당 전송되는 비트 수.   
    (비트 레이트;bit rate 가 나올수 있는 것은 오디오 압축 기술이 나오면서 가능하게 됨)  
    보통 192Kbps, 128Kbps, 56Kbps 등을 사용한다.  
