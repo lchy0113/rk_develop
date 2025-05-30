@@ -181,7 +181,7 @@ PCM 파일 크기 = PCM 데이터 처리량 * 재생시간 / 8 (8로 나눈 이�
 
 # 5. Android 에서 I2S
 
- - 아래 코드는 안드로이드에서 I2S 통신을 위한 설정 부분이다.
+ - 아래 코드는 안드로이드에서 I2S 통신을 위한 설정 부분이다.  
 
 ```java
 private static final AudioFormat AUDIO_FORMAT_STEREO = 
@@ -210,13 +210,13 @@ new AudioFormat.Builder()
  - MP3와 I2S 관계  
    * MP3는 I2S를 통해서 직접 전송이 될 수 없다. I2S는 PCM데이터, 즉 압축되지 않은 오디오 데이터만을 전송한다.  
      따라서 MP3는 CPU에 의해서 메모리에서 PCM데이터 형태로 변환이 된 후에 I2S를 통해서 스피커로 전송되게 된다.  
-
- - test : rate(16000), format(PCM_FORMAT_S16_LE)
- BCLK(1.024MHz), LRCK(16KHz)
-
- - WAV와 PCM 은 동일하지 않다. WAV는 PCM 외에 다른 인코딩 방식도 지원하고 있다. 즉, WAV가 PCM를 저장할 수 있는 포멧이다. 자체가 PCM이 아니다. 
-     PCM은 순수 데이터만 저장하고 있다.  그렇기에 PCM데이터를 불러오는 경우, 샘플링 레이트, 채널 수, 비트 수를 직접 입력해야 한다. 즉 헤더 정보가 없다. 
- PCM파일을 직접 재생할 수 있는 프로그램은 Cool Edit 을 사용하면 된다.
+  
+ - test : rate(16000), format(PCM_FORMAT_S16_LE)  
+ BCLK(1.024MHz), LRCK(16KHz)  
+  
+ - WAV와 PCM 은 동일하지 않다. WAV는 PCM 외에 다른 인코딩 방식도 지원하고 있다. 즉, WAV가 PCM를 저장할 수 있는 포멧이다. 자체가 PCM이 아니다.  
+     PCM은 순수 데이터만 저장하고 있다.  그렇기에 PCM데이터를 불러오는 경우, 샘플링 레이트, 채널 수, 비트 수를 직접 입력해야 한다. 즉 헤더 정보가 없다.   
+ PCM파일을 직접 재생할 수 있는 프로그램은 Cool Edit 을 사용하면 된다.  
   
 <br/>
 <br/>
