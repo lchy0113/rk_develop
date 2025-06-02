@@ -260,24 +260,59 @@ DMA는 period 단위로 데이터를 전송
  - 예제
 
 ```plane
+pcm_config_in
  - period_size = 256
  - period_count = 4
  - channels = 2
- - rate = 48000
- - format = S16_LE
+ - rate = 16000
+ - format = PCM_FORMAT_S16_LE
 ```
 
  - frame 크기
-   * S16_LE = 16bit = 2byte
+   * S16_LE = 16 bit = 2 byte
    * channels = 2
    * 1 frame 의 크기 = 2 byte * 2 = 4 byte
 
  - 1 period 크기
-   * period_size(256 frame) * frame 크기(4byte) = 1024 byte
+   * period_size(256 frame) * frame 크기(4 byte) = 1024 byte
 
  - 전체 buffer 크기
    * 1024 byte * 4(period_count) = 4096 byte
 
+```plane
+pcm_config
+ - period_size = 512
+ - period_count = 6
+ - channels = 2
+ - rate = 16000
+ - format = PCM_FORMAT_S16_LE
+```
+
+ - frame 크기  
+   * S16_LE = 16 bit = 2 byte  
+   * channels = 2
+   * 1 frame 의 크기 = 2 byte * 2 = 4 byte
+
+ - 1 period 크기
+   * period_size(512 frame) * frame 크기(4 byte) = 2048 byte
+
+ - 전체 buffer 크기
+   * 2048 byte * 6(period_count) = 12288 byte(12 Kbyte)
+
+ - **period_size** : *한번에 처리할 frame  수*, low latency 튜닝 방향(64~128 정도)
+   * period_size 가 작으면 : latency 감소🔽, interrupt 증가 🔼, cpu 부하 증가 🔼,
+   * period_size 가 크면 : latency 증가🔼, 안정성 🔼  
+
+ - **period_count** : *period 덩어리 갯수*, low latency 튜닝 방향(2~3 정도)
+   * period_count 가 작으면 : latency 감소🔽, underrun 위험 증가🔼
+   * period_count 가 크면 : latency 증가🔼, 안정성 증가🔼
+
+ - **Latency**
+```plane
+Total Latency ≈ (period_size * period_count) / sample_rate
+```
+
+ 
 <br/>
 <br/>
 <br/>
