@@ -1610,4 +1610,142 @@ SND_SOC_DAPM_OUTPUT("Line Out1"),
 
 
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# 7.DAI driver
+
+```c
+struct snd_soc_dai_driver
+```
+
+ASoC (ALSA System on Chip)에서 CPU DAI, Codec DAI를 표현하는 핵심 구조체  
+ - DAI : Digital Audio Interface  
+ - 구조체 필드  
+   * .name : ALSA 상에서 노출된 DAI 이름  
+   * .id : DAI Index(DTS에서 <&xxx N> 의 N 값과 매칭됨)  
+   * .playback : Playback 지원 여부 + 특성  
+   * .capture : Capture 지원 여부 + 특성  
+   * .ops : DAI operation callback (hw_params 등)  
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## example: rk809 codec
+
+| DAI Index          | DAI Name        | 기능                                                          |
+| ------------------ | --------------- | ----------------------------------------------------------- |
+| `0` (RK817\_HIFI)  | `"rk817-hifi"`  | HiFi Playback / Capture (2\~8ch)                            |
+| `1` (RK817\_VOICE) | `"rk817-voice"` | Voice Playback / Capture (1~~2ch Playback / 2~~8ch Capture) |
+
+```
+static struct snd_soc_dai_driver rk817_dai[] = {
+    {
+        .name = "rk817-hifi",
+        .id = RK817_HIFI,
+        .playback = {
+            .stream_name = "HiFi Playback",
+            .channels_min = 2,
+            .channels_max = 8,
+            .rates = RK817_PLAYBACK_RATES,
+            .formats = RK817_FORMATS,
+        },
+        .capture = {
+            .stream_name = "HiFi Capture",
+            .channels_min = 2,
+            .channels_max = 8,
+            .rates = RK817_CAPTURE_RATES,
+            .formats = RK817_FORMATS,
+        },
+        .ops = &rk817_dai_ops,
+    },
+    {
+        .name = "rk817-voice",
+        .id = RK817_VOICE,
+        .playback = {
+            .stream_name = "Voice Playback",
+            .channels_min = 1,
+            .channels_max = 2,
+            .rates = RK817_PLAYBACK_RATES,
+            .formats = RK817_FORMATS,
+        },
+        .capture = {
+            .stream_name = "Voice Capture",
+            .channels_min = 2,
+            .channels_max = 8,
+            .rates = RK817_CAPTURE_RATES,
+            .formats = RK817_FORMATS,
+        },
+        .ops = &rk817_dai_ops,
+    },
+
+};
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## example: es7243e_dai0
+
+```c
+static struct snd_soc_dai_driver es7243e_dai0 = {
+    .name = "ES7243E HiFi 0",
+    .capture = {
+            .stream_name = "Capture",
+            .channels_min = 1,
+            .channels_max = 8,
+            .rates = es7243e_RATES,
+            .formats = es7243e_FORMATS,
+            },
+    .ops = &es7243e_ops,
+    .symmetric_rates = 1,
+};
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## 채널 in DAI 
+
+```c
+.playback = {
+    .channels_min = 2,
+    .channels_max = 8,
+}
+```
+ - Codec Driver (DAI) 에서 **지원 가능 범위**를 표시한 것  
+ → 즉, 이 Codec은 2~8채널까지 지원할 수 있다고 알려주는 것일뿐.  
+
+ - 실제 몇 채널로 Playback 할지 정하는 것은? Application  
+  Application → ALSA → ASoC → Codec  
+
+ - Flow
+```bash
+Application (ex: aplay -c N)  → ALSA PCM → snd_pcm_hw_params() → ASoC hw_params → DAI.hw_params()
+```
+
+ - 예제 명령어
+
+   * 2채널 (stereo) Playback
+// *-c 2* → ALSA에서 channels = 2 요청 발생 → DAI.hw_params 호출됨.
+```bash
+aplay -D hw:0,0 -c 2 test.wav
+```
+
+   * 6채널 (5.1 surround) Playback
+// *-c 6*  → ALSA에서 channels = 6 요청 발생 → DAI.hw_params 호출됨.
+```bash
+aplay -D hw:0,0 -c 6 test.wav
+```
+
+
 
