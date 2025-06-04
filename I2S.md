@@ -312,7 +312,123 @@ pcm_config
 Total Latency ≈ (period_size * period_count) / sample_rate
 ```
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# 8. PDM and TDM
+
+```plane
+[Digital Mic 1~8] → RK3568 PDM Controller → PCM 데이터 → ALSA Capture PCM Device
+
+
+[Codec (TDM 8ch)] ←→ RK3568 I2S1 (TDM Mode) ←→ ALSA Playback / Capture PCM Device
+```
+
+ ALSA Device (arecord -l / aplay -l)  
+```plane
+card 0: PDM [RK3568-PDM], device 0: PDM Capture PCM
+card 1: TDM [RK3568-I2S1-TDM], device 0: TDM Playback PCM
+card 1: TDM [RK3568-I2S1-TDM], device 1: TDM Capture PCM
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## PDM(Pulse Density Modulation)
+
+ 용도 : 디지털 마이크 전용  
+ 데이터 형식 : 1bit 비트스트림(0/1만 전송)  
+ 주 사용 장비 : 디지털 마이크(MEMS Mic)  
+ 전송 방법 : PDM_CLK + PDM_DATA  
+ 전송 구조 : 비트 밀도 기반(후단에서 PCM복원)  
+
+ - 데이터 처리 흐름
+```plane
+ Digital Mic -> PDM_CLK + PDM_DATA -> SoC -> FIR Filter -> Decimator -> PCM 데이터 설정(16/24bit, 48kHz 등)
+```
+
+
+```dtb
+reg = <0x0 0xfe440000 0x0 0x1000>;
+pdmm0_clk
+pdmm0_clk1
+pdmm0_sdi0
+pdmm0_sdi1
+pdmm0_sdi2
+pdmm0_sdi3
+
+pdmm1_clk
+pdmm1_clk1
+pdmm1_sdi0
+pdmm1_sdi1
+pdmm1_sdi2
+pdmm1_sdi3
+
+pdmm2_clk1
+pdmm2_sdi0
+pdmm2_sdi1
+pdmm2_sdi2
+pdmm2_sdi3
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## TDM(Time Division Multiplexing)
+
+ 용도 : 멀티 채널 오디오 전송(Codec/DSP)  
+ 데이터 형식 : PCM데이터(16/24/32bit)  
+ 주 사용 장비 : 고급 Codec DSP, Multichannel Audio(5.1/7.1/8ch)  
+ 전송 방법 : BCLK + LRCK/FSYNC + SD  
+ 전송 구조 : 시간 분할로 멀티 채널 전송  
+
+ - 데이터 처리 흐름
+```plane
+// TDM 8ch 예제
+ 1 frame = FSYNC 1주기
  
+전송 순서 :
+CH1 샘플 -> CH2 샘플 -> CH3 샘플 -> CH4 샘플 -> CH5 샘플 -> CH6 샘플 -> CH7 샘플 -> CH8 샘플
+```
+ 
+```dtb
+i2s0_8ch: i2s@fe400000
+
+i2s1_8ch: i2s@fe410000
+i2s1m0_sclktx
+i2s1m0_sclkrx
+i2s1m0_lrcktx
+i2c1m0_lrckrx
+i2s1m0_sdi0
+i2s1m0_sdi1
+i2s1m0_sdi2
+i2s1m0_sdi3
+i2s1m0_sdo0
+i2s1m0_sdo1
+i2s1m0_sdo2
+i2s1m0_sdo3
+
+i2s2_2ch: i2s@fe420000
+i2s2m0_sclktx
+i2s2m0_lrcktx
+i2s2m0_sdi
+i2s2m0_sdo
+
+i2s3_2ch: i2s@fe430000
+i2s3m0_sclk
+i2s3m0_lrck
+i2s3m0_sdi
+i2s3m0_sdo
+```
+
+
 <br/>
 <br/>
 <br/>
