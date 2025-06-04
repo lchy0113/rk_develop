@@ -352,7 +352,6 @@ card 1: TDM [RK3568-I2S1-TDM], device 1: TDM Capture PCM
  Digital Mic -> PDM_CLK + PDM_DATA -> SoC -> FIR Filter -> Decimator -> PCM 데이터 설정(16/24bit, 48kHz 등)
 ```
 
-
 ```dtb
 reg = <0x0 0xfe440000 0x0 0x1000>;
 pdmm0_clk
@@ -402,15 +401,15 @@ CH1 샘플 -> CH2 샘플 -> CH3 샘플 -> CH4 샘플 -> CH5 샘플 -> CH6 샘플
 i2s0_8ch: i2s@fe400000
 
 i2s1_8ch: i2s@fe410000
-i2s1m0_sclktx
-i2s1m0_sclkrx
-i2s1m0_lrcktx
-i2c1m0_lrckrx
-i2s1m0_sdi0
+i2s1m0_sclktx : tx bclk / 송신 Bit Clock
+i2s1m0_sclkrx : rx bclk / 수신 Bit Clock
+i2s1m0_lrcktx : TX Frame Sync / 송신 LRCK, FSYNC
+i2c1m0_lrckrx : RX Frame Sync / 수신 LRCK, FSYNC
+i2s1m0_sdi0   : RX Data 0~3 / 수신 데이터 입력(멀티채널용 / 병렬 지원)
 i2s1m0_sdi1
 i2s1m0_sdi2
 i2s1m0_sdi3
-i2s1m0_sdo0
+i2s1m0_sdo0   : TX Data 0~3 / 송신 데이터 출력(멀티채널용 / 병렬 지원)
 i2s1m0_sdo1
 i2s1m0_sdo2
 i2s1m0_sdo3
@@ -428,6 +427,139 @@ i2s3m0_sdi
 i2s3m0_sdo
 ```
 
+<br/>
+<br/>
+<br/>
+<hr>
+
+## I2S 8ch
+// I2S 구조랑ALSA/ASoC에서 어떻게 연결되는지 흐름 확인.
+
+```dtb
+/ {
+    model = "Rockchip RK3566 EVB2 LP4X V10 Board I2S Mic Array";
+    compatible = "rockchip,rk3566-evb2-lp4x-v10", "rockchip,rk3566";
+
+ /**
+   * ASoC simple-audio-card 프레임워크 사용
+   * 즉, soundcard는 "simple-audio-card" -> ASoC의 Generic Card 프레임워크 사용
+   * 별도의 "complex routing" 필요 없음. 간단한 DAI Link 기반으로 동작
+   */
+    rk809_sound_micarray: rk809-sound-micarray {
+        compatible = "simple-audio-card";
+        /**
+          * 전체 SoundCard 의 포맷은 I2S
+          * MCLK = FS * 256 설정 → 예) 48kHz 샘플레이트면 → MCLK = 12.288 MHz
+          */
+        simple-audio-card,format = "i2s";
+        simple-audio-card,name = "rockchip,rk809-codec";
+        simple-audio-card,mclk-fs = <256>;
+
+          /**
+            * DAI Link@0
+            * CPU Side : i2s1_8ch사용. 죽, SoC의 i2s1 컨트롤러 사용
+            * Codec Side : rk809_codec사용. 즉, rk809 Audio Codec 과 연결됨. 
+            * Playback/Record 기본용 DAI Link
+            */
+        simple-audio-card,dai-link@0 {
+            format = "i2s";
+            cpu {
+                sound-dai = <&i2s1_8ch>;
+            };
+            codec {
+                sound-dai = <&rk809_codec 0>;
+            };
+        };
+          /**
+            * DAI Link@1
+            * CPU Side : i2s_8ch사용. 즉, SoC의 i2s1 컨트롤러 사용
+            * Codec Side : es7243e 사용. 즉, es7243e ADC 모듈과 연결됨.
+            * MIC Array 입력용 별도 DAI Link
+            */
+        simple-audio-card,dai-link@1 {
+            format = "i2s";
+            cpu {
+                sound-dai = <&i2s1_8ch>;
+            };
+            codec {
+                sound-dai = <&es7243e>;
+            };
+        };
+    };
+};
+```
+
+ - 구조
+```plane
+rk809_sound_micarray (sound card 노드)
+└── dai-link@0 : i2s1_8ch ↔ rk809_codec
+└── dai-link@1 : i2s1_8ch ↔ es7243e
+
+        +---------------------+
+        | SoC RK3566          |
+        | I2S1_8ch Controller |
+        +---------+-----------+
+                  |
+    +-------------+------------------+
+    |                                |
+    v                                v
+[rk809_codec] (Headphone/Mic)   [es7243e] (Mic Array ADC)
+
+```
+
+ - i2s1_8ch : 멀티 codec 공유 구조 사용 가능.
+ - Mic Array 는 ES7243E External ADC에서 입력 -> SoC전달
+ - 일반 Playback/Headphone은 rk809_codec 사용
+
+<br/>
+<br/>
+<hr>
+
+### I2S 프로코로에서LRCK(L/R Clock)의 타이밍과 Frame 관계  
+ LRCK 신호 1 사이클 = **1 샘플 주기(frame)**  
+| LRCK 상태       | 의미                           |
+| ------------- | ---------------------------- |
+| **LRCK High** | "Left Channel" sample 전송 구간  |
+| **LRCK Low**  | "Right Channel" sample 전송 구간 |
+
+ → 원래는 Stereo (2채널) 기준으로 설계된 프로토콜!  
+
+ - Multi-Channel의 경우(예,6채널. TDM or I2S extended mode) 
+
+ 6채널(혹은 N채널) 전송 시,  
+
+| 핀               | 동작                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------ |
+| **BCLK**        | 계속 동작 (Bit 단위 clock)                                                                       |
+| **LRCK**        | 1 Frame 동안 **1 polarity 유지** (ex: High), 다음 Frame에서 polarity 반전 가능 또는 유지 (depends on mode) |
+| **SDOUT (SDI)** | Serial로 CH1 \~ CH6 전송                                                                      |
+
+ 구체적 설명  
+  
+ - case1: I2S normal(philips 표준)
+   * LRCK High : "Left Frame" → CH1~CH3
+   * LRCK Low  : "Right Frame" →  CH4~CH6 
+
+ **보통 Stereo 확장방식**일 경우, 이렇게 됨(대두분 Codec 구현)
+
+ - case2: TDM mode(일반적 Multi-Channel 대응 시)  
+   * LRCK 한 주기(High or Low)  → "Full N-channel Frame"  
+   * LRCK Active edge (ex: rising or falling edge) 에서 Frame start 동기화  
+       → TDM에서는 보통 LRCK == FSYNC로 쓰임 → polarity 자체가 의미가 없어지고 "edge-triggered sync" 로 동작  
+
+| 모드                      | LRCK 동작                              | 6채널 데이터 전송 시                                 |
+| ----------------------- | ------------------------------------ | -------------------------------------------- |
+| I2S normal (Philips)    | High 동안 CH1~CH3, Low 동안 CH4~CH6      | **LRCK High/Low 구간으로 Frame 2등분**             |
+| TDM mode (I2S extended) | 한 polarity 동안 전체 Frame (CH1\~CH6) 전송 | **LRCK edge로 Frame 시작 후 BCLK 따라 채널 순서대로 전송** |
+
+ - RK817 Codec의 경우,
+RK817는 "I2S normal" + "TDM mode" 둘 다 지원  
+→ DTS나 driver에서 설정한 DAI format (snd_soc_dai_set_fmt) → SND_SOC_DAIFMT_I2S or SND_SOC_DAIFMT_DSP_A 등 에 따라 달라짐.  
+  
+I2S normal → LRCK polarity 사용  
+  
+TDM mode → LRCK edge-based frame start  
+  
 
 <br/>
 <br/>
