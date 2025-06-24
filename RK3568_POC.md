@@ -9,7 +9,7 @@
 <br/>
 
 ## Release Tags
-이 repository에서는 제품별로 릴리즈 버전을 명확히 구분하기 위해 다음과 같은 형식의 Git 태그를 사용합니다: 
+> 이 repository에서는 제품별로 릴리즈 버전을 명확히 구분하기 위해 다음과 같은 형식의 Git 태그를 사용합니다: 
 
 ```bash
 <제품명>_<버전>_<릴리즈날짜>
@@ -18,6 +18,16 @@
  - 제품명: LE1000, SWP530-4H, SDP530-4H  
  - 버전: Vxx-x 형식 (예: V11-0)  
  - 날짜: YYYYMMDD 형식 (예: 20250113)  
+
+
+### PROJECT
+> Tags 가 적용된 프로젝트
+
+ - kernel-4.19
+ - u-boot
+ - rkbin
+ - hardware/rockchip/audio
+ - hardware/rockchip/camera
 
 
 <br/>
