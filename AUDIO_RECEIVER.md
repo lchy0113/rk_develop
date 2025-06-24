@@ -77,6 +77,17 @@ RECEIVER_EN
 <br/>
 <hr>
 
+# REQUIRE
+
+ - 수화기 들었을때, LED 활성화. 수화기 내려놓았을때, LED 비활성화.
+ - 수화기 들었을때, 화면 ON.
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
 # ETC
 
 - peripheral pin
@@ -169,3 +180,23 @@ RECEIVER_EN
 | **Android 시스템 통합 용이**       | uevent로 Intent나 SystemService에 쉽게 연결 가능                  |
 | **재사용성**      | 같은 Hook 상태를 이용해 OEM 커스터마이징, 테스트 자동화 등에 재활용 가능            |
 
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# uevent 이벤트 처리
+
+ extcon 장치를 등록하면 생성된 노드를 user space에서 어떤방법으로 처리 하는지 디버깅  
+  
+ 아래는 *extcon_set_state_sync()*에 의해 설정된 상태가 그대로 표시.  
+```bash
+cat /sys/class/extcon/rk-headset/state
+
+MICROPHONE=0
+HEADPHONE=0
+```
+
+ 위 정보를 **Android HAL** 또는 **데몬**이 주기적으로 *cat state* 또는 *inotify*를 사용해 감시함.  
+ 또는 netlink socket으로 *uevent*를 실시간 수신  
