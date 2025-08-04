@@ -4,12 +4,13 @@
 📌 CH7107B-BF 동작 관련 이슈 요약
 대상 제품: RK3568 + CH7107B-BF 기반 HDMI → CVBS 변환 회로 사용 장비
 출력 형식: 640x480 @ 60Hz → NTSC CVBS 출력 (GPIO1 핀으로 NTSC 모드 설정)
+![](./images/HDMI2CVBS_01.png)
 
 ✅ 정상 동작 시
 제품 부팅 후 HDMI 상태는 "connected"로 인식
 TMDS 신호 송신 정상
 CH7107B에서 **DAC 출력 핀(CVBS)**을 통해 안정적인 NTSC 영상 출력
-![](./images/HDMI2CVBS_01.png)
+![](./images/HDMI2CVBS_03.png)
 
 ❌ 이슈 증상 (Bad 모듈)
 CVBS 출력이 지연되거나 아예 출력되지 않음
