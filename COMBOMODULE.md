@@ -295,24 +295,62 @@ int main(...)
 
 ## Develop_bluetooth
 
+```bash
+┌────────────────────────────────────┐                     ┌─────────────────────────────────┐
+│                SoC                 │                     │           Bluetooth Module      │
+│            (opt, GPIO) ────────────┼───────────────────► │(44) SD_RESET  (shutdown WLAN)   │
+│     SHUTDOWN:pull low              │                     │                                 │
+│  UART6_TX  ────────────────────────┼───────────────────► │(41) UART_RXD                    │
+│  UART6_RX  ◄───────────────────────┼──────────────────── │(40) UART_TXD                    │
+│  UART6_RTS ────────────────────────┼───────────────────► │(43) UART_CTS_N (Active-Low)     │
+│  UART6_CTS ◄───────────────────────┼──────────────────── │(42) UART_RTS_N (Active-Low)     │
+│                                    │                     │                                 │
+│  BT_REG_ON (GPIO) ─────────────────┼───────────────────► │(38) BT_REG_ON (Power/Reset EN)  │
+│    ON:pull high; OFF:pull low      │                     │                                 │
+│  BT_WAKE     (opt, GPIO) ──────────┼───────────────────► │(49) HOST_WAKE_BT (Host→BT)      │
+│  HOST_WAKE   (opt, GPIO/IRQ) ◄─────┼──────────────────── │(50) BT_WAKE_HOST (BT→Host)      │
+│                                    │                     │                                 │
+│  32k EXT CLK (opt) ────────────────┼───────────────────► │  EXT_CLK      (if required)     │
+│                                    │                     │                                 │
+│  WL_REG_ON (opt, GPIO) ────────────┼───────────────────► │  WL_REG_ON    (Combo LDO EN)    │
+└────────────────────────────────────┘                     └─────────────────────────────────┘
+```
+
+![](./images/COMBOMODULE_01.png)
+
 <br/>
 <br/>
 <hr>
 
 ### Library
 
- 1. Libbt 
- bluetooth firmware load 및 bluetooth chip의 초기화를 담당.  
+ bt 전원 제어 드라이버는 *net/rfkill/rfkill-bt.c* 코드에서   
+ */sys/class/rfkill/rfkill0/state* 노드를 생성.  
+
+```bash
+echo 1 > /sys/class/rfkill/rfkill0/state 
+# bluetooth 모듈의 전원을 수동으로 활성화
+echo 0 > /sys/class/rfkill/rfkill0/state 
+# bluetooth 모듈의 전원을 수동으로 비활성화
+```
+
+<br/>
+<hr>
+
+#### 1. Libbt (벤더 초기화 계층; attach + 펌웨어 로드) 
+ bluetooth firmware load 및 bluetooth chip의 초기화 담당.  
  보통 Libbt는 칩 제조업체에서 제공.  
 
  안드로이드의 경우, *hardware/realtek/rtkbt/code/libbt-vendor* 경로를 통해 제공
 
- Libbt는 일반적으로 수정할 필요 없다. 
+ Libbt는 일반적으로 수정할 필요 없음.  
  bluetooth module에서 사용하는 포트와 bluetooth firmware 경로만 구성하면 됨.  
  *hardware/realtek/rtkbt/vendor/etc/bluetooth/rtkbt.conf*
-  
-  
- 2. bluedroid
+ 
+<br/>
+<hr>
+
+#### 2. bluedroid (Android BT 스택; 프로파일/상위 로직)
  bluedroid 소스 코드는 system/bt경로에 위치함. 
  android 9.0 부터 bluedroid로 컴파일된 library는 libbluetooth.so. 
 
@@ -322,8 +360,11 @@ int main(...)
  - bluetooth snoop은 bluetooth HCI(Host Controller Interface)트래픽을 캡처하고 기록하는 파일 형식.  
    bluetooth 문제를 디버깅하고 protocol stack 을 디버깅하는데 사용.  
    /data/misc/bluetooth/logs 경로에 저장.  
+ 
+<br/>
+<hr>
 
- 3. pcba bt
+#### 3. pcba bt
 
 
 <br/>
