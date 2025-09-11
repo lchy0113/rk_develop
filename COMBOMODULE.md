@@ -314,6 +314,12 @@ int main(...)
 │                                    │                     │                                 │
 │  WL_REG_ON (opt, GPIO) ────────────┼───────────────────► │  WL_REG_ON    (Combo LDO EN)    │
 └────────────────────────────────────┘                     └─────────────────────────────────┘
+
+UART6_TX  : high
+UART6_RX  : high
+UART6_RTS : low
+UART6_CTS : low
+BT_REG_ON : high
 ```
 
 ![](./images/COMBOMODULE_01.png)
