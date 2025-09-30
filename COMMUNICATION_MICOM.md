@@ -11,7 +11,7 @@ SoC↔Micom I²C 통신
 
  - 버스: SoC(I²C1 Master, 10 kHz) ↔ Micom STM32F030C8T (Slave @ ~~0x28~~, 7-bit)  
  - 핀(Net): MCU_SCL, MCU_SDA, MCU_INT(Active-Low, Open-Drain, Level)  
- - 핵심 기능: **(1) 터치키 이벤트(IRQ + FIFO)** **(2) LED 최저 밝기 적용 + 밝기 설정/적용**  
+ - 핵심 기능: **(1) 터치키 이벤트 처리(켜짐/꺼짐)** **(2) LED 최저 밝기 적용 + 상태 조회**  
 
 <br/>
 <br/>
@@ -37,6 +37,7 @@ SoC↔Micom I²C 통신
  - 주소 규칙 : 7-bit(~~0x28~~)  
  - 속도 : 10 kHz  
  - 멀티바이트 : Little-Endian  
+ - IRQ 조건 : LEVEL_LOW(FIFO에 1건 이상이면, LOW유지)  
  - 명령 간 최소 간격 : 10 ms  
  - 단건 작업 타임아웃 : 100 ms   
  - Micom Ready 시간 : 전원 인가 후 ≤ 200 ms 내 WHOAMI/FW_VER 응답  
@@ -54,38 +55,46 @@ SoC↔Micom I²C 통신
 <br/>
 <hr>
 
-
 ## Core Register (필수만)
 
-| Addr | 이름                    | R/W | Size | 설명                                                                                              |
+| Addr | 이름                    | R/W | Size | 설명                                                                                          |
 | ---: | --------------------- | :-: | :--: | ----------------------------------------------------------------------------------------------- |
-| 0x00 | WHOAMI                |  RO |   1  | 장치 식별(예: 0xA5)                                                                                  |
-| 0x01 | FW_VER                |  RO |   2  | 펌웨어 버전(BCD, LE)                                                                                 |
+| 0x00 | WHOAMI                |  RO |   1  | 장치 식별(예: 0xA5)                                                                             |
+| 0x01 | FW_VER                |  RO |   2  | 펌웨어 버전(BCD, LE)                                                                            |
 | 0x20 | STATUS                |  RO |   1  | **b0 BUSY**, **b1 ERR**, **b2 APPLIED**, **b3 EVENT_PENDING**, **b4 최저 밝기 적용됨** *(내부명 CLAMPED)* |
 | 0x21 | ERROR                 |  RO |   1  | 0x00 OK / 0x01 INVAL / 0x02 BUSY / 0x03 I2C / 0x04 HW                                           |
-| **0x22** | EVENT_COUNT           |  RO |   1  | 이벤트 FIFO 잔량(개수)                                                                                 |
-| **0x52** | EVENT_POP             |  RO |   3  | **읽을 때마다 1건 POP** → `[CODE][TYPE][SEQ]`                                                         |
-| 0x10 | TARGET_GROUP          |  RW |   1  | b0=light, b1=standby, (b0 or b1 = both)                                                              |
-| 0x11 | TARGET_INDEX          |  RW |   1  | 0=all, 1..6=light1..6, 7..8=standby1..2                                                             |
-| 0x12 | BRIGHTNESS            |  RW |   1  | 밝기 1~20 단계                                                                                      |
-| 0x13 | TRANSITION_MS         |  RW |   2  | 페이드(ms, LE)                                                                                     |
-| 0x14 | APPLY                 |  WO |   1  | 0x01=적용 시작                                                                                      |
-| 0x15 | MIN_BRIGHTNESS_GLOBAL |  RW |   1  | **LED 최저 밝기(1~20)**                                                                             |
-| 0x1A | BRIGHTNESS_EFFECTIVE  |  RO |   1  | 실제 적용 밝기(**최저 밝기 적용** 반영)                                                                       |
 
 <br/>
 <br/>
 <br/>
 <hr>
 
-## Core Register (선택/옵션)
+## Key-Event Register
 
-| Addr | 이름                     | R/W | Size | 설명            |
-| ---: | ---------------------- | :-: | :--: | ------------- |
-| 0x16 | MIN_BRIGHTNESS_LIGHT   |  RW |   1  | 조명 그룹 최저 밝기   |
-| 0x17 | MIN_BRIGHTNESS_STANDBY |  RW |   1  | 대기 그룹 최저 밝기   |
-| 0x18 | STORE_SETTINGS         |  WO |   1  | `0xA5`=NVM 저장 |
-| 0x58 | KEY_STATE_BITMAP       |  RO |   2  | 현재 눌림 비트맵(LE) |
+> IRQ(Level-Low) : Micom 이 이벤트를 FIFO에 넣으면 MCU_INT=low. 
+> Soc 가 모두 읽어 FIFO=0 이 되면 High
+
+| Addr     | 이름                  | R/W | Size | 설명                                                    |
+| -------: | --------------------- | :-: | :--: | ------------------------------------------------------- |
+| **0x22** | EVENT_COUNT           |  RO |   1  | 이벤트 FIFO 에 대기중인 개수                            |
+| **0x52** | EVENT_POP             |  RO |   3  | **읽을 때마다 1건 POP** → `[CODE][TYPE][SEQ]`           |
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Brightness-Set Register 
+
+> 현 단계 정책 : SoC 는 최저 밝기(MIN_BRIGHTNESS_GLOBAL) 만 설정 → 명령 수신 즉시 적용.
+> TARGET_*는 RW로 남겨두되(향후용), 현재 동작에는 영향 없음.
+
+|     Addr | 이름                        | R/W | Size | 설명                                                     |
+| -------: | ------------------------- | :-: | :--: | ------------------------------------------------------ |
+|     0x15 | **MIN_BRIGHTNESS_GLOBAL** |  RW |   1  | **LED 최저 밝기(1..20)** — **쓰기 즉시 적용** / 읽기 시 현재 MIN 반환    |
+|     0x10 | TARGET_BRIGHTNESS_GROUP   |  RW |   1  | **미사용(향후용)** — b0=light, b1=standby, (b0|b1=both)      |
+|     0x11 | TARGET_BRIGHTNESS_INDEX   |  RW |   1  | **미사용(향후용)** — 0=all, 1..6=light1..6, 7..8=standby1..2 |
+| **0x59** | **LED_STATE_BITMAP**      |  RO |   N  | **현재 전체 키 LED의 ‘유효 밝기’ 배열**(Byte array)                |
 
 <br/>
 <br/>
@@ -170,5 +179,13 @@ SoC↔Micom I²C 통신
 | -: | ---------- | ---------------------- |
 |  1 | `11 01 A1` | STANDBY_1 **활성화(켜짐)**  |
 |  2 | `11 00 A2` | STANDBY_1 **비활성화(꺼짐)** |
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# 밝기 조절 제어 명령 
 
 
