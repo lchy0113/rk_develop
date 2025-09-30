@@ -55,21 +55,16 @@ SoC↔Micom I²C 통신
 <br/>
 <hr>
 
-## Core Register (필수만)
+ - Core Register
 
-| Addr | 이름                    | R/W | Size | 설명                                                                                          |
-| ---: | --------------------- | :-: | :--: | ----------------------------------------------------------------------------------------------- |
-| 0x00 | WHOAMI                |  RO |   1  | 장치 식별(예: 0xA5)                                                                             |
-| 0x01 | FW_VER                |  RO |   2  | 펌웨어 버전(BCD, LE)                                                                            |
-| 0x20 | STATUS                |  RO |   1  | **b0 BUSY**, **b1 ERR**, **b2 APPLIED**, **b3 EVENT_PENDING**, **b4 최저 밝기 적용됨** *(내부명 CLAMPED)* |
-| 0x21 | ERROR                 |  RO |   1  | 0x00 OK / 0x01 INVAL / 0x02 BUSY / 0x03 I2C / 0x04 HW                                           |
+| Addr | 이름                    | R/W | Size | 설명                                                           |
+| ---: | --------------------- | :-: | :--: | ---------------------------------------------------------------- |
+| 0x00 | WHOAMI                |  RO |   1  | 장치 식별(예: 0xA5)                                              |
+| 0x01 | FW_VER                |  RO |   2  | 펌웨어 버전(BCD, LE)                                             |
+| 0x20 | STATUS                |  RO |   1  | **b0 BUSY**, **b1 ERR**, **b3 EVENT_PENDING**, 그 외 reserved(0) |
+| 0x21 | ERROR                 |  RO |   1  | 0x00 OK / 0x01 INVAL / 0x02 BUSY / 0x03 I2C / 0x04 HW            |
 
-<br/>
-<br/>
-<br/>
-<hr>
-
-## Key-Event Register
+ - Key-Event Register
 
 > IRQ(Level-Low) : Micom 이 이벤트를 FIFO에 넣으면 MCU_INT=low. 
 > Soc 가 모두 읽어 FIFO=0 이 되면 High
@@ -79,22 +74,19 @@ SoC↔Micom I²C 통신
 | **0x22** | EVENT_COUNT           |  RO |   1  | 이벤트 FIFO 에 대기중인 개수                            |
 | **0x52** | EVENT_POP             |  RO |   3  | **읽을 때마다 1건 POP** → `[CODE][TYPE][SEQ]`           |
 
-<br/>
-<br/>
-<br/>
-<hr>
+ - Brightness-Set Register  
 
-## Brightness-Set Register 
+레벨 1~20 지원
 
 > 현 단계 정책 : SoC 는 최저 밝기(MIN_BRIGHTNESS_GLOBAL) 만 설정 → 명령 수신 즉시 적용.
 > TARGET_*는 RW로 남겨두되(향후용), 현재 동작에는 영향 없음.
 
-|     Addr | 이름                        | R/W | Size | 설명                                                     |
-| -------: | ------------------------- | :-: | :--: | ------------------------------------------------------ |
-|     0x15 | **MIN_BRIGHTNESS_GLOBAL** |  RW |   1  | **LED 최저 밝기(1..20)** — **쓰기 즉시 적용** / 읽기 시 현재 MIN 반환    |
-|     0x10 | TARGET_BRIGHTNESS_GROUP   |  RW |   1  | **미사용(향후용)** — b0=light, b1=standby, (b0|b1=both)      |
-|     0x11 | TARGET_BRIGHTNESS_INDEX   |  RW |   1  | **미사용(향후용)** — 0=all, 1..6=light1..6, 7..8=standby1..2 |
-| **0x59** | **LED_STATE_BITMAP**      |  RO |   N  | **현재 전체 키 LED의 ‘유효 밝기’ 배열**(Byte array)                |
+|     Addr | 이름                        |   R/W  |  Size |         값 범위        | 설명                                                    |
+| -------: | ------------------------- | :----: | :---: | :-----------------: | ------------------------------------------------------------ |
+| **0x15** | **MIN_BRIGHTNESS_GLOBAL** | **RW** | **1** |      **1..20**      | **LED 최저 밝기**. **쓰기 즉시 적용**. 읽기 시 현재 MIN 반환.|
+|     0x10 | TARGET_BRIGHTNESS_GROUP   |   RW   |   1   |          —          | **미사용(향후용)** — b0=light, b1=standby, (b0|b1=both)      |
+|     0x11 | TARGET_BRIGHTNESS_INDEX   |   RW   |   1   |          —          | **미사용(향후용)** — 0=all, 1..6=light1..6, 7..8=standby1..2 |
+| **0x59** | **LED_STATE_BITMAP**      | **RO** | **N** | **각 채널 0 또는 1..20** | 전체 LED의 **유효 밝기 배열**(블록 리드). `0=꺼짐`, `1..20=밝기`. 권장 N=8 채널. |
 
 <br/>
 <br/>
@@ -102,7 +94,17 @@ SoC↔Micom I²C 통신
 <br/>
 <hr>
 
-# 터치키 이벤트 (IRQ 기반)
+# Core Register 
+
+작성 예정
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# Key-Event Register (터치키 이벤트)
 
  - IRQ Trigger 설정
    * MCU_INT: ACtive-Low, Level, Open-Drain
@@ -186,6 +188,6 @@ SoC↔Micom I²C 통신
 <br/>
 <hr>
 
-# 밝기 조절 제어 명령 
+# Brightness-Set Register (밝기 조절 제어 명령)
 
 
