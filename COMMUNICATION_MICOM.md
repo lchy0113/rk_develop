@@ -65,8 +65,8 @@ SoC↔Micom I²C 통신
 | 0x21 | ERROR                 |  RO |   1  | 0x00 OK / 0x01 INVAL / 0x02 BUSY / 0x03 I2C / 0x04 HW                                           |
 | **0x22** | EVENT_COUNT           |  RO |   1  | 이벤트 FIFO 잔량(개수)                                                                                 |
 | **0x52** | EVENT_POP             |  RO |   3  | **읽을 때마다 1건 POP** → `[CODE][TYPE][SEQ]`                                                         |
-| 0x10 | TARGET_GROUP          |  RW |   1  | b0=light, b1=standby, (b0|b1=both)                                                              |
-| 0x11 | TARGET_INDEX          |  RW |   1  | 0=all, 1~6=light1~6, 7~8=standby1~2                                                             |
+| 0x10 | TARGET_GROUP          |  RW |   1  | b0=light, b1=standby, (b0 or b1 = both)                                                              |
+| 0x11 | TARGET_INDEX          |  RW |   1  | 0=all, 1..6=light1..6, 7..8=standby1..2                                                             |
 | 0x12 | BRIGHTNESS            |  RW |   1  | 밝기 1~20 단계                                                                                      |
 | 0x13 | TRANSITION_MS         |  RW |   2  | 페이드(ms, LE)                                                                                     |
 | 0x14 | APPLY                 |  WO |   1  | 0x01=적용 시작                                                                                      |
