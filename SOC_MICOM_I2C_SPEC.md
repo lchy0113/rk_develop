@@ -106,7 +106,7 @@
 
 ## 4.2 터치 이벤트 레지스터
 > Micom이 조명,대기 ON/OFF 를 직접 제어.  
-> 따라서 Micom은 입력 엣지(PRESS/RELEASE)가 아니라, **논리 상태 변화(ON/OFF)**가 발생할 때만 이벤트를 report. 
+> 따라서 Micom은 입력 엣지(PRESS/RELEASE)가 아니라, **논리 상태 변화(ON/OFF)**가 발생할 때만 이벤트를 report.   
 > SoC는 Micom이 report한 상태를 그대로 반영  
 
 | 주소 | 이름         | R/W | 크기 | 설명                                           |
@@ -122,7 +122,7 @@
 - **CODE**: 키 종류
   * 0x00 = LIGHT_ALL, 0x01..0x06 = LIGHT_1..6
   * 0x10 = STANDBY_ALL, 0x11..0x12 = STANDBY_1..2
-- **STATE**: 0x01=ON (켜짐), 0x00=OFF (떨어짐)
+- **STATE**: 0x01=ON (켜짐), 0x00=OFF (꺼짐)
 - **SEQ**: 0x00~0xFF 순환 증가 (유실/중복 검출용)
 
 **EVENT_COUNT/EVENT_POP 사용 시나리오**
@@ -139,7 +139,7 @@
    * EVENT_POP: CODE=조명채널, STATE=OFF, SEQ=증가
 
 **IRQ 동작**:
-- MCU_INT = Low → FIFO 데이터 존재
+- FIFO>0 MCU_INT = Low (FIFO 데이터 존재)
 - FIFO=0 → MCU_INT 자동 High 복귀
 
 <br/>
