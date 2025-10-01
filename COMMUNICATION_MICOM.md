@@ -84,7 +84,7 @@ SoC↔Micom I²C 통신
 | **0x15** | **MIN_BRIGHTNESS_GLOBAL** | **RW** | **1** |      **1..20**      | **LED 최저 밝기**. **쓰기 즉시 적용**. 읽기 시 현재 MIN 반환.|
 |     0x10 | TARGET_BRIGHTNESS_GROUP   |   RW   |   1   |          —          | **미사용(향후용)** — b0=light, b1=standby, (b0|b1=both)      |
 |     0x11 | TARGET_BRIGHTNESS_INDEX   |   RW   |   1   |          —          | **미사용(향후용)** — 0=all, 1..6=light1..6, 7..8=standby1..2 |
-| **0x59** | **LED_STATE_BITMAP**      | **RO** | **N** | **각 채널 0 또는 1..20** | 전체 LED의 **유효 밝기 배열**(블록 리드). `0=꺼짐`, `1..20=밝기`. 권장 N=8 채널. |
+|     0x59 | LED_STATE_BITMAP          |   RO   |   N   | 각 채널 0 또는 1..20 | **미사용(향후용)** 전체 LED의 **유효 밝기 배열**(블록 리드). `0=꺼짐`, `1..20=밝기`. 권장 N=8 채널. |
 
 <br/>
 <br/>
