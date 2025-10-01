@@ -21,7 +21,7 @@ SoC↔Micom I²C 통신
 
 # 시스템 구성
 
- - SoC I²C1 ──(MCU_SCL/MCU_SDA)── Micom(STM32F030C8T, Slave@~~0x28~~)  
+ - SoC I²C ──(MCU_SCL/MCU_SDA)── Micom(STM32F030C8T, Slave@~~0x28~~)  
  - Micom INT ──(MCU_INT)── SoC GPIO(IRQ: Level-Low, OD, Pull-up)  
  - Micom I²C Master ──(LT_KEY_SCL/LT_KEY_SDA)── BS83BXXC(키/LED 컨트롤러, 0x50)  
 > Micom은 BS83B와 키/LED를 직접 제어. SoC는 Micom과만 통신.  
@@ -66,7 +66,7 @@ SoC↔Micom I²C 통신
 
  - Key-Event Register
 
-> IRQ(Level-Low) : Micom 이 이벤트를 FIFO에 넣으면 MCU_INT=low. 
+> IRQ(Level-Low) : Micom 이 이벤트를 FIFO에 넣으면 MCU_INT=low.   
 > Soc 가 모두 읽어 FIFO=0 이 되면 High
 
 | Addr     | 이름                  | R/W | Size | 설명                                                    |
@@ -76,10 +76,8 @@ SoC↔Micom I²C 통신
 
  - Brightness-Set Register  
 
-레벨 1~20 지원
-
-> 현 단계 정책 : SoC 는 최저 밝기(MIN_BRIGHTNESS_GLOBAL) 만 설정 → 명령 수신 즉시 적용.
-> TARGET_*는 RW로 남겨두되(향후용), 현재 동작에는 영향 없음.
+> 현 단계 정책 : SoC 는 전체 최저 밝기(1..20)를 최저 밝기(0x15) 설정 → 명령 수신 즉시 적용.  
+> TARGET_*는 RW로 남겨두되(향후용), 현재 동작에는 영향 없음.  
 
 |     Addr | 이름                        |   R/W  |  Size |         값 범위        | 설명                                                    |
 | -------: | ------------------------- | :----: | :---: | :-----------------: | ------------------------------------------------------------ |
