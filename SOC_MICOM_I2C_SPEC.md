@@ -32,7 +32,7 @@
 <hr>
 
 # 3. 버스/타이밍 규칙⏱
-- **주소 규칙**: 7-bit (0x28 임시)  
+- **주소 규칙**: 0x28 (7-bit)  
 - **클록 속도**: 10 kHz  
 - **멀티바이트**: Little-Endian  
 - **IRQ 조건**: FIFO에 이벤트 ≥1건 존재 시 Low 유지, FIFO가 0이면 High 복귀  
@@ -109,10 +109,10 @@
 > 따라서 Micom은 입력 엣지(PRESS/RELEASE)가 아니라, **논리 상태 변화(ON/OFF)**가 발생할 때만 이벤트를 report.   
 > SoC는 Micom이 report한 상태를 그대로 반영  
 
-| 주소 | 이름         | R/W | 크기 | 설명                                           |
-| ----:|--------------|:---:|:---:|-------------------------------------------------|
-| 0x22 | EVENT_COUNT  | RO  | 1B  | FIFO에 대기 중인 이벤트 개수                    |
-| 0x52 | EVENT_POP    | RO  | 3B  | 읽을 때마다 이벤트 1건 POP → [CODE][STATE][SEQ] |
+| 주소 | 이름         | R/W | 크기 | 설명                                                 |
+| ----:|--------------|:---:|:---:|-------------------------------------------------------|
+| 0x22 | EVENT_COUNT  | RO  | 1B  | FIFO에 대기 중인 이벤트 개수                          |
+| 0x52 | EVENT_POP    | RO  | 4B  | 읽을 때마다 이벤트 1건 POP → [CODE][CODE][STATE][SEQ] |
 
 <br/>
 <br/>
@@ -120,8 +120,17 @@
 
 ### REG: EVENT_POP(0x22)
 - **CODE**: 키 종류
-  * 0x00 = LIGHT_ALL, 0x01..0x06 = LIGHT_1..6
-  * 0x10 = STANDBY_ALL, 0x11..0x12 = STANDBY_1..2
+  * 0x0001 = STANDBY_ALL
+  * 0x0002 = STANDBY_1
+  * 0x0004 = STANDBY_2
+  * 0x0008 = LIGHT_4
+  * 0x0010 = LIGHT_5
+  * 0x0020 = LIGHT_6
+  * 0x0040 = LIGHT_1
+  * 0x0080 = LIGHT_2
+  * 0x0100 = LIGHT_3
+  * 0x0200 = LIGHT_ALL
+
 - **STATE**: 0x01=ON (켜짐), 0x00=OFF (꺼짐)
 - **SEQ**: 0x00~0xFF 순환 증가 (유실/중복 검출용)
 
