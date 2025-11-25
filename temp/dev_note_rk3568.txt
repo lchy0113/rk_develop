@@ -1,0 +1,818 @@
+
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file drivers/rtc/rtc-rx8130.c +p"'
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file sound/soc/codecs/ak7755.c +p"'
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboo		t.dtbo_idx=0 dyndbg="file drivers/media/i2c/tp2860.c +p"'
+
+
+
+adb shell 'echo "file sound/soc/codecs/ak7755.c +p" > /sys/kernel/debug/dynamic_debug/control';
+
+adb root ; adb remount ; adb push out/target/product/le1000/vendor/lib/hw/audio.primary.rk30board.so /vendor/lib/hw/
+
+adb wait-for-device ; adb shell "setprop log.tag.AudioHardwareTiny VERBOSE ; setprop log.tag.alsa_mixer VERBOSE; setprop log.tag.alsa_route VERBOSE ; setprop log.tag.V4L2Subdev VERBOSE" ;
+
+adb wait-for-device ; adb root ; adb remount ;while true; do  adb shell 'ls -alh /data/debug.pcm' ; sleep 0.5 ; done
+
+
+adb wait-for-device ; adb shell  "cat /sys/kernel/debug/regmap/5-0018-ak7755-codec/registers " > debug.reg
+
+
+-----
+
+adb root ;adb remount ; adb push build_linux_4.19.232/drivers/net/wireless/rockchip_wlan/rtl8822es/8822es.ko /vendor/lib/modules
+
+mmm hardware/realtek -j32 ; mmm frameworks/opt/net/wifi/libwifi_hal -j32 ; 
+adb root ; adb remount ; adb push out/target/product/rk3568_rgbp05/vendor/lib/libwifi-hal.so /vendor/lib/libwifi-hal.so ; adb push out/target/product/rk3568_rgbp05/vendor/lib64/libwifi-hal.so /vendor/lib64/libwifi-hal.so
+
+mmm external/wpa_supplicant_8/wpa_supplicant -j32 ; mmm external/wpa_supplicant_8/hostapd -j32 
+adb root ; adb remount ; adb push out/target/product/rk3568_rgbp05/vendor/bin/hw/wpa_supplicant /vendor/bin/hw/wpa_supplicant  ; adb push out/target/product/rk3568_rgbp05/vendor/bin/hw/hostapd /vendor/bin/hw/hostapd
+
+insmod 8822es.ko rtw_channel_plan=0x20
+
+insmod /vendor/lib/modules/bs83b08.ko dyndbg=+p
+
+-----
+# debug
+
+adb shell 'echo "file drivers/media/i2c/gc2145.c +p" > /sys/kernel/debug/dynamic_debug/control '
+adb shell 'echo "file drivers/media/i2c/tp2860.c +p" > /sys/kernel/debug/dynamic_debug/control '
+adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/media/i2c/tp2860.c +p" > /sys/kernel/debug/dynamic_debug/control '
+setprop log.tag.Camera3HAL VERBOSE ;setprop log.tag.Camera3HALModule VERBOSE ; setprop log.tag.HwStreamBase VERBOSE ; setprop log.tag.V4L2VideoNode VERBOSE;  setprop log.tag.RKISP2GraphConfig VERBOSE
+echo 3 > /sys/module/video_rkisp/parameters/debug
+
+
+# media framework
+## gc2145 
+/dev/media0
+/dev/video0  stream_cif_dvp_id0
+/dev/video1  stream_cif_dvp_id1
+/dev/video2  stream_cif_dvp_id2
+/dev/video3  stream_cif_dvp_id3s
+## tp2860
+/dev/media1  
+/dev/video5  rkcif_mainpath
+/dev/video6  rkcif_selfpath
+/dev/video7  rkisp_rawwr0
+/dev/video8  rkisp_rawwr2
+/dev/video9  rkisp_rawwr3
+/dev/video10 rkisp_rawrd0_m
+/dev/video11 rkisp_rawrd2_s
+/dev/video12 rkisp-statistics
+/dev/video13 rkisp-input-params
+
+
+# build
+# camera3_profiles.xml
+adb push hardware/rockchip/camera/etc/camera/camera3_profiles_rk356x.xml /vendor//etc/camera/camera3_profiles.xml
+adb push hardware/rockchip/camera/etc/camera/camera3_profiles_rk3568_develop.xml /vendor//etc/camera/camera3_profiles.xml
+adb push out/target/product/rk3568_rgbp05/vendor/lib/hw/camera.rk30board.so /vendor/lib/hw/ ; adb push out/target/product/rk3568_rgbp05/vendor/lib64/hw/camera.rk30board.so /vendor/lib64/hw/
+adb shell pkill camera && adb shell pkill provider
+
+# capture
+media-ctl -d /dev/media1 -V '"m00_b_tp2860 4-0044":0 [fmt:UYVY2X8/720x480]'
+v4l2-ctl -d /dev/video6 --set-fmt-video=width=720,height=480,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+-----
+
+
+int V4L2VideoNode::start(int initialSkips)
+
+-----
+tp2860_test w 0x40 0x08 ; tp2860_test w 0x14 0xc1 ; tp2860_test w 0x14 0x41;
+
+
+
+feat : Directly copy camera3_profiles.xml in rk3568_rgbp05.mk
+
+- updated rk3568_rgbp05.mk to directly copy camera3_profiles_rk3568_rgbp05.xml to the target vendor directory.
+- removed conditional logic for copying camera3_profiles.xml to simplify the build process.
+
+this change ensures that the camera3_profiles file is always copied for the rk3568_rgbp05 device configuration.
+
+
+
+-----
+[hide debug console]
+
+ Kernel command line: storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0
+  androidboot.dtbo_idx=0  androidboot.verifiedbootstate=orange androidboot.serialno=sXp510-4h console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.console=ttyFIQ0 androidboot.wificountrycode=CN androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug earlycon=uart8250,mmio32,0xfe6d0000
+ 
+ 
+short-key
+ctrl+c: U-Boot 명령줄 모드로 들어갑니다.
+ctrl+d: 로더 버닝 모드로 들어갑니다.
+ctrl+b: 마스크롬 굽기 모드로 들어갑니다.
+ctrl+f: fastboot 모드로 들어갑니다.
+ctrl+m: 비드램/시스템 정보 인쇄;
+ctrl+i: 커널 initcall_debug 활성화
+ctrl+p: 명령줄 정보 인쇄;
+ctrl+s: "커널 시작..."을 입력한 다음 U-Boot 명령줄을 입력합니다.
+
+ => printenv bootargs 
+ bootargs=storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0
+CONFIG_EXTRA_ENV_SETTINGS="storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal androidboot.dtb_idx=0 androidboot.dtbo_idx=0 quiet loglevel=0"
+
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal androidboot.dtb_idx=0 androidboot.dtbo_idx=0 quiet loglevel=0 console=null'
+saveenv
+ 
+fdt addr ${fdt_addr_r} 
+fdt resize
+fdt print /fiq-debugger
+fdt set /fiq-debugger status okay 
+fdt print /serial@fe6d0000 
+fdt set /serial@fe6d0000  status disabled
+
+
+-----
+bootargs storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal androidboot.dtb_idx=0 androidboot.dtbo_idx=0
+
+Kernel command line: storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal androidboot.dtb_idx=0 androidboot.dtbo_idx=0 androidboot.verifiedbootstate=orange androidboot.serialno=sXp510-4h;android_bootloader.c] [console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7;BoardConfig.mk] androidboot.console=ttyFIQ0 androidboot.wificountrycode=KR androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=per missive buildvariant=userdebug earlycon=uart8250,mmio32,0xfe6d0000
+
+
+rk3568_rgbp05:/ # cat /proc/cmdline
+[storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0;bootloader bootargs]  [androidboot.verifiedbootstate=orange androidboot.serialno=sXp510-4h console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.console=ttyFIQ0 androidboot.wificountrycode=KR androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug [earlycon=uart8250,mmio32,0xfe6d0000;rk3568-rgb-p05.dts]
+
+
+androidboot.dtb_idx=0 androidboot.dtbo_idx=0 
+
+setenv bootargs storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0
+setenv bootargs storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=1
+
+BOOT_CMDLINE="RICH firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.wificountrycode=KR androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug GOLD"
+BOOT_CMDLINE="RICH firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.wificountrycode=KR androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug console=ttyFIQ0"
+
+
+-----
+recovery
+printenv bootargs
+bootargs=storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0
+
+
+setenv bootargs storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 video=RGB-1:1024x600@60
+
+
+
+fdt addr ${fdt_addr_t}
+fdt pirnt /vop@fe040000 assigned-clocks
+assigned-clocks = <0x0000001f 0x000000df 0x0000001f 0x000000e1>;
+
+-----
+ak7755_io_door_ring = count(12)
+ak7755_io_door_call = count(29)
+ak7755_io_stby = count(16)
+ak7755_io_extr_loby_call(27)
+
+-----
+cat /sys/class/drm/card0-DPI-1/enabled
+cat /sys/class/drm/card0-HDMI-A-1/enabled
+
+cat /sys/class/drm/card0-DPI-1/modes
+1024x600
+cat /sys/class/drm/card0-HDMI-A-1/modes
+640x480
+
+boot.img 는 dtbo partion에 dtbo.img을 참조.
+recovery.img 는 dtbo partition dtbo.img을 참조 하지 않음.
+
+-----
+bamboo build debug
+
+BAMBOO에 의해 빌드된  SDP530-4H 이미지가 부팅 되지 않는 현상 발생. 
+
+https://ci.kdiwin.com:8085/browse/HP5G-SDP5304HMAS-40 : sdp530-4h_occure_40_update.img : 문제 이미지.(현재 rebuild되고 있음)  
+https://ci.kdiwin.com:8085/browse/HP5G-SDP5304HMAS-39 : sdp530-4h_normal_39_update.img : 정상 이미지. 
+
+snapshot 비교 시, project 에 영향 줄 만한 diff 는 없음. (플랫폼 관련 Project는 rk_kernel, rk_hardware_rk29_audio 이며, 오디오 관련 commit 업데이트)
+
+가설1-1)
+HN 192.168.23.235 PC에서 빌드된 이미지에서 문제 현상 발생되는 것으로 추측됨. 
+디버깅을 위해 SDP530-4H_master BAMBOO 빌드를 HN 192.168.23.217 에서 진행 중. : 결과 업데이트 해야함. 192.168.23.217 PC에서 빌드된 uboot.img 에 문제 없음. 
+디버깅을 위해 SWP530-4H_master BAMBOO 빌드를 HN 192.168.23.235 에서 진행 중. : 결과 업데이트 해야함. 192.168.23.235 PC에서 빌드된 SWP530-4H 의 uboot.imx 사용 시, 현상 재현. : update.img 에서도 동일
+
+
+가설1-2)
+문제 이미지에서 rkrom 이미지를 변경 : 영향 없음
+문제 이미지에서 uboot 이미지를 변경 : 영향 있음
+
+
+-----
+swp530-4h, sdp530-4h audio volume
+
+ak7755_io_door_ring 기준으로 normal 세팅 하고, 
+door_ring 시, "DAC Digital Volume R" 값 Up.
+
+
+-----
+
+refactor : Update rk3568_poc config
+
+- updated the location of rk3568_poc configuration files.
+- adjusted paths to reflect the new directory structure.
+- ensured compatibility with the updated build process.
+
+-----
+refactor: improve readability and maintainability
+
+-----
+
+adb push device/kdiwin/nova/modules/touch/keypad.kcm system/usr/keychars/Vendor_36b3_Product_36b3.kcm ; adb push device/kdiwin/nova/modules/touch/keypad.kl system/usr/keylayout/Vendor_36b3_Product_36b3.kl
+
+rk3568_poc:/ # i2cset -f  -y 1 0x50 0x20 0x0100 w
+rk3568_poc:/ # i2cset -f  -y 1 0x50 0x20 0x0200 w
+
+ echo 14 > /sys/class/gpio/export; echo "out" > sys/class/gpio/gpio14/direction; echo 0 > sys/class/gpio/gpio14/value; echo 1 > sys/class/gpio/gpio14/value
+ 
+-----
+
+[swp530-4h]
+normal boot -> reboot bootloader -> rbusb -> fastboot
+normal boot -> reboot recovery -> reboot bootloader -> 
+
+
+----
+
+[bluetooth]
+
+BT_WAKE_HOST - GPIO2_B6 (옵션)
+HOST_WAKE_BT - GPIO2_C4 (옵션)
+BT_RTS - GPIO2_B7 (H5 protocol, 필수)
+BT_CTS - GPIO2_C0 (H5 protocol, 필수)
+BT_EN - GPIO2_C1 : bt_default_reset (필수)
+
+-----
+
+[wlan]
+
+WL_WAKE_HOST - GPIO1_B3 (옵션)
+WL_SDIO0_INT - GPIO0_B5 (옵션)
+
+-----
+chore : Update AK7755 DSP header-related options in kernel config
+chore : Remove duplicated kernel config
+chore : Update kernel config about target device
+
+
+-----
+
+[dts]             [keypad.kl]    [keypad.kcm] [frameworks/base/core/api/current.txt]
+KEY_NUMERIC_PUND  key 523 POUND  key POUND     KEYCODE_POUND
+                                               KEYCODE_BUTTON_1
+                                               
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 loglevel=9 dyndbg="file drivers/input/misc/bs83b.c +p"'
+
+adb shell 'echo "file drivers/input/misc/bs83b.c +p" > /sys/kernel/debug/dynamic_debug/control'
+    
+dyndbg="file drivers/input/misc/bs83b.c +p"
+
+-----
+
+SGP511
+[오디오 데이터 제어][매트릭스키][디스플레이][비디오 데이터 제어][RECEIVER][PSTN]
+
+- pin muxing 
+- 오디오 데이터 제어
+- 매트릭스 키 입력 장치
+- 비디오 데이터 제어
+- RECEIVER
+- PSTN
+
+-----
+
+setenv bootargs 'storagemedia=emmc androidboot.storageq2media=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 loglevel=9 dyndbg="file drivers/input/keyboard/matrix_keypad.c +p"'
+
+
+-----
+SWP530-4H
+[VOIP] DOOR - VOIP_DOOR_CALL : adc & dac 정상
+[VOIP] LOBY - VOIP_EXTR_CALL : dac 만 정상. adc 확인 중.
+DAC RIGHT ch로  echoline 출력
+가설 : Left Channel에 데이터가 있고, Right Channel은 Null인경우? 
+tinymix 0 15; tinymix 6 250; tinymix 59 1
+tinymix 0 0; tinymix 6 0; tinymix 59 0
+
+ cmd wall_service  set_audio_route voip_loby_call
+ cmd wall_service show_navigation_bar
+  
+  
+adb shell "echo 1 > /sys/class/gpio/gpio40/value; echo 1 > /sys/class/gpio/gpio5/value; echo 0 > /sys/class/gpio/gpio22/value; echo 0 >  /sys/class/gpio/gpio18/value; "
+
+
+set route(voip_loby_call) -> recording -> playing 시, 스트림 입/출력 O
+
+recording -> playing -> set route(voip_loby_call) 시, 스트림 입출력 X 
+
+ 
+도어 : set Route > AudioRecord 등 초기화
+ audio hal adev_open_input_stream device
+ adev_open_input_stream(4093)
+로비 : AudioRecord 등 초기화 > set Route 
+ adev_open_input_stream > adev_set_parameters: voip_loby_call 
+ Device : 0x4
+ SampleRate : 16000
+ Channels : 2
+ Formate : 0 
+ PreiodSize : 256
+ get_next_buffer, channel_mask(0xc), channels(0x2)
+ getInputRouteFromDevice 가 호출됨. 
+ 
+ 
+1. DAI 데이터를 Scope로 확인.
+2. Normal Input Rec 이후, Tinymix API를 통해 유사하게 제어 후, 동일 현상이 발생되는 지 확인. -> Codec 문제는 아님.
+tinymix "DSP Firmware PRAM" "basic"; tinymix "DSP Firmware CRAM" "basic"; tinymix "SDOUT1 MUX" "DSP"; tinymix "SDOUT1 Enable Switch" 1 ;tinymix "ADC Digital Volume L" 0; tinymix "ADC Digital Volume R" 201 ; tinymix "DAC Digital Volume L" 0; tinymix "DAC Digital Volume R" 249;tinymix "Mic Enable" 0 ; tinymix "IO Control Path" "VOIP_DOOR_CALL"
+3. 패치(코덱 설정 변경 후, do_in_standby 를 호출하여 스트림을 재시작하도록 변경)  -> 
+
+
+mclk :  Hz
+pclk :  Hz
+
+
+
+------
+
+init display fail issue
+
+실패,
+130|rk3568_poc:/proc/device-tree/reserved-memory/drm-logo@00000000 $ cat reg  | busybox hexdump
+0000000 0000 0000 0000 0000 0000 0000 0000 0000
+0000010
+
+성공,
+127|rk3568_poc:/proc/device-tree/reserved-memory/drm-logo@00000000 # cat reg | busybox hexdump
+0000000 0000 0000 f07d 0000 0000 0000 2000 4c75
+0000010
+
+mkbootimg \
+  --kernel fail/unpack_bootimg/kernel \
+  --ramdisk fail/unpack_bootimg/ramdisk \
+  --second succ/unpack_bootimg/resource.img \
+  --dtb fail/unpack_bootimg/dtb \
+  --pagesize 2048 \
+  --base 0x00000000 \
+  --kernel_offset 0x10008000 \
+  --ramdisk_offset 0x11000000 \
+  --second_offset 0x10f00000 \
+  --tags_offset 0x10000100 \
+  --dtb_offset 0x11f00000 \
+  --header_version 2 \
+  --os_version 12.0.0 \
+  --os_patch_level 2022-03 \
+  --cmdline "console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init rootwait ro loop.max_part=7 androidboot.console=ttyFIQ0 androidboot.wificountrycode=CN androidboot.hardware=rk30board androidboot.boot_devices=fe310000.sdhci,fe330000.nandc androidboot.selinux=permissive buildvariant=userdebug" \
+  -o out/boot_img_with_success_second.img
+
+
+-----
+[SWP530] WIFI 부팅시 Enable안됨
+https://its.kdiwin.com:8080/browse/HN5G-1306
+
+항목	상태
+tombstone_00, tombstone_01	Native crash 발생 로그로, Wi-Fi 관련 로그는 아님
+anr_2025-03-31-08-48-50-199	ANR 상황으로, Wi-Fi 또는 MQTT 관련 정보 없음
+
+🔹 tombstone_00:
+프로세스: com.nexobcs.wallpad.homeview 추정
+
+signal 11 (SIGSEGV) → null pointer dereference
+
+Java Native Interface 관련 로그 다수 존재 → JNI context에서 문제 가능성 있음
+
+🔹 tombstone_01:
+프로세스: system_server
+
+signal 11 (SIGSEGV)
+
+스택에 android.net.wifi.WifiStateMachine 또는 WifiServiceImpl 등은 없음 → Wi-Fi 관련 직접 충돌은 아님
+
+-----
+[SWP530-4H] BLE
+```
+swp5304h:/ # dumpsys  bluetooth_manager                                  
+Bluetooth Status                                                                                                                                              
+  enabled: true                                                                                                                                               
+  state: ON                                                                    
+  address: 44:87:63:A7:F9:D0                                                   
+  name: NHome01110111                  
+  time since enabled: 00:01:53.839
+                                       
+Enable log:  
+  05-29 20:42:02  Enabled  due to SYSTEM_BOOT by android
+```
+-----
+adb shell 'setprop log.tag.RKISP2ImguUnit DEBUG'
+
+
+
+-----
+chore: adjust DOOR_CALL amp enable delay to 1 sec (LE1000, SWP530-4H, SDP530-4H)
+
+- Align amp enable timing across all products as per latest requirement
+
+
+
+-----
+v4l2-ctl -d /dev/video5 --set-fmt-video=width=1920,height=1080,pixelformat=NV12 --stream-mmap=3 --stream-to=/data/local/tmp/out.yuv --stream-skip=1 --stream-count=1
+ffplay out.yuv -f rawvideo -pixel_format nv12 -video_size 720x480
+
+
+
+-----
+LE1000_V11-0_20250113
+git tag -a LE1000_V11-0_20250113 -m "LE1000 Release V11-0 (2025-01-13)"
+git tag -a SWP530-4H_V11-0_20250624 -m "SWP530-4H Release V11-0 (2025-06-24)"
+git tag -a SDP530-4H_V11-0_20250624 -m "SDP530-4H Release V11-0 (2025-06-24)"
+
+
+-----
+SYS_GRF Register (0xfdc60000)
+GPIO1_D5 pin mux
+Address : Operation Base + offset (0x001c)
+fdc6001c: 00001110
+
+-----
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboo		t.dtbo_idx=0 dyndbg="file drivers/headset_observe/rockchip_headset_core.c +p"'
+adb shell "setprop log.tag.WiredAccessoryManager VERBOSE"
+adb shell "setprop log.tag.UEventObserver VERBOSE"
+
+
+adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/input/misc/intercom_handset.c +p" > /sys/kernel/debug/dynamic_debug/control'  ; adb shell 'cat /sys/kernel/debug/dynamic_debug/control | grep intercom'; adb shell 'echo "file sound/soc/codecs/ak7755.c +p" > /sys/kernel/debug/dynamic_debug/control' ; adb shell 'cat /sys/kernel/debug/dynamic_debug/control | grep ak7755'
+
+
+adb wait-for-device ; adb shell "setprop log.tag.AudioHardwareTiny VERBOSE ; setprop log.tag.alsa_mixer VERBOSE; setprop log.tag.alsa_route VERBOSE ; setprop log.tag.V4L2Subdev VERBOSE" ;
+
+
+tinymix "DSP Firmware PRAM" "data2"; tinymix "DSP Firmware CRAM" "data3" ; tinymix "DSPIN SDOUTAD" 1 ;  tinymix "LineOut Amp1" 1 ; tinymix "MIC Input Volume R" 13 ; tinymix "ADC Digital Volume R" 239 ;tinymix "Line Out Volume 1" 15 ; tinymix "DAC Digital Volume L" 231 ;  tinymix "ClassD Amp Enable" 1 ;
+
+tinymix "DSP Firmware PRAM" "Off"; tinymix "DSP Firmware CRAM" "Off" ; tinymix "ClassD Amp Enable" 0 ; tinymix "LineOut Amp1" 0 ; tinymix "Handset Enable" 1; tinymix "LineOut Amp2" 1; tinymix "SELMIX AD"  1 ; tinymix "DAC MUX" "MIXOUT" ; tinymix "LineOut Amp2" 1; tinymix "SELMIX AD"  1 ; tinymix "DAC MUX" "MIXOUT" ; tinymix "DSPIN SDOUTAD" 0 ; tinymix "Line Out Volume 2" 15; tinymix  "LineOut Amp3 Mixer LOSW2" 0 ; tinymix "SDOUT1 Enable Switch"  0 ;
+[Hook_off]  
+tinymix "DSP Firmware PRAM" "data2"; tinymix "DSP Firmware CRAM" "data3" ; \
+ tinymix "DSPIN SDOUTAD" 1 ;  tinymix "LineOut Amp1" 1 ; \
+ tinymix "ClassD Amp Enable" 1 ; tinymix "Line Out Volume 1" 10 ; \
+ tinymix "DAC MUX"  "DSP"
+
+
+
+[Hook_on] 
+ tinymix "ClassD Amp Enable" 0 ; tinymix "LineOut Amp1" 0 ; \
+ tinymix "Handset Enable" 1; tinymix "LineOut Amp2" 1; \
+ tinymix "SELMIX AD" 1; tinymix "DAC MUX" "MIXOUT" ; \
+ tinymix "Line Out Volume 2" 10 ; tinymix "LineOut Amp2" 1; 
+
+
+
+"LineOut Amp3 Mixer LOSW2"
+
+
+
+
+=====
+[pstn_call]
+
+[pstn_dial]
+
+[Hook_off] on 
+tinymix "DSP Firmware PRAM" "data2"; tinymix "DSP Firmware CRAM" "data3" ; \
+ tinymix "DSPIN SDOUTAD" 1 ;  tinymix "LineOut Amp1" 1 ; \
+ tinymix "ClassD Amp Enable" 1 ; tinymix "Line Out Volume 1" 10 ; \
+ tinymix "DAC MUX"  "DSP"
+ 
+[Hook_off] off
+tinymix "LineOut Amp1" 0 ; tinymix "ClassD Amp Enable" 0 ;  tinymix "Line Out Volume 1" 0 ;
+
+
+[Hook_on] on
+ tinymix "Handset Enable" 1; tinymix "LineOut Amp2" 1; \
+ tinymix "SELMIX AD" 1; tinymix "DAC MUX" "MIXOUT" ; \
+ tinymix "Line Out Volume 2" 10 ; 
+
+[Hook_on] off
+ tinymix "Handset Enable" 0; tinymix "LineOut Amp2" 0; tinymix "Line Out Volume 2" 0 ; 
+ 
+ 
+=====
+tinymix "Line Out Volume 1" 10; tinymix "ADC Digital Volume R" 201 ; tinymix "Handset Enable" 0 ; tinymix "LineOut Amp1" 1 ; tinymix "SELMIX AD" 0 
+
+
+    VOIP_GURD_CALL_ROUTE,      // 43
+VOIP_HOME_CALL_ROUTE		
+VOIP_LOBY_CALL_ROUTE
+
+
+=====
+probe()에서 아래 함수를 호출
+INIT_DELAYED_WORK(&headset->h_delayed_work[HEADSET],
+			  headsetobserve_work);
+headsetobserve_work 함수에서 extcon_set_state_sync 함수를 호추함.
+
+
+
+=====
+feat : [audio] Add support for handset device
+
+- updated audio routing and device configuration to support handset (receiver) functionality.
+- modified audio HAL and relevant mixer controls for proper handset audio path.
+- ensured seamless switching between speaker and handset modes.
+
+
+=====
+PMIC : LDO9
+
+=====
+adb wait-for-device ; adb root ; adb remount  ; adb shell "echo 1 > /sys/class/gpio/gpio15/value ; echo 0 > /sys/class/gpio/gpio42/value "
+
+adb wait-for-device ; adb root ; adb remount  ; adb shell "echo 1 > /sys/class/gpio/gpio15/value "
+
+adb wait-for-device ; adb root ; adb remount  ; adb shell "echo 0 > /sys/class/gpio/gpio15/value "
+ 
+adb shell " echo 1 >  /sys/kernel/debug/regulator/vcca1v8_image/enable"
+
+
+while true; do adb shell "echo 1 > /sys/class/gpio/gpio15/value " ; sleep 2 ; adb shell "echo 0 > /sys/class/gpio/gpio15/value " ; sleep 2 ; done
+
+
+=====
+adb root ;adb remount ; adb shell 'echo "file drivers/gpu/drm/bridge/synopsys/dw-hdmi.c +p " > /sys/kernel/debug/dynamic_debug/control' ; adb shell 'echo "file drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c +p " > /sys/kernel/debug/dynamic_debug/control'
+
+
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file drivers/gpu/drm/bridge/synopsys/dw-hdmi.c +p "'
+
+
+drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
+
+
+
+=====
+원인
+일부 보드에서 HDMI 해상도 전환(1920x1080 → 640x480) 시
+Video Encoder(CH7107B)가 HDMI 신호 변화에 정상적으로 동기화되지 않아
+TV-Out 출력이 생성되지 않는 현상 발생
+
+주된 원인은 전원 품질, 신호 안정성, 부품 편차 등
+환경적 요인에 따른 신호 동기화 실패 가능성	
+
+대책	
+부트로더에서 HDMI/Video Encoder 신호 안정성 및
+초기화 시퀀스 제어 로직을 개선하여 적용 완료
+
+양산 제품(LE1000)에서도 재현될 수 있어
+OTA 업데이트를 통해 Regulator 제어 기능 추가 적용
+
+신뢰성팀의 검증 결과 피드백 대기 중
+
+=====
+adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/input/misc/bs83b.c +p" > /sys/kernel/debug/dynamic_debug/control ; cat /sys/kernel/debug/dynamic_debug/control |  grep bs83b.c'
+
+
+
+=====
+adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/leds/leds-ht16k33.c +p" > /sys/kernel/debug/dynamic_debug/control ; cat /sys/kernel/debug/dynamic_debug/control | grep ht16k33' 
+
+
+=====
+
+cmd wall_service inject_gpio_value DOORBUTTON_0 1  ; sleep 0.5; cmd wall_service inject_gpio_value DOORBUTTON_0 0 ; sleep 10 ; input tap 939 565 ; sleep 5 ; input tap 939 565
+cmd wall_service inject_gpio_value DOORBUTTON_0 1  ; sleep 0.5; cmd wall_service inject_gpio_value DOORBUTTON_0 0 ; sleep 5 ; input tap 39 565 ; 
+
+echo "file drivers/gpu/drm/bridge/synopsys/dw-hdmi.c +p" > /sys/kernel/debug/dynamic_debug/control
+
+
+=====
+✅ 5단계: HDMI PHY 설정값 튜닝
+신호 품질이 미달일 경우, DTS에서 rockchip,phy-table 항목 수정으로 보정 가능
+
+dts
+복사
+편집
+&hdmi {
+    rockchip,phy-table =
+        <27000000  0x8007 0x0000 0x0270>, // 예: 27MHz 추가
+        ...
+        }
+        
+setprop persist.vendor.resolution.main 1280x720p60
+setprop sys.display.timeline 1
+
+======
+
+chore : [priv-gpio] Add and organize GPIO definitions
+
+- activate the converter module by setting SUBDISPLAYINIT_0 to high
+
+=====
+그럼 이렇게 해보자. 
+AUDIO:door_call, door_subp_call, voip_door_call인경우만, DOOR_MIC_EN:high 이며 그외는 low 상태
+
+- 기존
+ * 현관 보기(DOOR_POWER_CTL:high, AUDIO:normal) -> 문열림(DOOR_POWER_CTL:low, AUDIO:normal)
+
+ * 도어 버튼을 눌러 호출 후 통화 후 문열림, 
+도어 호출(DOOR_POWER_CTL:high, AUDIO:door_ring) -> 도어 통화(DOOR_POWER_CTL:high, AUDIO:door_call) -> 문열림 멘트 출력(DOOR_POWER_CTL:high, AUDIO:door_ring) -> 종료(DOOR_POWER_CTL:low, AUDIO:normal)
+
+ * 도어 버튼을 눌러 호출 후, 문열림(통화X)
+도어 호출(DOOR_POWER_CTL:high, AUDIO:door_ring) ->  문열림 멘트 출력(DOOR_POWER_CTL:high, AUDIO:door_ring) -> 종료(DOOR_POWER_CTL:low, AUDIO:normal)
+
+- 시험 요청 방법 (항시 DOOR_POWER_CTL:high)
+ * 현관보기(AUDIO:normal) -> 문열림(DOOR_MIC_EN:low)
+
+ * 도어 버튼을 눌러 호출 후 통화 문 열림,
+도어 호출(AUDIO:door_ring, door 장치 micom에서 트리거 됨) -> 도어 통화(AUDIO:door_call, DOOR_MIC_EN:high 상태) -> 문열림 멘트 출력(DOOR_POWER_CTL:high, AUDIO:door_ring, DOOR_MIC_EN:low 상태가 되어 안됨.) -> 종료(DOOR_POWER_CTL:low, AUDIO:normal)
+
+ * 도어 버튼을 눌러 호출 후, 문열림(통화X)
+(작성중)
+
+door_ring 상태에서 DOOR_MIC_EN:high시, 하울링이 발생되어 안됨. 
+
+
+UART7_RTSN - resst
+UART6_RX   - rx
+UART6_TX   - tx
+
+
+
+=====
+
+ adb shell 'tinymix "LineOut Amp1"'
+ 
+ 
+=====
+feat :[audio] add door_active and emergency_mode support for always-on doorphone
+
+- introduced new audio modes:
+ * door_active: activate door device without audio output (monitoring/opening)
+ * emergency_mode: enable immediate audio path during emergency scenarios
+- updated audio policy configuration and path control to support always-on power model
+
+=====
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file drivers/leds/leds-pwmx.c +p"'
+
+
+
+=====
+https://its.kdiwin.com:8080/browse/HN5G-1669
+feat : [audio] add default_mc_en audio mode for door module enable
+
+- introduced new audio mode: default_mc_en
+ * keeps internal speaker path as default
+ * enables DOOR_MIC_EN (door module activation) for camera usage 
+- updated audio_policy_configuration and pinctrl definitions
+- ensured compatibility with existing modes (door_active, door_ring, emergency)
+
+Refs: SEP920 always-on doorphone
+
+=====
+
+1. door_ring MICEN 활성화
+2. MICEN 활서화 일때, dc_활성화 확인
+
+
+
+=====
+chore : [audio] Remove emergency audio route path
+
+- removed because it overlaps with the emergency audio route path and door_ring audio route path.
+
+=====
+LH월패드 Proximity Sensor : White & Black 기구 센서 편차 시험 : 검정 기구가 임시로 만들어진 기구여서 높은 임계값을 입력받지 못한거였으며, 기구 수령후 확인 예정.
+RK3576 PoC 개발 : 업무 인계
+SLP710-5B 개발  : 이미지를 1개로 갈지, 2개로 갈지 논의 (2개로 가는경우, 유통, 홈넷)
+
+
+=====
+adb shell settings put secure --user 0 show_touches 1
+adb shell settings put system --user 0 pointer_location 1
+
+
+=====
+SLP710 , SLP711 으로 project 재생성.
+24inch TouchScreen SNP920, LE2000 적용.
+도어 장치 신뢰성 이슈 : Known 이슈. 
+서브 장치 개발 이슈 : 오디오 제어 기능 추가 필요.
+ 
+ 
+ 
+=====
+> Android 에서 Index를 바꾸는 순간, 오디오 HAL이 DAC 에 하드 스텝을 주고, 그 순간 Gain Jump -> 튐/팝 현상 발생. 
+만약 Index 값이 동일해서, 게인 
+
+> DAC 값을 고정해두고, Volume Curve움직이면 경로간 
+
+
+$ adb root ; adb remount ; adb push out/target/product/nhn1311n/system/priv-app/WallService/WallService.apk  /system/priv-app/WallService/ ; adb push out/target/product/nhn1311n/system/priv-app/WallService/oat/* /system/priv-app/WallService/oat/ ; adb push out/target/product/nhn1311n/system/lib64/libwallservice.so /system/lib64/ ; adb shell killall com.kdiwin.wall
+
+
+
+=====
+fix : fix ring volume gain jump on door output
+
+- issue: door audio output momentarily spikes when changing ring volume index on wallpad
+- cause: framework applies digital attenuation and HAL adjusts DAC gain asynchronously, leading to gain jump
+- fix:
+  * flattened volume curve (idx0 and idx1 same dB) to prevent hard step 
+  * tested keeping door output constant to confirm issue source
+  
+  
+=====
+adb wait-for-device ; adb root ; adb remount ; adb shell "cmd wall_service set_audio_route subp_call" 
+
+=====
+feat : add subp_call route for wallpad subphone mode
+
+- added new route path `subp_call` in audio policy configuration
+- configures speaker (OUT) and mic (IN) for subphone usage
+- updated mixer controls and pinctrl nodes to support subphone call path
+- enables wallpad to operate as subphone for Door-call, VoIP-call, and PSTN-call
+
+====
+도어 호출 시, 볼륨 레벨에서 볼륨 증폭되는 현상 개선. (HN, HA 월패드 제품 master 적용)
+월패드 서브폰 기능 지원위한 오디오 모듈 구현 (LH월패드 우선 적용)
+5세대 유통향 월패드 제품 설계 검토(도어폰 2개 시나리오), CCTV 기능
+
+
+=====
+feat : [audio] Add volume control for subp_call route
+
+- enabled independent gain control for spk/mic path during subphone mode
+- ensure stable volume handling for Door-call, VoIP-call, and PSTN-call in subp_call route
+
+
+=====
+
+adb shell "cmd wall_service list_patch_routes"
+ * patch-routes: 9
+   - AudioPatchRoute{ name=extr_gurd_call sink=extr_gurd_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=extr_home_call sink=extr_home_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=voip_gurd_call sink=voip_gurd_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=voip_home_call sink=voip_home_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=extr_loby_call sink=extr_loby_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=voip_loby_call sink=voip_loby_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=pstn_call sink=pstn_call source=primary output stream=0 }
+   - AudioPatchRoute{ name=pstn_dial sink=pstn_dial source=primary output stream=8 }
+   - AudioPatchRoute{ name=default sink=default source=primary output stream=-1 }
+ * current route: AudioPatchRoute{ name=extr_loby_call sink=extr_loby_call source=primary output stream=0 }
+ * current steam: STREAM_VOICE_CALL(0)
+ * client package: com.wallpad.call
+ * audio patches: 1
+   patch: 12
+     sources:
+       - port='1:primary output,,' s_r='48000' mask='12' fmt='2' gain='' 
+     sinks:
+       - port='2:,speaker,' s_r='0' mask='1' fmt='1' gain='' 
+
+
+adb shell "cmd wall_service list_patch_routes"
+
+adb shell "cmd wall_service set_audio_route extr_gurd_call"
+adb shell "cmd wall_service set_audio_route extr_home_call"
+adb shell "cmd wall_service set_audio_route extr_loby_call"
+
+
+=====
+
+terminal : 192.168.27.243 : rk3568_dev 
+
+1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
+ clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  LH_WP
+
+2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7 :
+ clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf POC_TEST_13
+ 
+3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000 :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SNP721
+ 
+4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "POC10p"
+ 
+5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511 :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SGP511
+ 
+6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530 :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SCREEN_ROTATION LE2000"
+
+=====
+adb -s $lh wait-for-device ; adb -s $lh root ; adb -s $lh remount ; adb -s $lh shell 'echo "file drivers/misc/mcu_bridge_i2c.c +p" > /sys/kernel/debug/dynamic_debug/control'
+echo "file drivers/misc/mcu_bridge_i2c.c +p" > /sys/kernel/debug/dynamic_debug/control
+cat /sys/kernel/debug/dynamic_debug/control | grep  mcu_bridge
+cd /sys/bus/i2c/devices/1-0028
+
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboot.dtbo_idx=0 dyndbg="file drivers/misc/mcu_bridge_i2c.c +p"'
+
+
+LIGHT_ALL >> KEY_F1 >> KEYCODE_F1
+sendevent /dev/input/event0 1 59 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 59 0 ; sendevent /dev/input/event0 0 0 0
+LIGHT_1 >> KEY_F2 >> KEYCODE_F2
+sendevent /dev/input/event0 1 60 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 60 0 ; sendevent /dev/input/event0 0 0 0
+LIGHT_2 >> KEY_F3 >> KEYCODE_F3
+sendevent /dev/input/event0 1 61 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 61 0 ; sendevent /dev/input/event0 0 0 0
+LIGHT_3 >> KEY_F4 >> KEYCODE_F4
+sendevent /dev/input/event0 1 62 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 62 0 ; sendevent /dev/input/event0 0 0 0
+LIGHT_4 >> KEY_F5 >> KEYCODE_F5
+sendevent /dev/input/event0 1 63 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 63 0 ; sendevent /dev/input/event0 0 0 0
+LIGHT_5 >> KEY_F6 >> KEYCODE_F6
+sendevent /dev/input/event0 1 64 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 64 0 ; sendevent /dev/input/event0 0 0 0
+LIGHT_6 >> KEY_F7 >> KEYCODE_F7
+sendevent /dev/input/event0 1 65 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 65 0 ; sendevent /dev/input/event0 0 0 0
+STANDBY_ALL >> KEY_F8 >> KEYCODE_F8
+sendevent /dev/input/event0 1 66 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 66 0 ; sendevent /dev/input/event0 0 0 0
+STANDBY_1 >> KEY_F9 >> KEYCODE_F9
+sendevent /dev/input/event0 1 67 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 67 0 ; sendevent /dev/input/event0 0 0 0
+STANDBY_2 >> KEY_F10 >> KEYCODE_F10
+sendevent /dev/input/event0 1 68 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 68 0 ; sendevent /dev/input/event0 0 0 0
+
