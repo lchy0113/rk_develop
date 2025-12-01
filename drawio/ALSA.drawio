@@ -1,4 +1,4 @@
-<mxfile host="Electron" modified="2025-09-17T07:05:40.339Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="r_2qDgjExzqnC3FW2E4g" version="21.6.8" type="device" pages="8">
+<mxfile host="Electron" modified="2025-11-07T08:12:29.685Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="gxicwSjAXAbAjxmKFseE" version="21.6.8" type="device" pages="8">
   <diagram id="z_Vnb7Ci68XTlHzQFAwz" name="개발_tinyalsa_config">
     <mxGraphModel dx="2074" dy="1198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -304,7 +304,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KJU83SnIgYuwSPoUAOeF" name="개발_ak7755_develop">
-    <mxGraphModel dx="1975" dy="41" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="98" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
