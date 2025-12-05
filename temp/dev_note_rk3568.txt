@@ -764,27 +764,6 @@ adb shell "cmd wall_service set_audio_route extr_home_call"
 adb shell "cmd wall_service set_audio_route extr_loby_call"
 
 
-=====
-
-terminal : 192.168.27.243 : rk3568_dev 
-
-1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
- clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  LH_WP
-
-2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7 :
- clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf POC_TEST_13
- 
-3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000 :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SNP721
- 
-4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "POC10p"
- 
-5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511 :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SGP511
- 
-6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530 :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SCREEN_ROTATION LE2000"
 
 =====
 adb -s $lh wait-for-device ; adb -s $lh root ; adb -s $lh remount ; adb -s $lh shell 'echo "file drivers/misc/mcu_bridge_i2c.c +p" > /sys/kernel/debug/dynamic_debug/control'
@@ -816,3 +795,50 @@ sendevent /dev/input/event0 1 67 1 ; sendevent /dev/input/event0 0 0 0 ; sendeve
 STANDBY_2 >> KEY_F10 >> KEYCODE_F10
 sendevent /dev/input/event0 1 68 1 ; sendevent /dev/input/event0 0 0 0 ; sendevent /dev/input/event0 1 68 0 ; sendevent /dev/input/event0 0 0 0
 
+=====
+
+project-device-newjeans-slp7105b
+디바이스 모델 프로젝트 (SLP710-5B)
+Home Network 10-inch Lobby product
+
+project-device-newjeans-slp7205b
+디바이스 모델 프로젝트 (SLP720-5B)
+Home Network 10-inch Facial Recognition Lobby product
+
+project-device-newjeans-slp7114b
+디바이스 모델 프로젝트 (SLP711-4B)
+Home Auto 10-inch Lobby product
+
+project-device-newjeans-slp7214b
+디바이스 모델 프로젝트 (SLP721-4B)
+Home Auto 10-inch Facial Recognition Lobby product
+
+project-device-newjeans-swp5204b
+디바이스 모델 프로젝트 (SWP520-4B) Home Auto 10-inch wallpad product
+
+project-device-newjeans-swp7204b
+디바이스 모델 프로젝트 (SWP720-4B) Home Auto 13-inch wallpad products
+
+
+====================================================================================================
+
+terminal : 192.168.27.243 : rk3568_dev 
+
+1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
+ clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  LH_WP
+
+2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7 :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SNPx21
+ 
+3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000 :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWPx20
+ 
+4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SLP7xx
+ 
+5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511 :
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SGP511
+ 
+6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530 :
+ clear ; jfiglol -a -f=2 -t ~/Private		/github/figlet-fonts/ANSI\ Regular.flf "LE2000"
+====================================================================================================
