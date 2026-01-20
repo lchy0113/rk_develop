@@ -249,6 +249,34 @@ PlatformData::init()
 <br/>
 <hr>
 
+## EXT Camera 추가 구현 업무
+
+
+1. EXT_CAM 장치 추가
+2. vendor tag 를 사용
+ 표준 Camera2 키로는 표현이 애매한 경우, 예를들어 TVI, AHD, CVI 등 을 공식 파이프라인을 타고 전달 하는 방법. 
+
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Camera3 흐름
+
+```
+// Camera3흐름
+ 1. open()
+ 2. initialize()
+ 3. configure_streams() <- 여기서 해상도 및 포맷이 확정.
+ 4. process_capture_request() 반복
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## android.com
 
  - framework APIs in Camera2
