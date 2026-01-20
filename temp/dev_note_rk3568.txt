@@ -820,6 +820,135 @@ project-device-newjeans-swp7204b
 디바이스 모델 프로젝트 (SWP720-4B) Home Auto 13-inch wallpad products
 
 
+=====
+[TV_OUT SIGNAL] 
+lobby by-pass
+VIDEOSEL_0(73) : low
+VIDEOSEL_1(85) : low
+> echo 73 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio73/direction; echo 0 > /sys/class/gpio/gpio73/value; echo 85 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio85/direction; echo 0 > /sys/class/gpio/gpio85/value
+
+
+door by-pass(ntsc)
+VIDEOSEL_0(73) : high
+VIDEOSEL_1(85) : low
+> echo 73 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio73/direction; echo 1 > /sys/class/gpio/gpio73/value; echo 85 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio85/direction; echo 0 > /sys/class/gpio/gpio85/value
+
+
+tv-out
+VIDEOSEL_1(85) : high
+> echo 16 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio16/direction; echo 1 > /sys/class/gpio/gpio16/value; echo 85 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio85/direction; echo 1 > /sys/class/gpio/gpio85/value
+
+
+[VIDEO_IN SIGNAL]
+door0
+DOORPOWERCTL_0(40) : high
+DPCAMSEL_0(74) : low
+LBCAMSEL_0(82) : low 
+> echo 40 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio40/direction; echo 1 > /sys/class/gpio/gpio40/value; echo 74 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio74/direction; echo 0 > /sys/class/gpio/gpio74/value; echo 82 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio82/direction; echo 0 > /sys/class/gpio/gpio82/value
+
+
+door1
+DOORPOWERCTL_1(113) : high
+DOORMICE(98) : high
+DPCAMSEL_0(74) : high
+LBCAMSEL_0(82) : low
+> echo 113 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio113/direction; echo 1 > /sys/class/gpio/gpio113/value; echo 98 > /sys/class/gpio/export ; echo out > /sys/class/gpio98/direction ; echo 1 > /sys/class/gpio98/value ; echo 74 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio74/direction; echo 1 > /sys/class/gpio/gpio74/value; echo 82 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio82/direction; echo 0 > /sys/class/gpio/gpio82/value
+
+subdisplay_init
+echo 16 > /sys/class/gpio/export; echo out > /sys/class/gpio/gpio16/direction; echo 1 > /sys/class/gpio/gpio16/value;
+
+=====
+git checkout -b feature/ALLWINNER-1002
+
+
+git commit -m $'feat: Add emergency audio policy for all products\n\n- added emergency audio policy configuration\n- applied common policy structure for horizontal rollout across all products\n- ensured consistent emergency audio routing and priority handling'
+
+
+feat: Add emergency audio policy for all products
+
+- added emergency audio policy configuration
+- applied common policy structure for horizontal rollout across all products
+- ensured consistent emergency audio routing and priority handling
+
+
+=====
+
+SEP520(NTSC), DP83(NTSC) 
+SEP920(FHD)
+
+tinymix 'MIC Input Volume L' 15 ; tinymix 'ADC Mute' 0 ; tinymix 'SDOUT1 MUX' 3; tinymix 'DAC Mute' 0 ; tinymix 'LineOut Amp1' 1 ; tinymix 'DAC MUX' 3 ; tinymix 'ClassD Amp Enable' 1 ; tinymix 'vad switch' 1 
+tinycap /data/local/tmp/record.wav -D 0 -d 0 -r 44100 -b 16 -c 2 -T 5
+Capturing sample: 2 ch, 44100 hz, 16 bit
+Captured 241664 frames
+
+tinyplay /data/local/tmp/record.wav -D 0 -d 0
+
+=====
+(09) DOOR_ACTIVE : DOOR1_MIC_EN tinymix 'IO Control Path' 'DOOR_ACTIVE'
+(98) DOOR1_ACTIVE : DOOR2_MIC_EN tinymix 'IO Control Path' 'DOOR1_ACTIVE'
+tinymix 'IO Control Path' 'STBY'
+
+cat /sys/kernel/debug/pinctrl/pinctrl-rockchip-pinctrl | grep 5-0
+
+
+
+=====
+SWP530-4H SUBPHONE
+echo 73 > /sys/class/gpio/export ; echo "out" > /sys/class/gpio/gpio73/direction ; echo 1 > /sys/class/gpio/gpio73/value
+
+=====
+ echo 1 > /sys/class/gpio/gpio40/value ; tinymix 'IO Control Path'  'DOOR1_ACTIVE'
+echo 0 > /sys/class/gpio/gpio40/value ; tinymix 'IO Control Path' 'STBY'
+
+
+=====
+TP2860-EXTERNAL_CAMERA
+[DOOR1]
+(74)DP_CAM_SEL(H) 
+(42)LB_CAM_SEL(L) 
+(113)DOORPOWERCTL_1(H)
+
+echo 74 > /sys/class/gpio/export ; echo 'out' > /sys/class/gpio/gpio74/direction ; echo 1 > /sys/class/gpio/gpio74/value ; 
+echo 0 > /sys/class/gpio/gpio42/value ; 
+echo 1 > /sys/class/gpio/gpio113/value ; 
+
+=====
+HA
+통화 시나리오           (check) firmware(pram)          firmware (cram)         
+door_call		 	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data2.bin] (SWP530) (SDP530) (SDP720) (SDP520)
+door1_call       	     [ak7755_pram_data2.bin] [ak7755_cram_data2.bin]
+extr_loby_call	 	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data2.bin] (SWP530) (SDP530)
+extr_gurd_call	 	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data2.bin] (SWP530) (SDP530)
+extr_home_call	 	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data2.bin] (SWP530) (SDP530)
+extr_subp_call	 	 (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+door_subp_call	 	 (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+door1_subp_call      (C) [N/A]                   [N/A]
+
+voip_home_call   	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data5.bin] (SWP530)
+voip_loby_call   	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data6.bin] (SWP530)
+voip_gurd_call   	 (C) [ak7755_pram_data2.bin] [ak7755_cram_data7.bin] (SWP530)
+door_ring		 	 (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+door1_ring        	     [N/A]                   [N/A]                   
+normal				 (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+
+voip_gurd_subp_call	 (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+voip_home_subp_call  (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+voip_loby_subp_call  (C) [N/A]                   [N/A]                   (SWP530) (SDP530)
+
+mobi_home_cal		 (C) [ak7755_pram_data2.bin] [ak7755_cram_data3.bin] (SWP530)
+mobi_door_call		 (C) [ak7755_pram_data2.bin] [ak7755_cram_data4.bin] (SWP530)
+mobi_door1_call 	     [ak7755_pram_data2.bin] [ak7755_cram_data4.bin]
+mobi_loby_call		 (C) [ak7755_pram_data2.bin] [ak7755_cram_data4.bin] (SWP530)
+emergency       	     [N/A]                   [N/A]                   (SWP530)
+subp_call     		     [N/A]                   [N/A]                   (SWP530)
+
+		
+=====
+build: Use wildcard pattern for AK7755 firmware files
+
+Simplify audio.mk by replacing individual ak7755_*.bin entries
+with wildcard pattern matching for automatic file inclusion.
+
 ====================================================================================================
 
 terminal : 192.168.27.243 : rk3568_dev 
@@ -828,17 +957,17 @@ terminal : 192.168.27.243 : rk3568_dev
  clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  LH_WP
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7 :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SNPx21
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf LE1000
  
 3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000 :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWPx20
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWP720
  
 4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC :
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SLP7xx
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWP520
  
 5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511 :
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SGP511
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530 :
- clear ; jfiglol -a -f=2 -t ~/Private		/github/figlet-fonts/ANSI\ Regular.flf "LE2000"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWP530
 ====================================================================================================
