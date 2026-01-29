@@ -944,30 +944,50 @@ subp_call     		     [N/A]                   [N/A]                   (SWP530)
 
 		
 =====
-build: Use wildcard pattern for AK7755 firmware files
+chore :[audio]Use wildcard pattern for AK7755 firmware files
 
-Simplify audio.mk by replacing individual ak7755_*.bin entries
+- simplify audio.mk by replacing individual ak7755_*.bin entries
 with wildcard pattern matching for automatic file inclusion.
+
+=====
+chore: commit SDP530-4H V13 release manifest
+
+- snapshot SDP530-4H V13 release manifest
+- freeze project revisions for SDP530-4H V13 release
+
+ git tag -a SDP530-4H_V13-0_20260127 -m "SDP530-4H V13-0 release (2026-01-27)"
+ 
+ 
+=====
+chore : Add subphone hardware feature support
+
+- add com.kdiwin.hardware.subphone feature definition
+- add feature XML to declare subphone capability
+- enable subphone module in snp5215bmlh product
+
+
+
 
 ====================================================================================================
 
 terminal : 192.168.27.243 : rk3568_dev 
+ssh-agent > ~/.ssh-agent.sh ;  source ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
 
 1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
  clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  LH_WP
 
-2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7 :
+2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf LE1000
  
-3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000 :
+3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWP720
  
-4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC :
+4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWP520
  
-5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511 :
+5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SGP511
  
-6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530 :
+6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf SWP530
 ====================================================================================================
