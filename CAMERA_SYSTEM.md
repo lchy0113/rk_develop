@@ -251,6 +251,17 @@ PlatformData::init()
 
 ## EXT Camera 추가 구현 업무
 
+```bash
++-----------------------+    +---------------------------------------+
+| EXT_CAM_IN(terminal)  |    | DOOR1_VIDEO or DOOR2_VIDEO (terminal) |
+|       |               |    |       |                               |
+|       V               |    |       V                               |
+| DP_VIN1P (baseboard)  |    | DP_VIN1 or DP_VIN2 (baseboard)        |
+|       |               |    |       |                               |
+|       V               |    |       V                               |
+| VIN1 (decoder)        |    | VIN3 (decoder)                        |
++-----------------------+    +---------------------------------------+
+```
 
 1. EXT_CAM 장치 추가
 2. vendor tag 를 사용
