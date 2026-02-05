@@ -9,7 +9,9 @@
 
  - Vendor tag
  Camera2의 Metadata(=키-값 딕셔너리) 체계 안에서, AOSP 표준에 없는 "제조사(벤더) 전용 키" 를 추가하는 방법  
-  * 표준 키 예 : *ANDROID_CONTROL_AE_MODE*, *ANDROID_SENSOR_EXPOSURE_TIME* 등
+  * 표준 키 예 : *ANDROID_CONTROL_AE_MODE*, *ANDROID_SENSOR_EXPOSURE_TIME* 등  
+    Camera2의 표준(CameraMetadata) 키 리스트 :   
+       https://developer.android.com/reference/android/hardware/camera2/CameraMetadata
   * 벤더 키 예 : *com.vendor.mycam.feature.enable* 같은 식
  즉, vendor tag는 **벤더가 확장한 metadata key** 이고,   
  앱/프레임워크/HAL이 요청(request)/결과(result)/정적정보(static)형태로 주고 받을 수 있어  
@@ -27,3 +29,7 @@
  4. 진단/디버그 : 특정 통계/히스토그램/레지스터 dump 트리거
 
 
+
+## attachment
+
+ - ![dumpsys media.camera](./attachment/dumpsys_media.camera.txt)
