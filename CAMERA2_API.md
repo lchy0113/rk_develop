@@ -1,6 +1,10 @@
 # CAMERA2 API
 ====
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## vendor Tag
 
@@ -29,7 +33,47 @@
  4. 진단/디버그 : 특정 통계/히스토그램/레지스터 dump 트리거
 
 
+<br/>
+<br/>
+<br/>
+<hr>
 
 ## attachment
 
  - ![dumpsys media.camera](./attachment/dumpsys_media.camera.txt)
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## note
+```bash
+
++-> hardware/rockchip/camera/psl/rkisp2/RKISP2PSLConfParser.cpp (RKISP2PSLConfParser)
+    |
+    +-> hardware/rockchip/camera/psl/rkisp2/RKISP2PSLConfParser.cpp (getPSLDataFromXmlFile)
+        |
+        +-> hardware/rockchip/camera/psl/rkisp2/RKISP2PSLConfParser.cpp (startElement)
+```
+
+```bash
++-> hardware/rockchip/camera/psl/rkisp2/RKISP2CameraHw.cpp::init()
+    |
+    +-> RKISP2CameraHw::initStaticMetadata(void)
+```
+
+```bash
++-> hardware/rockchip/camera/Camera3HALModule.cpp (camera_module_t)
+    |
+    +-> get_vendor_tag_ops (hal_get_vendor_Tag_ops)
+        |
+        +-> external/camera_engine_rkaiq/hal_interface2.0/interface/rkcamera_vendor_tags.cpp (RkCamera3VendorTags::get_vendor_tag_ops)
+
+Platform
+```
+
+
+```bash
+handleCommonSection() -> parseHalTuningSection()
+```
