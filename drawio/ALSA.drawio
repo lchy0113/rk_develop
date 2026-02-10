@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2026-01-21T12:15:25.894Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="kADZtxlH9f__T3E_7xQJ" version="21.6.8" type="device" pages="10">
+<mxfile host="Electron" modified="2026-02-09T05:32:37.637Z" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.8 Chrome/114.0.5735.289 Electron/25.5.0 Safari/537.36" etag="BVefIByrbzcjY7hiWeI5" version="21.6.8" type="device" pages="10">
   <diagram id="z_Vnb7Ci68XTlHzQFAwz" name="개발_tinyalsa_config">
-    <mxGraphModel dx="2074" dy="1198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2963" dy="1711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -304,7 +304,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="KJU83SnIgYuwSPoUAOeF" name="개발_ak7755_develop">
-    <mxGraphModel dx="2963" dy="611" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1257" dy="-374" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -4056,6 +4056,12 @@
         <mxCell id="MREXaDAv89BmNMIMDa_r-195" value="[PSTN_CALL]&lt;br&gt;(DSPO) ECHO_LIEN_IN =&amp;gt; ADC Right =&amp;gt; DSP =&amp;gt; DAC Left&amp;nbsp; &amp;nbsp;=&amp;gt; Line Out1 =&amp;gt; SPK&lt;br&gt;(DSPX) ECHO_LIEN_IN =&amp;gt; ADC Right =&amp;gt; DAC Right&amp;nbsp; &amp;nbsp;=&amp;gt; Line Out2 =&amp;gt; HANDSET&lt;br&gt;&amp;gt;&amp;nbsp;tinymix &quot;DAC MUX&quot;&amp;nbsp; &quot;MIXOUT&quot;; tinymix &quot;DSPIN SDOUTAD&quot; 0&amp;nbsp; ; tinymix &quot;SELMIX AD&quot; 1 ; tinymix &#39;Line Out Volume 1&#39; 10;&amp;nbsp;tinymix &quot;DAC Digital Volume L&quot; 237 ;&amp;nbsp;tinymix &quot;LineOut Amp1&quot; 1&amp;nbsp; &amp;nbsp;; tinymix &quot;ClassD Amp Enable&quot; 1&lt;br&gt;&amp;gt;&amp;gt;&amp;nbsp;tinymix &quot;DAC Digital Volume L&quot; 0 ; tinymix &quot;LineOut Amp1&quot; 0 ; tinymix &quot;ClassD Amp Enable&quot; 0&lt;br&gt;(DSPO)&amp;nbsp;MIC =&amp;gt; ADC Left&amp;nbsp; &amp;nbsp;=&amp;gt; DSP =&amp;gt; DAC Right =&amp;gt; Line Out2 =&amp;gt; HANDSET&lt;br&gt;(DSPX) ECHO_LINE_IN =&amp;gt; ADC Right&amp;nbsp; &amp;nbsp;=&amp;gt; DSP =&amp;gt; DAC Right =&amp;gt; Line Out2 =&amp;gt; HANDSET&lt;br&gt;&amp;gt;&amp;nbsp;tinymix &quot;DAC MUX&quot;&amp;nbsp; &quot;MIXOUT&quot;; tinymix &quot;DSPIN SDOUTAD&quot; 0&amp;nbsp; ; tinymix &quot;SELMIX AD&quot; 1 ; tinymix &#39;Line Out Volume 2&#39; 15; tinymix &quot;DAC Digital Volume R&quot; 237 ;&amp;nbsp;tinymix &quot;LineOut Amp2&quot; 1&amp;nbsp; ;&amp;nbsp;tinymix &quot;Handset Enable&quot; 1&lt;br&gt;&amp;gt;&amp;gt;&amp;nbsp;tinymix &quot;DAC Digital Volume R&quot; 0 ; tinymix &quot;LineOut Amp2&quot; 0 ;&amp;nbsp;tinymix &quot;Handset Enable&quot; 0" style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#333333;fontFamily=Comic Sans MS;dashed=1;" parent="1" vertex="1">
           <mxGeometry x="1967.5" y="5190" width="1305.62" height="140" as="geometry" />
         </mxCell>
+        <mxCell id="hbS9zFLIOW5Vh_AcefhK-2" value="&lt;font color=&quot;#4d4d4d&quot;&gt;LOSW3&lt;/font&gt;" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=-0.035;entryY=0.53;entryDx=0;entryDy=0;dashed=1;strokeColor=#4D4D4D;strokeWidth=1;fontSize=7;opacity=50;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryPerimeter=0;" edge="1" parent="1" source="R7IexCW_hieO0dfD-6wP-494" target="R7IexCW_hieO0dfD-6wP-630">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="488" y="1454" as="sourcePoint" />
+            <mxPoint x="533" y="1454" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
@@ -5034,7 +5040,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="BLmGoBnIgMkkGfwJ6loX" name="분석_Audio_Hal_structure">
-    <mxGraphModel dx="413" dy="-489" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="-476" dy="-1002" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -6204,7 +6210,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="Yq_YVlYkhONwLpyZH5fJ" name="audio_policy_configuration">
-    <mxGraphModel dx="4140" dy="1409" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="3774" dy="1198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -8211,7 +8217,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="xehDEvFLxwnB7wZV-KOD" name="Page-10">
-    <mxGraphModel dx="2074" dy="1198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="794" dy="1198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
