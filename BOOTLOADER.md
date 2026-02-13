@@ -1603,3 +1603,22 @@ Usage: ./tools/loaderimage [--pack|--unpack] [--uboot|--trustos|--kernel]
 file_in file_out [load_addr]  [--size] [size number]            [--version] [version] | [--info] [file]
 
 ```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# spl image
+
+```bash
+u-boot$ ./make.sh rk3568-dev
+
+u-boot$ ls -alh spl/u-boot-spl.bin 
+-rw-r--r-- 1 lchy0113 lchy0113 239K Feb 13 14:46 spl/u-boot-spl.bin
+
+u-boot$ cp spl/u-boot-spl.bin ../rkbin/bin/rk35/rk3568_poc_spl.bin
+
+u-boot$ ./make.sh rk3568-dev --spl
+```
