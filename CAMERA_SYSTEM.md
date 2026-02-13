@@ -447,3 +447,16 @@ static int rkisp_start_streaming(struct vb2_queue *queue, unsigned int count)
 ```
 
 
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# Issue
+
+```bash
+[TERMINAL]        [TP2860] 
+DOOR_VIDEO_P >>>> VIN3 
+```
