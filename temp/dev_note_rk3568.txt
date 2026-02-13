@@ -998,10 +998,10 @@ echo out > direction ;  echo 1 > value  ; sleep 1  ; echo 0 > value  ; echo in >
  tinymix 37  2 ; tinymix 38 6 ; tinymix 4 15 ; tinymix 11 249 
  
 =====
-git push kdiwin LE1000_V12-0_20260127
-git push kdiwin SDP530-4H_V13-0_20260127
-git push kdiwin SWP530-4H_V14-0_20260127
+ adb wait-for-device ; adb root ; adb remount ; adb push out/target/product/swp5204b/vendor/lib/hw/camera.rk30board.so /vendor/lib/hw/ ; adb push out/target/product/swp5204b/vendor/lib64/hw/camera.rk30board.so /vendor/lib64/hw/ ;  adb push device/kdiwin/nova/modules/camera/camera3_profiles_default.xml /vendor/etc/camera/camera3_profiles.xml  ; adb push out/target/product/swp5204b/vendor/lib/librkisp.so /vendor/lib/librkisp.so ; adb push out/target/product/swp5204b/vendor/lib64/librkisp.so /vendor/lib64/librkisp.so
 
+ echo "file drivers/media/i2c/tp2860.c +p" > /sys/kernel/debug/dynamic_debug/control
+ adb shell ' echo 40  > /sys/class/gpio/export  ; echo "out" > /sys/class/gpio/gpio40/direction ; echo 1 > /sys/class/gpio/gpio40/value ;  tinymix 57  DOOR_ACTIVE'
  
 ====================================================================================================
 
@@ -1028,4 +1028,8 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 REL"
+ 
+7. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID15_RK3568
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "RK3568 VanilaIceCream" 
+manifeste : repo init -u /home/lchy0113/develop/Rockchip/rk3568_project/manifests/nova-manifests -b feature/rk3568_VanillaIceCream -m target/rk3568_v.xml
 ====================================================================================================
