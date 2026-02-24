@@ -1003,6 +1003,17 @@ echo out > direction ;  echo 1 > value  ; sleep 1  ; echo 0 > value  ; echo in >
  echo "file drivers/media/i2c/tp2860.c +p" > /sys/kernel/debug/dynamic_debug/control
  adb shell ' echo 40  > /sys/class/gpio/export  ; echo "out" > /sys/class/gpio/gpio40/direction ; echo 1 > /sys/class/gpio/gpio40/value ;  tinymix 57  DOOR_ACTIVE'
  
+=====
+echo 6 >   /sys/class/gpio/export  ; echo "out" > /sys/class/gpio/gpio6/direction ; echo 1 > /sys/class/gpio/gpio6/value
+echo 6 >   /sys/class/gpio/export  ; echo "out" > /sys/class/gpio/gpio6/direction ; echo 0 > /sys/class/gpio/gpio6/value
+
+=====
+adb wait-for-device ; adb root; adb remount ; adb shell "echo 43 > /sys/class/gpio/export; echo 'out' > /sys/class/gpio/gpio43/direction"
+[disable]
+adb wait-for-device ; adb shell "echo 1 >  /sys/class/gpio/gpio43/value"
+[enable]
+adb wait-for-device ; adb shell "echo 0 >  /sys/class/gpio/gpio43/value"
+ 
 ====================================================================================================
 
 terminal : 192.168.27.243 : 
