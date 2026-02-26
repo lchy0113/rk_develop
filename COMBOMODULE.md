@@ -76,6 +76,8 @@ support WIFI, BT
    * UAR/PCM interface for Bluetooth
  - bluettoth : bt5.0 
 
+
+ v1
 ```bash
 +--------------------------+             +-----------------+
 |(host)                    |             |(combomodule)    |
@@ -109,6 +111,44 @@ support WIFI, BT
 +--------------------------+             +-----------------+
 
 ```
+
+ v2
+```bash
++--------------------------+             +-----------------+
+|(host)                    |             |(combomodule)    |
+| GPIO0_A4(4)         BT_EN+----->>>-----+BT_REG_ON(38)    | //enable pin for bt device.(on:high,off:low)
+|                          |             |                 |
+|                          +-----<<<-----+BT_WAKE_HOST(50) | //bt device to wake-up HOST
+|                          +----->>>-----+HOST_WAKE_BT(49) | //HOST wake-up bt device
+|   UART6                  |             |                 |
+| GPIO2_B7(79)       BT_RTS+----->>>-----+UART_CTS_N       |
+| GPIO2_C0(80)       BT_CTS+-----<<<-----+UART_RTS_N       |
+| GPIO2_A4(68)       BT_TXD+----->>>-----+UART_RXD         |
+| GPIO2_A3(67)       BT_RXD+-----<<<-----+UART_TXD         |
+|                          |             |                 |
+|                          |             |                 |
+|                          |             |                 |
+| GPIO2_C3(83)       WL_RST+----->>>-----+SD_RESET(44)     | //reset active low
+|                          |             |                 |
+|                          +----->>>-----+WL_REG_ON(15)    | //enable pin for wlan device.(on:high,off:low)
+|                          |             |                 |    (WL_DIS_N)(if Pin44 connected this pin can NC)
+|                          |             |                 |
+|                          +-----<<<-----+WL_WAKE_HOST(16) | //WLAN to wake-up HOST
+|                          |             |                 |
+| GPIO0_B5(13) WL_SDIO0_INT+-----<<<-----+WL_WAKE_HOST/OOB(24) | //SDIO interrupt
+|                          |             |                 |
+| SDMMC0_D0     WL_SDIO0_D0+-------------+SDIO_DATA_0      |
+| SDMMC0_D1     WL_SDIO0_D1+-------------+SDIO_DATA_1      |
+| SDMMC0_D2     WL_SDIO0_D2+-------------+SDIO_DATA_2      |
+| SDMMC0_D3     WL_SDIO0_D3+-------------+SDIO_DATA_3      |
+| SDMMC0_CLK   WL_SDIO0_CLK+-------------+SDIO_CLK         |
+| SDMMC0_CMD   WL_SDIO0_CMD+-------------+SDIO_CMD         |
+|                          |             |                 |
+| GPIO1_B3(43)     VDD_WLAN+----->>>-----+VDD_WLAN(16)     | //power on/off combomodule
++--------------------------+             +-----------------+
+
+```
+
 
 
  - Host Interface Timing

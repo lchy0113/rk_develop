@@ -155,3 +155,35 @@ wlan0 scan | grep -E "SSID|signal" | sed '/SSID/!s/^/signal: /' | paste -d" " - 
 12-28 22:40:09.969   435   549 E WifiVendorHal: getWifiLinkLayerStats_1_5_Internal(l.1191) failed {.code = ERROR_UNKNOWN, .description = unknown error}
 
 ```
+
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# ISSUE:Power Control when SoC Watchdog reboot
+
+> Combo Module 의 안정적인 전원 제어/초기화를 위해 전원 제어 진행.
+
+ - GPIO1_B3 → WiFi/BT Combo 모듈 3.3V 제어  
+ - L=ON / H=OFF (PFET 구조)  
+ - 평상시에는 계속 ON 상태 유지  
+ - “부팅할 때만” 강제로 OFF→ON power-cycle 수행  
+ - 런타임 중에는 별도 제어 안 함 (BT와 분리 제어도 안 함)  
+
+```bash
+GPIO1_B3(43) (low) : enable
+GPIO1_B3(43) (high) : disable
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# ISSUE:ComboModule Hang
+
+> 순시정전 시험 중 Combo Module Hang 발생 (Soc:edit 
