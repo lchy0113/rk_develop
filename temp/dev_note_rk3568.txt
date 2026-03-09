@@ -1013,7 +1013,124 @@ adb wait-for-device ; adb root; adb remount ; adb shell "echo 43 > /sys/class/gp
 adb wait-for-device ; adb shell "echo 1 >  /sys/class/gpio/gpio43/value"
 [enable]
 adb wait-for-device ; adb shell "echo 0 >  /sys/class/gpio/gpio43/value"
+
+GPIO1 = 0xfe740000
+
+ io -4 -r -l 16 0xfe740000
+fe740000:  00000008 00000000 00000880 00000000
+
  
+ io -4 -w 0xfe740000 0x08000800 
+ 
+권장 복구 시퀀스 (rmmod/insmod)
+
+1. Framework 먼저 내리기: svc wifi disable → wpa_supplicant/wificond가 내려갔는지 확인
+2. rmmod 88x2es (또는 실제 모듈명)
+3. carddetect=0 (remove/DETACH), 이후 power=0
+4. msleep(100~200)로 완전 방전/라인 안정화
+5. power=1
+6. 핵심 지연: msleep(500~700)
+근거: DTS의 startup-delay-us=200000 + post-power-on-delay-ms=200 + 여유
+7. carddetect=1로 rescan 트리거
+8. msleep(150~300) 후 insmod 88x2es.ko
+9. netdev 생성/firmware load 확인 후 svc wifi enable
+ ====
+Implement SDIO hang detection and send uevent (no sysfs polling).
+
+Target:
+- Android BSP kernel Linux 4.x
+- WiFi SDIO device on mmc0
+- RTL8822ES vendor driver (rtw_sdio_raw_write exists)
+
+Hang rule:
+- if SDIO operation returns -ETIMEDOUT (-110),
+  count consecutive timeouts within a 10-second window.
+- if 3 consecutive timeouts happen within 10 seconds:
+  set hang_flag=1 and send uevent once for this hang event.
+- clear hang_flag and counters on first successful SDIO transaction.
+
+Send uevent:
+- use kobject_uevent_env() with KOBJ_CHANGE
+- use an existing device kobject (prefer mmc host or the SDIO function device)
+- include these env variables:
+  FAULT_ID=SDIO_HANG
+  DEVICE=mmc0
+  ERRNO=-110
+  COUNT=<consecutive_count>
+  TS_MS=<ktime_get_boottime_ns()/1e6>
+
+Debounce:
+- do not spam: send only once per hang event (until hang clears then happens again)
+
+Provide:
+- data structures (counters, timestamps, hang_flag)
+- exact code to build envp[] and call kobject_uevent_env()
+- integration point in rtw_sdio_raw_write() (and/or common SDIO read/write wrapper)
+- thread safety (spinlock or mutex)
+ ====
+Implement an Android 12 system_server component that listens to kernel uevents
+and forwards HW fault events to a privileged app.
+
+Requirements:
+1) Open NETLINK_KOBJECT_UEVENT socket (uevent) and parse messages.
+2) Filter only events with:
+   FAULT_ID=SDIO_HANG and DEVICE=mmc0
+3) On first receipt of a new hang event:
+   - send protected broadcast:
+     Action: com.kdnavien.intent.action.HW_FAULT
+     Permission: com.kdnavien.permission.HW_FAULT
+     Extras:
+       fault_id="SDIO_HANG"
+       device="mmc0"
+       errno=int(ERRNO)
+       count=int(COUNT)
+       driver_ts_ms=long(TS_MS)
+       timestamp_ms=System.currentTimeMillis()
+4) Prevent broadcast spam:
+   - keep last seen driver_ts_ms, ignore duplicates
+5) Provide:
+   - uevent socket receiver thread (HandlerThread or dedicated Thread)
+   - uevent parser utility
+   - broadcast sending code (sendBroadcastAsUser)
+   - service wiring notes
+   
+ ====
+ 
+adb root ; adb remount ;  adb shell 'echo "file drivers/net/wireless/rockchip_wlan/rtl8822es/os_dep/linux/sdio_ops_linux.c +p" > /sys/kernel/debug/dynamic_debug/control' ; adb shell 'cat /sys/kernel/debug/dynamic_debug/control | grep sdio_ops_linux'
+
+
+====
+03-04 19:44:53.942   459   459 D SystemServerTiming: StartBugreportManagerService took to complete: 1ms
+03-04 19:44:53.942   459   459 I SystemServerTiming: GpuService
+03-04 19:44:53.943   459   459 I SystemServiceManager: Starting com.android.server.gpu.GpuService
+03-04 19:44:53.943   459   459 D SystemServerTiming: GpuService took to complete: 0ms
+03-04 19:44:53.943   459   459 D SystemServerTiming: startCoreServices took to complete: 69ms
+03-04 19:44:53.943   459   459 I SystemServerTiming: startOtherServices
+03-04 19:44:53.943   459   459 I SystemServerTiming: StartHwFaultUeventService
+03-04 19:44:53.945   459   459 I HwFaultUeventService: Started observing uevent: SUBSYSTEM=uevent_sample
+03-04 19:44:53.945   459   459 D SystemServerTiming: StartHwFaultUeventService took to complete: 2ms
+03-04 19:44:53.946   459   459 I SystemServerTiming: StartKeyAttestationApplicationIdProviderService
+03-04 19:44:53.946   459   564 I SystemServerTimingAsync: InitThreadPoolExec:SecondaryZygotePreload
+03-04 19:44:53.946   459   564 D SystemServerInitThreadPool: Started executing SecondaryZygotePreload
+03-04 19:44:53.946   459   564 I SystemServer: SecondaryZygotePreload
+03-04 19:44:53.946   459   564 I SystemServerTimingAsync: SecondaryZygotePreload
+03-04 19:44:53.947   459   459 D SystemServerTiming: StartKeyAttestationApplicationIdProviderService took to complete: 1ms
+03-04 19:44:53.947   459   459 I SystemServerTiming: StartKeyChainSystemService
+03-04 19:44:53.947   459   459 I SystemServiceManager: Starting com.android.server.security.KeyChainSystemService
+03-04 19:44:53.947   459   459 D SystemServerTiming: StartKeyChainSystemService took to complete: 1ms
+03-04 19:44:53.948   459   459 I SystemServerTiming: StartSchedulingPolicyService
+03-04 19:44:53.948   459   518 I SystemServerTimingAsync: InitThreadPoolExec:SchedulingPolicyService.<init>
+03-04 19:44:53.948   459   518 D SystemServerInitThreadPool: Started executing SchedulingPolicyService.<init>
+
+setprop persist.sys.hwfault_uevent.enabled true
+
+====
+
+LCD_RESET  : GPIO2_D0(88)
+LCD_BL_EN  : GPIO3_C5(117)
+LCD_BL_PWM : GPIO3_C4(116)
+====
+chore: Update audio HAL project commit in release manifest
 ====================================================================================================
 
 terminal : 192.168.27.243 : 
@@ -1026,10 +1143,10 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP5215BMLH MAS"
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP720 MAS"
  
 3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "LE1000 REL"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "LE2000 MAS"
  
 4. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP520 MAS"
