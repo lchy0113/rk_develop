@@ -1131,6 +1131,51 @@ LCD_BL_EN  : GPIO3_C5(117)
 LCD_BL_PWM : GPIO3_C4(116)
 ====
 chore: Update audio HAL project commit in release manifest
+
+====
+
+/home/lchy0113/platform/ANDROID/Rockchip_Android15.0_SDK_RELEASE_20260223 vs /home/lchy0113/platform/ANDROID/Rockchip_Android_V
+
+====
+[LOBBY] 
+echo 1 > /sys/class/gpio/gpio40/value  ; echo 0 > /sys/class/gpio/gpio73/value ; echo 0 > /sys/class/gpio/gpio85/value 
+
+[DOOR]
+echo 1 > /sys/class/gpio/gpio40/value ; echo 1 > /sys/class/gpio/gpio73/value ; echo 0 > /sys/class/gpio/gpio85/value 
+v4l2-ctl -d /dev/video5 --set-ctrl=test_pattern=1
+v4l2-ctl -d /dev/video5 --set-ctrl=tp2860_input_select=1
+
+VIN1 =  SD ; 0x41_0x00 ; v4l2-ctl -d /dev/video5 --set-ctrl=tp2860_input_select=0
+VIN3 = FHD ; 0x41_0x02 ; v4l2-ctl -d /dev/video5 --set-ctrl=tp2860_input_select=0
+
+ echo "file drivers/media/i2c/tp2860.c +p" > /sys/kernel/debug/dynamic_debug/control
+ 
+ 
+====
+[CAM_VIN3]
+(42)VIDEOSEL_0(H)
+(63)LBVIDEOSEL_0(H)
+
+====
+
+/sys/kernel/debug/mmc0
+SDMMC0_D0/UART2_TX_M1/UART6_TX_M1/PWM8_M1/GPIO1_D5_u
+SDMMC0_D1/UART2_RX_M1/UART6_RX_M1/PWM9_M1/GPIO1_D6_u
+SDMMC0_D2/ARMJTAG_TCK/UART5_CTSn_M0/GPIO1_D7_u
+SDMMC0_D3/ARMJTAG_TMS/UART5_RTSn_M0/GPIO2_A0_u
+SDMMC0_CMD/PWM10_M1/UART5_RX_M0/CAN0_TX_M1/GPIO2_A1_u
+SDMMC0_CLK/TEST_CLKOUT/UART5_TX_M0/CAN0_RX_M1/GPIO2_A2_d
+
+=====
+level0
+s) iperf3 -s --logfile level0_iperf3_server_strength_300sec_.log
+c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level0_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level0_300sec_tx.json
+level1
+s) iperf3 -s --logfile level1_iperf3_server_strength_300sec_.log
+c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level1_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level1_300sec_tx.json
+level0
+s) iperf3 -s --logfile level2_iperf3_server_strength_300sec_.log
+c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level2_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level2_300sec_tx.json
 ====================================================================================================
 
 terminal : 192.168.27.243 : 
@@ -1140,10 +1185,10 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b release/[mo
 repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m default.xml
 
 1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
- clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP5215BMLH MAS"
+ clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP520 MAS"
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP720 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SLP720 MAS"
  
 3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "LE2000 MAS"
@@ -1152,12 +1197,22 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP520 MAS"
  
 5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SGP511 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SGP511 REL"
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 REL"
+
+====================================================================================================
+terminal : 192.168.27.243 : 
+tmux new -s rk3568_v_dev 
+ ssh-agent > ~/.ssh-agent.sh ; source  ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
+
+
+1. cd /home/lchy0113/platform/ANDROID/Rockchip_Android15.0_SDK_RELEASE_20260223
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-15.0 mid-rkr4"
  
-7. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID15_RK3568
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "RK3568 VanilaIceCream" 
+2. cd /home/lchy0113/platform/ANDROID/Rockchip_Android_V
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V"
+  
 manifeste : repo init -u /home/lchy0113/develop/Rockchip/rk3568_project/manifests/nova-manifests -b feature/rk3568_VanillaIceCream -m target/rk3568_v.xml
 ====================================================================================================
