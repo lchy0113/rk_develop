@@ -1171,13 +1171,59 @@ level0
 s) iperf3 -s --logfile level0_iperf3_server_strength_300sec_.log
 c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level0_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level0_300sec_tx.json
 level1
-s) iperf3 -s --logfile level1_iperf3_server_strength_300sec_.log
-c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level1_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level1_300sec_tx.json
+s) iperf3 -s --logfile level1_iperf3_server_strength_300sec_260325-01.log
+c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level1_300sec_rx_260325-01.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level1_300sec_tx_260325-01.json
 level0
 s) iperf3 -s --logfile level2_iperf3_server_strength_300sec_.log
 c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level2_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level2_300sec_tx.json
+
+
+=====
+
+
+GPIO0_A5[SEL_ECHO_DTMF][audio_pinctrl] sel_echo_dtmf
+GPIO0_A6[SEL_DC][audio_pinctrl] sel_dc
+GPIO0_B1[DOOR_MIC_EN][audio_pinctrl] DOORMIC 
+GPIO0_B2[SEL_DC_SUB][audio_pinctrl] sel_dc_sub
+GPIO0_C2[SEL_ECHO_SUB+][audio_pinctrl] sel_echo_sub
+GPIO0_C3[SEL_SUB-][audio_pinctrl] sel_sub
+GPIO0_C5[SEL_ECHO_DOOR_AUD][audio_pinctrl] sel_echo_door_aud
+GPIO2_C6[SEL_PSTN_AUD][audio_pinctrl] sel_pstn_aud
+GPIO3_C1[SEL_PSTN_SUB][audio_pinctrl] sel_pstn_sub
+GPIO3_C2[DTMF_EN][audio_pinctrl] DTMF-EN
+
+=====
+HOMENET 시험 환경
+- 경비실기 :
+  ID : 02000015 
+  SERVER : 43.202.230.18
+  SERVER TYPE : NAVIHOME 
+- 월패드 :
+  SERVER : 43.202.230.18
+  SERVER TYPE : NAVIHOME
+  
+  
+====
+# debugfs 확인/마운트
+mount | grep debugfs || sudo mount -t debugfs none /sys/kernel/debug
+
+# dynamic debug 가능 여부 확인
+ls -l /proc/dynamic_debug/control
+
+# panel-simple 로그 켜기
+echo 'file drivers/gpu/drm/panel/panel-simple.c +p' | sudo tee /proc/dynamic_debug/control
+adb wait-for-device ; adb root ; adb remount ; 
+adb shell "echo 'file drivers/gpu/drm/panel/panel-simple.c +p' > /sys/kernel/debug/dynamic_debug/control"  ;
+adb shell "echo 'file drivers/gpu/drm/* +p' > /sys/kernel/debug/dynamic_debug/control"
+
+# DRM 쪽도 같이 켜면 좋음
+echo 'file drivers/gpu/drm/* +p' | sudo tee /proc/dynamic_debug/control
+dmesg -w
+
 ====================================================================================================
 
+adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/input/misc/bs83b.c +p" > /sys/kernel/debug/dynamic_debug/control ; cat /sys/kernel/debug/dynamic_debug/control |  grep bs83b.c'
+=====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_dev 
  ssh-agent > ~/.ssh-agent.sh ; source  ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
@@ -1185,7 +1231,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b release/[mo
 repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m default.xml
 
 1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
- clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP520 MAS"
+ clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP5215BMLH MAS"
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SLP720 MAS"
@@ -1197,7 +1243,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP520 MAS"
  
 5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SGP511 REL"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 REL"
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 REL"
