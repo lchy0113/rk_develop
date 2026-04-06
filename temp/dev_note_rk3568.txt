@@ -1171,8 +1171,8 @@ level0
 s) iperf3 -s --logfile level0_iperf3_server_strength_300sec_.log
 c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level0_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level0_300sec_tx.json
 level1
-s) iperf3 -s --logfile level1_iperf3_server_strength_300sec_260325-01.log
-c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level1_300sec_rx_260325-01.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level1_300sec_tx_260325-01.json
+s) iperf3 -s --logfile level1_iperf3_server_strength_300sec_260403-01.log
+c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level1_300sec_rx_260403-01.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level1_300sec_tx_260403-01.json
 level0
 s) iperf3 -s --logfile level2_iperf3_server_strength_300sec_.log
 c) iperf3 -c 192.168.0.12 -t 300 -P 4 -R -J > level2_300sec_rx.json ; iperf3 -c 192.168.0.12 -t 300 -P 4 -J > level2_300sec_tx.json
@@ -1225,7 +1225,9 @@ dmesg -w
 adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/input/misc/bs83b.c +p" > /sys/kernel/debug/dynamic_debug/control ; cat /sys/kernel/debug/dynamic_debug/control |  grep bs83b.c'
 =====
 terminal : 192.168.27.243 : 
-tmux new -s rk3568_dev 
+tmux new -s rk3568_dev
+docker-compose up -d android12_develop 
+ssh -p 9026 lchy0113@localhost
  ssh-agent > ~/.ssh-agent.sh ; source  ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
 repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b release/[model] -m release.xml
 repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m default.xml
@@ -1243,7 +1245,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP520 MAS"
  
 5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 REL"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 MAS"
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 REL"
@@ -1251,6 +1253,8 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
 ====================================================================================================
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_v_dev 
+docker-compose up -d android15_develop
+ssh -p 9029 lchy0113@localhost
  ssh-agent > ~/.ssh-agent.sh ; source  ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
 
 
