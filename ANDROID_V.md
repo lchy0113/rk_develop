@@ -37,8 +37,130 @@ pcba_whole_misc.img
 
 # GKI 
 
- GKI를 선택하는 경우, AB Function을 default로 사용.  
+<br/>
+<br/>
+<br/>
+<hr>
 
+## Download sources and build tools
+
+```
+mkdir android-kernel && cd android-kernel
+repo init -u https://android.googlesource.com/kernel/manifest -b common-android14-6.1-2025-01
+repo sync
+```
+
+<br/>
+<br/>
+<br/>
+<br/>
+<hr>
+
+# Develop with dlkm strucutre
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## mkcombinedroot
+
+ Rockchip 전용 이미지 툴. 
+ GKI 환경에서 vendor_boot.img 를 재패키징 하는 도구. 
+
+<br/>
+<br/>
+<hr>
+
+### 역할 
+```
+1. kernel 에서 .ko 생성
+2. .ko를 mkcombinedroot로 복사
+3. 기존 vendor_boot.img 복사 
+4. mkgki4.sh 실행 -> ko 추가해서 vendor_boot.img 재생성.
+5. flash
+```
+
+> 👉 driver를 kernel에 넣는 게 아니라 .ko로 분리해야 해서 사용된 기법? 
+
+<br/>
+<br/>
+<hr>
+
+### 내부 역할
+
+```
+// KO 파일 관리
+mkcombinedroot/vendor_ramdisk/lib/modules/
+// 로딩 순서 관리
+mkcombinedroot/res/vendor_modules.load
+mkcombinedroot/res/vendor_ramdisk_modules.load
+```
+
+<br/>
+<br/>
+<hr>
+
+### tree
+
+```
+lchy0113@hsdev:~/platform/ANDROID/Rockchip_Android_V/mkcombinedroot$ tree 
+.
+├── bin
+│   ├── blk_alloc_to_base_fs
+│   ├── build_image
+│   ├── depmod
+│   ├── e2fsdroid
+│   ├── minigzip
+│   ├── mkbootfs
+│   ├── mkbootimg
+│   ├── mke2fs
+│   ├── mke2fs.conf
+│   ├── mkf2fsuserimg.sh
+│   ├── mkuserimg_mke2fs
+│   ├── repack_bootimg
+│   ├── simg2img
+│   └── unpack_bootimg
+├── copy_moduls.sh
+├── lib64
+│   ├── libbase.so
+│   ├── libc++.so
+│   ├── libcutils.so
+│   ├── libext4_utils.so
+│   ├── liblog.so
+│   └── libz.so
+├── mkgki4.sh
+├── modular_kernel.mk
+├── patches
+│   └── system_tools_mkbootimg.diff
+├── prebuilts
+│   └── boot-6.1.img
+├── README
+├── recovery_modules.load
+├── res
+│   ├── bootconfig
+│   ├── debug_list.load
+│   ├── file_contexts.bin
+│   ├── ramdisk_modules.load
+│   ├── recovery_gki.mk
+│   ├── system_gki.mk
+│   ├── vendor_gki.mk
+│   ├── vendor_image_info.txt
+│   ├── vendor_modules.load
+│   ├── vendor_ramdisk_gki.mk
+│   └── vendor_ramdisk_modules.load
+├── tools
+│   ├── DepSort.java
+│   ├── gki_load_check.sh
+│   └── search_3.sh
+├── vendor_boot.img
+└── vendor_ramdisk
+    └── first_stage_ramdisk
+        └── fstab.rk30board
+
+8 directories, 43 files
+
+```
 
 <br/>
 <br/>
