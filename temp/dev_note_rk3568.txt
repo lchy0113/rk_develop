@@ -1220,10 +1220,31 @@ adb shell "echo 'file drivers/gpu/drm/* +p' > /sys/kernel/debug/dynamic_debug/co
 echo 'file drivers/gpu/drm/* +p' | sudo tee /proc/dynamic_debug/control
 dmesg -w
 
+
 ====================================================================================================
 
 adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/input/misc/bs83b.c +p" > /sys/kernel/debug/dynamic_debug/control ; cat /sys/kernel/debug/dynamic_debug/control |  grep bs83b.c'
-=====
+
+
+====
+rm -rf .repo
+repo init -u file:///home/lchy0113/platform/ANDROID/android_manifests/nova-manifests \
+  -b feature/rkr4 \
+  -m target/rk3568_v_rkr4.xml
+repo sync -j$(nproc)
+
+====
+lunch rk3568_u-ap4a-userdebug
+lunch rk3568_evb-ap4a-userdebug
+
+build/soong git project 의 충돌로 빌드 에러 발생되었음. nova/15.0 branch 를 android-15.0-mid-rkr4 branch rebase함.
+
+====
+
+adb root ; adb remount ; adb wait-for-device ; adb shell 'echo 40 > /sys/class/gpio/export ; echo 1 > /sys/class/gpio/gpio40/value'
+adb shell cmd wall_service show_navigation_bar
+
+====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_dev
 docker-compose up -d android12_develop 
@@ -1263,6 +1284,9 @@ ssh -p 9029 lchy0113@localhost
  
 2. cd /home/lchy0113/platform/ANDROID/Rockchip_Android_V
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V"
+  
+3. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID15_RK3568
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V rkr3"
   
 manifeste : repo init -u /home/lchy0113/develop/Rockchip/rk3568_project/manifests/nova-manifests -b feature/rk3568_VanillaIceCream -m target/rk3568_v.xml
 ====================================================================================================
