@@ -1245,6 +1245,15 @@ adb root ; adb remount ; adb wait-for-device ; adb shell 'echo 40 > /sys/class/g
 adb shell cmd wall_service show_navigation_bar
 
 ====
+
+adb shell 'echo "file drivers/tty/n_pots.c +p" > /sys/kernel/debug/dynamic_debug/control'
+snp5205b:/sys/kernel/debug/pinctrl/pinctrl-rockchip-pinctrl # cat pinconf-pins | grep gpio0-6
+ cmd wall_service list_patch_routes | grep current.route
+ cmd wall_service set_audio_route default
+ cmd wall_service set_audio_route pstn_call
+ cmd wall_service set_audio_route pstn_dial
+ cmd wall_service set_audio_route door_ring
+====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_dev
 docker-compose up -d android12_develop 
@@ -1257,7 +1266,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP5215BMLH MAS"
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SLP720 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP520 MAS"
  
 3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "LE2000 MAS"
