@@ -235,3 +235,26 @@ target/rk3568_v_rkr4.xml
 ```bash
 lunch rk3576_u-ap4a-userdebug
 ```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Android build chain
+
+ Product Chain : 무엇을 넣을 지 결정. (AndroidProduct.mk, rk3568_evb)   
+ BoardConfig Chain : 어떻게 빌드할지 결정. (rk3568_evb.mk, device.mk, vendor.mk)   
+ AndroidBoard Chain : 어떤 산출물을 어떻게 생성할지 규칙 정의. (device.mk, device_v.mk)  
+
+ 1. Product Chain
+   - lunch 대상과 실제 product 파일을 연결.  
+   - PRODCUT_NAME, MODEL, BRAND 같은 제품 정체성을 기술.  
+  
+ 2. BoardConfig Chain
+   - 제품 공통 구성와 벤더 전용 구성. 
+   - system/vendor 로 들어갈 패키지, property, copy file 정책을 구성.  
+
+
+ 3. AndroidBoard Chain 
+   - PLATFORM_SDK_VERSION 에 따라 버전별 설정파일을 선택  
