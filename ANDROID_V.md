@@ -101,10 +101,10 @@ mkcombinedroot/res/vendor_ramdisk_modules.load
 <br/>
 <hr>
 
-### tree
+### code tree
 
 ```
-lchy0113@hsdev:~/platform/ANDROID/Rockchip_Android_V/mkcombinedroot$ tree 
+mkcombinedroot$ tree 
 .
 ├── bin
 │   ├── blk_alloc_to_base_fs
@@ -133,7 +133,7 @@ lchy0113@hsdev:~/platform/ANDROID/Rockchip_Android_V/mkcombinedroot$ tree
 ├── modular_kernel.mk
 ├── patches
 │   └── system_tools_mkbootimg.diff
-├── prebuilts
+├── prebuilts    // Google boot.img path
 │   └── boot-6.1.img
 ├── README
 ├── recovery_modules.load
@@ -159,19 +159,10 @@ lchy0113@hsdev:~/platform/ANDROID/Rockchip_Android_V/mkcombinedroot$ tree
         └── fstab.rk30board
 
 8 directories, 43 files
-
 ```
-
-<br/>
-<br/>
-<br/>
-<br/>
-<hr>
-
-# rkr3 vs rkr4 
-
- - rkr4 : android-15.0.0_r17
- - rkr3 : android-15.0.0_r9
+  
+ - copy_modules.sh 
+   * vendor/_ramdisk/lib/modules : 
 
 <br/>
 <br/>
@@ -230,6 +221,17 @@ target/rk3568_v_rkr4.xml
 <br/>
 <hr>
 
+## rkr3 vs rkr4 
+ 
+ 아래 tag 에서 파생되었음.  
+ - rkr4 : android-15.0.0_r17
+ - rkr3 : android-15.0.0_r9
+
+<br/>
+<br/>
+<br/>
+<hr>
+
 ## build rk3576_evb
 
 ```bash
@@ -258,3 +260,15 @@ lunch rk3576_u-ap4a-userdebug
 
  3. AndroidBoard Chain 
    - PLATFORM_SDK_VERSION 에 따라 버전별 설정파일을 선택  
+
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## build bootimage with GKI
+
+make bootimage → boot.img
+make vendorbootimage → vendor_boot.img
+make initbootimage → init_boot.img
