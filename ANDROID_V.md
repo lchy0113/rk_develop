@@ -272,3 +272,120 @@ lunch rk3576_u-ap4a-userdebug
 make bootimage → boot.img
 make vendorbootimage → vendor_boot.img
 make initbootimage → init_boot.img
+
+ - GKI 관련 이미지 설명
+
+ 1) boot.img
+  - 핵심 커널 부팅 이미지
+  - GKI에선 이전보다 역할이 단순해져서 "generi kernel + 최소 부팅 정보" 
+  - 이전 처럼 벤더별 Ramdisk 를 넣는 구조는 줄어들었음
+
+ 2) init_boot.img
+  - Android 13+ 추가된 파티션.
+  - generic ramdisk(초기 init 환경) 이 저장되어 있음. 
+  - 즉, 초기 부팅 공통 ramdisk 를 boot에서 분리한 개념. 
+
+ 3) vendor_boot.img
+  - SoC/보드 벤더 의존 부팅 구성(벤더 ramdisk, DTB/부트 설정 일부)정보가 저장
+  - GKI에서 벤더 커스텀 부팅 요소가 저장되어있음
+  - 결과적으로 공통 커널(boot) 과 벤더 의존부(vendor_boot)가 분리
+
+ 4) A/B 슬롯
+  - 무중단 업데이트(seamless Update)를 의한 이중 슬롯 구조. 
+  - 예: boot_a/boot_b, vendor_boot_a/vendor_boot_b, init_boot_a/init_boot_b
+  - 현재 실행 중인 슬롯과 다음 부팅 슬롯을 번갈아 관리해 OTA 실패 복구가 쉬워짐. 
+
+ 5) Header v4
+  - Android 최신 부트 이미지 포맷 버전
+  - GKI/분리된 ramdisk 구조(init_boot, vendor_boot)와 함께 동작
+
+ 6) Vendor Ramdisk
+ - 벤더 전용 초기 사용자 공간 파일 집합
+ - 드라이버 초기화, 벤더 init.rc, 펌웨어 로딩 경로 등 보드 종속 초기 부팅 로직이 포함
+ -
+
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## Android15 Command Strucuture
+
+1. 진입점 : lunch rk3568_evb-ap4a-userdebug
+Android 빌드 시스템이 아래 순서로 파일 로딩
+
+```
+device/kdiwin/nova/rk3568_evb/AndroidProducts.mk
+  → PRODUCT_MAKEFILES = rk3568_evb.mk
+  → COMMON_LUNCH_CHOICES = rk3568_evb-ap4a-userdebug
+
+device/kdiwin/nova/rk3568_evb/BoardConfig.mk     ← Board 변수 설정
+device/kdiwin/nova/rk3568_evb/AndroidBoard.mk    ← make rule 정의
+device/kdiwin/nova/rk3568_evb/rk3568_evb.mk     ← Product 변수 설정
+```
+
+2. Board 변수 체인(컴파일 조건 결정)
+BoardConfig.mk -> config.mk -> config_v.mk 순서로 include
+```
+BoardConfig.mk (rk3568_evb/)
+  BOARD_BUILD_GKI := true
+  BOARD_BOOT_HEADER_VERSION := 4
+  include device/kdiwin/nova/rk3568/config.mk
+    ├─ ifeq SDK_VERSION==35 → include config_v.mk
+    │     include device/kdiwin/nova/common/config.mk (NOVA 공통 변수)
+    │     include device/rockchip/rk356x/BoardConfig.mk (Rockchip 공통 Board 설정)
+    │     PRODUCT_BOOT_DEVICE := fe2b0000.dwmmc  ← 부팅 장치 override
+    │     TARGET_KERNEL_VERSION := 6.1
+    │     TARGET_KERNEL_DEFCONFIG := gki_defconfig
+    │     ...
+    └─ TARGET_KERNEL_CONFIGS += pcie_wifi.config  (rk3568_evb 전용 추가)
+```
+
+3. Product 변수 체인(이미지 빌드 내용 결정)
+rk3568_evb.mk -> device.mk -> device_v.mk 순서.
+
+```
+rk3568_evb.mk
+  PRODUCT_DTBO_TEMPLATE := $(LOCAL_PATH)/dt-overlay.in  ← dtbo 생성 입력
+  BOARD_BUILD_GKI := true
+  inherit-product device/kdiwin/nova/rk3568/device.mk
+    ├─ ifeq SDK_VERSION==35 → inherit device_v.mk
+    │     PRODUCT_DTBO_TEMPLATE := dt-overlay.v.in
+    │     PRODUCT_SDMMC_DEVICE := fe2b0000.dwmmc
+    │     include DynamicPartitions.mk
+    │     include config.mk (→ config_v.mk, Board 변수도 여기서 추가 로딩)
+    │     include device/rockchip/common/BoardConfig.mk
+    │     inherit device/kdiwin/nova/common/device.mk
+    │     inherit device/rockchip/rk356x/device.mk
+    │     inherit device/rockchip/common/device.mk
+  PRODUCT_NAME := rk3568_evb
+  PRODUCT_DEVICE := rk3568_evb
+  NOVA_DISPLAY_* 변수들
+```
+
+4. Make Rule 체인 (실제 빌드 동작 결정)
+AndroidBoard.mk -> board.mk 순서
+
+```
+AndroidBoard.mk (rk3568_evb/)
+  └─ include device/kdiwin/nova/rk3568/board.mk
+       ├─ include RebuildFstab.mk    → fstab.rk30board 자동 생성
+       ├─ include RebuildDtboImg.mk  → PRODUCT_DTBO_TEMPLATE으로 rebuild-dtbo.img 생성
+       ├─ include RebuildParameter.mk → parameter.txt 자동 생성
+       ├─ include uboot.mk           → uboot 빌드 rule
+       ├─ include kernel.mk          → 커널 빌드 rule
+       ├─ rockdev: rule              → mkimage.sh 호출 (이미지 스테이징)
+       └─ pack: rule                 → update.img 생성
+```
+
+<br/>
+<br/>
+<br/>
+<hr>
+
+## dirty kernel
+
+```
+git clean -fdx 
+```
