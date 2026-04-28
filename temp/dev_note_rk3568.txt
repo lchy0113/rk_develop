@@ -1253,6 +1253,49 @@ snp5205b:/sys/kernel/debug/pinctrl/pinctrl-rockchip-pinctrl # cat pinconf-pins |
  cmd wall_service set_audio_route pstn_call
  cmd wall_service set_audio_route pstn_dial
  cmd wall_service set_audio_route door_ring
+ 
+====
+adb -s SWP7204B shell 'echo "file drivers/video/backlight/pwm_bl.c +p" > /sys/kernel/debug/dynamic_debug/control'
+adb -s SWP7204B shell 'cat /sys/class/backlight/backlight/brightness'
+adb -s SWP7204B shell 'echo 255 > /sys/class/backlight/backlight/brightness' 
+adb -s SWP7204B shell 'echo 204 > /sys/class/backlight/backlight/brightness' 
+adb -s SWP7204B shell 'echo 153 > /sys/class/backlight/backlight/brightness' 
+adb -s SWP7204B shell 'echo 102 > /sys/class/backlight/backlight/brightness'  
+adb -s SWP7204B shell 'echo 51 > /sys/class/backlight/backlight/brightness' 
+
+[2026-04-14 15:43:16] [   83.294447] pwm-backlight backlight: backlight: brightness=255 level=255 duty=25000 period=25000
+[2026-04-14 15:43:34] [  101.778567] pwm-backlight backlight: backlight: brightness=204 level=204 duty=20000 period=25000
+[2026-04-14 15:43:58] [  125.636906] pwm-backlight backlight: backlight: brightness=153 level=168 duty=16470 period=25000
+[2026-04-14 15:44:17] [  144.332651] pwm-backlight backlight: backlight: brightness=102 level=133 duty=13039 period=25000
+[2026-04-14 15:44:33] [  160.036009] pwm-backlight backlight: backlight: brightness=51 level=101 duty=9901 period=25000
+
+
+====
+adb -s poc24 shell 'echo "file drivers/video/backlight/pwm_bl.c +p" > /sys/kernel/debug/dynamic_debug/control'
+adb -s poc24 shell 'cat /sys/class/backlight/backlight/brightness'
+adb -s poc24 shell 'echo 255 > /sys/class/backlight/backlight/brightness'    [230]
+adb -s poc24 shell 'echo 204 > /sys/class/backlight/backlight/brightness'    [175] 
+adb -s poc24 shell 'echo 153 > /sys/class/backlight/backlight/brightness'    [126]
+adb -s poc24 shell 'echo 102 > /sys/class/backlight/backlight/brightness'    [84]
+adb -s poc24 shell 'echo 51 > /sys/class/backlight/backlight/brightness'     [38]
+====
+
+BOARD_BUILD_GKI 변수를 true로 설정했어. 
+타겟 장치 rk3568_u Product 를  build.sh 명령어 통해 빌드가 잘 도착되고 적용도 잘되어있어.
+타겟 장치 rk3568_evb Product 는 build command를 추가해서 그런지 Root 경로에서 make -j32 명령어 실행 시 에러가 발생되. 
+
+====
+
+====
+CONFIG_AK7755_DSP_SWP5304H_SDP5304H  대신 CONFIG_AK7755_DSP_HA 을 사용
+
+====
+unpack_bootimg --boot_img rockdev/Image-rk3568_evb/vendor_boot.img --out private/bootimg_unpack/rk3568_evb/
+unpack_bootimg --boot_img rockdev/Image-rk3568_u/vendor_boot.img --out private/bootimg_unpack/rk3568_u
+diff -r private/bootimg_unpack/rk3568_evb/ private/bootimg_unpack/rk3568_u/
+
+make -j32 2>&1 | tee private/build.log
+make -j$(nproc)  KDIWIN_DEBUG_MAKE_CHAIN=true 2>&1 | tee private/build_all.log
 ====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_dev
@@ -1263,7 +1306,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b release/[mo
 repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m default.xml
 
 1. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
- clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP5215BMLH MAS"
+ clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "SNP7215BMLH MAS"
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP520 MAS"
@@ -1278,7 +1321,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 MAS"
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 REL"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SGP511 MAS"
 
 ====================================================================================================
 terminal : 192.168.27.243 : 
