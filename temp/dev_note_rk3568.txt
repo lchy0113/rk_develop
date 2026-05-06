@@ -1299,7 +1299,7 @@ make -j$(nproc)  KDIWIN_DEBUG_MAKE_CHAIN=true 2>&1 | tee private/build_all.log
 ====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_dev
-docker-compose up -d android12_develop 
+docker compose up -d android12_develop 
 ssh -p 9026 lchy0113@localhost
  ssh-agent > ~/.ssh-agent.sh ; source  ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
 repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b release/[model] -m release.xml
@@ -1321,12 +1321,12 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 MAS"
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SGP511 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 REL"
 
 ====================================================================================================
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_v_dev 
-docker-compose up -d android15_develop
+docker compose up -d android15_develop
 ssh -p 9029 lchy0113@localhost
  ssh-agent > ~/.ssh-agent.sh ; source  ~/.ssh-agent.sh ; ssh-add ~/.ssh/lchyq113\@kdiwin.com
 
