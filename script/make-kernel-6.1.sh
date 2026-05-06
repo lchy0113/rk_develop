@@ -17,6 +17,7 @@ JOBS="$(nproc)"
 DO_CLEAN=0
 DO_RECONFIG=0
 DO_SYNC_MODULES=0
+DO_MENUCONFIG=0
 
 usage() {
   cat <<'EOF'
@@ -29,6 +30,7 @@ Options:
       --clean               Remove output directory before build
       --reconfig            Force defconfig regeneration
       --sync-modules        Sync built modules to PRODUCT_OUT/kdiwin_vendor_ramdisk_modules
+      menuconfig            Merge configs then open interactive menuconfig (no kernel build)
     -h, --help                Show this help
 
 Examples:
@@ -63,6 +65,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --sync-modules)
       DO_SYNC_MODULES=1
+      shift
+      ;;
+    menuconfig)
+      DO_MENUCONFIG=1
       shift
       ;;
     -h|--help)
@@ -168,6 +174,25 @@ if [[ ! -f "$OUT_DIR_ABS/.config" || "$DO_RECONFIG" -eq 1 ]]; then
     read -r -a TARGET_KERNEL_CONFIGS_ARR <<< "$TARGET_KERNEL_CONFIGS"
     KERNEL_CONFIG_SRC+=("${TARGET_KERNEL_CONFIGS_ARR[@]}")
   fi
+
+  # Product-specific config: device/kdiwin/nova/<product>/<product>.config
+  TARGET_DEVICE_DIR="$(get_build_var TARGET_DEVICE_DIR)"
+  PRODUCT_NAME="$(get_build_var TARGET_PRODUCT)"
+  PRODUCT_CONFIG="$TOP_DIR/$TARGET_DEVICE_DIR/${PRODUCT_NAME}.config"
+  if [[ -f "$PRODUCT_CONFIG" ]]; then
+    echo "[config] Product config: $PRODUCT_CONFIG"
+    KERNEL_CONFIG_SRC+=("$PRODUCT_CONFIG")
+  fi
+
+  # Development config: kernel-6.1/arch/arm64/configs/dev.config
+  # Controlled by ENABLE_KERNEL_DEV_CONFIG := true in BoardConfig.mk
+  ENABLE_KERNEL_DEV_CONFIG="$(get_build_var ENABLE_KERNEL_DEV_CONFIG 2>/dev/null || echo false)"
+  KERNEL_DEV_CONFIG="$KERNEL_SRC/arch/$TARGET_KERNEL_ARCH/configs/dev.config"
+  if [[ "$ENABLE_KERNEL_DEV_CONFIG" == "true" && -f "$KERNEL_DEV_CONFIG" ]]; then
+    echo "[config] Dev config: $KERNEL_DEV_CONFIG"
+    KERNEL_CONFIG_SRC+=("$KERNEL_DEV_CONFIG")
+  fi
+
   KERNEL_CONFIG_SRC+=("$KERNEL_CONFIG_REQUIRED")
 
   echo "[config] Merging kernel configs"
@@ -181,6 +206,14 @@ if [[ ! -f "$OUT_DIR_ABS/.config" || "$DO_RECONFIG" -eq 1 ]]; then
     "$TARGET_KERNEL_ARCH" \
     "$TARGET_KERNEL_CROSS_COMPILE_PREFIX" \
     "${KERNEL_CONFIG_SRC[@]}"
+fi
+
+if [[ "$DO_MENUCONFIG" -eq 1 ]]; then
+  echo "[menuconfig] Opening menuconfig (merged .config is ready)..."
+  # shellcheck disable=SC2086
+  make "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS menuconfig
+  echo "[menuconfig] Done. Modified .config saved to $OUT_DIR_ABS/.config"
+  exit 0
 fi
 
 echo "[build] Building kernel targets: $TARGETS"
