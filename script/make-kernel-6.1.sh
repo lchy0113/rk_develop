@@ -289,23 +289,28 @@ if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
   DTB_FOR_RESOURCE="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
 
   if [[ -x "$RESOURCE_TOOL" && -f "$DTB_FOR_RESOURCE" ]]; then
-    # Prefer .dev variants when present (e.g. logo.bmp.dev overrides logo.bmp).
-    # resource_tool stores the filename as-is, so copy .dev files to a tmp dir
-    # with canonical names (logo.bmp / logo_kernel.bmp) before packing.
-    LOGO_TMP_DIR=$(mktemp -d)
+    # resource_tool stores each file's path as the entry name verbatim.
+    # U-Boot looks for exactly "logo.bmp" / "logo_kernel.bmp", so we must pass
+    # basenames only (mirrors how kernel-6.1/scripts/mkimg calls resource_tool).
+    # Strategy: copy chosen logo files into $OUT_DIR_ABS under canonical names,
+    # then cd there and pass relative names so entry names are just "logo.bmp" etc.
     LOGO_ARGS=()
     for logo in logo.bmp logo_kernel.bmp; do
       if [[ -f "$KERNEL_SRC/${logo}.dev" ]]; then
-        cp "$KERNEL_SRC/${logo}.dev" "$LOGO_TMP_DIR/$logo"
-        LOGO_ARGS+=("$LOGO_TMP_DIR/$logo")
+        cp "$KERNEL_SRC/${logo}.dev" "$OUT_DIR_ABS/$logo"
+        LOGO_ARGS+=("$logo")
       elif [[ -f "$KERNEL_SRC/$logo" ]]; then
-        LOGO_ARGS+=("$KERNEL_SRC/$logo")
+        cp "$KERNEL_SRC/$logo" "$OUT_DIR_ABS/$logo"
+        LOGO_ARGS+=("$logo")
       fi
     done
 
     RESOURCE_TMP="$PRODUCT_OUT/resource.img.new"
     (cd "$OUT_DIR_ABS" && "$RESOURCE_TOOL" "$DTB_FOR_RESOURCE" "${LOGO_ARGS[@]}" > /dev/null)
-    rm -rf "$LOGO_TMP_DIR"
+    # Clean up temporary logo copies
+    for logo in logo.bmp logo_kernel.bmp; do
+      rm -f "$OUT_DIR_ABS/$logo"
+    done
     mv "$OUT_DIR_ABS/resource.img" "$RESOURCE_TMP"
     mv "$RESOURCE_TMP" "$RESOURCE_IMG"
     echo "[repack] resource.img updated: $RESOURCE_IMG ($(du -sh "$RESOURCE_IMG" | cut -f1))"
