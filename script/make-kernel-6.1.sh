@@ -27,7 +27,7 @@ Options:
       --clean             Remove output directory before build
       --reconfig          Force defconfig regeneration
       --sync-modules      Sync built modules to PRODUCT_OUT/kdiwin_vendor_ramdisk_modules
-      --repack-vendorboot Repack PRODUCT_OUT/vendor_boot.img using synced modules
+      --repack-vendorboot Repack PRODUCT_OUT/vendor_boot.img + resource.img using synced modules/DTB
       menuconfig          Merge configs then open interactive menuconfig (no kernel build)
   -h, --help              Show this help
 
@@ -278,6 +278,41 @@ if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
     # shellcheck disable=SC2086
     make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS dtbs > /dev/null 2>&1
     echo "[repack] DTB rebuilt: $DTB_BUILD_PATH"
+  fi
+
+  # ── Repack resource.img ──────────────────────────────────────────────────
+  # Rockchip U-Boot reads the DTB from resource partition (not vendor_boot).
+  # resource.img format (RSCE): rk-kernel.dtb + logo.bmp + logo_kernel.bmp
+  # resource_tool is a host tool compiled alongside the kernel build.
+  RESOURCE_IMG="$PRODUCT_OUT/resource.img"
+  RESOURCE_TOOL="$OUT_DIR_ABS/scripts/resource_tool"
+  DTB_FOR_RESOURCE="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
+
+  if [[ -x "$RESOURCE_TOOL" && -f "$DTB_FOR_RESOURCE" ]]; then
+    # Prefer .dev variants when present (e.g. logo.bmp.dev overrides logo.bmp).
+    # resource_tool stores the filename as-is, so copy .dev files to a tmp dir
+    # with canonical names (logo.bmp / logo_kernel.bmp) before packing.
+    LOGO_TMP_DIR=$(mktemp -d)
+    LOGO_ARGS=()
+    for logo in logo.bmp logo_kernel.bmp; do
+      if [[ -f "$KERNEL_SRC/${logo}.dev" ]]; then
+        cp "$KERNEL_SRC/${logo}.dev" "$LOGO_TMP_DIR/$logo"
+        LOGO_ARGS+=("$LOGO_TMP_DIR/$logo")
+      elif [[ -f "$KERNEL_SRC/$logo" ]]; then
+        LOGO_ARGS+=("$KERNEL_SRC/$logo")
+      fi
+    done
+
+    RESOURCE_TMP="$PRODUCT_OUT/resource.img.new"
+    (cd "$OUT_DIR_ABS" && "$RESOURCE_TOOL" "$DTB_FOR_RESOURCE" "${LOGO_ARGS[@]}" > /dev/null)
+    rm -rf "$LOGO_TMP_DIR"
+    mv "$OUT_DIR_ABS/resource.img" "$RESOURCE_TMP"
+    mv "$RESOURCE_TMP" "$RESOURCE_IMG"
+    echo "[repack] resource.img updated: $RESOURCE_IMG ($(du -sh "$RESOURCE_IMG" | cut -f1))"
+  else
+    echo "[repack] Warning: resource_tool or DTB not found, skipping resource.img update"
+    [[ ! -x "$RESOURCE_TOOL" ]] && echo "[repack]   resource_tool: $RESOURCE_TOOL"
+    [[ ! -f "$DTB_FOR_RESOURCE" ]] && echo "[repack]   DTB: $DTB_FOR_RESOURCE"
   fi
 
   TMP_VENDOR_BOOT="$(mktemp -d "$PRODUCT_OUT/vendor_boot_repack.XXXXXX")"
