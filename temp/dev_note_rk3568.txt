@@ -1312,7 +1312,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "LE1000 MAS"
 
 2. cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP520 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 MAS"
  
 3. cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "LE2000 MAS"
