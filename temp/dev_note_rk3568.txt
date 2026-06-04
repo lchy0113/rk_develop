@@ -1300,6 +1300,48 @@ make -j$(nproc)  KDIWIN_DEBUG_MAKE_CHAIN=true 2>&1 | tee private/build_all.log
 hn server : 43.202.230.18
 
 ====
+- Session1 : rk3568_dev
+  * docker compose up -d android12_develop 을 /home/lchy0113/Private/github/dockerfile 디렉토리에서 실행하여 android12_develop Docker Container 를 실행.
+
+- rk3568_dev Session의 Windows 구성은 아래와 같음
+  * ROCKCHIP_ANDROID12_DEV
+  * ROCKCHIP_ANDROID12_DEV_POC7
+  * ROCKCHIP_ANDROID12_HN5G_LE1000
+  * ROCKCHIP_ANDROID12_HN5G_ETC
+  * ROCKCHIP_ANDROID12_HN5G_SGP511
+  * ROCKCHIP_ANDROID12_HN5G_SWP530
+  
+- 각 Windows의 Plane 구성은 아래와 같음. 
+  * Plane1 : android12_develop Docker Container 접속 (ssh -p 9026 lchy0113@localhost). ID:lchy0113 PW:lchy0113
+  * Plane2 : bpytop 명령어 실행(bpytop)
+  * Plane3 & Plane4 : 각 Windows 에 해당하는 디렉토리로 이동 
+    Windows1 : cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV
+    Windows2 : cd develop/Rockchip/ROCKCHIP_ANDROID12_DEV_POC7
+    Windows3 : cd develop/Rockchip/ROCKCHIP_ANDROID12_HN5G_LE1000
+    Windows4 : cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_ETC
+    Windows5 : cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511
+    Windows6 : cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
+  * Plane5 : 각 Windows에 대한 작업 내용을 아래 명령어로 출력
+    Windows1 : clear ; jfiglol -a -f=1 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf  "LE1000 MAS"
+    Windows2 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP530 MAS"
+    Windows3 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "LE2000 MAS"
+    Windows4 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP520 MAS"
+    Windows5 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP720 MAS"
+    Windows6 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP720 MAS"
+  
+ 
++---------+---------------------------+
+|Plane1   | Plane3                    |
+|         |                           |
+|         |                           |
+|         |                           |
++---------+----------------+----------+
+|Plane2   | Plane4         | Plane5   |
+|80x24    |                | 80x24    |
+|bpytop   |                |          |
++---------+----------------+----------+
+
+====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_dev
 docker compose up -d android12_develop 
@@ -1327,6 +1369,41 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP720 MAS"
 
 ====================================================================================================
+
+====
+- Session2 : rk3568_v_dev
+  * docker compose up -d android15_develop 을 /home/lchy0113/Private/github/dockerfile 디렉토리에서 실행하여 android15_develop Docker Container 를 실행.
+
+- rk3568_v_dev Session의 Windows 구성은 아래와 같음
+  * Rockchip_Android15.0_SDK_RELEASE_20260223
+  * Rockchip_Android_V
+  * ROCKCHIP_ANDROID15_RK3568
+  
+- 각 Windows의 Plane 구성은 아래와 같음. 
+  * Plane1 : android15_develop Docker Container 접속 (ssh -p 9029 lchy0113@localhost). ID:lchy0113 PW:lchy0113
+  * Plane2 : bpytop 명령어 실행(bpytop)
+  * Plane3 & Plane4 : 각 Windows 에 해당하는 디렉토리로 이동 
+    Windows1 : cd /home/lchy0113/platform/ANDROID/Rockchip_Android15.0_SDK_RELEASE_20260223
+    Windows2 : cd /home/lchy0113/platform/ANDROID/Rockchip_Android_V
+    Windows3 : cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID15_RK3568
+  * Plane5 : 각 Windows에 대한 작업 내용을 아래 명령어로 출력
+    Windows1 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-15.0 mid-rkr4"
+    Windows2 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V"
+    Windows3 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V rkr3"
+  
+ 
++---------+---------------------------+
+|Plane1   | Plane3                    |
+|         |                           |
+|         |                           |
+|         |                           |
++---------+----------------+----------+
+|Plane2   | Plane4         | Plane5   |
+|80x24    |                | 80x24    |
+|bpytop   |                |          |
++---------+----------------+----------+
+
+====
 terminal : 192.168.27.243 : 
 tmux new -s rk3568_v_dev 
 docker compose up -d android15_develop
