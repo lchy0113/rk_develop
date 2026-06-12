@@ -1377,7 +1377,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
 - rk3568_v_dev Session의 Windows 구성은 아래와 같음
   * Rockchip_Android15.0_SDK_RELEASE_20260223
   * Rockchip_Android_V
-  * ROCKCHIP_ANDROID15_RK3568
+  * android15-main
   
 - 각 Windows의 Plane 구성은 아래와 같음. 
   * Plane1 : android15_develop Docker Container 접속 (ssh -p 9029 lchy0113@localhost). ID:lchy0113 PW:lchy0113
@@ -1389,7 +1389,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
   * Plane5 : 각 Windows에 대한 작업 내용을 아래 명령어로 출력
     Windows1 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-15.0 mid-rkr4"
     Windows2 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V"
-    Windows3 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V rkr3"
+    Windows3 : clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android15-main"
   
  
 +---------+---------------------------+
@@ -1417,8 +1417,8 @@ ssh -p 9029 lchy0113@localhost
 2. cd /home/lchy0113/platform/ANDROID/Rockchip_Android_V
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V"
   
-3. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID15_RK3568
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android-V rkr3"
+3. cd /home/lchy0113/hdd/proj/rockchip/Android/android15-main
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "android15-main"
   
 manifeste : repo init -u /home/lchy0113/develop/Rockchip/rk3568_project/manifests/nova-manifests -b feature/rk3568_VanillaIceCream -m target/rk3568_v.xml
 ====================================================================================================
