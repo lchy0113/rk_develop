@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Standalone kernel build helper for kernel-6.1.
-# Builds out-of-tree, optionally syncs modules and repacks vendor_boot.img.
+# Builds out-of-tree and optionally emits vendor artifacts.
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -14,6 +14,7 @@ DO_CLEAN=0
 DO_RECONFIG=0
 DO_SYNC_MODULES=0
 DO_MENUCONFIG=0
+DO_REBUILD_RESOURCE_IMG=0
 DO_REPACK_VENDORBOOT=0
 
 usage() {
@@ -26,15 +27,20 @@ Options:
   -j, --jobs <N>          Parallel jobs (default: nproc)
       --clean             Remove output directory before build
       --reconfig          Force defconfig regeneration
-      --sync-modules      Sync built modules to PRODUCT_OUT/kdiwin_vendor_ramdisk_modules
-      --repack-vendorboot Repack PRODUCT_OUT/vendor_boot.img + resource.img using synced modules/DTB
+      --modules           Emit PRODUCT_OUT/kdiwin_vendor_ramdisk_modules
+      --resource-img      Rebuild PRODUCT_OUT/resource.img from latest DTB/logo
+      --vendor-boot       Repack PRODUCT_OUT/vendor_boot.img from prepared modules
+      --artifacts         Shortcut: --modules + --resource-img + --vendor-boot
       menuconfig          Merge configs then open interactive menuconfig (no kernel build)
   -h, --help              Show this help
 
 Examples:
   ./make-kernel-6.1.sh
   ./make-kernel-6.1.sh --reconfig
-  ./make-kernel-6.1.sh --sync-modules --repack-vendorboot
+  ./make-kernel-6.1.sh --modules
+  ./make-kernel-6.1.sh --resource-img
+  ./make-kernel-6.1.sh --vendor-boot
+  ./make-kernel-6.1.sh --artifacts
 EOF
 }
 
@@ -45,8 +51,17 @@ while [[ $# -gt 0 ]]; do
     -j|--jobs)           JOBS="$2";              shift 2 ;;
     --clean)             DO_CLEAN=1;             shift ;;
     --reconfig)          DO_RECONFIG=1;          shift ;;
-    --sync-modules)      DO_SYNC_MODULES=1;      shift ;;
-    --repack-vendorboot) DO_REPACK_VENDORBOOT=1; shift ;;
+    --modules)
+                          DO_SYNC_MODULES=1;        shift ;;
+    --resource-img)
+                          DO_REBUILD_RESOURCE_IMG=1; shift ;;
+    --vendor-boot)
+                          DO_REPACK_VENDORBOOT=1;    shift ;;
+    --artifacts)
+                          DO_SYNC_MODULES=1
+                          DO_REBUILD_RESOURCE_IMG=1
+                          DO_REPACK_VENDORBOOT=1
+                          shift ;;
     menuconfig)          DO_MENUCONFIG=1;        shift ;;
     -h|--help)           usage; exit 0 ;;
     *) echo "Unknown option: $1" >&2; usage; exit 1 ;;
@@ -251,6 +266,52 @@ if [[ "$DO_SYNC_MODULES" -eq 1 ]]; then
   echo "[sync] Done: $(ls -1 "$MODULE_DST"/*.ko 2>/dev/null | wc -l) modules, metadata: $(ls "$MODULE_DST"/modules.* 2>/dev/null | xargs -r -n1 basename | tr '\n' ' ')"
 fi
 
+# ── Rebuild resource.img ──────────────────────────────────────────────────────
+if [[ "$DO_REBUILD_RESOURCE_IMG" -eq 1 || "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
+  # Force-rebuild DTB so updated source is reflected in resource/vendor_boot.
+  if [[ -n "$TARGET_KERNEL_DTB" ]]; then
+    DTB_BUILD_PATH="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
+    rm -f "$DTB_BUILD_PATH"
+    # shellcheck disable=SC2086
+    make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS dtbs > /dev/null 2>&1
+    echo "[artifact] DTB rebuilt: $DTB_BUILD_PATH"
+  fi
+
+  if [[ "$DO_REBUILD_RESOURCE_IMG" -eq 1 ]]; then
+    # Rockchip U-Boot reads the DTB from resource partition (not vendor_boot).
+    # resource.img format (RSCE): rk-kernel.dtb + logo.bmp + logo_kernel.bmp
+    RESOURCE_IMG="$PRODUCT_OUT/resource.img"
+    RESOURCE_TOOL="$OUT_DIR_ABS/scripts/resource_tool"
+    DTB_FOR_RESOURCE="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
+
+    if [[ -x "$RESOURCE_TOOL" && -f "$DTB_FOR_RESOURCE" ]]; then
+      LOGO_ARGS=()
+      for logo in logo.bmp logo_kernel.bmp; do
+        if [[ -f "$KERNEL_SRC/${logo}.dev" ]]; then
+          cp "$KERNEL_SRC/${logo}.dev" "$OUT_DIR_ABS/$logo"
+          LOGO_ARGS+=("$logo")
+        elif [[ -f "$KERNEL_SRC/$logo" ]]; then
+          cp "$KERNEL_SRC/$logo" "$OUT_DIR_ABS/$logo"
+          LOGO_ARGS+=("$logo")
+        fi
+      done
+
+      RESOURCE_TMP="$PRODUCT_OUT/resource.img.new"
+      (cd "$OUT_DIR_ABS" && "$RESOURCE_TOOL" "$DTB_FOR_RESOURCE" "${LOGO_ARGS[@]}" > /dev/null)
+      for logo in logo.bmp logo_kernel.bmp; do
+        rm -f "$OUT_DIR_ABS/$logo"
+      done
+      mv "$OUT_DIR_ABS/resource.img" "$RESOURCE_TMP"
+      mv "$RESOURCE_TMP" "$RESOURCE_IMG"
+      echo "[artifact] resource.img updated: $RESOURCE_IMG ($(du -sh "$RESOURCE_IMG" | cut -f1))"
+    else
+      echo "[artifact] Warning: resource_tool or DTB not found, skipping resource.img update"
+      [[ ! -x "$RESOURCE_TOOL" ]] && echo "[artifact]   resource_tool: $RESOURCE_TOOL"
+      [[ ! -f "$DTB_FOR_RESOURCE" ]] && echo "[artifact]   DTB: $DTB_FOR_RESOURCE"
+    fi
+  fi
+fi
+
 # ── Repack vendor_boot.img ───────────────────────────────────────────────────
 if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
   VENDOR_BOOT_IMG="$PRODUCT_OUT/vendor_boot.img"
@@ -267,58 +328,9 @@ if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
   [[ ! -x "$MKBOOTFS_TOOL" ]]  && MKBOOTFS_TOOL=""
 
   [[ ! -f "$VENDOR_BOOT_IMG" ]] && { echo "[repack] Error: vendor_boot.img not found: $VENDOR_BOOT_IMG" >&2; exit 1; }
-  [[ ! -d "$MODULE_DST" ]]      && { echo "[repack] Error: module dir not found — run --sync-modules first" >&2; exit 1; }
+  [[ ! -d "$MODULE_DST" ]]      && { echo "[repack] Error: module dir not found — run --modules first" >&2; exit 1; }
   [[ ! -x "$UNPACK_BOOTIMG" ]]  && { echo "[repack] Error: unpack_bootimg not found" >&2; exit 1; }
   [[ ! -x "$MKBOOTIMG_TOOL" ]]  && { echo "[repack] Error: mkbootimg not found" >&2; exit 1; }
-
-  # Force-rebuild DTB so the repacked image always contains the latest source
-  if [[ -n "$TARGET_KERNEL_DTB" ]]; then
-    DTB_BUILD_PATH="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
-    rm -f "$DTB_BUILD_PATH"
-    # shellcheck disable=SC2086
-    make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS dtbs > /dev/null 2>&1
-    echo "[repack] DTB rebuilt: $DTB_BUILD_PATH"
-  fi
-
-  # ── Repack resource.img ──────────────────────────────────────────────────
-  # Rockchip U-Boot reads the DTB from resource partition (not vendor_boot).
-  # resource.img format (RSCE): rk-kernel.dtb + logo.bmp + logo_kernel.bmp
-  # resource_tool is a host tool compiled alongside the kernel build.
-  RESOURCE_IMG="$PRODUCT_OUT/resource.img"
-  RESOURCE_TOOL="$OUT_DIR_ABS/scripts/resource_tool"
-  DTB_FOR_RESOURCE="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
-
-  if [[ -x "$RESOURCE_TOOL" && -f "$DTB_FOR_RESOURCE" ]]; then
-    # resource_tool stores each file's path as the entry name verbatim.
-    # U-Boot looks for exactly "logo.bmp" / "logo_kernel.bmp", so we must pass
-    # basenames only (mirrors how kernel-6.1/scripts/mkimg calls resource_tool).
-    # Strategy: copy chosen logo files into $OUT_DIR_ABS under canonical names,
-    # then cd there and pass relative names so entry names are just "logo.bmp" etc.
-    LOGO_ARGS=()
-    for logo in logo.bmp logo_kernel.bmp; do
-      if [[ -f "$KERNEL_SRC/${logo}.dev" ]]; then
-        cp "$KERNEL_SRC/${logo}.dev" "$OUT_DIR_ABS/$logo"
-        LOGO_ARGS+=("$logo")
-      elif [[ -f "$KERNEL_SRC/$logo" ]]; then
-        cp "$KERNEL_SRC/$logo" "$OUT_DIR_ABS/$logo"
-        LOGO_ARGS+=("$logo")
-      fi
-    done
-
-    RESOURCE_TMP="$PRODUCT_OUT/resource.img.new"
-    (cd "$OUT_DIR_ABS" && "$RESOURCE_TOOL" "$DTB_FOR_RESOURCE" "${LOGO_ARGS[@]}" > /dev/null)
-    # Clean up temporary logo copies
-    for logo in logo.bmp logo_kernel.bmp; do
-      rm -f "$OUT_DIR_ABS/$logo"
-    done
-    mv "$OUT_DIR_ABS/resource.img" "$RESOURCE_TMP"
-    mv "$RESOURCE_TMP" "$RESOURCE_IMG"
-    echo "[repack] resource.img updated: $RESOURCE_IMG ($(du -sh "$RESOURCE_IMG" | cut -f1))"
-  else
-    echo "[repack] Warning: resource_tool or DTB not found, skipping resource.img update"
-    [[ ! -x "$RESOURCE_TOOL" ]] && echo "[repack]   resource_tool: $RESOURCE_TOOL"
-    [[ ! -f "$DTB_FOR_RESOURCE" ]] && echo "[repack]   DTB: $DTB_FOR_RESOURCE"
-  fi
 
   TMP_VENDOR_BOOT="$(mktemp -d "$PRODUCT_OUT/vendor_boot_repack.XXXXXX")"
   RAMDISK_EXTRACT_DIR="$TMP_VENDOR_BOOT/ramdisk"
@@ -437,6 +449,34 @@ if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
 
   mv "$VENDOR_BOOT_IMG_NEW" "$VENDOR_BOOT_IMG"
   echo "[repack] Done: $VENDOR_BOOT_IMG ($(du -sh "$VENDOR_BOOT_IMG" | cut -f1))"
+fi
+
+if [[ "$DO_SYNC_MODULES" -eq 1 || "$DO_REBUILD_RESOURCE_IMG" -eq 1 || "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
+  echo "[output] Final artifacts:"
+  if [[ "$DO_SYNC_MODULES" -eq 1 ]]; then
+    MODULE_OUT="$PRODUCT_OUT/kdiwin_vendor_ramdisk_modules"
+    if [[ -d "$MODULE_OUT" ]]; then
+      echo "[output] modules: $MODULE_OUT ($(du -sh "$MODULE_OUT" | cut -f1), $(ls -1 "$MODULE_OUT"/*.ko 2>/dev/null | wc -l) .ko)"
+    else
+      echo "[output] modules: $MODULE_OUT (missing)"
+    fi
+  fi
+  if [[ "$DO_REBUILD_RESOURCE_IMG" -eq 1 ]]; then
+    RESOURCE_OUT="$PRODUCT_OUT/resource.img"
+    if [[ -f "$RESOURCE_OUT" ]]; then
+      echo "[output] resource_img: $RESOURCE_OUT ($(du -sh "$RESOURCE_OUT" | cut -f1))"
+    else
+      echo "[output] resource_img: $RESOURCE_OUT (missing)"
+    fi
+  fi
+  if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
+    VENDOR_BOOT_OUT="$PRODUCT_OUT/vendor_boot.img"
+    if [[ -f "$VENDOR_BOOT_OUT" ]]; then
+      echo "[output] vendor_boot: $VENDOR_BOOT_OUT ($(du -sh "$VENDOR_BOOT_OUT" | cut -f1))"
+    else
+      echo "[output] vendor_boot: $VENDOR_BOOT_OUT (missing)"
+    fi
+  fi
 fi
 
 echo "Done."
