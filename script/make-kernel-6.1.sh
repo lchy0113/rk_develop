@@ -10,6 +10,7 @@ KERNEL_SRC="$SCRIPT_DIR"
 OUT_DIR="$TOP_DIR/build_linux-6.1"
 TARGETS="Image modules dtbs"
 JOBS="$(nproc)"
+MODULE_SUBDIR=""
 DO_CLEAN=0
 DO_RECONFIG=0
 DO_SYNC_MODULES=0
@@ -25,6 +26,7 @@ Options:
   -o, --out <dir>         External kernel output directory (default: build_linux-6.1)
   -t, --targets "..."     Kernel make targets (default: "Image modules dtbs")
   -j, --jobs <N>          Parallel jobs (default: nproc)
+  --module-dir <dir>  Build only the specified in-tree kernel module directory
       --clean             Remove output directory before build
       --reconfig          Force defconfig regeneration
       --modules           Emit PRODUCT_OUT/kdiwin_vendor_ramdisk_modules
@@ -37,6 +39,7 @@ Options:
 Examples:
   ./make-kernel-6.1.sh
   ./make-kernel-6.1.sh --reconfig
+  ./make-kernel-6.1.sh --module-dir drivers/input/touchscreen/gt9xx
   ./make-kernel-6.1.sh --modules
   ./make-kernel-6.1.sh --resource-img
   ./make-kernel-6.1.sh --vendor-boot
@@ -49,6 +52,7 @@ while [[ $# -gt 0 ]]; do
     -o|--out)            OUT_DIR="$2";           shift 2 ;;
     -t|--targets)        TARGETS="$2";           shift 2 ;;
     -j|--jobs)           JOBS="$2";              shift 2 ;;
+    --module-dir)        MODULE_SUBDIR="$2";     shift 2 ;;
     --clean)             DO_CLEAN=1;             shift ;;
     --reconfig)          DO_RECONFIG=1;          shift ;;
     --modules)
@@ -116,6 +120,9 @@ echo "  Out     : $OUT_DIR_ABS"
 echo "  Arch    : $TARGET_KERNEL_ARCH"
 echo "  Config  : $TARGET_KERNEL_DEFCONFIG"
 echo "  Targets : $TARGETS"
+if [[ -n "$MODULE_SUBDIR" ]]; then
+  echo "  Module  : $MODULE_SUBDIR"
+fi
 echo "  Jobs    : $JOBS"
 
 MAKE_COMMON_ARGS=(
@@ -186,9 +193,20 @@ if [[ "$DO_MENUCONFIG" -eq 1 ]]; then
 fi
 
 # ── Build ────────────────────────────────────────────────────────────────────
-echo "[build] Building: $TARGETS"
-# shellcheck disable=SC2086
-make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS $TARGETS
+if [[ -n "$MODULE_SUBDIR" ]]; then
+  if [[ ! -d "$KERNEL_SRC/$MODULE_SUBDIR" ]]; then
+    echo "Error: module directory not found: $KERNEL_SRC/$MODULE_SUBDIR" >&2
+    exit 1
+  fi
+
+  echo "[build] Building module directory: $MODULE_SUBDIR"
+  # shellcheck disable=SC2086
+  make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS M="$MODULE_SUBDIR" modules
+else
+  echo "[build] Building: $TARGETS"
+  # shellcheck disable=SC2086
+  make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS $TARGETS
+fi
 
 KERNEL_IMAGE_PATH="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/Image"
 if [[ -f "$KERNEL_IMAGE_PATH" ]]; then
