@@ -8,7 +8,8 @@ TOP_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 KERNEL_SRC="$SCRIPT_DIR"
 
 OUT_DIR="$TOP_DIR/build_linux-6.1"
-TARGETS="Image modules dtbs"
+TARGETS="Image dtbs"
+TARGETS_FROM_USER=0
 JOBS="$(nproc)"
 MODULE_SUBDIR=""
 DO_CLEAN=0
@@ -17,6 +18,13 @@ DO_SYNC_MODULES=0
 DO_MENUCONFIG=0
 DO_REBUILD_RESOURCE_IMG=0
 DO_REPACK_VENDORBOOT=0
+
+REPACK_MODULE_DST_NAME="kdiwin_vendor_ramdisk_modules_repack"
+
+die() {
+  echo "Error: $*" >&2
+  exit 1
+}
 
 usage() {
   cat <<'EOF'
@@ -29,10 +37,10 @@ Options:
   --module-dir <dir>  Build only the specified in-tree kernel module directory
       --clean             Remove output directory before build
       --reconfig          Force defconfig regeneration
-      --modules           Emit PRODUCT_OUT/kdiwin_vendor_ramdisk_modules
+      --modules           Build modules and emit PRODUCT_OUT/kdiwin_vendor_ramdisk_modules_repack
       --resource-img      Rebuild PRODUCT_OUT/resource.img from latest DTB/logo
-      --vendor-boot       Repack PRODUCT_OUT/vendor_boot.img from prepared modules
-      --artifacts         Shortcut: --modules + --resource-img + --vendor-boot
+      --vendor-boot       Repack PRODUCT_OUT/vendor_boot.img from out modules selected by vendor_ramdisk_modules.load
+      --artifacts         Shortcut: --modules + --vendor-boot
       menuconfig          Merge configs then open interactive menuconfig (no kernel build)
   -h, --help              Show this help
 
@@ -47,24 +55,131 @@ Examples:
 EOF
 }
 
+ensure_modules_target() {
+  if [[ "$TARGETS" != *"modules"* ]]; then
+    TARGETS="$TARGETS modules"
+  fi
+}
+
+resolve_tool_path() {
+  local primary="$1"
+  local fallback="$2"
+  if [[ -x "$primary" ]]; then
+    echo "$primary"
+  else
+    echo "$fallback"
+  fi
+}
+
+print_output_artifact() {
+  local label="$1"
+  local path="$2"
+  if [[ -f "$path" ]]; then
+    echo "[output] $label: $path ($(du -sh "$path" | cut -f1))"
+  else
+    echo "[output] $label: $path (missing)"
+  fi
+}
+
+run_kernel_make() {
+  # shellcheck disable=SC2086
+  make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS "$@"
+}
+
+run_kernel_make_nojobs() {
+  # shellcheck disable=SC2086
+  make "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS "$@"
+}
+
+load_module_list() {
+  local load_file="$1"
+  local raw_line=""
+  local line=""
+
+  LOAD_MODULES=()
+  while IFS= read -r raw_line || [[ -n "$raw_line" ]]; do
+    line="${raw_line%%#*}"
+    line="${line%$'\r'}"
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
+    [[ -z "$line" ]] && continue
+    LOAD_MODULES+=("$line")
+  done < "$load_file"
+}
+
+find_module_from_modules_order() {
+  local module_name="$1"
+  local modules_order="$2"
+  local out_dir="$3"
+
+  local rel_path=""
+  local abs_path=""
+  local count=0
+  local chosen=""
+
+  while IFS= read -r rel_path; do
+    abs_path="$out_dir/$rel_path"
+    [[ ! -f "$abs_path" ]] && continue
+    chosen="$abs_path"
+    ((count += 1))
+  done < <(awk -v m="$module_name" -F/ '$NF==m {print $0}' "$modules_order")
+
+  if [[ $count -eq 0 ]]; then
+    echo "missing"
+  elif [[ $count -gt 1 ]]; then
+    echo "ambiguous"
+  else
+    echo "$chosen"
+  fi
+}
+
+generate_depmod_metadata() {
+  local module_dst="$1"
+  local depmod_tool="$2"
+  local depmod_staging=""
+  local meta=""
+
+  depmod_staging="$(mktemp -d)"
+  mkdir -p "$depmod_staging/lib/modules/0.0"
+  find "$module_dst" -name "*.ko" -exec cp -f {} "$depmod_staging/lib/modules/0.0/" \;
+  "$depmod_tool" -b "$depmod_staging" 0.0 2>/dev/null || true
+
+  if [[ ! -f "$depmod_staging/lib/modules/0.0/modules.dep" ]]; then
+    rm -rf "$depmod_staging"
+    die "depmod did not generate modules.dep"
+  fi
+
+  sed -i -e 's|\([^: ]*lib/modules/[^: ]*\)|/\1|g' \
+    "$depmod_staging/lib/modules/0.0/modules.dep" 2>/dev/null || true
+
+  for meta in modules.dep modules.alias modules.softdep modules.devname modules.symbols; do
+    [[ -f "$depmod_staging/lib/modules/0.0/$meta" ]] && \
+      cp -f "$depmod_staging/lib/modules/0.0/$meta" "$module_dst/"
+  done
+
+  rm -rf "$depmod_staging"
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -o|--out)            OUT_DIR="$2";           shift 2 ;;
-    -t|--targets)        TARGETS="$2";           shift 2 ;;
+    -t|--targets)        TARGETS="$2"; TARGETS_FROM_USER=1; shift 2 ;;
     -j|--jobs)           JOBS="$2";              shift 2 ;;
     --module-dir)        MODULE_SUBDIR="$2";     shift 2 ;;
     --clean)             DO_CLEAN=1;             shift ;;
     --reconfig)          DO_RECONFIG=1;          shift ;;
     --modules)
-                          DO_SYNC_MODULES=1;        shift ;;
+                          DO_SYNC_MODULES=1
+                          ensure_modules_target
+                          shift ;;
     --resource-img)
                           DO_REBUILD_RESOURCE_IMG=1; shift ;;
     --vendor-boot)
                           DO_REPACK_VENDORBOOT=1;    shift ;;
     --artifacts)
                           DO_SYNC_MODULES=1
-                          DO_REBUILD_RESOURCE_IMG=1
                           DO_REPACK_VENDORBOOT=1
+                          ensure_modules_target
                           shift ;;
     menuconfig)          DO_MENUCONFIG=1;        shift ;;
     -h|--help)           usage; exit 0 ;;
@@ -79,7 +194,6 @@ TARGET_KERNEL_ARCH="$(get_build_var TARGET_KERNEL_ARCH)"
 TARGET_KERNEL_DEFCONFIG="$(get_build_var TARGET_KERNEL_DEFCONFIG)"
 TARGET_KERNEL_CONFIGS="$(get_build_var TARGET_KERNEL_CONFIGS)"
 TARGET_KERNEL_CROSS_COMPILE_PREFIX="$(get_build_var TARGET_KERNEL_CROSS_COMPILE_PREFIX)"
-TARGET_KERNEL_CLANG_PATH="$(get_build_var TARGET_KERNEL_CLANG_PATH)"
 TARGET_KERNEL_EXTRA_ARGS="$(get_build_var TARGET_KERNEL_EXTRA_ARGS)"
 TARGET_KERNEL_VERSION="$(get_build_var TARGET_KERNEL_VERSION)"
 TARGET_KERNEL_DTB="$(get_build_var TARGET_KERNEL_DTB 2>/dev/null || true)"
@@ -186,52 +300,102 @@ fi
 
 # ── Menuconfig ───────────────────────────────────────────────────────────────
 if [[ "$DO_MENUCONFIG" -eq 1 ]]; then
-  # shellcheck disable=SC2086
-  make "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS menuconfig
+  run_kernel_make_nojobs menuconfig
   echo "[menuconfig] Done. Config saved to $OUT_DIR_ABS/.config"
   exit 0
 fi
 
 # ── Build ────────────────────────────────────────────────────────────────────
-if [[ -n "$MODULE_SUBDIR" ]]; then
+SKIP_BUILD=0
+if [[ "$DO_REPACK_VENDORBOOT" -eq 1 && "$DO_SYNC_MODULES" -eq 0 && "$DO_REBUILD_RESOURCE_IMG" -eq 0 && -z "$MODULE_SUBDIR" && "$DO_RECONFIG" -eq 0 && "$DO_CLEAN" -eq 0 && "$TARGETS_FROM_USER" -eq 0 ]]; then
+  SKIP_BUILD=1
+fi
+
+if [[ "$SKIP_BUILD" -eq 1 ]]; then
+  echo "[build] Skipping kernel build (repack-only mode)"
+elif [[ -n "$MODULE_SUBDIR" ]]; then
   if [[ ! -d "$KERNEL_SRC/$MODULE_SUBDIR" ]]; then
-    echo "Error: module directory not found: $KERNEL_SRC/$MODULE_SUBDIR" >&2
-    exit 1
+    die "module directory not found: $KERNEL_SRC/$MODULE_SUBDIR"
   fi
 
   echo "[build] Building module directory: $MODULE_SUBDIR"
-  # shellcheck disable=SC2086
-  make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS M="$MODULE_SUBDIR" modules
+  run_kernel_make M="$MODULE_SUBDIR" modules
 else
   echo "[build] Building: $TARGETS"
   # shellcheck disable=SC2086
-  make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS $ADDON_ARGS $TARGETS
+  run_kernel_make $TARGETS
 fi
 
 KERNEL_IMAGE_PATH="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/Image"
-if [[ -f "$KERNEL_IMAGE_PATH" ]]; then
+if [[ "$SKIP_BUILD" -eq 1 ]]; then
+  echo "[build] Reusing existing kernel/module outputs from: $OUT_DIR_ABS"
+elif [[ -f "$KERNEL_IMAGE_PATH" ]]; then
   echo "[build] Kernel image: $KERNEL_IMAGE_PATH"
 else
   echo "[build] Warning: Kernel image not found: $KERNEL_IMAGE_PATH"
 fi
 
 # ── Sync modules ─────────────────────────────────────────────────────────────
-if [[ "$DO_SYNC_MODULES" -eq 1 ]]; then
-  if [[ ! -x "$TOP_DIR/mkcombinedroot/copy_moduls.sh" ]]; then
-    echo "Error: copy_moduls.sh not found or not executable." >&2
+if [[ "$DO_SYNC_MODULES" -eq 1 || "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
+  MODULE_LOAD_FILE="$TOP_DIR/mkcombinedroot/res/vendor_ramdisk_modules.load"
+  MODULES_ORDER_FILE="$OUT_DIR_ABS/modules.order"
+  MODULE_DST="$PRODUCT_OUT/$REPACK_MODULE_DST_NAME"
+  if [[ ! -f "$MODULE_LOAD_FILE" ]]; then
+    die "vendor_ramdisk_modules.load not found: $MODULE_LOAD_FILE"
+  fi
+  if [[ ! -f "$MODULES_ORDER_FILE" ]]; then
+    echo "Error: modules.order not found: $MODULES_ORDER_FILE" >&2
+    echo "       Build modules first (use --modules or include modules in --targets)." >&2
     exit 1
   fi
 
-  MODULE_DST="$PRODUCT_OUT/kdiwin_vendor_ramdisk_modules"
   mkdir -p "$MODULE_DST"
+  find "$MODULE_DST" -maxdepth 1 -type f \( -name '*.ko' -o -name 'modules.*' \) -delete
 
-  echo "[sync] Copying modules → $MODULE_DST"
-  (
-    cd "$TOP_DIR/mkcombinedroot"
-    KERNEL_MODULES_SRC="$OUT_DIR_ABS" \
-    KERNEL_MODULES_DST="$MODULE_DST" \
-    ./copy_moduls.sh
-  )
+  if [[ "$DO_SYNC_MODULES" -eq 1 ]]; then
+    echo "[sync] Selecting modules by $MODULE_LOAD_FILE"
+  else
+    echo "[repack] Selecting modules by $MODULE_LOAD_FILE"
+  fi
+
+  load_module_list "$MODULE_LOAD_FILE"
+  if [[ ${#LOAD_MODULES[@]} -eq 0 ]]; then
+    die "$MODULE_LOAD_FILE is empty"
+  fi
+
+  missing_modules=()
+  ambiguous_modules=()
+  copied_count=0
+  for module_name in "${LOAD_MODULES[@]}"; do
+    resolved_module_path="$(find_module_from_modules_order "$module_name" "$MODULES_ORDER_FILE" "$OUT_DIR_ABS")"
+
+    if [[ "$resolved_module_path" == "missing" ]]; then
+      missing_modules+=("$module_name")
+      continue
+    fi
+    if [[ "$resolved_module_path" == "ambiguous" ]]; then
+      ambiguous_modules+=("$module_name")
+      continue
+    fi
+
+    cp -f "$resolved_module_path" "$MODULE_DST/$module_name"
+    ((copied_count += 1))
+  done
+
+  if [[ ${#missing_modules[@]} -gt 0 ]]; then
+    echo "Error: Missing modules from $MODULE_LOAD_FILE in $OUT_DIR_ABS:" >&2
+    printf '  - %s\n' "${missing_modules[@]}" >&2
+    exit 1
+  fi
+  if [[ ${#ambiguous_modules[@]} -gt 0 ]]; then
+    echo "Error: Ambiguous module basename(s) in modules.order:" >&2
+    printf '  - %s\n' "${ambiguous_modules[@]}" >&2
+    echo "       Resolve duplicated .ko basenames or use unique module names." >&2
+    exit 1
+  fi
+
+  printf '%s\n' "${LOAD_MODULES[@]}" > "$MODULE_DST/modules.load"
+  echo "[sync] Copied $copied_count modules"
 
   # Strip debug symbols to reduce ramdisk size (~80% reduction per .ko)
   LLVM_STRIP="$TOP_DIR/prebuilts/clang/host/linux-x86/clang-r530567/bin/llvm-strip"
@@ -248,37 +412,13 @@ if [[ "$DO_SYNC_MODULES" -eq 1 ]]; then
   # kheaders.ko is only needed for in-kernel header builds, not at runtime
   rm -f "$MODULE_DST/kheaders.ko"
 
-  # Copy depmod metadata (modules.dep, modules.alias, modules.load, etc.)
-  # Android build generates these under depmod_VENDOR_RAMDISK_intermediates.
-  # strip --strip-debug does not change ELF symbols so modules.dep remains valid.
-  ANDROID_DEPMOD_SRC="$PRODUCT_OUT/obj/PACKAGING/depmod_VENDOR_RAMDISK_intermediates/lib/modules/0.0"
-  if [[ -d "$ANDROID_DEPMOD_SRC" ]]; then
-    echo "[sync] Copying depmod metadata from Android build..."
-    for meta in modules.dep modules.alias modules.softdep modules.devname modules.symbols modules.load; do
-      [[ -f "$ANDROID_DEPMOD_SRC/$meta" ]] && cp -f "$ANDROID_DEPMOD_SRC/$meta" "$MODULE_DST/"
-    done
+  # Generate depmod metadata from selected modules.
+  DEPMOD_TOOL="$HOST_TOOLS_DIR/depmod"
+  [[ ! -x "$DEPMOD_TOOL" ]] && DEPMOD_TOOL="$(which depmod 2>/dev/null || true)"
+  if [[ -x "$DEPMOD_TOOL" ]]; then
+    generate_depmod_metadata "$MODULE_DST" "$DEPMOD_TOOL"
   else
-    # Fallback: run depmod directly (path format matches Android: leading /)
-    echo "[sync] Warning: Android depmod intermediates not found, running depmod as fallback..."
-    DEPMOD_TOOL="$HOST_TOOLS_DIR/depmod"
-    [[ ! -x "$DEPMOD_TOOL" ]] && DEPMOD_TOOL="$(which depmod 2>/dev/null || true)"
-    if [[ -x "$DEPMOD_TOOL" ]]; then
-      DEPMOD_STAGING=$(mktemp -d)
-      mkdir -p "$DEPMOD_STAGING/lib/modules"
-      find "$MODULE_DST" -name "*.ko" -exec cp -f {} "$DEPMOD_STAGING/lib/modules/" \;
-      "$DEPMOD_TOOL" -b "$DEPMOD_STAGING" 0.0 2>/dev/null || true
-      if [[ -d "$DEPMOD_STAGING/lib/modules/0.0" ]]; then
-        sed -i -e 's|\([^: ]*lib/modules/[^: ]*\)|/\1|g' \
-          "$DEPMOD_STAGING/lib/modules/0.0/modules.dep" 2>/dev/null || true
-        for meta in modules.dep modules.alias modules.softdep modules.devname modules.symbols; do
-          [[ -f "$DEPMOD_STAGING/lib/modules/0.0/$meta" ]] && \
-            cp -f "$DEPMOD_STAGING/lib/modules/0.0/$meta" "$MODULE_DST/"
-        done
-      fi
-      rm -rf "$DEPMOD_STAGING"
-    else
-      echo "[sync] Error: depmod not found — modules will not load at boot!" >&2
-    fi
+    die "depmod not found — modules will not load at boot"
   fi
 
   echo "[sync] Done: $(ls -1 "$MODULE_DST"/*.ko 2>/dev/null | wc -l) modules, metadata: $(ls "$MODULE_DST"/modules.* 2>/dev/null | xargs -r -n1 basename | tr '\n' ' ')"
@@ -290,8 +430,7 @@ if [[ "$DO_REBUILD_RESOURCE_IMG" -eq 1 || "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
   if [[ -n "$TARGET_KERNEL_DTB" ]]; then
     DTB_BUILD_PATH="$OUT_DIR_ABS/arch/$TARGET_KERNEL_ARCH/boot/dts/$TARGET_KERNEL_DTB"
     rm -f "$DTB_BUILD_PATH"
-    # shellcheck disable=SC2086
-    make -j"$JOBS" "${MAKE_COMMON_ARGS[@]}" $TARGET_KERNEL_EXTRA_ARGS dtbs > /dev/null 2>&1
+    run_kernel_make dtbs > /dev/null 2>&1
     echo "[artifact] DTB rebuilt: $DTB_BUILD_PATH"
   fi
 
@@ -333,17 +472,13 @@ fi
 # ── Repack vendor_boot.img ───────────────────────────────────────────────────
 if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
   VENDOR_BOOT_IMG="$PRODUCT_OUT/vendor_boot.img"
-  MODULE_DST="$PRODUCT_OUT/kdiwin_vendor_ramdisk_modules"
+  MODULE_DST="$PRODUCT_OUT/$REPACK_MODULE_DST_NAME"
 
   # Resolve host tools (fall back to u-boot scripts if Android prebuilts not built yet)
-  UNPACK_BOOTIMG="$HOST_TOOLS_DIR/unpack_bootimg"
-  MKBOOTIMG_TOOL="$HOST_TOOLS_DIR/mkbootimg"
-  LZ4_TOOL="$HOST_TOOLS_DIR/lz4"
-  MKBOOTFS_TOOL="$HOST_TOOLS_DIR/mkbootfs"
-  [[ ! -x "$UNPACK_BOOTIMG" ]] && UNPACK_BOOTIMG="$TOP_DIR/u-boot/scripts/unpack_bootimg"
-  [[ ! -x "$MKBOOTIMG_TOOL" ]] && MKBOOTIMG_TOOL="$TOP_DIR/u-boot/scripts/mkbootimg"
-  [[ ! -x "$LZ4_TOOL" ]]       && LZ4_TOOL="lz4"
-  [[ ! -x "$MKBOOTFS_TOOL" ]]  && MKBOOTFS_TOOL=""
+  UNPACK_BOOTIMG="$(resolve_tool_path "$HOST_TOOLS_DIR/unpack_bootimg" "$TOP_DIR/u-boot/scripts/unpack_bootimg")"
+  MKBOOTIMG_TOOL="$(resolve_tool_path "$HOST_TOOLS_DIR/mkbootimg" "$TOP_DIR/u-boot/scripts/mkbootimg")"
+  LZ4_TOOL="$(resolve_tool_path "$HOST_TOOLS_DIR/lz4" "lz4")"
+  MKBOOTFS_TOOL="$(resolve_tool_path "$HOST_TOOLS_DIR/mkbootfs" "")"
 
   [[ ! -f "$VENDOR_BOOT_IMG" ]] && { echo "[repack] Error: vendor_boot.img not found: $VENDOR_BOOT_IMG" >&2; exit 1; }
   [[ ! -d "$MODULE_DST" ]]      && { echo "[repack] Error: module dir not found — run --modules first" >&2; exit 1; }
@@ -472,28 +607,20 @@ fi
 if [[ "$DO_SYNC_MODULES" -eq 1 || "$DO_REBUILD_RESOURCE_IMG" -eq 1 || "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
   echo "[output] Final artifacts:"
   if [[ "$DO_SYNC_MODULES" -eq 1 ]]; then
-    MODULE_OUT="$PRODUCT_OUT/kdiwin_vendor_ramdisk_modules"
+    MODULE_OUT="$PRODUCT_OUT/$REPACK_MODULE_DST_NAME"
     if [[ -d "$MODULE_OUT" ]]; then
-      echo "[output] modules: $MODULE_OUT ($(du -sh "$MODULE_OUT" | cut -f1), $(ls -1 "$MODULE_OUT"/*.ko 2>/dev/null | wc -l) .ko)"
+      MODULE_OUT_SIZE="$(du -sh "$MODULE_OUT" | cut -f1)"
+      MODULE_OUT_COUNT="$(ls -1 "$MODULE_OUT"/*.ko 2>/dev/null | wc -l)"
+      echo "[output] modules: $MODULE_OUT (${MODULE_OUT_SIZE}, ${MODULE_OUT_COUNT} .ko)"
     else
       echo "[output] modules: $MODULE_OUT (missing)"
     fi
   fi
   if [[ "$DO_REBUILD_RESOURCE_IMG" -eq 1 ]]; then
-    RESOURCE_OUT="$PRODUCT_OUT/resource.img"
-    if [[ -f "$RESOURCE_OUT" ]]; then
-      echo "[output] resource_img: $RESOURCE_OUT ($(du -sh "$RESOURCE_OUT" | cut -f1))"
-    else
-      echo "[output] resource_img: $RESOURCE_OUT (missing)"
-    fi
+    print_output_artifact "resource_img" "$PRODUCT_OUT/resource.img"
   fi
   if [[ "$DO_REPACK_VENDORBOOT" -eq 1 ]]; then
-    VENDOR_BOOT_OUT="$PRODUCT_OUT/vendor_boot.img"
-    if [[ -f "$VENDOR_BOOT_OUT" ]]; then
-      echo "[output] vendor_boot: $VENDOR_BOOT_OUT ($(du -sh "$VENDOR_BOOT_OUT" | cut -f1))"
-    else
-      echo "[output] vendor_boot: $VENDOR_BOOT_OUT (missing)"
-    fi
+    print_output_artifact "vendor_boot" "$PRODUCT_OUT/vendor_boot.img"
   fi
 fi
 
