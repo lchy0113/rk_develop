@@ -1286,6 +1286,21 @@ BOARD_BUILD_GKI 변수를 true로 설정했어.
 
 ====
 
+setenv bootargs 'storagemedia=emmc androidboot.storagemedia=emmc androidboot.mode=normal  androidboot.dtb_idx=0 androidboo		t.dtbo_idx=0 dyndbg="file drivers/gpu/drm/panel/panel-lontium-lt7911d.c +p"'
+
+adb wait-for-device ; adb root ; adb remount ; adb shell 'echo "file drivers/gpu/drm/panel/panel-lontium-lt7911d.c +p" > /sys/kernel/debug/dynamic_debug/control '
+
+ENABLE : &gpio3 RK_PC5 : 117 : set(on)/clear(off)
+RESET  : &gpio2 RK_PD0 : 88  : set(enable)/clear(disable)
+
+adb shell "cat /sys/devices/platform/panel/panel_state"
+adb shell "echo on > /sys/devices/platform/panel/panel_state"
+adb shell "echo off > /sys/devices/platform/panel/panel_state"
+input keyevent 26
+
+====
+[TO DO]
+
 ====
 CONFIG_AK7755_DSP_SWP5304H_SDP5304H  대신 CONFIG_AK7755_DSP_HA 을 사용
 
@@ -1363,7 +1378,7 @@ repo init -u ssh://git@git.kdiwin.com:7999/hn5g/project-manifests -b master -m d
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP920 MAS"
  
 5. cd work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SGP511
- clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SWP520 MAS"
+ clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SLP721 MAS"
  
 6. cd /home/lchy0113/work/Rockchip/ROCKCHIP_ANDROID12_HN5G_SWP530
  clear ; jfiglol -a -f=2 -t ~/Private/github/figlet-fonts/ANSI\ Regular.flf "SNP721 MAS"
